@@ -1,0 +1,51 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Landing Page.dc.html" (footer).
+
+.tsl-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 56px;
+  background: $ink;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.tsl-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tsl-footer__logo {
+  height: 24px;
+  width: auto;
+}
+
+.tsl-footer__title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: $white;
+}
+
+.tsl-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.tsl-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $zinc-300;
+  text-decoration: none;
+}
+
+.tsl-footer__copy {
+  font-size: 13px;
+  color: $zinc-500;
+}

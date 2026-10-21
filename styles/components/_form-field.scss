@@ -1,0 +1,111 @@
+@use "../variables" as *;
+
+// Text fields and typeahead comboboxes used across the sign-in steps.
+
+.tsl-field {
+  position: relative;
+  display: block;
+}
+
+.tsl-field__label {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  padding: 0 4px;
+  background: $white;
+  font-size: 12px;
+  color: $zinc-500;
+  z-index: 1;
+}
+
+.tsl-field__input {
+  width: 100%;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 16px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  color: $ink;
+  outline: none;
+}
+
+.tsl-field__input--password {
+  width: 100%;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 16px 48px 16px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  color: $ink;
+  outline: none;
+}
+
+.tsl-field__toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: $zinc-500;
+  cursor: pointer;
+}
+
+.tsl-combo {
+  position: relative;
+}
+
+.tsl-combo__input {
+  width: 100%;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 16px 40px 16px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  color: $ink;
+  outline: none;
+}
+
+.tsl-combo__toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: $zinc-500;
+  cursor: pointer;
+}
+
+.tsl-combo__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 208px;
+  overflow-y: auto;
+  background: $white;
+  border: 1px solid $zinc-200;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(9,9,11,.14);
+  padding: 6px;
+}
+
+.tsl-combo__empty {
+  padding: 12px 10px;
+  font-size: 13px;
+  color: $zinc-400;
+}

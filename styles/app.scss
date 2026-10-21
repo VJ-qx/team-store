@@ -1,0 +1,12 @@
+// Entry point. Compiled to app.css (npm run styles); linked by "Landing Page.dc.html".
+@use "global";
+@use "layouts/page";
+@use "layouts/header";
+@use "pages/landing";
+@use "layouts/footer";
+@use "components/auth-modal";
+@use "components/form-field";
+@use "components/welcome-modal";
+
+// Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
+@use "pages/prototype";

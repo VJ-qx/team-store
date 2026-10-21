@@ -1,0 +1,373 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Landing Page.dc.html" (welcome).
+
+.tsl-welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(9,9,11,.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: tsOverlayIn .18s ease;
+}
+
+.tsl-welcome__dialog {
+  position: relative;
+  width: 620px;
+  max-width: 100%;
+  background: $white;
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  animation: tsModalIn .22s cubic-bezier(.2,0,0,1);
+  padding: 40px 40px 32px;
+}
+
+.tsl-welcome__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: $zinc-500;
+  cursor: pointer;
+}
+
+.tsl-welcome__badge-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tsl-welcome__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #e7f5ed;
+  border: 1px solid #c7ead4;
+  color: $green-text;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.tsl-welcome__title {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+  color: $ink;
+  text-align: center;
+}
+
+.tsl-welcome__lead {
+  margin: 0 auto;
+  max-width: 440px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: $zinc-600;
+  text-align: center;
+}
+
+.tsl-welcome__strong {
+  color: $ink;
+  font-weight: 700;
+}
+
+.tsl-welcome__block {
+  margin-top: 28px;
+}
+
+.tsl-welcome__eyebrow {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $zinc-500;
+  margin-bottom: 12px;
+}
+
+.tsl-welcome__brands {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tsl-welcome__brand-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: $white;
+  border: 1px solid $zinc-200;
+  border-radius: 12px;
+}
+
+.tsl-welcome__brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: $zinc-100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tsl-welcome__brand-img {
+  max-height: 18px;
+  max-width: 30px;
+  object-fit: contain;
+}
+
+.tsl-welcome__brand-initial {
+  font-size: 12px;
+  font-weight: 800;
+  color: $zinc-900;
+}
+
+.tsl-welcome__brand-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.tsl-welcome__brand-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.tsl-welcome__brand-sub {
+  display: block;
+  font-size: 12.5px;
+  color: $zinc-500;
+  margin-top: 2px;
+}
+
+.tsl-welcome__connected {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $green-text;
+  background: #e7f5ed;
+  border: 1px solid #c7ead4;
+  border-radius: 999px;
+  padding: 7px 12px;
+}
+
+.tsl-welcome__connect {
+  background: $white;
+  color: $ink;
+  border: 1px solid $ink;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tsl-welcome__hint {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: $zinc-400;
+  text-align: center;
+}
+
+.tsl-welcome__block--spaced {
+  margin-top: 32px;
+}
+
+.tsl-welcome__eyebrow--select {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $zinc-500;
+  margin-bottom: 16px;
+}
+
+.tsl-welcome__grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+}
+
+.tsl-welcome__tile {
+  position: relative;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: $zinc-100;
+  border: 2px solid $zinc-100;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.tsl-welcome__tile-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid $ink;
+  border-radius: 14px;
+  background: $white;
+}
+
+.tsl-welcome__tile-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: $ink;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tsl-welcome__tile-logo {
+  position: relative;
+  z-index: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.tsl-welcome__tile-img {
+  max-height: 24px;
+  max-width: 80%;
+  width: auto;
+  object-fit: contain;
+}
+
+.tsl-welcome__tile-word {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+  color: $zinc-900;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.tsl-welcome__tile-name {
+  position: relative;
+  z-index: 1;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: $zinc-600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.tsl-welcome__note {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  color: $zinc-400;
+  text-align: center;
+}
+
+.tsl-welcome__eyebrow--primary {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $zinc-500;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.tsl-welcome__primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #f7f7f8;
+  border: 1px solid #ececf0;
+  border-radius: 14px;
+  padding: 16px 24px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.tsl-welcome__primary-logo {
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.tsl-welcome__primary-img {
+  max-height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+
+.tsl-welcome__primary-word {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  color: $ink-soft;
+}
+
+.tsl-welcome__primary-divider {
+  width: 1px;
+  height: 28px;
+  background: $zinc-200;
+}
+
+.tsl-welcome__primary-name {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: $ink-soft;
+}
+
+.tsl-welcome__primary-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $green-text;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.tsl-welcome__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.tsl-welcome__confirm {
+  border: 0;
+  border-radius: 9px;
+  padding: 16px 32px;
+  background: $ink;
+  color: $white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,70 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Landing Page.dc.html" (header).
+
+.tsl-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 92px;
+  padding: 0 40px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #e8e8ec;
+}
+
+.tsl-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: $ink-soft;
+}
+
+.tsl-header__logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.tsl-header__divider {
+  width: 1px;
+  height: 28px;
+  background: $zinc-200;
+}
+
+.tsl-header__title {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  white-space: nowrap;
+}
+
+.tsl-header__account {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: $ink-soft;
+}
+
+.tsl-header__account-label {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.tsl-header__sign-in {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  text-decoration: none;
+  color: $ink-soft;
+  font-family: inherit;
+  cursor: pointer;
+}
