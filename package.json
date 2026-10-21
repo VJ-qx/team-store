@@ -1,0 +1,13 @@
+{
+  "name": "team-store",
+  "private": true,
+  "description": "Team Store handover from Claude Design: SCSS extraction and Vue conversion",
+  "scripts": {
+    "parity": "node tools/parity/parity.mjs",
+    "styles": "sass styles/app.scss styles/app.css --no-source-map"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1",
+    "sass": "^1.106.0"
+  }
+}

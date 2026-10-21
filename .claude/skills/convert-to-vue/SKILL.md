@@ -654,6 +654,7 @@ The file was converted to Vue while preserving the existing functionality and lo
 - For large files, convert in units: leaf components first, then the components that use them. Verify each unit before starting the next.
 - Carry existing bugs over as they are and list them under Notes in the report. Fixing them is a separate task.
 - To verify markup, render the original and the conversion and compare the DOM. The Team Store MVP did this with parity tests (`tests/parity-*.mjs`): the React side through `react-dom/server`, the Vue side through Vue SSR, both normalized (sorted attributes, parsed style declarations, collapsed whitespace, ids ignored). SSR checks markup only, so review interactive behavior (handlers, timers, listeners) line by line.
+- Verify the finished conversion with `/compare-behavior`. It runs the same user flows on the prototype and the Vue page and compares what a user sees and what the page does; the conversion is done only when it reports `IDENTICAL`. When pinning the prototype's settings as configuration, add the development-only `window.__paritySetProps` hook described there, so every state can be compared.
 
 ---
 
