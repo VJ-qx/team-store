@@ -127,6 +127,7 @@ The team ran this refactor on the Team Store MVP. Follow what it learned.
 - Don't invent breakpoints. If the original has no media queries, `responsive/` isn't needed.
 - Put `@keyframes` in `_global.scss`; they are global.
 - Put prototype-only styling (device frames, preview toolbars, scaling stages) in its own partial, such as `styles/pages/_prototype.scss`, imported by one commented `@use` in `app.scss`. The later `/remove-prototype-wrapper` step then only has to delete that import.
+- Verify the result with `/compare-styles`. It runs the page's user flows on the original and the refactored version and compares every element's computed style; the refactor is done only when it reports `IDENTICAL`.
 
 ## Verification
 
