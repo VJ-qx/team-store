@@ -1,0 +1,9 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Landing Page.dc.html" (page).
+
+.tsl-page {
+  width: 100%;
+  background: $white;
+  overflow-x: hidden;
+}

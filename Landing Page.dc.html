@@ -13,21 +13,7 @@
   <link rel="stylesheet" href="_ds/prolook-design-system-c88ba952-1dca-427e-ae7f-71dec59f9459/tokens/typography.css">
   <link rel="stylesheet" href="_ds/prolook-design-system-c88ba952-1dca-427e-ae7f-71dec59f9459/tokens/spacing.css">
   <link rel="stylesheet" href="_ds/prolook-design-system-c88ba952-1dca-427e-ae7f-71dec59f9459/styles.css">
-  <style>
-    *{ box-sizing:border-box; }
-    html,body{ margin:0; padding:0; }
-    body{ background:#ffffff; font-family:"Gotham",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; color:#09090b; }
-    #__bundler_thumbnail{ display:none; }
-    summary{ list-style:none; cursor:pointer; }
-    summary::-webkit-details-marker{ display:none; }
-    details[open] span[data-chev]{ transform:rotate(45deg); }
-    html{ scroll-behavior:smooth; }
-    @keyframes tsModalIn{ from{ opacity:0; transform:translateY(12px) scale(.98); } to{ opacity:1; transform:none; } }
-    @keyframes tsOverlayIn{ from{ opacity:0; } to{ opacity:1; } }
-    @keyframes tsCheckPop{ 0%{ transform:scale(.3); opacity:0; } 60%{ transform:scale(1.12); } 100%{ transform:scale(1); opacity:1; } }
-    @keyframes tsRing{ from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
-    @keyframes tsDraw{ from{ stroke-dashoffset:34; } to{ stroke-dashoffset:0; } }
-  </style>
+  <link rel="stylesheet" href="styles/app.css">
 </helmet>
 <template id="__bundler_thumbnail">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -38,151 +24,151 @@
   </svg>
 </template>
 
-<div style="width:100%; background:#fff; overflow-x:hidden;">
+<div class="tsl-page">
 
   <!-- top bar -->
-  <header style="position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between; height:92px; padding:0 40px; background:rgba(255,255,255,.92); backdrop-filter:blur(14px); border-bottom:1px solid #e8e8ec;">
-    <a href="#" style="display:inline-flex; align-items:center; gap:20px; text-decoration:none; color:#0e0e10;">
-      <img src="assets/qx-logo.png" alt="Team Stores" style="height:36px; width:auto; display:block;">
-      <span style="width:1px; height:28px; background:#e4e4e7;"></span>
-      <span style="font-size:17px; font-weight:800; letter-spacing:.14em; white-space:nowrap;">TEAM STORES</span>
+  <header class="tsl-header">
+    <a href="#" class="tsl-header__brand">
+      <img src="assets/qx-logo.png" alt="Team Stores" class="tsl-header__logo">
+      <span class="tsl-header__divider"></span>
+      <span class="tsl-header__title">TEAM STORES</span>
     </a>
     <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ true }}">
-      <a href="#" style="display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:#0e0e10;" style-hover="opacity:.6;">
-        <span style="font-size:15px; font-weight:800; letter-spacing:.08em;">{{ accountName }}</span>
+      <a href="#" class="tsl-header__account" style-hover="opacity:.6;">
+        <span class="tsl-header__account-label">{{ accountName }}</span>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path></svg>
       </a>
     </sc-if>
     <sc-if value="{{ notSignedIn }}" hint-placeholder-val="{{ false }}">
-      <button onClick="{{ openSignIn }}" style="display:inline-flex; align-items:center; gap:12px; background:transparent; border:0; text-decoration:none; color:#0e0e10; font-family:inherit; cursor:pointer;" style-hover="opacity:.6;">
-        <span style="font-size:15px; font-weight:800; letter-spacing:.08em;">SIGN IN</span>
+      <button onClick="{{ openSignIn }}" class="tsl-header__sign-in" style-hover="opacity:.6;">
+        <span class="tsl-header__account-label">SIGN IN</span>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path></svg>
       </button>
     </sc-if>
   </header>
 
   <!-- hero -->
-  <section style="text-align:center; padding:96px 56px 0; max-width:1400px; margin:0 auto;">
-    <span style="display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border:1px solid #e4e4e7; border-radius:100px; font-size:12px; font-weight:700; letter-spacing:1.5px; color:#52525b;">
-      <span style="width:8px; height:8px; border-radius:50%; background:#dc2626;"></span> TEAM STORES PLATFORM
+  <section class="tsl-hero">
+    <span class="tsl-hero__badge">
+      <span class="tsl-hero__badge-dot"></span> TEAM STORES PLATFORM
     </span>
-    <h1 style="margin:28px auto 0; max-width:960px; font-size:74px; line-height:1.02; font-weight:800; letter-spacing:-2.5px; color:#09090b;">One dashboard to launch<br>every team store.</h1>
-    <p style="margin:28px auto 0; max-width:632px; font-size:19px; line-height:1.6; font-weight:400; color:#52525b;">Spin up branded online stores, source products across every brand you sell, and manage rosters, orders, and payouts — all from a single command center built for reps.</p>
-    <div style="display:flex; gap:16px; justify-content:center; margin-top:40px;">
-      <button onClick="{{ onEnter }}" style="display:inline-flex; align-items:center; gap:12px; background:#09090b; color:#fff; border:0; border-radius:8px; padding:16px 28px; font-family:inherit; font-size:16px; font-weight:500; cursor:pointer;" style-hover="background:#dc2626;">
+    <h1 class="tsl-hero__title">One dashboard to launch<br>every team store.</h1>
+    <p class="tsl-hero__lead">Spin up branded online stores, source products across every brand you sell, and manage rosters, orders, and payouts — all from a single command center built for reps.</p>
+    <div class="tsl-hero__actions">
+      <button onClick="{{ onEnter }}" class="tsl-hero__enter" style-hover="background:#dc2626;">
         Enter Team Stores
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
       </button>
-      <a href="#features" style="display:inline-flex; align-items:center; gap:12px; background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:16px 28px; font-family:inherit; font-size:16px; font-weight:500; cursor:pointer; text-decoration:none;" style-hover="border-color:#09090b;">See how it works</a>
+      <a href="#features" class="tsl-hero__how" style-hover="border-color:#09090b;">See how it works</a>
     </div>
     
 
     <!-- dashboard mockup -->
     <sc-if value="{{ showPreview }}" hint-placeholder-val="{{ true }}">
-    <div style="max-width:1180px; margin:68px auto 0; border-radius:16px 16px 0 0; overflow:hidden; box-shadow:0 -1px 0 #e4e4e7, 0 40px 80px -30px rgba(9,9,11,.35); border:1px solid #e4e4e7; border-bottom:0;">
-      <div style="display:flex; align-items:center; gap:8px; padding:16px 16px; background:#f4f4f5; border-bottom:1px solid #e9e9eb;">
-        <span style="width:12px; height:12px; border-radius:50%; background:#e4e4e7;"></span>
-        <span style="width:12px; height:12px; border-radius:50%; background:#e4e4e7;"></span>
-        <span style="width:12px; height:12px; border-radius:50%; background:#e4e4e7;"></span>
+    <div class="tsl-dash">
+      <div class="tsl-dash__chrome">
+        <span class="tsl-dash__chrome-dot"></span>
+        <span class="tsl-dash__chrome-dot"></span>
+        <span class="tsl-dash__chrome-dot"></span>
         
       </div>
-      <div style="display:flex; background:#fafafa; text-align:left;">
+      <div class="tsl-dash__body">
         
-        <div style="flex:1; padding:28px 32px 36px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+        <div class="tsl-dash__main">
+          <div class="tsl-dash__head">
             <div>
-              <div style="font-size:22px; font-weight:700; letter-spacing:-.5px; color:#09090b;">Overview</div>
-              <div style="font-size:12.5px; color:#a1a1aa; margin-top:2px;">Welcome back, Jordan — 24 active stores</div>
+              <div class="tsl-dash__title">Overview</div>
+              <div class="tsl-dash__subtitle">Welcome back, Jordan — 24 active stores</div>
             </div>
-            <span style="font-size:12px; color:#52525b; font-weight:500; border:1px solid #e4e4e7; border-radius:7px; padding:8px 12px;">Last 30 days</span>
+            <span class="tsl-dash__range">Last 30 days</span>
           </div>
-          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:16px;">
-            <div style="background:#fff; border:1px solid #ececee; border-radius:11px; padding:16px;">
-              <div style="font-size:11px; letter-spacing:.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase;">Total Revenue</div>
-              <div style="font-size:24px; font-weight:700; color:#09090b; margin-top:8px; letter-spacing:-.5px;">$128,450</div>
-              <div style="font-size:12px; font-weight:600; color:#16a34a; margin-top:4px;">▲ 12.4%</div>
+          <div class="tsl-dash__kpis">
+            <div class="tsl-dash__card">
+              <div class="tsl-dash__kpi-label">Total Revenue</div>
+              <div class="tsl-dash__kpi-value">$128,450</div>
+              <div class="tsl-dash__kpi-delta-up">▲ 12.4%</div>
             </div>
-            <div style="background:#fff; border:1px solid #ececee; border-radius:11px; padding:16px;">
-              <div style="font-size:11px; letter-spacing:.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase;">Orders</div>
-              <div style="font-size:24px; font-weight:700; color:#09090b; margin-top:8px; letter-spacing:-.5px;">1,382</div>
-              <div style="font-size:12px; font-weight:600; color:#16a34a; margin-top:4px;">▲ 8.1%</div>
+            <div class="tsl-dash__card">
+              <div class="tsl-dash__kpi-label">Orders</div>
+              <div class="tsl-dash__kpi-value">1,382</div>
+              <div class="tsl-dash__kpi-delta-up">▲ 8.1%</div>
             </div>
-            <div style="background:#fff; border:1px solid #ececee; border-radius:11px; padding:16px;">
-              <div style="font-size:11px; letter-spacing:.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase;">Active Stores</div>
-              <div style="font-size:24px; font-weight:700; color:#09090b; margin-top:8px; letter-spacing:-.5px;">24</div>
-              <div style="font-size:12px; font-weight:600; color:#52525b; margin-top:4px;">24 total</div>
+            <div class="tsl-dash__card">
+              <div class="tsl-dash__kpi-label">Active Stores</div>
+              <div class="tsl-dash__kpi-value">24</div>
+              <div class="tsl-dash__kpi-delta">24 total</div>
             </div>
-            <div style="background:#09090b; border:1px solid #09090b; border-radius:11px; padding:16px;">
-              <div style="font-size:11px; letter-spacing:.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase;">Avg. Order Value</div>
-              <div style="font-size:24px; font-weight:700; color:#fff; margin-top:8px; letter-spacing:-.5px;">$92.94</div>
-              <div style="font-size:12px; font-weight:600; color:#f87171; margin-top:4px;">▼ 3.2%</div>
+            <div class="tsl-dash__card--dark">
+              <div class="tsl-dash__kpi-label">Avg. Order Value</div>
+              <div class="tsl-dash__kpi-value--dark">$92.94</div>
+              <div class="tsl-dash__kpi-delta-down">▼ 3.2%</div>
             </div>
           </div>
-          <div style="display:grid; grid-template-columns:1.7fr 1fr; gap:16px;">
-            <div style="background:#fff; border:1px solid #ececee; border-radius:11px; padding:16px;">
-              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-                <span style="font-size:13px; font-weight:700; color:#09090b;">Revenue trend</span>
-                <span style="font-size:11px; color:#a1a1aa; font-weight:600;">WEEKLY</span>
+          <div class="tsl-dash__panels">
+            <div class="tsl-dash__card">
+              <div class="tsl-dash__panel-head">
+                <span class="tsl-dash__panel-title">Revenue trend</span>
+                <span class="tsl-dash__panel-meta">WEEKLY</span>
               </div>
-              <div style="display:flex; align-items:flex-end; gap:8px; height:120px;">
-                <div style="flex:1; height:40%; background:#e4e4e7; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:55%; background:#e4e4e7; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:48%; background:#e4e4e7; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:66%; background:#d4d4d8; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:60%; background:#d4d4d8; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:78%; background:#d4d4d8; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:70%; background:#a1a1aa; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:88%; background:#a1a1aa; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:82%; background:#52525b; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:100%; background:#dc2626; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:74%; background:#52525b; border-radius:4px 4px 0 0;"></div>
-                <div style="flex:1; height:90%; background:#18181b; border-radius:4px 4px 0 0;"></div>
+              <div class="tsl-dash__chart">
+                <div class="tsl-dash__chart-bar-1"></div>
+                <div class="tsl-dash__chart-bar-2"></div>
+                <div class="tsl-dash__chart-bar-3"></div>
+                <div class="tsl-dash__chart-bar-4"></div>
+                <div class="tsl-dash__chart-bar-5"></div>
+                <div class="tsl-dash__chart-bar-6"></div>
+                <div class="tsl-dash__chart-bar-7"></div>
+                <div class="tsl-dash__chart-bar-8"></div>
+                <div class="tsl-dash__chart-bar-9"></div>
+                <div class="tsl-dash__chart-bar-10"></div>
+                <div class="tsl-dash__chart-bar-11"></div>
+                <div class="tsl-dash__chart-bar-12"></div>
               </div>
             </div>
-            <div style="background:#fff; border:1px solid #ececee; border-radius:11px; padding:16px;">
-              <span style="font-size:13px; font-weight:700; color:#09090b;">Active Ordering Windows</span>
-              <div style="margin-top:16px; display:flex; flex-direction:column;">
-                <div style="padding-bottom:12px; border-bottom:1px solid #f1f1f3;">
-                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                    <span style="width:28px; height:28px; border-radius:50%; background:#1d3a8a; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; flex-shrink:0;">WW</span>
-                    <div style="flex:1; min-width:0;">
-                      <div style="font-size:12.5px; font-weight:700; color:#18181b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Westside Warriors</div>
-                      <div style="font-size:11px; color:#a1a1aa; margin-top:1px;">Revenue: <span style="color:#18181b; font-weight:600;">$41,200</span></div>
+            <div class="tsl-dash__card">
+              <span class="tsl-dash__panel-title">Active Ordering Windows</span>
+              <div class="tsl-dash__stores">
+                <div class="tsl-dash__store--first">
+                  <div class="tsl-dash__store-row">
+                    <span class="tsl-dash__avatar--ww">WW</span>
+                    <div class="tsl-dash__store-info">
+                      <div class="tsl-dash__store-name">Westside Warriors</div>
+                      <div class="tsl-dash__store-revenue">Revenue: <span class="tsl-dash__store-amount">$41,200</span></div>
                     </div>
-                    <span style="flex-shrink:0; font-size:10.5px; font-weight:700; border-radius:999px; padding:4px 8px; background:#fdeaea; color:#dc2626;">4d left</span>
+                    <span class="tsl-dash__tag--urgent">4d left</span>
                   </div>
-                  <div style="margin-left:40px;">
-                    <div style="height:4px; border-radius:999px; background:#f1f1f3; overflow:hidden;"><div style="width:78%; height:100%; border-radius:999px; background:#dc2626;"></div></div>
+                  <div class="tsl-dash__progress-wrap">
+                    <div class="tsl-dash__progress"><div class="tsl-dash__progress-fill--ww"></div></div>
                   </div>
                 </div>
-                <div style="padding:12px 0; border-bottom:1px solid #f1f1f3;">
-                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                    <span style="width:28px; height:28px; border-radius:50%; background:#dc2626; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; flex-shrink:0;">NL</span>
-                    <div style="flex:1; min-width:0;">
-                      <div style="font-size:12.5px; font-weight:700; color:#18181b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">North League Elite</div>
-                      <div style="font-size:11px; color:#a1a1aa; margin-top:1px;">Revenue: <span style="color:#18181b; font-weight:600;">$33,800</span></div>
+                <div class="tsl-dash__store--middle">
+                  <div class="tsl-dash__store-row">
+                    <span class="tsl-dash__avatar--nl">NL</span>
+                    <div class="tsl-dash__store-info">
+                      <div class="tsl-dash__store-name">North League Elite</div>
+                      <div class="tsl-dash__store-revenue">Revenue: <span class="tsl-dash__store-amount">$33,800</span></div>
                     </div>
-                    <span style="flex-shrink:0; font-size:10.5px; font-weight:700; border-radius:999px; padding:4px 8px; background:#eef3fb; color:#2563eb;">12d left</span>
+                    <span class="tsl-dash__tag">12d left</span>
                   </div>
-                  <div style="margin-left:40px;">
-                    <div style="height:4px; border-radius:999px; background:#f1f1f3; overflow:hidden;"><div style="width:52%; height:100%; border-radius:999px; background:#18181b;"></div></div>
+                  <div class="tsl-dash__progress-wrap">
+                    <div class="tsl-dash__progress"><div class="tsl-dash__progress-fill--nl"></div></div>
                   </div>
                 </div>
-                <div style="padding-top:12px;">
-                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                    <span style="width:28px; height:28px; border-radius:50%; background:#18181b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; flex-shrink:0;">RC</span>
-                    <div style="flex:1; min-width:0;">
-                      <div style="font-size:12.5px; font-weight:700; color:#18181b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Ridgeview Cyclones</div>
-                      <div style="font-size:11px; color:#a1a1aa; margin-top:1px;">Revenue: <span style="color:#18181b; font-weight:600;">$28,100</span></div>
+                <div class="tsl-dash__store--last">
+                  <div class="tsl-dash__store-row">
+                    <span class="tsl-dash__avatar--rc">RC</span>
+                    <div class="tsl-dash__store-info">
+                      <div class="tsl-dash__store-name">Ridgeview Cyclones</div>
+                      <div class="tsl-dash__store-revenue">Revenue: <span class="tsl-dash__store-amount">$28,100</span></div>
                     </div>
-                    <span style="flex-shrink:0; font-size:10.5px; font-weight:700; border-radius:999px; padding:4px 8px; background:#eef3fb; color:#2563eb;">26d left</span>
+                    <span class="tsl-dash__tag">26d left</span>
                   </div>
-                  <div style="margin-left:40px;">
-                    <div style="height:4px; border-radius:999px; background:#f1f1f3; overflow:hidden;"><div style="width:34%; height:100%; border-radius:999px; background:#18181b;"></div></div>
+                  <div class="tsl-dash__progress-wrap">
+                    <div class="tsl-dash__progress"><div class="tsl-dash__progress-fill--rc"></div></div>
                   </div>
                 </div>
               </div>
-              <div style="margin-top:16px; padding-top:12px; border-top:1px solid #f1f1f3; font-size:11.5px; color:#a1a1aa; display:flex; align-items:center; gap:8px;">
+              <div class="tsl-dash__panel-foot">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
                 3 windows open now
               </div>
@@ -195,83 +181,83 @@
   </section>
 
   <!-- features -->
-  <section id="features" style="padding:100px 56px 44px; background:#fafafa; border-top:1px solid #f0f0f1;">
-    <div style="max-width:1180px; margin:0 auto;">
-      <span style="font-size:12px; font-weight:700; letter-spacing:1.5px; color:#dc2626;">WHAT YOU GET</span>
-      <h2 style="margin:16px 0 0; max-width:700px; font-size:44px; line-height:1.05; font-weight:800; letter-spacing:-1.5px; color:#09090b;">Everything a rep needs to run stores without the mistakes.</h2>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px;">
-        <div style="background:#fff; border:1px solid #ececee; border-radius:14px; padding:32px 28px;" style-hover="border-color:#09090b;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#09090b; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#09090b; letter-spacing:-.3px;">Launch stores in minutes</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#71717a;">A guided flow — basics, products, review &amp; deploy — with safeguards that stop costly ordering errors before they happen.</p>
+  <section id="features" class="tsl-features">
+    <div class="tsl-features__inner">
+      <span class="tsl-features__eyebrow">WHAT YOU GET</span>
+      <h2 class="tsl-features__title">Everything a rep needs to run stores without the mistakes.</h2>
+      <div class="tsl-features__grid">
+        <div class="tsl-features__card" style-hover="border-color:#09090b;">
+          <span class="tsl-features__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg></span>
+          <h3 class="tsl-features__card-title">Launch stores in minutes</h3>
+          <p class="tsl-features__card-text">A guided flow — basics, products, review &amp; deploy — with safeguards that stop costly ordering errors before they happen.</p>
         </div>
-        <div style="background:#fff; border:1px solid #ececee; border-radius:14px; padding:32px 28px;" style-hover="border-color:#09090b;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#09090b; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#09090b; letter-spacing:-.3px;">Source from every brand</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#71717a;">Add products from every brand you're entitled to sell, and pull saved Customizer designs and active carts straight into a store.</p>
+        <div class="tsl-features__card" style-hover="border-color:#09090b;">
+          <span class="tsl-features__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"></path></svg></span>
+          <h3 class="tsl-features__card-title">Source from every brand</h3>
+          <p class="tsl-features__card-text">Add products from every brand you're entitled to sell, and pull saved Customizer designs and active carts straight into a store.</p>
         </div>
-        <div style="background:#fff; border:1px solid #ececee; border-radius:14px; padding:32px 28px;" style-hover="border-color:#09090b;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#09090b; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#09090b; letter-spacing:-.3px;">Roster-matched ordering</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#71717a;">Parents shop for multiple players with sizes and numbers matched to your roster — far fewer duplicate numbers and sizing mistakes.</p>
+        <div class="tsl-features__card" style-hover="border-color:#09090b;">
+          <span class="tsl-features__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"></path></svg></span>
+          <h3 class="tsl-features__card-title">Roster-matched ordering</h3>
+          <p class="tsl-features__card-text">Parents shop for multiple players with sizes and numbers matched to your roster — far fewer duplicate numbers and sizing mistakes.</p>
         </div>
-        <div style="background:#fff; border:1px solid #ececee; border-radius:14px; padding:32px 28px;" style-hover="border-color:#09090b;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#09090b; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"></path><path d="M15 2v5h5M9 13h6M9 17h6"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#09090b; letter-spacing:-.3px;">Required player packs</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#71717a;">Bundle mandatory uniform items so every athlete is fully equipped and ready by deadline day — no missing pieces.</p>
+        <div class="tsl-features__card" style-hover="border-color:#09090b;">
+          <span class="tsl-features__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"></path><path d="M15 2v5h5M9 13h6M9 17h6"></path></svg></span>
+          <h3 class="tsl-features__card-title">Required player packs</h3>
+          <p class="tsl-features__card-text">Bundle mandatory uniform items so every athlete is fully equipped and ready by deadline day — no missing pieces.</p>
         </div>
-        <div style="background:#fff; border:1px solid #ececee; border-radius:14px; padding:32px 28px;" style-hover="border-color:#09090b;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#09090b; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#09090b; letter-spacing:-.3px;">One dashboard, full visibility</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#71717a;">KPI cards, revenue trends, top-performing stores, and active order windows — every store's health at a glance.</p>
+        <div class="tsl-features__card" style-hover="border-color:#09090b;">
+          <span class="tsl-features__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"></path></svg></span>
+          <h3 class="tsl-features__card-title">One dashboard, full visibility</h3>
+          <p class="tsl-features__card-text">KPI cards, revenue trends, top-performing stores, and active order windows — every store's health at a glance.</p>
         </div>
-        <div style="background:#09090b; border:1px solid #09090b; border-radius:14px; padding:32px 28px;">
-          <span style="width:48px; height:48px; border-radius:11px; background:#dc2626; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
-          <h3 style="margin:24px 0 8px; font-size:18px; font-weight:700; color:#fff; letter-spacing:-.3px;">Built-in safeguards</h3>
-          <p style="margin:0; font-size:14.5px; line-height:1.6; color:#a1a1aa;">Coach-approval gates and locked ordering windows keep reps from bypassing critical checks — protecting you from expensive production errors.</p>
+        <div class="tsl-features__card--dark">
+          <span class="tsl-features__icon--accent"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+          <h3 class="tsl-features__card-title--dark">Built-in safeguards</h3>
+          <p class="tsl-features__card-text--dark">Coach-approval gates and locked ordering windows keep reps from bypassing critical checks — protecting you from expensive production errors.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" style="padding:84px 56px 100px; background:#fafafa;">
-    <div style="max-width:860px; margin:0 auto;">
-      <div style="text-align:center; margin-bottom:48px;">
-        <span style="font-size:12px; font-weight:700; letter-spacing:1.5px; color:#dc2626;">FAQ</span>
-        <h2 style="margin:16px 0 0; font-size:42px; line-height:1.05; font-weight:800; letter-spacing:-1.5px; color:#09090b;">Sign-in, brands &amp; onboarding</h2>
+  <section id="faq" class="tsl-faq">
+    <div class="tsl-faq__inner">
+      <div class="tsl-faq__head">
+        <span class="tsl-faq__eyebrow">FAQ</span>
+        <h2 class="tsl-faq__title">Sign-in, brands &amp; onboarding</h2>
       </div>
-      <details open="" style="border-bottom:1px solid #e4e4e7;">
-        <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 4px; font-size:18px; font-weight:600; color:#09090b;">I'm already signed into my Customizer — do I log in again?<span data-chev="" style="font-size:24px; color:#dc2626; font-weight:400; transition:transform .2s; line-height:1;">+</span></summary>
-        <p style="margin:0 4px 24px; font-size:15px; line-height:1.65; color:#52525b; max-width:680px;">No. Team Stores recognizes you automatically and signs you in with the same Customizer credentials — no second login. It opens in a new browser tab so your Customizer work stays exactly where you left it, and routes you straight to your Overview.</p>
+      <details open="" class="tsl-faq__item">
+        <summary class="tsl-faq__question">I'm already signed into my Customizer — do I log in again?<span data-chev="" class="tsl-faq__chev">+</span></summary>
+        <p class="tsl-faq__answer">No. Team Stores recognizes you automatically and signs you in with the same Customizer credentials — no second login. It opens in a new browser tab so your Customizer work stays exactly where you left it, and routes you straight to your Overview.</p>
       </details>
-      <details style="border-bottom:1px solid #e4e4e7;">
-        <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 4px; font-size:18px; font-weight:600; color:#09090b;">The platform looks like my brand — how does that work?<span data-chev="" style="font-size:24px; color:#dc2626; font-weight:400; transition:transform .2s; line-height:1;">+</span></summary>
-        <p style="margin:0 4px 24px; font-size:15px; line-height:1.65; color:#52525b; max-width:680px;">Team Stores is brand-agnostic. When you sign in from a Customizer, the platform carries that Customizer's logo through your dashboard. If you're not signed in, you'll see the default PROLOOK branding until you choose a Customizer to continue.</p>
+      <details class="tsl-faq__item">
+        <summary class="tsl-faq__question">The platform looks like my brand — how does that work?<span data-chev="" class="tsl-faq__chev">+</span></summary>
+        <p class="tsl-faq__answer">Team Stores is brand-agnostic. When you sign in from a Customizer, the platform carries that Customizer's logo through your dashboard. If you're not signed in, you'll see the default PROLOOK branding until you choose a Customizer to continue.</p>
       </details>
-      <details style="border-bottom:1px solid #e4e4e7;">
-        <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 4px; font-size:18px; font-weight:600; color:#09090b;">I sell multiple brands — can I add products from all of them?<span data-chev="" style="font-size:24px; color:#dc2626; font-weight:400; transition:transform .2s; line-height:1;">+</span></summary>
-        <p style="margin:0 4px 24px; font-size:15px; line-height:1.65; color:#52525b; max-width:680px;">Yes. If you're authorized to sell other brands under the same email, you're automatically signed into those brand Customizers and can add their products to any store you build.</p>
+      <details class="tsl-faq__item">
+        <summary class="tsl-faq__question">I sell multiple brands — can I add products from all of them?<span data-chev="" class="tsl-faq__chev">+</span></summary>
+        <p class="tsl-faq__answer">Yes. If you're authorized to sell other brands under the same email, you're automatically signed into those brand Customizers and can add their products to any store you build.</p>
       </details>
-      <details style="border-bottom:1px solid #e4e4e7;">
-        <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 4px; font-size:18px; font-weight:600; color:#09090b;">My dealership is new to Team Stores — what happens first?<span data-chev="" style="font-size:24px; color:#dc2626; font-weight:400; transition:transform .2s; line-height:1;">+</span></summary>
-        <p style="margin:0 4px 24px; font-size:15px; line-height:1.65; color:#52525b; max-width:680px;">You'll complete a short business-details form — legal entity, tax and banking info. We verify it instantly through Stripe, so there's no waiting period: once it's confirmed you go straight into your dashboard.</p>
+      <details class="tsl-faq__item">
+        <summary class="tsl-faq__question">My dealership is new to Team Stores — what happens first?<span data-chev="" class="tsl-faq__chev">+</span></summary>
+        <p class="tsl-faq__answer">You'll complete a short business-details form — legal entity, tax and banking info. We verify it instantly through Stripe, so there's no waiting period: once it's confirmed you go straight into your dashboard.</p>
       </details>
-      <details style="border-bottom:1px solid #e4e4e7;">
-        <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px 4px; font-size:18px; font-weight:600; color:#09090b;">What if I'm not logged in when I click Team Stores?<span data-chev="" style="font-size:24px; color:#dc2626; font-weight:400; transition:transform .2s; line-height:1;">+</span></summary>
-        <p style="margin:0 4px 24px; font-size:15px; line-height:1.65; color:#52525b; max-width:680px;">You'll be asked to choose your Customizer, then sign in with your existing Customizer credentials. From there you continue straight to Overview — or, if your dealership is new, to the quick business-details form.</p>
+      <details class="tsl-faq__item">
+        <summary class="tsl-faq__question">What if I'm not logged in when I click Team Stores?<span data-chev="" class="tsl-faq__chev">+</span></summary>
+        <p class="tsl-faq__answer">You'll be asked to choose your Customizer, then sign in with your existing Customizer credentials. From there you continue straight to Overview — or, if your dealership is new, to the quick business-details form.</p>
       </details>
     </div>
   </section>
 
   <!-- CTA band -->
-  <section style="background:#09090b; padding:84px 56px;">
-    <div style="max-width:1180px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:48px; flex-wrap:wrap;">
+  <section class="tsl-cta">
+    <div class="tsl-cta__inner">
       <div>
-        <h2 style="margin:0; font-size:40px; line-height:1.05; font-weight:800; letter-spacing:-1.5px; color:#fff;">Ready to open your dashboard?</h2>
-        <p style="margin:16px 0 0; max-width:520px; font-size:16px; line-height:1.6; color:#a1a1aa;">Enter Team Stores with your Customizer sign-in and land straight on your Overview.</p>
+        <h2 class="tsl-cta__title">Ready to open your dashboard?</h2>
+        <p class="tsl-cta__text">Enter Team Stores with your Customizer sign-in and land straight on your Overview.</p>
       </div>
-      <button onClick="{{ onEnter }}" style="display:inline-flex; align-items:center; gap:12px; background:#dc2626; color:#fff; border:0; border-radius:8px; padding:16px 32px; font-family:inherit; font-size:16px; font-weight:500; cursor:pointer; white-space:nowrap;" style-hover="background:#b91c1c;">
+      <button onClick="{{ onEnter }}" class="tsl-cta__button" style-hover="background:#b91c1c;">
         Enter Team Stores
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
       </button>
@@ -279,17 +265,17 @@
   </section>
 
   <!-- footer -->
-  <footer style="display:flex; align-items:center; justify-content:space-between; padding:32px 56px; background:#09090b; border-top:1px solid rgba(255,255,255,.08);">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <img src="assets/prolook-mark.png" alt="PROLOOK" style="height:24px; width:auto;">
-      <span style="font-size:12px; font-weight:700; letter-spacing:2px; color:#fff;">TEAM STORES</span>
+  <footer class="tsl-footer">
+    <div class="tsl-footer__brand">
+      <img src="assets/prolook-mark.png" alt="PROLOOK" class="tsl-footer__logo">
+      <span class="tsl-footer__title">TEAM STORES</span>
     </div>
-    <div style="display:flex; align-items:center; gap:28px;">
-      <a href="Team%20Store%20Storefront.dc.html" style="display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:#d4d4d8; text-decoration:none;" style-hover="color:#ffffff;">
+    <div class="tsl-footer__links">
+      <a href="Team%20Store%20Storefront.dc.html" class="tsl-footer__link" style-hover="color:#ffffff;">
         See a live team store
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
       </a>
-      <span style="font-size:13px; color:#71717a;">© 2026 PROLOOK · Custom team apparel platform</span>
+      <span class="tsl-footer__copy">© 2026 PROLOOK · Custom team apparel platform</span>
     </div>
   </footer>
 
@@ -297,31 +283,31 @@
 
 <!-- ══════ AUTH MODAL — native sign-in (primary) + Customizer sign-in (federated) ══════ -->
 <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
-  <div onClick="{{ closeModal }}" style="position:fixed; inset:0; z-index:100; background:rgba(9,9,11,.55); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:24px; animation:tsOverlayIn .18s ease;">
-    <div onClick="{{ stop }}" style="position:relative; width:480px; max-width:100%; background:#fff; border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.4); animation:tsModalIn .22s cubic-bezier(.2,0,0,1);">
+  <div onClick="{{ closeModal }}" class="tsl-modal">
+    <div onClick="{{ stop }}" class="tsl-modal__dialog">
 
       <sc-if value="{{ showClose }}" hint-placeholder-val="{{ true }}">
-        <button onClick="{{ closeModal }}" aria-label="Close" style="position:absolute; top:16px; right:16px; z-index:2; width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:8px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+        <button onClick="{{ closeModal }}" aria-label="Close" class="tsl-modal__close" style-hover="background:#f4f4f5; color:#09090b;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
         </button>
       </sc-if>
 
       <!-- STEP: home — native sign-in (primary) -->
       <sc-if value="{{ stepHome }}" hint-placeholder-val="{{ true }}">
-        <div style="padding:44px 40px 32px;">
-          <h3 style="margin:0 0 8px; font-size:22px; font-weight:800; letter-spacing:-.3px; color:#09090b; text-align:center;">Sign in to Team Stores</h3>
-          <p style="margin:0 auto 28px; max-width:340px; font-size:14px; line-height:1.6; color:#52525b; text-align:center;">Use your Team Stores account, or sign in with a brand Customizer you already have.</p>
-          <div style="display:flex; flex-direction:column; gap:18px;">
+        <div class="tsl-auth__panel">
+          <h3 class="tsl-auth__title">Sign in to Team Stores</h3>
+          <p class="tsl-auth__lead">Use your Team Stores account, or sign in with a brand Customizer you already have.</p>
+          <div class="tsl-auth__fields">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Email address</span>
-              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Email address</span>
+              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Password</span>
-              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="Enter your password"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 48px 16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
-              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" style="position:absolute; top:50%; right:12px; transform:translateY(-50%); width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:6px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Password</span>
+              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="Enter your password"  class="tsl-field__input--password" style-focus="border-color:#09090b;">
+              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" class="tsl-field__toggle" style-hover="background:#f4f4f5; color:#09090b;">
                 <sc-if value="{{ pwHidden }}" hint-placeholder-val="{{ true }}">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </sc-if>
@@ -332,48 +318,48 @@
             </label>
           </div>
           <sc-if value="{{ signInError }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex; align-items:center; gap:8px; margin-top:14px; font-size:13px; color:#dc2626; font-weight:500;">
+            <div class="tsl-auth__error">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
               Email or password is incorrect
             </div>
           </sc-if>
-          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
-            <button onClick="{{ goForgot }}" style="background:transparent; border:0; padding:0; color:#52525b; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="color:#09090b;">Forgot password?</button>
+          <div class="tsl-auth__forgot-row">
+            <button onClick="{{ goForgot }}" class="tsl-auth__forgot" style-hover="color:#09090b;">Forgot password?</button>
           </div>
           <button onClick="{{ doNativeSignIn }}" disabled="{{ nativeSignInDisabled }}" style="{{ nativeSignInStyle }}">Sign in</button>
-          <div style="display:flex; align-items:center; gap:12px; margin:22px 0;">
-            <span style="flex:1; height:1px; background:#e4e4e7;"></span>
-            <span style="font-size:12px; font-weight:600; letter-spacing:.06em; color:#a1a1aa;">OR</span>
-            <span style="flex:1; height:1px; background:#e4e4e7;"></span>
+          <div class="tsl-auth__divider">
+            <span class="tsl-auth__divider-line"></span>
+            <span class="tsl-auth__divider-text">OR</span>
+            <span class="tsl-auth__divider-line"></span>
           </div>
-          <button onClick="{{ goCustomizer }}" style="width:100%; display:inline-flex; align-items:center; justify-content:center; gap:12px; background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:13px 16px; font-family:inherit; font-size:15px; font-weight:600; cursor:pointer;" style-hover="border-color:#09090b; background:#fafafa;">
+          <button onClick="{{ goCustomizer }}" class="tsl-auth__customizer-btn" style-hover="border-color:#09090b; background:#fafafa;">
             Sign in With Customizer
           </button>
-          <p style="margin:24px 0 0; font-size:13.5px; color:#52525b; text-align:center;">New to Team Stores? <button onClick="{{ goSignup }}" style="background:transparent; border:0; padding:0; color:#09090b; font-family:inherit; font-size:13.5px; font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:3px;">Create an account</button></p>
+          <p class="tsl-auth__switch">New to Team Stores? <button onClick="{{ goSignup }}" class="tsl-auth__switch-link">Create an account</button></p>
         </div>
       </sc-if>
 
       <!-- STEP: sign up 1/2 — credentials + live password checklist -->
       <sc-if value="{{ stepSignup1 }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 32px;">
+        <div class="tsl-auth__panel">
 
-          <button onClick="{{ goHome }}" style="position:absolute; top:16px; left:16px; z-index:2; display:inline-flex; align-items:center; gap:6px; background:transparent; border:0; border-radius:8px; padding:6px 10px; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+          <button onClick="{{ goHome }}" class="tsl-auth__back" style-hover="background:#f4f4f5; color:#09090b;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg> Back
           </button>
-          <div style="display:flex; justify-content:center; margin-bottom:14px;"><span style="font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#a1a1aa;">Step 1 of 2 · Credentials</span></div>
-          <h3 style="margin:0 0 8px; font-size:22px; font-weight:800; letter-spacing:-.3px; color:#09090b; text-align:center;">Create your Team Stores account</h3>
-          <p style="margin:0 auto 28px; max-width:360px; font-size:14px; line-height:1.6; color:#52525b; text-align:center;">You'll be able to connect any brand Customizers you're entitled to after you're in.</p>
-          <div style="display:flex; flex-direction:column; gap:18px;">
+          <div class="tsl-auth__step"><span class="tsl-auth__step-label">Step 1 of 2 · Credentials</span></div>
+          <h3 class="tsl-auth__title">Create your Team Stores account</h3>
+          <p class="tsl-auth__lead--wide">You'll be able to connect any brand Customizers you're entitled to after you're in.</p>
+          <div class="tsl-auth__fields">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Email address</span>
-              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Email address</span>
+              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Password</span>
-              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="At least 12 characters"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 48px 16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
-              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" style="position:absolute; top:50%; right:12px; transform:translateY(-50%); width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:6px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Password</span>
+              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="At least 12 characters"  class="tsl-field__input--password" style-focus="border-color:#09090b;">
+              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" class="tsl-field__toggle" style-hover="background:#f4f4f5; color:#09090b;">
                 <sc-if value="{{ pwHidden }}" hint-placeholder-val="{{ true }}">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </sc-if>
@@ -384,11 +370,11 @@
             </label>
           </div>
           <sc-if value="{{ emailTaken }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-top:14px; background:#fafafa; border:1px solid #ececee; border-radius:10px; padding:12px 14px; font-size:13px; line-height:1.55; color:#52525b;">An account already exists for <strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong>. <button onClick="{{ goHome }}" style="background:transparent; border:0; padding:0; color:#09090b; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:3px;">Sign in</button> and we'll link your accounts automatically.</div>
+            <div class="tsl-auth__notice">An account already exists for <strong class="tsl-auth__strong">{{ emailValue }}</strong>. <button onClick="{{ goHome }}" class="tsl-auth__notice-link">Sign in</button> and we'll link your accounts automatically.</div>
           </sc-if>
-          <ul style="list-style:none; margin:16px 0 0; padding:14px 16px; background:#fafafa; border:1px solid #ececee; border-radius:10px; display:flex; flex-direction:column; gap:8px;">
+          <ul class="tsl-auth__rules">
             <sc-for list="{{ pwRules }}" as="r" hint-placeholder-count="3">
-              <li style="display:flex; align-items:center; gap:10px; font-size:13px; color:#52525b;">
+              <li class="tsl-auth__rule">
                 <span style="{{ r.dotStyle }}">
                   <sc-if value="{{ r.ok }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg></sc-if>
                 </span>
@@ -397,137 +383,137 @@
             </sc-for>
           </ul>
           <button onClick="{{ goSignup2 }}" disabled="{{ signup1Disabled }}" style="{{ signup1Style }}">Continue</button>
-          <p style="margin:20px 0 0; font-size:13.5px; color:#52525b; text-align:center;">Already have an account? <button onClick="{{ goHome }}" style="background:transparent; border:0; padding:0; color:#09090b; font-family:inherit; font-size:13.5px; font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:3px;">Sign in</button></p>
+          <p class="tsl-auth__switch--signup">Already have an account? <button onClick="{{ goHome }}" class="tsl-auth__switch-link">Sign in</button></p>
         </div>
       </sc-if>
 
       <!-- STEP: sign up 2/2 — personal info (native reps enter this manually) -->
       <sc-if value="{{ stepSignup2 }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 32px;">
+        <div class="tsl-auth__panel">
 
-          <button onClick="{{ goSignup1 }}" style="position:absolute; top:16px; left:16px; z-index:2; display:inline-flex; align-items:center; gap:6px; background:transparent; border:0; border-radius:8px; padding:6px 10px; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+          <button onClick="{{ goSignup1 }}" class="tsl-auth__back" style-hover="background:#f4f4f5; color:#09090b;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg> Back
           </button>
-          <div style="display:flex; justify-content:center; margin-bottom:14px;"><span style="font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#a1a1aa;">Step 2 of 2 · Your details</span></div>
-          <h3 style="margin:0 0 8px; font-size:22px; font-weight:800; letter-spacing:-.3px; color:#09090b; text-align:center;">Tell us about yourself</h3>
-          <p style="margin:0 auto 28px; max-width:360px; font-size:14px; line-height:1.6; color:#52525b; text-align:center;">Reps who sign in with a Customizer have this pulled in automatically. You can edit it anytime from My Account.</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px 12px;">
+          <div class="tsl-auth__step"><span class="tsl-auth__step-label">Step 2 of 2 · Your details</span></div>
+          <h3 class="tsl-auth__title">Tell us about yourself</h3>
+          <p class="tsl-auth__lead--wide">Reps who sign in with a Customizer have this pulled in automatically. You can edit it anytime from My Account.</p>
+          <div class="tsl-auth__grid">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">First name</span>
-              <input type="text" value="{{ p.firstName }}" onInput="{{ onFirst }}" placeholder="Jordan" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">First name</span>
+              <input type="text" value="{{ p.firstName }}" onInput="{{ onFirst }}" placeholder="Jordan" autoFocus="{{ true }}" class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Last name</span>
-              <input type="text" value="{{ p.lastName }}" onInput="{{ onLast }}" placeholder="Rivera"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Last name</span>
+              <input type="text" value="{{ p.lastName }}" onInput="{{ onLast }}" placeholder="Rivera"  class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
-            <div style="grid-column:1 / -1;">
+            <div class="tsl-auth__grid-full">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Phone number</span>
-              <input type="tel" value="{{ p.phone }}" onInput="{{ onPhone }}" placeholder="(801) 123-4567"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Phone number</span>
+              <input type="tel" value="{{ p.phone }}" onInput="{{ onPhone }}" placeholder="(801) 123-4567"  class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
             </div>
 
             <!-- Country · typeahead combobox (mimics a map-service lookup) -->
-            <div style="position:relative;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Country</span>
-              <input type="text" value="{{ p.country }}" onInput="{{ onCountry }}" onFocus="{{ openCountry }}" onBlur="{{ closeCombos }}" placeholder="Search countries" autoComplete="off" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 40px 16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
-              <button type="button" onMouseDown="{{ toggleCountry }}" aria-label="Show countries" style="position:absolute; top:50%; right:10px; transform:translateY(-50%); width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:6px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+            <div class="tsl-combo">
+              <span class="tsl-field__label">Country</span>
+              <input type="text" value="{{ p.country }}" onInput="{{ onCountry }}" onFocus="{{ openCountry }}" onBlur="{{ closeCombos }}" placeholder="Search countries" autoComplete="off" class="tsl-combo__input" style-focus="border-color:#09090b;">
+              <button type="button" onMouseDown="{{ toggleCountry }}" aria-label="Show countries" class="tsl-combo__toggle" style-hover="background:#f4f4f5; color:#09090b;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
               </button>
               <sc-if value="{{ countryOpen }}" hint-placeholder-val="{{ false }}">
-                <div style="position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:20; max-height:208px; overflow-y:auto; background:#fff; border:1px solid #e4e4e7; border-radius:10px; box-shadow:0 12px 32px rgba(9,9,11,.14); padding:6px;">
+                <div class="tsl-combo__list">
                   <sc-for list="{{ countryOptions }}" as="o" hint-placeholder-count="3">
                     <button type="button" onMouseDown="{{ o.onPick }}" style="{{ o.style }}" style-hover="background:#f4f4f5;">{{ o.label }}</button>
                   </sc-for>
                   <sc-if value="{{ countryEmpty }}" hint-placeholder-val="{{ false }}">
-                    <div style="padding:12px 10px; font-size:13px; color:#a1a1aa;">No matches</div>
+                    <div class="tsl-combo__empty">No matches</div>
                   </sc-if>
                 </div>
               </sc-if>
             </div>
 
             <!-- State · typeahead combobox, list depends on country -->
-            <div style="position:relative;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">State</span>
-              <input type="text" value="{{ p.state }}" onInput="{{ onState }}" onFocus="{{ openState }}" onBlur="{{ closeCombos }}" placeholder="Search states" autoComplete="off" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 40px 16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
-              <button type="button" onMouseDown="{{ toggleState }}" aria-label="Show states" style="position:absolute; top:50%; right:10px; transform:translateY(-50%); width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:6px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+            <div class="tsl-combo">
+              <span class="tsl-field__label">State</span>
+              <input type="text" value="{{ p.state }}" onInput="{{ onState }}" onFocus="{{ openState }}" onBlur="{{ closeCombos }}" placeholder="Search states" autoComplete="off" class="tsl-combo__input" style-focus="border-color:#09090b;">
+              <button type="button" onMouseDown="{{ toggleState }}" aria-label="Show states" class="tsl-combo__toggle" style-hover="background:#f4f4f5; color:#09090b;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
               </button>
               <sc-if value="{{ stateOpen }}" hint-placeholder-val="{{ false }}">
-                <div style="position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:20; max-height:208px; overflow-y:auto; background:#fff; border:1px solid #e4e4e7; border-radius:10px; box-shadow:0 12px 32px rgba(9,9,11,.14); padding:6px;">
+                <div class="tsl-combo__list">
                   <sc-for list="{{ stateOptions }}" as="o" hint-placeholder-count="3">
                     <button type="button" onMouseDown="{{ o.onPick }}" style="{{ o.style }}" style-hover="background:#f4f4f5;">{{ o.label }}</button>
                   </sc-for>
                   <sc-if value="{{ stateEmpty }}" hint-placeholder-val="{{ false }}">
-                    <div style="padding:12px 10px; font-size:13px; color:#a1a1aa;">No matches</div>
+                    <div class="tsl-combo__empty">No matches</div>
                   </sc-if>
                 </div>
               </sc-if>
             </div>
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">City</span>
-              <input type="text" value="{{ p.city }}" onInput="{{ onCity }}" placeholder="Salt Lake City"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">City</span>
+              <input type="text" value="{{ p.city }}" onInput="{{ onCity }}" placeholder="Salt Lake City"  class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Zip code</span>
-              <input type="text" value="{{ p.zip }}" onInput="{{ onZip }}" placeholder="84117"  style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Zip code</span>
+              <input type="text" value="{{ p.zip }}" onInput="{{ onZip }}" placeholder="84117"  class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
           </div>
           <button onClick="{{ doSignup }}" disabled="{{ signup2Disabled }}" style="{{ signup2Style }}">Create account</button>
-          <p style="margin:16px 0 0; font-size:12.5px; line-height:1.5; color:#a1a1aa; text-align:center;">We'll check your email against our dealership records. If your dealership is new to Team Stores, you'll register your business next.</p>
+          <p class="tsl-auth__note">We'll check your email against our dealership records. If your dealership is new to Team Stores, you'll register your business next.</p>
         </div>
       </sc-if>
 
       <!-- STEP: post sign-up — checking email against qx7 dealership records -->
       <sc-if value="{{ stepChecking }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:60px 40px 56px; text-align:center;">
-          <div style="position:relative; width:64px; height:64px; margin:0 auto 24px;">
-            <span style="position:absolute; inset:0; border-radius:50%; border:3px solid #f0f0f2;"></span>
-            <span style="position:absolute; inset:0; border-radius:50%; border:3px solid transparent; border-top-color:#09090b; animation:tsRing .9s linear infinite;"></span>
+        <div class="tsl-auth__status">
+          <div class="tsl-auth__spinner">
+            <span class="tsl-auth__spinner-track"></span>
+            <span class="tsl-auth__spinner-arc"></span>
           </div>
-          <h3 style="margin:0 0 8px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">Account created</h3>
-          <p style="margin:0 auto; max-width:320px; font-size:14px; line-height:1.6; color:#52525b;">Checking <strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong> against our dealership records…</p>
+          <h3 class="tsl-auth__status-title">Account created</h3>
+          <p class="tsl-auth__status-text">Checking <strong class="tsl-auth__strong">{{ emailValue }}</strong> against our dealership records…</p>
         </div>
       </sc-if>
 
       <!-- STEP: post sign-up — no dealership matched: hand off to organization registration -->
       <sc-if value="{{ stepNotFound }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:60px 40px 56px; text-align:center;">
-          <div style="width:64px; height:64px; margin:0 auto 24px; border-radius:50%; background:#f4f4f5; display:flex; align-items:center; justify-content:center; color:#09090b;">
+        <div class="tsl-auth__status">
+          <div class="tsl-auth__status-icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><path d="M9 21v-6h6v6"></path></svg>
           </div>
-          <h3 style="margin:0 0 8px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">No organization found</h3>
-          <p style="margin:0 auto; max-width:340px; font-size:14px; line-height:1.6; color:#52525b;"><strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong> isn't linked to a dealership we know. Next, register your organization — Team Stores access opens once it's approved.</p>
-          <p style="margin:20px 0 0; font-size:12.5px; color:#a1a1aa;">Taking you to organization registration…</p>
+          <h3 class="tsl-auth__status-title">No organization found</h3>
+          <p class="tsl-auth__text"><strong class="tsl-auth__strong">{{ emailValue }}</strong> isn't linked to a dealership we know. Next, register your organization — Team Stores access opens once it's approved.</p>
+          <p class="tsl-auth__status-note">Taking you to organization registration…</p>
         </div>
       </sc-if>
 
       <!-- STEP: post sign-up — email matched a dealership: offer brand connections -->
       <sc-if value="{{ stepConnect }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 32px;">
-          <div style="display:flex; justify-content:center; margin-bottom:16px;">
-            <span style="display:inline-flex; align-items:center; gap:8px; background:#e7f5ed; border:1px solid #c7ead4; color:#1f9d55; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:700; letter-spacing:.03em;">
+        <div class="tsl-auth__panel">
+          <div class="tsl-auth__badge-row">
+            <span class="tsl-auth__badge">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12l2.5 2.5L16 9"></path></svg>
               Dealership found
             </span>
           </div>
-          <h3 style="margin:0 0 8px; font-size:22px; font-weight:800; letter-spacing:-.3px; color:#09090b; text-align:center;">Connect your brands?</h3>
-          <p style="margin:0 auto 24px; max-width:380px; font-size:14px; line-height:1.6; color:#52525b; text-align:center;"><strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong> is linked to <strong style="color:#09090b; font-weight:700;">Team Gear Athletics ABC</strong>. Connecting a brand reuses your existing Customizer account and permissions so you can add its products.</p>
-          <div style="display:flex; flex-direction:column; gap:10px;">
+          <h3 class="tsl-auth__title">Connect your brands?</h3>
+          <p class="tsl-auth__lead--connect"><strong class="tsl-auth__strong">{{ emailValue }}</strong> is linked to <strong class="tsl-auth__strong">Team Gear Athletics ABC</strong>. Connecting a brand reuses your existing Customizer account and permissions so you can add its products.</p>
+          <div class="tsl-auth__brands">
             <sc-for list="{{ connectBrands }}" as="c" hint-placeholder-count="1">
               <button onClick="{{ c.onToggle }}" style="{{ c.rowStyle }}">
-                <span style="width:44px; height:44px; border-radius:10px; background:#f4f4f5; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:18px; max-width:30px; object-fit:contain;"></sc-if>
-                  <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px; font-weight:800; color:#18181b;">{{ c.initial }}</span></sc-if>
+                <span class="tsl-brand__logo">
+                  <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-brand__img"></sc-if>
+                  <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span class="tsl-brand__initial">{{ c.initial }}</span></sc-if>
                 </span>
-                <span style="flex:1; min-width:0; text-align:left;">
-                  <span style="display:block; font-size:15px; font-weight:800; color:#09090b;">{{ c.name }}</span>
-                  <span style="display:block; font-size:12.5px; color:#71717a; margin-top:2px;">Customizer account found for your email</span>
+                <span class="tsl-brand__body--left">
+                  <span class="tsl-brand__name">{{ c.name }}</span>
+                  <span class="tsl-brand__sub">Customizer account found for your email</span>
                 </span>
                 <span style="{{ c.checkStyle }}">
                   <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ true }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg></sc-if>
@@ -536,26 +522,26 @@
             </sc-for>
           </div>
           <button onClick="{{ doConnectEnter }}" disabled="{{ connectDisabled }}" style="{{ connectStyle }}">{{ connectCta }}</button>
-          <div style="text-align:center; margin-top:16px;">
-            <button onClick="{{ skipConnect }}" style="background:transparent; border:0; padding:0; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="color:#09090b;">Skip for now — connect later from My Account</button>
+          <div class="tsl-auth__skip-row">
+            <button onClick="{{ skipConnect }}" class="tsl-auth__skip" style-hover="color:#09090b;">Skip for now — connect later from My Account</button>
           </div>
         </div>
       </sc-if>
 
       <!-- STEP: forgot password -->
       <sc-if value="{{ stepForgot }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 36px; text-align:center;">
+        <div class="tsl-auth__panel--center">
 
-          <button onClick="{{ goHome }}" style="position:absolute; top:16px; left:16px; z-index:2; display:inline-flex; align-items:center; gap:6px; background:transparent; border:0; border-radius:8px; padding:6px 10px; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+          <button onClick="{{ goHome }}" class="tsl-auth__back" style-hover="background:#f4f4f5; color:#09090b;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg> Back
           </button>
-          <h3 style="margin:0 0 12px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">Reset your password</h3>
-          <p style="margin:0 auto; max-width:340px; font-size:14px; line-height:1.6; color:#52525b;">Enter your Team Stores account email and we'll send a reset link.</p>
-          <div style="text-align:left; margin-top:28px;">
+          <h3 class="tsl-auth__title--small">Reset your password</h3>
+          <p class="tsl-auth__text">Enter your Team Stores account email and we'll send a reset link.</p>
+          <div class="tsl-auth__form">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Email address</span>
-              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Email address</span>
+              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
           </div>
           <button onClick="{{ doForgot }}" disabled="{{ continueDisabled }}" style="{{ continueStyleFull }}">Send reset link</button>
@@ -564,35 +550,35 @@
 
       <!-- STEP: forgot password — sent (same message whether or not the email has an account) -->
       <sc-if value="{{ stepForgotSent }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:52px 40px 44px; text-align:center;">
-          <span style="width:56px; height:56px; border-radius:50%; background:#f4f4f5; color:#09090b; display:inline-flex; align-items:center; justify-content:center; margin-bottom:20px;">
+        <div class="tsl-auth__panel--sent">
+          <span class="tsl-auth__sent-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
           </span>
-          <h3 style="margin:0 0 12px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">Check your email</h3>
-          <p style="margin:0 auto; max-width:340px; font-size:14px; line-height:1.6; color:#52525b;">If an account exists for <strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong>, we've sent a reset link. It works once and expires in 60 minutes.</p>
-          <button onClick="{{ goHome }}" style="margin-top:28px; width:100%; background:#09090b; color:#fff; border:0; border-radius:8px; padding:13px; font-family:inherit; font-size:15px; font-weight:600; cursor:pointer;" style-hover="background:#dc2626;">Back to sign in</button>
+          <h3 class="tsl-auth__title--small">Check your email</h3>
+          <p class="tsl-auth__text">If an account exists for <strong class="tsl-auth__strong">{{ emailValue }}</strong>, we've sent a reset link. It works once and expires in 60 minutes.</p>
+          <button onClick="{{ goHome }}" class="tsl-auth__primary-btn" style-hover="background:#dc2626;">Back to sign in</button>
         </div>
       </sc-if>
 
       <!-- ── Customizer path (federated) ── -->
       <!-- STEP: intro (email intake gate) -->
       <sc-if value="{{ stepIntro }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 36px; text-align:center;">
+        <div class="tsl-auth__panel--center">
 
-          <button onClick="{{ goHome }}" style="position:absolute; top:16px; left:16px; z-index:2; display:inline-flex; align-items:center; gap:6px; background:transparent; border:0; border-radius:8px; padding:6px 10px; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+          <button onClick="{{ goHome }}" class="tsl-auth__back" style-hover="background:#f4f4f5; color:#09090b;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg> Back
           </button>
-          <h3 style="margin:0 0 12px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">Continue with a Customizer</h3>
-          <p style="margin:0 auto; max-width:340px; font-size:14px; line-height:1.6; color:#52525b;">Enter the email tied to your Customizer account. We'll verify which brands you're entitled to before showing any sign-in options.</p>
-          <div style="text-align:left; margin-top:28px;">
+          <h3 class="tsl-auth__title--small">Continue with a Customizer</h3>
+          <p class="tsl-auth__text">Enter the email tied to your Customizer account. We'll verify which brands you're entitled to before showing any sign-in options.</p>
+          <div class="tsl-auth__form">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Email address</span>
-              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Email address</span>
+              <input type="email" value="{{ emailValue }}" onInput="{{ onEmailInput }}" placeholder="you@dealership.com" autoFocus="{{ true }}" class="tsl-field__input" style-focus="border-color:#09090b;">
             </label>
           </div>
-          <div style="display:flex; gap:12px; margin-top:28px;">
-            <button onClick="{{ goHome }}" style="flex:1; background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:12px; font-family:inherit; font-size:15px; font-weight:500; cursor:pointer;" style-hover="border-color:#09090b;">Cancel</button>
+          <div class="tsl-auth__actions">
+            <button onClick="{{ goHome }}" class="tsl-auth__cancel" style-hover="border-color:#09090b;">Cancel</button>
             <button onClick="{{ onContinueEmail }}" disabled="{{ continueDisabled }}" style="{{ continueStyle }}">Continue</button>
           </div>
         </div>
@@ -600,49 +586,49 @@
 
       <!-- STEP: choose customizer (filtered by email entitlement, validated per brand) -->
       <sc-if value="{{ stepChoose }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 40px; text-align:center;">
-          <h3 style="margin:0 0 8px; font-size:20px; font-weight:700; letter-spacing:-.3px; color:#09090b;">Choose a Customizer</h3>
-          <p style="margin:0 0 24px; font-size:14px; color:#71717a;">Brands linked to <strong style="color:#09090b; font-weight:600;">{{ emailValue }}</strong>. The one you pick becomes your primary brand.</p>
+        <div class="tsl-auth__panel--choose">
+          <h3 class="tsl-auth__status-title">Choose a Customizer</h3>
+          <p class="tsl-auth__subtle">Brands linked to <strong class="tsl-auth__strong--semibold">{{ emailValue }}</strong>. The one you pick becomes your primary brand.</p>
           <sc-if value="{{ hasEntitlements }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+            <div class="tsl-auth__brand-list">
               <sc-for list="{{ customizers }}" as="c" hint-placeholder-count="1">
                 <!-- account exists: selectable row -->
                 <sc-if value="{{ c.hasAccount }}" hint-placeholder-val="{{ true }}">
-                  <button onClick="{{ c.onSelect }}" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; background:#fff; border:1px solid #e4e4e7; border-radius:12px; cursor:pointer; text-align:left; font-family:inherit;" style-hover="border-color:#09090b; background:#fafafa;">
-                    <span style="width:44px; height:44px; border-radius:10px; background:#f4f4f5; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
-                      <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:18px; max-width:30px; object-fit:contain;"></sc-if>
-                      <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px; font-weight:800; color:#18181b;">{{ c.initial }}</span></sc-if>
+                  <button onClick="{{ c.onSelect }}" class="tsl-brand-row" style-hover="border-color:#09090b; background:#fafafa;">
+                    <span class="tsl-brand__logo">
+                      <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-brand__img"></sc-if>
+                      <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span class="tsl-brand__initial">{{ c.initial }}</span></sc-if>
                     </span>
-                    <span style="flex:1; min-width:0;">
-                      <span style="display:block; font-size:15px; font-weight:800; color:#09090b;">{{ c.name }}</span>
-                      <span style="display:block; font-size:12.5px; color:#71717a; margin-top:2px;">Customizer account found · Sign in</span>
+                    <span class="tsl-brand__body">
+                      <span class="tsl-brand__name">{{ c.name }}</span>
+                      <span class="tsl-brand__sub">Customizer account found · Sign in</span>
                     </span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
                   </button>
                 </sc-if>
                 <!-- no account: request access / different email -->
                 <sc-if value="{{ c.noAccount }}" hint-placeholder-val="{{ false }}">
-                  <div style="padding:14px 16px; background:#fafafa; border:1px dashed #d4d4d8; border-radius:12px;">
-                    <div style="display:flex; align-items:center; gap:14px;">
-                      <span style="width:44px; height:44px; border-radius:10px; background:#fff; border:1px solid #e4e4e7; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
-                        <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:18px; max-width:30px; object-fit:contain;"></sc-if>
-                        <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px; font-weight:800; color:#18181b;">{{ c.initial }}</span></sc-if>
+                  <div class="tsl-auth__noaccount">
+                    <div class="tsl-auth__noaccount-row">
+                      <span class="tsl-brand__logo--outline">
+                        <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-brand__img"></sc-if>
+                        <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span class="tsl-brand__initial">{{ c.initial }}</span></sc-if>
                       </span>
-                      <span style="flex:1; min-width:0;">
-                        <span style="display:block; font-size:15px; font-weight:800; color:#09090b;">{{ c.name }}</span>
-                        <span style="display:block; font-size:12.5px; color:#71717a; margin-top:2px; line-height:1.45;">You don't have an account for this Customizer yet. Accounts are added by Prolook.</span>
+                      <span class="tsl-brand__body">
+                        <span class="tsl-brand__name">{{ c.name }}</span>
+                        <span class="tsl-brand__sub--wrap">You don't have an account for this Customizer yet. Accounts are added by Prolook.</span>
                       </span>
                     </div>
                     <sc-if value="{{ c.pending }}" hint-placeholder-val="{{ false }}">
-                      <span style="display:inline-flex; align-items:center; gap:8px; margin-top:12px; font-size:12.5px; font-weight:700; color:#92670b; background:#fdf1cf; border:1px solid #f0d98a; border-radius:999px; padding:7px 12px;">
+                      <span class="tsl-auth__pending">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
                         Access pending · request sent to Prolook
                       </span>
                     </sc-if>
                     <sc-if value="{{ c.notPending }}" hint-placeholder-val="{{ true }}">
-                      <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
-                        <button onClick="{{ c.onRequest }}" style="background:#09090b; color:#fff; border:0; border-radius:8px; padding:9px 14px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#dc2626;">Request access to this brand</button>
-                        <button onClick="{{ backToEmail }}" style="background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:9px 14px; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="border-color:#09090b;">Sign in with a different email</button>
+                      <div class="tsl-auth__noaccount-actions">
+                        <button onClick="{{ c.onRequest }}" class="tsl-auth__request" style-hover="background:#dc2626;">Request access to this brand</button>
+                        <button onClick="{{ backToEmail }}" class="tsl-auth__different" style-hover="border-color:#09090b;">Sign in with a different email</button>
                       </div>
                     </sc-if>
                   </div>
@@ -650,39 +636,39 @@
               </sc-for>
             </div>
             <sc-if value="{{ noUsableBrand }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex; align-items:center; gap:12px; margin-top:16px;">
-                <span style="flex:1; height:1px; background:#e4e4e7;"></span><span style="font-size:12px; font-weight:600; letter-spacing:.06em; color:#a1a1aa;">OR</span><span style="flex:1; height:1px; background:#e4e4e7;"></span>
+              <div class="tsl-auth__divider--spaced">
+                <span class="tsl-auth__divider-line"></span><span class="tsl-auth__divider-text">OR</span><span class="tsl-auth__divider-line"></span>
               </div>
-              <button onClick="{{ goSignup }}" style="margin-top:16px; width:100%; background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:12px; font-family:inherit; font-size:14.5px; font-weight:600; cursor:pointer;" style-hover="border-color:#09090b;">Sign up with a Team Stores account</button>
+              <button onClick="{{ goSignup }}" class="tsl-auth__outline-btn" style-hover="border-color:#09090b;">Sign up with a Team Stores account</button>
             </sc-if>
           </sc-if>
           <sc-if value="{{ noEntitlements }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#fafafa; border:1px solid #ececee; border-radius:12px; padding:24px 24px;">
-              <p style="margin:0; font-size:14px; line-height:1.6; color:#52525b;">We couldn't find <strong style="color:#09090b; font-weight:700;">{{ emailValue }}</strong> in our dealership records. Check the address, or create a Team Stores account to get started.</p>
-              <button onClick="{{ goSignup }}" style="margin-top:16px; width:100%; background:#09090b; color:#fff; border:0; border-radius:8px; padding:12px; font-family:inherit; font-size:14.5px; font-weight:600; cursor:pointer;" style-hover="background:#dc2626;">Sign up for a Team Stores account</button>
+            <div class="tsl-auth__notfound">
+              <p class="tsl-auth__notfound-text">We couldn't find <strong class="tsl-auth__strong">{{ emailValue }}</strong> in our dealership records. Check the address, or create a Team Stores account to get started.</p>
+              <button onClick="{{ goSignup }}" class="tsl-auth__primary-btn--signup" style-hover="background:#dc2626;">Sign up for a Team Stores account</button>
             </div>
           </sc-if>
-          <button onClick="{{ backToEmail }}" style="margin-top:24px; background:transparent; border:0; color:#71717a; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;" style-hover="color:#09090b;">← Use a different email</button>
+          <button onClick="{{ backToEmail }}" class="tsl-auth__text-btn" style-hover="color:#09090b;">← Use a different email</button>
         </div>
       </sc-if>
 
       <!-- STEP: Customizer password authentication -->
       <sc-if value="{{ stepCreds }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:44px 40px 36px; text-align:center;">
+        <div class="tsl-auth__panel--center">
           <sc-if value="{{ chosenIsImg }}" hint-placeholder-val="{{ true }}">
-            <img src="assets/prolook-mark-black.png" alt="PROLOOK" style="height:36px; width:auto; margin:0 auto 16px; display:block;">
+            <img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-auth__chosen-logo">
           </sc-if>
           <sc-if value="{{ chosenIsWord }}" hint-placeholder-val="{{ false }}">
-            <div style="font-size:22px; font-weight:800; letter-spacing:-.4px; color:#09090b; margin:0 0 16px;">{{ chosenWord }}</div>
+            <div class="tsl-auth__chosen-word">{{ chosenWord }}</div>
           </sc-if>
-          <h3 style="margin:0 0 4px; font-size:19px; font-weight:700; color:#09090b;">Sign in to {{ chosenName }}</h3>
-          <p style="margin:0 0 24px; font-size:13px; color:#a1a1aa;">{{ emailValue }}</p>
-          <div style="text-align:left;">
+          <h3 class="tsl-auth__creds-title">Sign in to {{ chosenName }}</h3>
+          <p class="tsl-auth__creds-email">{{ emailValue }}</p>
+          <div class="tsl-auth__form--plain">
 
-            <label style="position:relative; display:block;">
-              <span style="position:absolute; top:-8px; left:12px; padding:0 4px; background:#fff; font-size:12px; color:#71717a; z-index:1;">Password</span>
-              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="Enter your Customizer password" autoFocus="{{ true }}" style="width:100%; border:1px solid #d4d4d8; border-radius:8px; padding:16px 48px 16px 16px; font-family:inherit; font-size:15px; color:#09090b; outline:none;" style-focus="border-color:#09090b;">
-              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" style="position:absolute; top:50%; right:12px; transform:translateY(-50%); width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:6px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+            <label class="tsl-field">
+              <span class="tsl-field__label">Password</span>
+              <input type="{{ pwInputType }}" value="{{ pwValue }}" onInput="{{ onPwInput }}" placeholder="Enter your Customizer password" autoFocus="{{ true }}" class="tsl-field__input--password" style-focus="border-color:#09090b;">
+              <button onClick="{{ togglePw }}" type="button" aria-label="Toggle password visibility" class="tsl-field__toggle" style-hover="background:#f4f4f5; color:#09090b;">
                 <sc-if value="{{ pwHidden }}" hint-placeholder-val="{{ true }}">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </sc-if>
@@ -692,26 +678,26 @@
               </button>
             </label>
           </div>
-          <div style="display:flex; gap:12px; margin-top:28px;">
-            <button onClick="{{ goChoose }}" style="flex:0 0 auto; background:#fff; color:#09090b; border:1px solid #d4d4d8; border-radius:8px; padding:12px 16px; font-family:inherit; font-size:15px; font-weight:500; cursor:pointer;" style-hover="border-color:#09090b;">Back</button>
-            <button onClick="{{ doSignIn }}" style="flex:1; background:#09090b; color:#fff; border:0; border-radius:8px; padding:12px; font-family:inherit; font-size:15px; font-weight:600; cursor:pointer;" style-hover="background:#dc2626;">Authenticate &amp; Enter</button>
+          <div class="tsl-auth__actions">
+            <button onClick="{{ goChoose }}" class="tsl-auth__back-btn" style-hover="border-color:#09090b;">Back</button>
+            <button onClick="{{ doSignIn }}" class="tsl-auth__submit" style-hover="background:#dc2626;">Authenticate &amp; Enter</button>
           </div>
         </div>
       </sc-if>
 
       <!-- STEP: success -->
       <sc-if value="{{ stepSuccess }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:56px 40px 52px; text-align:center;">
-          <div style="position:relative; width:84px; height:84px; margin:0 auto 28px;">
-            <div style="position:absolute; inset:0; border-radius:50%; background:#16a34a1a;"></div>
-            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; animation:tsCheckPop .4s cubic-bezier(.2,1.2,.4,1) both;">
-              <span style="width:56px; height:56px; border-radius:50%; background:#16a34a; display:flex; align-items:center; justify-content:center;">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:34; animation:tsDraw .5s .18s ease both;"><path d="M4 12l5 5L20 6"></path></svg>
+        <div class="tsl-auth__panel--success">
+          <div class="tsl-auth__success-icon">
+            <div class="tsl-auth__success-halo"></div>
+            <div class="tsl-auth__success-pop">
+              <span class="tsl-auth__success-circle">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="tsl-auth__success-check"><path d="M4 12l5 5L20 6"></path></svg>
               </span>
             </div>
           </div>
-          <h3 style="margin:0 0 8px; font-size:21px; font-weight:700; letter-spacing:-.3px; color:#09090b;">{{ successTitle }}</h3>
-          <p style="margin:0 auto; max-width:300px; font-size:14px; line-height:1.6; color:#52525b;">{{ successCopy }}</p>
+          <h3 class="tsl-auth__success-title">{{ successTitle }}</h3>
+          <p class="tsl-auth__success-text">{{ successCopy }}</p>
         </div>
       </sc-if>
 
@@ -722,102 +708,102 @@
 
 <!-- Auto-sign-in · Welcome & Primary Brand modal -->
 <sc-if value="{{ welcomeOpen }}" hint-placeholder-val="{{ false }}">
-  <div style="position:fixed; inset:0; z-index:120; background:rgba(9,9,11,.55); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:24px; animation:tsOverlayIn .18s ease;">
-    <div style="position:relative; width:620px; max-width:100%; background:#fff; border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.4); animation:tsModalIn .22s cubic-bezier(.2,0,0,1); padding:40px 40px 32px;">
+  <div class="tsl-welcome">
+    <div class="tsl-welcome__dialog">
 
-      <button onClick="{{ welcomeClose }}" aria-label="Close" style="position:absolute; top:16px; right:16px; z-index:2; width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; border-radius:8px; color:#71717a; cursor:pointer;" style-hover="background:#f4f4f5; color:#09090b;">
+      <button onClick="{{ welcomeClose }}" aria-label="Close" class="tsl-welcome__close" style-hover="background:#f4f4f5; color:#09090b;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
       </button>
 
       <sc-if value="{{ welcomeFederated }}" hint-placeholder-val="{{ true }}">
-      <div style="display:flex; justify-content:center; margin-bottom:20px;">
-        <span style="display:inline-flex; align-items:center; gap:8px; background:#e7f5ed; border:1px solid #c7ead4; color:#1f9d55; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:700; letter-spacing:.03em;">
+      <div class="tsl-welcome__badge-row">
+        <span class="tsl-welcome__badge">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12l2.5 2.5L16 9"></path></svg>
           Signed in automatically
         </span>
       </div>
 
-      <h2 style="margin:0 0 12px; font-size:28px; font-weight:800; letter-spacing:-.4px; color:#09090b; text-align:center;">Welcome to Team Stores</h2>
-      <p style="margin:0 auto; max-width:440px; font-size:15px; line-height:1.6; color:#52525b; text-align:center;">We've automatically signed you in using your <strong style="color:#09090b; font-weight:700;">{{ welcomeOriginName }}</strong> Customizer account and set it as your primary brand for this workspace session.</p>
+      <h2 class="tsl-welcome__title">Welcome to Team Stores</h2>
+      <p class="tsl-welcome__lead">We've automatically signed you in using your <strong class="tsl-welcome__strong">{{ welcomeOriginName }}</strong> Customizer account and set it as your primary brand for this workspace session.</p>
       </sc-if>
 
       <!-- Native-path variant: no auto sign-in badge; connect brands found for the email -->
       <sc-if value="{{ welcomeNative }}" hint-placeholder-val="{{ false }}">
-        <h2 style="margin:0 0 12px; font-size:28px; font-weight:800; letter-spacing:-.4px; color:#09090b; text-align:center;">Welcome to Team Stores</h2>
-        <p style="margin:0 auto; max-width:440px; font-size:15px; line-height:1.6; color:#52525b; text-align:center;">Your account is ready. Connect the brand Customizers you're entitled to so you can add their products to your stores.</p>
-        <div style="margin-top:28px;">
-          <div style="font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#71717a; margin-bottom:12px;">Brands found for {{ welcomeEmail }}</div>
-          <div style="display:flex; flex-direction:column; gap:10px;">
+        <h2 class="tsl-welcome__title">Welcome to Team Stores</h2>
+        <p class="tsl-welcome__lead">Your account is ready. Connect the brand Customizers you're entitled to so you can add their products to your stores.</p>
+        <div class="tsl-welcome__block">
+          <div class="tsl-welcome__eyebrow">Brands found for {{ welcomeEmail }}</div>
+          <div class="tsl-welcome__brands">
             <sc-for list="{{ welcomeConnectBrands }}" as="c" hint-placeholder-count="1">
-              <div style="display:flex; align-items:center; gap:14px; padding:14px 16px; background:#fff; border:1px solid #e4e4e7; border-radius:12px;">
-                <span style="width:44px; height:44px; border-radius:10px; background:#f4f4f5; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:18px; max-width:30px; object-fit:contain;"></sc-if>
-                  <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px; font-weight:800; color:#18181b;">{{ c.initial }}</span></sc-if>
+              <div class="tsl-welcome__brand-row">
+                <span class="tsl-welcome__brand-logo">
+                  <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}"><img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-welcome__brand-img"></sc-if>
+                  <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}"><span class="tsl-welcome__brand-initial">{{ c.initial }}</span></sc-if>
                 </span>
-                <span style="flex:1; min-width:0;">
-                  <span style="display:block; font-size:15px; font-weight:800; color:#09090b;">{{ c.name }}</span>
-                  <span style="display:block; font-size:12.5px; color:#71717a; margin-top:2px;">{{ c.sub }}</span>
+                <span class="tsl-welcome__brand-body">
+                  <span class="tsl-welcome__brand-name">{{ c.name }}</span>
+                  <span class="tsl-welcome__brand-sub">{{ c.sub }}</span>
                 </span>
                 <sc-if value="{{ c.connected }}" hint-placeholder-val="{{ false }}">
-                  <span style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:#1f9d55; background:#e7f5ed; border:1px solid #c7ead4; border-radius:999px; padding:7px 12px;">
+                  <span class="tsl-welcome__connected">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg> Connected
                   </span>
                 </sc-if>
                 <sc-if value="{{ c.notConnected }}" hint-placeholder-val="{{ true }}">
-                  <button onClick="{{ c.onConnect }}" style="background:#fff; color:#09090b; border:1px solid #09090b; border-radius:8px; padding:8px 14px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#09090b; color:#fff;">Connect</button>
+                  <button onClick="{{ c.onConnect }}" class="tsl-welcome__connect" style-hover="background:#09090b; color:#fff;">Connect</button>
                 </sc-if>
               </div>
             </sc-for>
           </div>
-          <p style="margin:16px 0 0; font-size:12.5px; line-height:1.5; color:#a1a1aa; text-align:center;">{{ welcomeNativeHint }}</p>
+          <p class="tsl-welcome__hint">{{ welcomeNativeHint }}</p>
         </div>
       </sc-if>
 
       <!-- Scenario 2 · multi-brand selector -->
       <sc-if value="{{ welcomeMulti }}" hint-placeholder-val="{{ true }}">
-        <div style="margin-top:32px;">
-          <div style="font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#71717a; margin-bottom:16px;">Primary Brand Selection</div>
-          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
+        <div class="tsl-welcome__block--spaced">
+          <div class="tsl-welcome__eyebrow--select">Primary Brand Selection</div>
+          <div class="tsl-welcome__grid">
             <sc-for list="{{ welcomeBrands }}" as="c" hint-placeholder-count="8">
-              <button onClick="{{ c.onSelect }}" title="{{ c.name }}" style="position:relative; aspect-ratio:1/1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:12px; background:#f4f4f5; border:2px solid #f4f4f5; border-radius:14px; cursor:pointer;" style-hover="border-color:#d4d4d8; background:#fff;">
+              <button onClick="{{ c.onSelect }}" title="{{ c.name }}" class="tsl-welcome__tile" style-hover="border-color:#d4d4d8; background:#fff;">
                 <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute; inset:0; border:2px solid #09090b; border-radius:14px; background:#fff;"></span>
-                  <span style="position:absolute; top:8px; right:8px; z-index:2; width:20px; height:20px; border-radius:50%; background:#09090b; color:#fff; display:inline-flex; align-items:center; justify-content:center;">
+                  <span class="tsl-welcome__tile-ring"></span>
+                  <span class="tsl-welcome__tile-check">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>
                   </span>
                 </sc-if>
-                <span style="position:relative; z-index:1; height:32px; display:flex; align-items:center;">
+                <span class="tsl-welcome__tile-logo">
                   <sc-if value="{{ c.isImg }}" hint-placeholder-val="{{ true }}">
-                    <img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:24px; max-width:80%; width:auto; object-fit:contain;">
+                    <img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-welcome__tile-img">
                   </sc-if>
                   <sc-if value="{{ c.isWord }}" hint-placeholder-val="{{ false }}">
-                    <span style="font-size:13px; font-weight:800; letter-spacing:-.2px; color:#18181b; line-height:1.05; text-align:center;">{{ c.word }}</span>
+                    <span class="tsl-welcome__tile-word">{{ c.word }}</span>
                   </sc-if>
                 </span>
-                <span style="position:relative; z-index:1; font-size:11.5px; font-weight:600; color:#52525b; text-align:center; line-height:1.2;">{{ c.name }}</span>
+                <span class="tsl-welcome__tile-name">{{ c.name }}</span>
               </button>
             </sc-for>
           </div>
-          <p style="margin:16px 0 0; font-size:12.5px; color:#a1a1aa; text-align:center;">You can change your primary brand anytime from My Account.</p>
+          <p class="tsl-welcome__note">You can change your primary brand anytime from My Account.</p>
         </div>
       </sc-if>
 
       <!-- Scenario 1 · single-brand read-only badge -->
       <sc-if value="{{ welcomeSingle }}" hint-placeholder-val="{{ false }}">
-        <div style="margin-top:28px;">
-          <div style="font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#71717a; margin-bottom:12px; text-align:center;">Your Primary Brand</div>
-          <div style="display:flex; align-items:center; justify-content:center; gap:16px; background:#f7f7f8; border:1px solid #ececf0; border-radius:14px; padding:16px 24px; max-width:360px; margin:0 auto;">
-            <span style="height:32px; display:flex; align-items:center;">
+        <div class="tsl-welcome__block">
+          <div class="tsl-welcome__eyebrow--primary">Your Primary Brand</div>
+          <div class="tsl-welcome__primary">
+            <span class="tsl-welcome__primary-logo">
               <sc-if value="{{ welcomeOriginIsImg }}" hint-placeholder-val="{{ true }}">
-                <img src="assets/prolook-mark-black.png" alt="PROLOOK" style="max-height:24px; width:auto; object-fit:contain;">
+                <img src="assets/prolook-mark-black.png" alt="PROLOOK" class="tsl-welcome__primary-img">
               </sc-if>
               <sc-if value="{{ welcomeOriginIsWord }}" hint-placeholder-val="{{ false }}">
-                <span style="font-size:18px; font-weight:800; letter-spacing:-.3px; color:#0e0e10;">{{ welcomeOriginWord }}</span>
+                <span class="tsl-welcome__primary-word">{{ welcomeOriginWord }}</span>
               </sc-if>
             </span>
-            <span style="width:1px; height:28px; background:#e4e4e7;"></span>
-            <span style="font-size:15.5px; font-weight:800; color:#0e0e10;">{{ welcomeOriginName }}</span>
-            <span style="display:inline-flex; align-items:center; gap:4px; color:#1f9d55; font-size:12.5px; font-weight:700;">
+            <span class="tsl-welcome__primary-divider"></span>
+            <span class="tsl-welcome__primary-name">{{ welcomeOriginName }}</span>
+            <span class="tsl-welcome__primary-check">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12l2.5 2.5L16 9"></path></svg>
               Primary
             </span>
@@ -825,8 +811,8 @@
         </div>
       </sc-if>
 
-      <div style="display:flex; justify-content:flex-end; margin-top:32px;">
-        <button onClick="{{ welcomeConfirm }}" style="border:0; border-radius:9px; padding:16px 32px; background:#09090b; color:#fff; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px;" style-hover="background:#dc2626;">
+      <div class="tsl-welcome__footer">
+        <button onClick="{{ welcomeConfirm }}" class="tsl-welcome__confirm" style-hover="background:#dc2626;">
           {{ welcomeCta }}
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
         </button>
