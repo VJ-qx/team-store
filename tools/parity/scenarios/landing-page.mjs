@@ -48,8 +48,26 @@ export default {
   page: 'Landing Page.dc.html',
   ready: 'text=TEAM STORES',
   viewports: [{ width: 1440, height: 900 }],
+  // Where the flows continue outside this page (listed in the manual check list).
+  related: [
+    {
+      name: 'Workspace after sign-in',
+      where: 'Workspace.dc.html, workspace-app.jsx',
+      how: 'Successful sign-in redirects to "Team Stores Workspace.dc.html", which does not exist in the handover (404). Open Workspace.dc.html?brand=prolook&auth=native directly.',
+    },
+    {
+      name: 'Business verification form (FR-1.10.2)',
+      where: 'AccessApplyForm in workspace-app.jsx',
+      how: 'Reached after "register dealership not found" through the same broken redirect. Open Workspace.dc.html?brand=prolook&auth=native-new&access=none directly.',
+    },
+    {
+      name: 'My Account · brand access card',
+      where: 'AccountProfile in workspace-app.jsx',
+      how: 'In the workspace, open My Account. Not linked from this page; listed because it covers brand authentication.',
+    },
+  ],
   states: [
-    { name: 'page signed out', steps: [{ hover: button('SIGN IN') }, { click: 'summary >> nth=0' }] },
+    { name: 'page signed out', steps: [{ hover: button('SIGN IN') }, { click: 'summary >> nth=0', label: 'Click the first FAQ question to open it' }] },
     { name: 'page signed in', props: { signedIn: true } },
     { name: 'page without dashboard preview', props: { showDashboardPreview: false } },
 

@@ -120,6 +120,13 @@ The stage passes only when a **full run** reports `IDENTICAL` **with no skipped 
 
 ## Stage 7: Commit
 
+Before committing, make sure the scenario's `related` list names every place the page's flows lead outside the page. Check:
+
+- Every navigation in the parity report's notes
+- Every URL parameter the page hands to another page
+
+Add any that are missing, with how to open each one directly. Commit that scenario change in this repository.
+
 Stop the dev server. Commit in the Vue project's repository, on the current branch. Do not push.
 
 ```text
@@ -134,6 +141,16 @@ Prototype bugs kept: <list or none>
 ---
 
 ## Stage 8: Report
+
+First generate the manual check list, so a reviewer can confirm the result by hand:
+
+```bash
+npm run checklist -- tools/parity/scenarios/<scenario>.mjs --mode behavior --b-url <vue-url>
+```
+
+It lists every state the automated check covered, with the settings to apply on the prototype and on Vue (the `__paritySetProps` hook) and the clicks that reach it, plus the related pages outside this page.
+
+Show the state list, and the "Outside this page" list, in the report.
 
 ```text
 Page:
@@ -159,6 +176,16 @@ Prototype bugs kept:
 - [bug]
 
 Report: .parity/<run>/report.md
+
+Manual check: .parity/checklist-<scenario>-behavior.md ([n] states, [n] related pages)
+Open both:    npm run preview -- tools/parity/scenarios/<scenario>.mjs --b <vue-url>
+              (and the Vue dev server)
+
+States to check:
+| # | State | Settings (prototype / Vue) | How to reach it |
+
+Outside this page (the Vue version must send you to the same place):
+- [page or component] — [file] — [how to open it]
 
 Notes:
 [Risks and anything the team should review]
