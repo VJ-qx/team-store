@@ -20,13 +20,11 @@
 // or an http(s) URL used as-is (for example a Vite dev server).
 // Exit code: 0 = identical, 1 = differences found, 2 = the run itself failed.
 
-import { spawnSync } from 'node:child_process';
-import { createServer } from 'node:http';
-import { createReadStream, existsSync, mkdirSync, mkdtempSync, statSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { basename, extname, join, resolve, sep } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { basename, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright-core';
+import { git, openSide, repoRoot } from './lib.mjs';
 
 // ── arguments ──
 const opts = { a: 'main', b: '.', mode: null, only: null, keep: false };
@@ -40,57 +38,6 @@ for (let i = 0; i < argv.length; i++) {
 if (!positional[0] || !['styles', 'behavior'].includes(opts.mode)) {
   console.error('Usage: node tools/parity/parity.mjs <scenario.mjs> --mode styles|behavior [--a <ref|.|url>] [--b <ref|.|url>] [--only <text>] [--keep]');
   process.exit(2);
-}
-
-const repoRoot = spawnSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).stdout.trim() || process.cwd();
-function git(args) {
-  const r = spawnSync('git', args, { cwd: repoRoot, encoding: 'utf8' });
-  if (r.status !== 0) throw new Error(`git ${args.join(' ')} failed: ${r.stderr.trim()}`);
-  return r.stdout.trim();
-}
-
-// ── sides: git ref, working tree, or URL ──
-const TYPES = {
-  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.jsx': 'text/javascript',
-  '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2',
-  '.otf': 'font/otf', '.ttf': 'font/ttf', '.mp4': 'video/mp4',
-};
-function serveDir(root) {
-  return new Promise((done) => {
-    const server = createServer((req, res) => {
-      let path;
-      try { path = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { res.writeHead(400).end(); return; }
-      const file = resolve(root, '.' + path);
-      if (file !== root && !file.startsWith(root + sep)) { res.writeHead(403).end(); return; }
-      if (!existsSync(file) || !statSync(file).isFile()) { res.writeHead(404, { 'content-type': 'text/plain' }).end('Not found'); return; }
-      res.writeHead(200, { 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'cache-control': 'no-store' });
-      createReadStream(file).pipe(res);
-    });
-    server.listen(0, '127.0.0.1', () => done({ port: server.address().port, close: () => new Promise((r) => server.close(r)) }));
-  });
-}
-async function openSide(spec, label) {
-  if (/^https?:\/\//.test(spec)) return { label, spec, desc: spec, url: () => spec, close: async () => {} };
-  let root = repoRoot;
-  let worktree = null;
-  let desc = 'working tree';
-  if (spec !== '.') {
-    const commit = git(['rev-parse', '--short', `${spec}^{commit}`]);
-    worktree = mkdtempSync(join(tmpdir(), 'parity-'));
-    git(['worktree', 'add', '--detach', worktree, spec]);
-    root = worktree;
-    desc = `${spec} (${commit})`;
-  }
-  const server = await serveDir(root);
-  return {
-    label, spec, desc,
-    url: (page) => `http://127.0.0.1:${server.port}/${page.split('/').map(encodeURIComponent).join('/')}`,
-    close: async () => {
-      await server.close();
-      if (worktree && !opts.keep) git(['worktree', 'remove', '--force', worktree]);
-    },
-  };
 }
 
 // ── browser ──
@@ -387,7 +334,7 @@ process.on('SIGINT', async () => { await cleanup(); process.exit(2); });
 
 try {
   git(['worktree', 'prune']);
-  sides = [await openSide(opts.a, 'A'), await openSide(opts.b, 'B')];
+  sides = [await openSide(opts.a, 'A', { keep: opts.keep }), await openSide(opts.b, 'B', { keep: opts.keep })];
   browser = await launch();
   console.log(`Parity (${opts.mode}): ${scenarioName}\n  A: ${sides[0].desc}\n  B: ${sides[1].desc}`);
 

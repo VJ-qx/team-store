@@ -94,6 +94,13 @@ The stage passes only when a **full run** reports `IDENTICAL`.
 
 ## Stage 6: Commit
 
+Before committing, make sure the scenario's `related` list names every place the page's flows lead outside the page. Check:
+
+- Every navigation in the parity report's notes
+- Every URL parameter the page hands to another page, for example `?access=none`
+
+Add any that are missing, with how to open each one directly. Include the scenario change in this commit.
+
 Commit on the current branch. Do not push.
 
 ```text
@@ -111,6 +118,16 @@ Include the SCSS sources, the compiled CSS, and the updated page. The `.parity/`
 
 ## Stage 7: Report
 
+First generate the manual check list, so a reviewer can confirm the result by hand:
+
+```bash
+npm run checklist -- tools/parity/scenarios/<scenario>.mjs --mode styles
+```
+
+It lists every state the automated check covered, with the settings to apply and the clicks that reach it, plus the related pages outside this page. `npm run preview -- tools/parity/scenarios/<scenario>.mjs` opens the original and the new version side by side.
+
+Show the state list, and the "Outside this page" list, in the report.
+
 ```text
 Page:
 Branch:
@@ -127,6 +144,15 @@ Fixed during Stage 5:
 - [difference] — [cause] — [fix]
 
 Report: .parity/<run>/report.md
+
+Manual check: .parity/checklist-<scenario>-styles.md ([n] states, [n] related pages)
+Open both:    npm run preview -- tools/parity/scenarios/<scenario>.mjs
+
+States to check:
+| # | State | Settings | How to reach it |
+
+Outside this page (not changed by this step):
+- [page or component] — [file] — [how to open it]
 
 Notes:
 [Anything the team should review]
