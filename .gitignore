@@ -3,3 +3,4 @@ uploads/**/*.png
 node_modules/
 .parity/
 .vscode/
+dist/

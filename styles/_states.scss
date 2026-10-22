@@ -1,0 +1,142 @@
+@use "variables" as *;
+
+// Hover and focus states. The prototype gets these from the Claude Design runtime (its style-hover /
+// style-focus attributes), which applies every declaration with !important; kept the same here.
+// Imported by styles/vue.scss only. Move it into app.scss when the prototype is retired.
+
+.tsl-header__account:hover {
+  opacity: .6 !important;
+}
+
+.tsl-header__sign-in:hover {
+  opacity: .6 !important;
+}
+
+.tsl-hero__enter:hover {
+  background: $red !important;
+}
+
+.tsl-hero__how:hover {
+  border-color: $ink !important;
+}
+
+.tsl-features__card:hover {
+  border-color: $ink !important;
+}
+
+.tsl-cta__button:hover {
+  background: #b91c1c !important;
+}
+
+.tsl-footer__link:hover {
+  color: #ffffff !important;
+}
+
+.tsl-modal__close:hover {
+  background: $zinc-100 !important;
+  color: $ink !important;
+}
+
+.tsl-field__input:focus {
+  border-color: $ink !important;
+}
+
+.tsl-field__input--password:focus {
+  border-color: $ink !important;
+}
+
+.tsl-field__toggle:hover {
+  background: $zinc-100 !important;
+  color: $ink !important;
+}
+
+.tsl-auth__forgot:hover {
+  color: $ink !important;
+}
+
+.tsl-auth__customizer-btn:hover {
+  border-color: $ink !important;
+  background: $zinc-50 !important;
+}
+
+.tsl-auth__back:hover {
+  background: $zinc-100 !important;
+  color: $ink !important;
+}
+
+.tsl-combo__input:focus {
+  border-color: $ink !important;
+}
+
+.tsl-combo__toggle:hover {
+  background: $zinc-100 !important;
+  color: $ink !important;
+}
+
+.tsl-combo__option:hover {
+  background: $zinc-100 !important;
+}
+
+.tsl-auth__skip:hover {
+  color: $ink !important;
+}
+
+.tsl-auth__primary-btn:hover {
+  background: $red !important;
+}
+
+.tsl-auth__cancel:hover {
+  border-color: $ink !important;
+}
+
+.tsl-brand-row:hover {
+  border-color: $ink !important;
+  background: $zinc-50 !important;
+}
+
+.tsl-auth__request:hover {
+  background: $red !important;
+}
+
+.tsl-auth__different:hover {
+  border-color: $ink !important;
+}
+
+.tsl-auth__outline-btn:hover {
+  border-color: $ink !important;
+}
+
+.tsl-auth__primary-btn--signup:hover {
+  background: $red !important;
+}
+
+.tsl-auth__text-btn:hover {
+  color: $ink !important;
+}
+
+.tsl-auth__back-btn:hover {
+  border-color: $ink !important;
+}
+
+.tsl-auth__submit:hover {
+  background: $red !important;
+}
+
+.tsl-welcome__close:hover {
+  background: $zinc-100 !important;
+  color: $ink !important;
+}
+
+.tsl-welcome__connect:hover {
+  background: $ink !important;
+  color: $white !important;
+}
+
+.tsl-welcome__tile:hover {
+  border-color: $zinc-300 !important;
+  background: $white !important;
+}
+
+.tsl-welcome__confirm:hover {
+  background: $red !important;
+}
