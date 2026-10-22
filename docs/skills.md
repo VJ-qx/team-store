@@ -1,0 +1,45 @@
+# Claude Code skills
+
+Slash commands for Claude Code, stored in `.claude/skills/`. Type them in Claude Code from the project root. For example:
+
+```text
+/extract-styles "Landing Page.dc.html"
+```
+
+**Who starts them:** commands marked *you* only run when you type them, because they change code. Commands marked *Claude* are read-only checks, which Claude can also run on its own when they're relevant.
+
+## One-command steps
+
+Use these for normal work. Each one runs the building-block skills below in order, stops at the first stage that fails, and commits only when the automated check passes. None of them push.
+
+| Command | Starts | What it does |
+|---|---|---|
+| `/extract-styles <page>` | you | Styles step. Checks the comparison is reliable on the untouched page, extracts the inline styles to SCSS, compiles, then compares and fixes until identical. Commits, then writes the manual check list. |
+| `/migrate-to-vue <page>` | you | Vue step. Runs the safety check and a read-only prototype-shell check, converts the page to Vue, starts it, then compares behaviour and fixes until identical. Commits, then writes the manual check list. |
+| `/make-responsive <vue page>` | you | Responsive step, on converted Vue pages only. Plans and builds tablet and mobile layouts below 1024 px, keeps desktop identical, and reports every layout decision for the team to review. |
+
+## Checks
+
+| Command | Starts | What it does |
+|---|---|---|
+| `/compare-styles <page>` | Claude | Runs `npm run parity` in `styles` mode: computed styles, sizes, text and pixels of every element. |
+| `/compare-behavior <page> --b <vue-url>` | Claude | Runs `npm run parity` in `behavior` mode: what a user sees and what the page does. |
+| `/vue-conversion-safety-check <file>` | Claude | Assesses whether a file can be converted to Vue without changing it: SAFE / SAFE WITH CONDITIONS / NOT SAFE. |
+| `/prototype-wrapper-checker-removal [path]` | Claude | Finds prototype-only shell code, such as device frames, preview toolbars and settings panels. Read-only. |
+
+## Building blocks
+
+The one-command steps use these, from the team's original command set. Run them directly only if you need a single step on its own.
+
+| Command | Starts | What it does |
+|---|---|---|
+| `/separate-html-styles <folder>` | you | Moves inline `style=""` and `<style>` blocks in HTML into SCSS. |
+| `/separate-jsx-styles <folder>` | you | Moves React `style={{ … }}` objects into SCSS classes. |
+| `/convert-to-vue <file>` | you | Converts a file to Vue without changing its behaviour. Its React → Vue conventions are in `.claude/skills/convert-to-vue/react-to-vue-conventions.md`. |
+| `/remove-prototype-wrapper [path]` | you | Removes the prototype shell after the check above. `/migrate-to-vue` doesn't use it, because the prototype must stay intact as the reference for comparison. |
+
+## Rules every step follows
+
+- **The original is the source of truth.** If the comparison finds a difference, the new version is fixed. The test flows are never changed to hide it.
+- **The prototype's bugs are kept** in the styles and Vue steps, for example the broken sign-in redirect. They're listed in the reports and fixed separately.
+- **Work happens on a branch.** Every step refuses to run on `main`, or with uncommitted changes.
