@@ -43,6 +43,10 @@ function target(sel) {
   return `\`${sel}\``;
 }
 function describe(step) {
+  if (step.on && behavior) return `${step.on === 'vue' ? 'Vue only' : 'Prototype only'}: ${describeStep(step)}`;
+  return describeStep(step);
+}
+function describeStep(step) {
   if (step.label) return step.label;
   if (step.click) return `Click ${target(step.click)}`;
   if (step.fill) return `Type "${step.fill[1]}" into ${target(step.fill[0])}`;
@@ -96,7 +100,7 @@ states.forEach((state, i) => {
   const steps = state.steps || [];
   if (steps.length) {
     md.push('  - Steps:');
-    steps.forEach((s, n) => md.push(`    ${n + 1}. ${describe(s)}`));
+    steps.filter((s) => behavior || s.on !== 'vue').forEach((s, n) => md.push(`    ${n + 1}. ${describe(s)}`));
   } else {
     md.push('  - Steps: none, check the page as it loads');
   }
