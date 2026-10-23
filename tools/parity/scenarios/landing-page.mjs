@@ -53,12 +53,12 @@ export default {
     {
       name: 'Workspace after sign-in',
       where: 'Workspace.dc.html, workspace-app.jsx',
-      how: 'Successful sign-in redirects to "Team Stores Workspace.dc.html", which does not exist in the handover (404). Open Workspace.dc.html?brand=prolook&auth=native directly.',
+      how: 'Successful sign-in redirects to "Team Stores Workspace.dc.html", which does not exist in the handover (404). Open Workspace.dc.html directly with the same parameters: ?brand=prolook&auth=native (native sign-in, or "Skip for now"), &auth=customizer (Customizer sign-in or the welcome pop-up), &auth=native-connected (after "Connect & Enter Team Stores").',
     },
     {
       name: 'Business verification form (FR-1.10.2)',
       where: 'AccessApplyForm in workspace-app.jsx',
-      how: 'Reached after "register dealership not found" through the same broken redirect. Open Workspace.dc.html?brand=prolook&auth=native-new&access=none directly.',
+      how: 'Reached through the same broken redirect with access=none: after "register dealership not found" (Workspace.dc.html?brand=prolook&auth=native-new&access=none) and after signing in without access (Workspace.dc.html?brand=prolook&auth=native&access=none). Open those URLs directly.',
     },
     {
       name: 'My Account · brand access card',

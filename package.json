@@ -6,10 +6,17 @@
     "parity": "node tools/parity/parity.mjs",
     "styles": "sass styles/app.scss styles/app.css --no-source-map",
     "checklist": "node tools/parity/checklist.mjs",
-    "preview": "node tools/parity/preview.mjs"
+    "preview": "node tools/parity/preview.mjs",
+    "dev": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
     "playwright-core": "^1.64.1",
-    "sass": "^1.106.0"
+    "sass": "^1.106.0",
+    "vite": "^6.4.5"
+  },
+  "dependencies": {
+    "vue": "^3.5.44"
   }
 }

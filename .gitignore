@@ -2,3 +2,5 @@ uploads/**/*.png
 .DS_Store
 node_modules/
 .parity/
+.vscode/
+dist/

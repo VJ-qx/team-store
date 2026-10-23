@@ -1,0 +1,4 @@
+// Entry point for the Vue app (imported by src/main.js): the prototype's styles, plus the hover and
+// focus states the prototype gets from the Claude Design runtime.
+@use "app";
+@use "states";
