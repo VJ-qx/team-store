@@ -10,6 +10,6 @@ export default {
   ...workspace,
   name: 'Marucci workspace (Module 1)',
   page: 'Marucci Workspace.dc.html',
-  related: workspace.related.map((r) => ({ ...r, how: r.how.replace(/Workspace\.dc\.html\?/g, 'Marucci Workspace.dc.html?') })),
+  related: workspace.related.map((r) => ({ ...r, how: r.how.replace(/Workspace\.dc\.html\?/g, 'Marucci Workspace.dc.html?').replace(/workspace\.html\?/g, 'workspace-integrated.html?') })),
   states: buildStates({ account: 'Jack White', welcome: false, customizerOnly: false, archivedStores: 2 }),
 };

@@ -59,6 +59,10 @@ Timers are frozen after the page loads. Only `wait` steps advance them. CSS anim
 
    `config` must be reactive. Without the hook, every state that sets props is **skipped** and listed in the report's notes. Skipped states are not verified; say so in the report.
 
+   Some prototypes keep their settings in an in-page panel instead (the workspace's Tweaks panel). Their scenarios reach those states with steps marked `on: 'prototype'` (the panel) and `on: 'vue'` (a `__paritySetProps` call), and the hook can take extra keys for the panel's shortcuts, for example `{ screen: "gate" }`. See `tools/parity/scenarios/workspace-module-1.mjs`.
+
+   Console messages from the prototype host's in-browser Babel compiler are ignored: they come from the prototype runtime, not the page.
+
 ---
 
 ## Process

@@ -4,6 +4,9 @@
 // The workspace shows random sample data (overview, stores), so both sides get the same random
 // numbers (seedRandom). Some screens are only reachable through the prototype's settings panel,
 // which Claude Design's editor opens with a postMessage; the `eval` step sends the same message.
+// The panel is prototype-only: the Vue version (behavior mode) reaches the same states through its
+// development hook, window.__paritySetProps. Steps marked `on: 'prototype'` / `on: 'vue'` run only
+// on that side; the two sides are compared again once both have reached the state.
 // The same states run on the integrated page in marucci-workspace-module-1.mjs.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
@@ -14,11 +17,21 @@ const ACCESS_NONE = '?brand=prolook&auth=native&access=none'; // a rep without a
 const SIGNED_IN = '?brand=prolook&auth=native-connected'; // signed in, welcome pop-up already seen
 
 const openSettings = {
-  eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`,
+  eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`, on: 'prototype',
   label: 'Open the prototype settings panel: in the browser console, run `window.postMessage({ type: "__activate_edit_mode" }, "*")`',
 };
-const closeSettings = { click: button('Close tweaks'), label: 'Close the settings panel (✕ at its top right)' };
-const fromSettings = (name) => [openSettings, { click: button(name, false), label: `In the settings panel, click "▶ ${name}"` }, closeSettings];
+const closeSettings = { click: button('Close tweaks'), on: 'prototype', label: 'Close the settings panel (✕ at its top right)' };
+// The same setting or shortcut on the Vue version: window.__paritySetProps({ … }).
+const vueSettings = (props) => {
+  const json = JSON.stringify(props).replace(/"/g, "'");
+  return { eval: `window.__paritySetProps(${json})`, on: 'vue', label: `In the browser console, run \`__paritySetProps(${json})\`` };
+};
+// "▶ …" screen shortcuts in the settings panel, and the screen each one opens.
+const SHORTCUT_SCREENS = { 'Gate landing': 'gate', 'Awaiting organization approval': 'access-pending', 'Stripe verification': 'stripe-verify' };
+const fromSettings = (name) => [
+  openSettings, { click: button(name, false), on: 'prototype', label: `In the settings panel, click "▶ ${name}"` }, closeSettings,
+  vueSettings({ screen: SHORTCUT_SCREENS[name] }),
+];
 const multiBrandSwitch = 'xpath=//*[normalize-space(text())="Multi-brand account"]/ancestor::*[.//*[@role="switch"]][1]//*[@role="switch"]';
 const signInMethod = 'xpath=//*[normalize-space(text())="Sign-in method"]/ancestor::*[.//select][1]//select';
 const openMyAccount = (account) => [
@@ -82,8 +95,9 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
     {
       name: 'welcome multi-brand', query: '?brand=prolook', steps: [
         openSettings,
-        { click: multiBrandSwitch, label: 'In the settings panel, turn on "Multi-brand account"' },
+        { click: multiBrandSwitch, on: 'prototype', label: 'In the settings panel, turn on "Multi-brand account"' },
         closeSettings,
+        vueSettings({ ssoMultiBrand: true }),
         { click: button('Continue to Workspace', false) },
       ],
     },
@@ -124,8 +138,9 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
   ...(!customizerOnly ? [] : [{
     name: 'my account customizer only', query: SIGNED_IN, steps: [
       openSettings,
-      { select: [signInMethod, 'customizer'], label: 'In the settings panel, set "Sign-in method" to "Customizer only"' },
+      { select: [signInMethod, 'customizer'], on: 'prototype', label: 'In the settings panel, set "Sign-in method" to "Customizer only"' },
       closeSettings,
+      vueSettings({ authMode: 'customizer' }),
       ...openMyAccount(account),
       { wait: 300, label: 'Move the mouse away and wait for the account menu to close' }, // it would cover "Edit Profile"
       { hover: button('Edit Profile', false) },
@@ -189,12 +204,12 @@ export default {
     {
       name: 'Landing page',
       where: 'Landing Page.dc.html',
-      how: 'Cancel and "Back to PROLOOK" on the access screens redirect to "Team Stores Landing.dc.html", which does not exist in the handover (404; the page is now "Landing Page.dc.html"). Open Landing Page.dc.html directly.',
+      how: 'Cancel and "Back to PROLOOK" on the access screens redirect to "Team Stores Landing.dc.html", which does not exist in the handover (404; the page is now "Landing Page.dc.html"). Open Landing Page.dc.html directly (Vue: http://localhost:5173/).',
     },
     {
       name: 'Workspace overview and other screens',
       where: 'workspace-app.jsx',
-      how: 'Approving access, finishing Stripe verification, and closing the welcome pop-up lead to the overview. Not part of this scope; open Workspace.dc.html?brand=prolook&auth=native-connected.',
+      how: 'Approving access, finishing Stripe verification, and closing the welcome pop-up lead to the overview. In Vue, only the Overview is converted so far (the Stores and Earnings tabs show an empty page). Open Workspace.dc.html?brand=prolook&auth=native-connected (Vue: http://localhost:5173/workspace.html?brand=prolook&auth=native-connected).',
     },
   ],
   states: buildStates(),

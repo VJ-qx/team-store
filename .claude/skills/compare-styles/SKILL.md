@@ -65,7 +65,8 @@ Step types: `click`, `fill: [selector, value]`, `type: [selector, value]`, `sele
 Other options:
 
 - **`query`** on a state: URL parameters added to the page address for that state, for example `'?brand=prolook&access=none'`.
-- **`seedRandom: true`** on the scenario: gives both sides the same `Math.random` sequence, for pages that show random sample data.
+- **`seedRandom: true`** on the scenario: gives both sides the same random numbers, for pages that show random sample data. Each calling function gets its own seeded sequence, so a Vue conversion that keeps the prototype's data functions (and their names) draws the same numbers.
+- **`on: 'prototype'` / `on: 'vue'`** on a step: runs it only on that kind of side, for states the prototype reaches through prototype-only controls (its settings panel) and the Vue version through `window.__paritySetProps`. In styles mode both sides are the prototype: `prototype` steps run on both and `vue` steps are skipped. In behavior mode the two sides are compared again after the last one-sided step in a row.
 
 Two optional fields feed the manual check list (`npm run checklist`):
 
