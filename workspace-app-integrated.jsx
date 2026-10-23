@@ -1900,168 +1900,88 @@ function FeatureGate({ onApply, onBypass, onBack, embedded }) {
   ];
 
   return (
-    <div style={{
-      position: embedded ? "relative" : "fixed", inset: embedded ? "auto" : 0,
-      flex: embedded ? 1 : "none", minWidth: 0,
-      minHeight: embedded ? "calc(100vh - 114px)" : "auto",
-      overflow: "hidden", background: INK, color: "#fff",
-      fontFamily: '"Inter", system-ui, sans-serif',
-      display: "flex", flexDirection: "column",
-    }}>
+    <div className={`wx-gate${embedded ? " wx-gate--embedded" : ""}`}>
       {/* ── Full-bleed hero photo ───────────────────────────────── */}
-      <img src="assets/hero-baseball.jpg" alt="" aria-hidden style={{
-        position: "absolute", inset: 0, width: "100%", height: "100%",
-        objectFit: "cover", objectPosition: "72% 32%",
-      }} />
+      <img src="assets/hero-baseball.jpg" alt="" aria-hidden className="wx-gate__photo" />
 
       {/* dark cinematic wash: deep on the left for text legibility, revealing the team on the right */}
-      <div aria-hidden style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background:
-          "linear-gradient(100deg, rgba(8,8,10,.95) 0%, rgba(8,8,10,.86) 26%, rgba(8,8,10,.5) 48%, rgba(8,8,10,.12) 70%, rgba(8,8,10,.42) 100%)",
-      }} />
+      <div aria-hidden className="wx-gate__wash" />
       {/* bottom + top vignette to anchor pillars and header */}
-      <div aria-hidden style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "linear-gradient(180deg, rgba(8,8,10,.6) 0%, transparent 16%, transparent 60%, rgba(8,8,10,.82) 100%)",
-      }} />
+      <div aria-hidden className="wx-gate__vignette" />
       {/* warm red edge bloom, BRUTL-style, kept subtle */}
-      <div aria-hidden style={{
-        position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "soft-light",
-        background: "radial-gradient(110% 70% at 88% 8%, rgba(225,37,27,.45), transparent 50%)",
-      }} />
+      <div aria-hidden className="wx-gate__bloom" />
 
       {/* ── Olympiq-style crosshair frame ───────────────────────── */}
       <Crosshairs color={RED} />
 
       {/* ── Micro-header (standalone only — hidden when embedded under the prolook.com header) ── */}
       {!embedded && (
-      <header style={{
-        position: "relative", zIndex: 3, flexShrink: 0,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "16px 40px",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <img src="assets/prolook-mark.png" alt="PROLOOK" style={{ height: 32, width: "auto", display: "block" }} />
-          <span style={{ width: 1, height: 28, background: "rgba(255,255,255,.22)" }} />
-          <span style={{
-            fontFamily: '"JetBrains Mono", monospace', fontSize: 11.5, fontWeight: 500,
-            letterSpacing: ".22em", textTransform: "uppercase", color: "rgba(255,255,255,.92)",
-            border: "1px solid rgba(255,255,255,.3)", padding: "4px 12px",
-          }}>Team Stores</span>
+      <header className="wx-gate__header">
+        <div className="wx-gate__brand">
+          <img src="assets/prolook-mark.png" alt="PROLOOK" className="wx-gate__logo" />
+          <span className="wx-gate__divider" />
+          <span className="wx-gate__tag">Team Stores</span>
         </div>
-        <button onClick={onBack} title="Return to prolook.com" style={{
-          display: "inline-flex", alignItems: "center", gap: 8, background: "none",
-          border: "none", color: "rgba(255,255,255,.82)", padding: "8px 2px", cursor: "pointer",
-          fontSize: 13, fontWeight: 600, letterSpacing: ".01em", whiteSpace: "nowrap",
-          borderBottom: "1px solid transparent", transition: "color .14s ease, border-color .14s ease",
-        }}
+        <button onClick={onBack} title="Return to prolook.com" className="wx-gate__back"
           onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderBottomColor = "rgba(255,255,255,.5)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,.82)"; e.currentTarget.style.borderBottomColor = "transparent"; }}>
-          <span style={{ fontSize: 15, lineHeight: 1 }}>&larr;</span> Back to PROLOOK
+          <span className="wx-gate__back-arrow">&larr;</span> Back to PROLOOK
         </button>
       </header>
       )}
 
       {/* ── Hero content (left-anchored) ────────────────────────── */}
-      <div style={{
-        position: "relative", zIndex: 3, flex: 1, minHeight: 0,
-        display: "flex", flexDirection: "column", justifyContent: "center",
-        padding: "clamp(8px, 2vh, 28px) 40px", maxWidth: 980,
-      }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 12, marginBottom: "clamp(12px, 1.8vh, 20px)",
-          fontFamily: '"JetBrains Mono", monospace', fontSize: 11.5, fontWeight: 500,
-          letterSpacing: ".26em", textTransform: "uppercase", color: "rgba(255,255,255,.72)",
-        }}>
-          <span style={{ width: 32, height: 2, background: RED, display: "inline-block" }} />
+      <div className="wx-gate__hero">
+        <div className="wx-gate__eyebrow">
+          <span className="wx-gate__eyebrow-rule" />
           Team Apparel Logistics
         </div>
 
-        <h1 style={{
-          margin: 0, fontFamily: '"Archivo", sans-serif', fontWeight: 900,
-          fontSize: "clamp(34px, 5.4vh, 70px)", lineHeight: 0.94, letterSpacing: "-0.02em",
-          textTransform: "uppercase", textShadow: "0 2px 30px rgba(0,0,0,.5)", maxWidth: "16ch",
-        }}>
+        <h1 className="wx-gate__title">
           Take Control of Your Team's{" "}
-          <span style={{ color: RED }}>Apparel Logistics</span>
+          <span className="wx-gate__accent">Apparel Logistics</span>
         </h1>
 
-        <p style={{
-          margin: "clamp(12px, 2vh, 24px) 0 0", maxWidth: 560, color: "rgba(255,255,255,.82)",
-          fontSize: "clamp(13px, 1.7vh, 17px)", lineHeight: 1.5, textWrap: "pretty",
-          textShadow: "0 1px 12px rgba(0,0,0,.5)",
-        }}>
+        <p className="wx-gate__lead">
           Launch custom online shops for leagues, schools, and clubs. Handle roster tracking,
           required player gear runs, and custom profit margins in one centralized spot.
         </p>
 
         {/* compliance line */}
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 12, marginTop: "clamp(16px, 2.4vh, 28px)",
-          alignSelf: "flex-start", maxWidth: 600,
-          background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.14)",
-          backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
-          padding: "8px 16px",
-        }}>
+        <div className="wx-gate__notice">
           <IconLock size={16} style={{ color: RED, flexShrink: 0 }} />
-          <span style={{ fontSize: 12.5, lineHeight: 1.45, color: "rgba(255,255,255,.78)" }}>
-            <strong style={{ color: "#fff", fontWeight: 700 }}>Verification required.</strong>{" "}
+          <span className="wx-gate__notice-text">
+            <strong className="wx-gate__notice-strong">Verification required.</strong>{" "}
             Business entity, EIN, and banking details are reviewed by a PROLOOK
-            admin &mdash; typical turnaround <strong style={{ color: "#fff", fontWeight: 700 }}>24&ndash;48 hours</strong>.
+            admin &mdash; typical turnaround <strong className="wx-gate__notice-strong">24&ndash;48 hours</strong>.
           </span>
         </div>
 
         {/* CTA */}
-        <div style={{ display: "flex", alignItems: "center", gap: 24, marginTop: "clamp(16px, 2.6vh, 32px)" }}>
-          <button onClick={onApply} style={{
-            display: "inline-flex", alignItems: "center", gap: 12, background: RED, color: "#fff",
-            border: "none", padding: "16px 28px", fontSize: 14, fontWeight: 800,
-            letterSpacing: ".02em", cursor: "pointer", whiteSpace: "nowrap",
-            boxShadow: "0 14px 40px rgba(225,37,27,.4)", transition: "transform .14s ease, box-shadow .14s ease, background .14s ease",
-          }}
+        <div className="wx-gate__actions">
+          <button onClick={onApply} className="wx-gate__apply"
             onMouseEnter={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = INK; e.currentTarget.style.transform = "translateY(-2px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = RED; e.currentTarget.style.color = "#fff"; e.currentTarget.style.transform = "none"; }}>
             <IconLock size={17} />
             Apply for Access
             <IconArrowRight size={17} />
           </button>
-          <button onClick={onBypass} style={{
-            background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,.82)",
-            fontSize: 12.5, fontWeight: 600, letterSpacing: ".04em", padding: "4px 0", whiteSpace: "nowrap",
-            borderBottom: "1px solid transparent", textShadow: "0 1px 10px rgba(0,0,0,.85)",
-            display: "inline-flex", alignItems: "center", gap: 8,
-          }}
+          <button onClick={onBypass} className="wx-gate__enter"
             onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderBottomColor = "rgba(255,255,255,.6)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,.7)"; e.currentTarget.style.borderBottomColor = "transparent"; }}>
-            Already verified? Enter <span style={{ fontSize: 14, lineHeight: 1 }}>&rarr;</span>
+            Already verified? Enter <span className="wx-gate__enter-arrow">&rarr;</span>
           </button>
         </div>
       </div>
 
       {/* ── Pillar grid (bottom third) ──────────────────────────── */}
-      <div style={{
-        position: "relative", zIndex: 3, flexShrink: 0,
-        display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-        borderTop: "1px solid rgba(255,255,255,.14)",
-      }}>
+      <div className="wx-gate__pillars">
         {pillars.map((p, i) => (
-          <div key={p.title} style={{
-            display: "flex", alignItems: "flex-start", gap: 16,
-            padding: "clamp(12px, 2.2vh, 24px) clamp(20px, 2vw, 40px)",
-            borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,.14)",
-            background: "rgba(10,10,12,.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-          }}>
-            <span style={{
-              flexShrink: 0, width: 44, height: 44, border: "1px solid rgba(255,255,255,.22)",
-              display: "inline-flex", alignItems: "center", justifyContent: "center", color: RED,
-            }}>{p.icon}</span>
+          <div key={p.title} className={`wx-gate__pillar${i === 0 ? " wx-gate__pillar--first" : ""}`}>
+            <span className="wx-gate__pillar-icon">{p.icon}</span>
             <div>
-              <div style={{
-                fontSize: 13, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em",
-                marginBottom: 8, lineHeight: 1.2, color: "#fff",
-              }}>{p.title}</div>
-              <div style={{ fontSize: 12, lineHeight: 1.5, color: "rgba(255,255,255,.62)", textWrap: "pretty" }}>{p.body}</div>
+              <div className="wx-gate__pillar-title">{p.title}</div>
+              <div className="wx-gate__pillar-body">{p.body}</div>
             </div>
           </div>
         ))}
@@ -2073,18 +1993,18 @@ function FeatureGate({ onApply, onBypass, onBack, embedded }) {
 // Olympiq-style thin grid + neon corner crosshairs framing the canvas.
 function Crosshairs({ color }) {
   const tick = (style) => (
-    <span style={{ position: "absolute", background: color, ...style }} />
+    <span className="wx-crosshairs__tick" style={{ background: color, ...style }} />
   );
   const corner = (pos) => (
-    <div style={{ position: "absolute", width: 16, height: 16, ...pos }}>
-      <span style={{ position: "absolute", left: 8, top: 0, width: 2, height: 16, background: color }} />
-      <span style={{ position: "absolute", top: 8, left: 0, height: 2, width: 16, background: color }} />
+    <div className="wx-crosshairs__corner" style={{ ...pos }}>
+      <span className="wx-crosshairs__corner-v" style={{ background: color }} />
+      <span className="wx-crosshairs__corner-h" style={{ background: color }} />
     </div>
   );
   return (
-    <div aria-hidden style={{ position: "absolute", inset: 28, pointerEvents: "none", zIndex: 2 }}>
+    <div aria-hidden className="wx-crosshairs">
       {/* faint frame border */}
-      <div style={{ position: "absolute", inset: 0, border: "1px solid rgba(255,255,255,.08)" }} />
+      <div className="wx-crosshairs__frame" />
       {corner({ left: -8, top: -8 })}
       {corner({ right: -8, top: -8 })}
       {corner({ left: -8, bottom: -8 })}
@@ -2118,11 +2038,6 @@ function AccessApplyForm({ onSubmit, onCancel }) {
     if (Object.keys(errs).length === 0) onSubmit(vals);
   };
 
-  const baseField = {
-    width: "100%", padding: "12px 16px", fontSize: 14, color: INK,
-    background: "#fff", border: "1px solid #d9d9de", borderRadius: 6,
-    outline: "none", transition: "border-color .14s ease, box-shadow .14s ease",
-  };
   const field = (key, placeholder, opts = {}) => {
     const invalid = errors[key];
     return (
@@ -2130,103 +2045,71 @@ function AccessApplyForm({ onSubmit, onCancel }) {
         value={vals[key]}
         onChange={set(key)}
         placeholder={placeholder}
-        style={{
-          ...baseField,
-          ...(opts.mono ? { fontFamily: '"JetBrains Mono", monospace', letterSpacing: ".02em" } : null),
-          borderColor: invalid ? RED : "#d9d9de",
-          boxShadow: invalid ? "0 0 0 3px rgba(225,37,27,.12)" : "none",
-        }}
+        className={`wx-access-form__input${opts.mono ? " wx-access-form__input--mono" : ""}`} style={{ borderColor: invalid ? RED : "#d9d9de", boxShadow: invalid ? "0 0 0 3px rgba(225,37,27,.12)" : "none" }}
         onFocus={(e) => { if (!invalid) { e.target.style.borderColor = RED; e.target.style.boxShadow = "0 0 0 3px rgba(225,37,27,.12)"; } }}
         onBlur={(e) => { if (!invalid) { e.target.style.borderColor = "#d9d9de"; e.target.style.boxShadow = "none"; } }}
       />
     );
   };
   const sectionLabel = (txt) => (
-    <div style={{
-      fontFamily: '"JetBrains Mono", monospace', fontSize: 11.5, fontWeight: 500,
-      letterSpacing: ".2em", textTransform: "uppercase", color: "#9a9aa1", marginBottom: 16,
-    }}>{txt}</div>
+    <div className="wx-access-form__section-label">{txt}</div>
   );
 
   return (
-    <div style={{
-      position: "fixed", inset: 0, overflowY: "auto", background: "#f3f3f5",
-      fontFamily: '"Inter", system-ui, sans-serif', color: INK,
-    }}>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "64px 32px 80px" }}>
+    <div className="wx-access-form">
+      <div className="wx-access-form__inner">
         {/* header */}
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
+        <div className="wx-access-form__brand">
           <BrandMark variant="black" height={26} />
-          <span style={{ width: 1, height: 24, background: "#d4d4d8" }} />
-          <span style={{
-            fontFamily: '"JetBrains Mono", monospace', fontSize: 11.5, fontWeight: 500,
-            letterSpacing: ".22em", textTransform: "uppercase", color: "#6b6b72",
-          }}>Business Verification</span>
+          <span className="wx-access-form__divider" />
+          <span className="wx-access-form__tag">Business Verification</span>
         </div>
 
-        <h1 style={{
-          margin: "0 0 16px", fontFamily: '"Archivo", sans-serif', fontWeight: 900,
-          fontSize: "clamp(30px, 4vw, 46px)", lineHeight: 1.02, letterSpacing: "-0.02em",
-          textTransform: "uppercase",
-        }}>Register Your Organization</h1>
-        <p style={{ margin: "0 0 36px", maxWidth: 640, color: "#6b6b72", fontSize: 15.5, lineHeight: 1.5 }}>
+        <h1 className="wx-access-form__title">Register Your Organization</h1>
+        <p className="wx-access-form__lead">
           We couldn&apos;t match your email to an existing dealership. Provide your organization&apos;s
           business-entity details &mdash; collected securely through
-          <strong style={{ color: INK, fontWeight: 700 }}> Stripe</strong>. Team Stores access opens once your
+          <strong className="wx-access-form__strong"> Stripe</strong>. Team Stores access opens once your
           organization is approved.
         </p>
 
         {/* card */}
-        <div style={{
-          background: "#fff", border: "1px solid #e5e5e9", borderRadius: 10,
-          boxShadow: "0 1px 2px rgba(20,20,30,.04)", padding: "36px 40px 40px",
-        }}>
+        <div className="wx-access-form__card">
           {sectionLabel("Business Identity")}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="wx-access-form__fields">
             {field("legalName", "Legal business name")}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div className="wx-access-form__row">
               {field("dba", "DBA / trade name (optional)")}
               {field("entityType", "Entity type (LLC, S-Corp…)")}
             </div>
             {field("address", "Registered business address")}
           </div>
 
-          <div style={{ height: 1, background: "#ececf0", margin: "32px 0 28px" }} />
+          <div className="wx-access-form__rule" />
 
           {sectionLabel("Tax & Banking")}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="wx-access-form__fields">
+            <div className="wx-access-form__row">
               {field("ein", "EIN (XX-XXXXXXX)", { mono: true })}
               {field("routing", "Bank routing number", { mono: true })}
             </div>
             {field("account", "Bank account number", { mono: true })}
           </div>
 
-          <div style={{
-            display: "flex", alignItems: "center", gap: 12, marginTop: 24,
-            background: "#f7f7f8", border: "1px solid #ececf0", borderRadius: 6, padding: "12px 16px",
-          }}>
+          <div className="wx-access-form__secure">
             <IconLock size={16} style={{ color: "#1f9d55", flexShrink: 0 }} />
-            <span style={{ fontSize: 13, color: "#6b6b72", lineHeight: 1.4 }}>
+            <span className="wx-access-form__secure-text">
               Banking &amp; EIN details are encrypted and used only for payout verification.
             </span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 32 }}>
-            <button onClick={onCancel} style={{
-              background: "#fff", border: "1px solid #d4d4d8", color: INK,
-              padding: "12px 28px", fontSize: 14, fontWeight: 700, borderRadius: 6, cursor: "pointer",
-              transition: "background .14s ease, border-color .14s ease",
-            }}
+          <div className="wx-access-form__actions">
+            <button onClick={onCancel} className="wx-access-form__cancel"
               onMouseEnter={(e) => { e.currentTarget.style.background = "#f7f7f8"; e.currentTarget.style.borderColor = "#b8b8be"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.borderColor = "#d4d4d8"; }}>
               Cancel
             </button>
-            <button onClick={submit} style={{
-              display: "inline-flex", alignItems: "center", gap: 12, background: INK, color: "#fff",
-              border: "none", padding: "12px 28px", fontSize: 14, fontWeight: 700, borderRadius: 6,
-              cursor: "pointer", transition: "background .14s ease",
-            }}
+            <button onClick={submit} className="wx-access-form__submit"
               onMouseEnter={(e) => { e.currentTarget.style.background = "#000"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = INK; }}>
               Submit &amp; Verify
@@ -2246,66 +2129,34 @@ function AccessApplyForm({ onSubmit, onCancel }) {
 function AccessPending({ onApprove, onBack, email }) {
   const RED = "#e1251b";
   return (
-    <div style={{
-      position: "fixed", inset: 0, overflowY: "auto", background: "#0c0c0e", color: "#fff",
-      fontFamily: '"Inter", system-ui, sans-serif',
-      display: "flex", alignItems: "center", justifyContent: "center", padding: 40,
-    }}>
-      <div style={{ textAlign: "center", maxWidth: 620 }}>
+    <div className="wx-access-pending">
+      <div className="wx-access-pending__content">
         {/* spinner + clock */}
-        <div style={{ position: "relative", width: 88, height: 88, margin: "0 auto 40px" }}>
-          <div style={{
-            position: "absolute", inset: 0, borderRadius: "50%",
-            border: "2px solid rgba(255,255,255,.10)",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0, borderRadius: "50%",
-            border: "2px solid transparent", borderTopColor: RED, borderRightColor: RED,
-            animation: "accSpin 1.1s linear infinite",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
-            color: RED,
-          }}>
+        <div className="wx-access-pending__status">
+          <div className="wx-access-pending__track" />
+          <div className="wx-access-pending__spinner" />
+          <div className="wx-access-pending__icon">
             <IconClock size={26} />
           </div>
         </div>
 
-        <div style={{
-          fontFamily: '"JetBrains Mono", monospace', fontSize: 12, fontWeight: 500,
-          letterSpacing: ".26em", textTransform: "uppercase", color: "rgba(255,255,255,.5)", marginBottom: 20,
-        }}>Registration Received</div>
+        <div className="wx-access-pending__eyebrow">Registration Received</div>
 
-        <h1 style={{
-          margin: "0 0 24px", fontFamily: '"Archivo", sans-serif', fontWeight: 900,
-          fontSize: "clamp(36px, 5vw, 58px)", lineHeight: 0.98, letterSpacing: "-0.01em",
-          textTransform: "uppercase",
-        }}>Your Organization Is<br />Awaiting Approval</h1>
+        <h1 className="wx-access-pending__title">Your Organization Is<br />Awaiting Approval</h1>
 
-        <p style={{
-          margin: "0 auto 36px", maxWidth: 520, color: "rgba(255,255,255,.62)",
-          fontSize: 16, lineHeight: 1.55, textWrap: "pretty",
-        }}>
+        <p className="wx-access-pending__lead">
           Thanks for registering. We&apos;re reviewing your organization&apos;s business entity, EIN, and banking
-          details &mdash; this typically takes <strong style={{ color: "#fff", fontWeight: 700 }}>24&ndash;48 hours</strong>.
-          You&apos;ll land here each time you sign in until it&apos;s approved, and we&apos;ll email <strong style={{ color: "#fff", fontWeight: 700 }}>{email || "jane@marucci.com"}</strong> the moment a decision is made.
+          details &mdash; this typically takes <strong className="wx-access-pending__strong">24&ndash;48 hours</strong>.
+          You&apos;ll land here each time you sign in until it&apos;s approved, and we&apos;ll email <strong className="wx-access-pending__strong">{email || "jane@marucci.com"}</strong> the moment a decision is made.
         </p>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-          <button onClick={onBack} style={{
-            background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.22)", color: "#fff",
-            padding: "12px 28px", fontSize: 14, fontWeight: 700, borderRadius: 6, cursor: "pointer",
-            transition: "background .14s ease, border-color .14s ease",
-          }}
+        <div className="wx-access-pending__actions">
+          <button onClick={onBack} className="wx-access-pending__back"
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,.4)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,.04)"; e.currentTarget.style.borderColor = "rgba(255,255,255,.22)"; }}>
             Back to PROLOOK
           </button>
-          <button onClick={onApprove} style={{
-            display: "inline-flex", alignItems: "center", gap: 12, background: RED, color: "#fff",
-            border: "none", padding: "12px 28px", fontSize: 14, fontWeight: 700, borderRadius: 6,
-            cursor: "pointer", transition: "transform .14s ease, background .14s ease",
-          }}
+          <button onClick={onApprove} className="wx-access-pending__continue"
             onMouseEnter={(e) => { e.currentTarget.style.background = "#c41d14"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = RED; e.currentTarget.style.transform = "none"; }}>
             Continue to Overview
@@ -2313,10 +2164,7 @@ function AccessPending({ onApprove, onBack, email }) {
           </button>
         </div>
 
-        <div style={{
-          fontFamily: '"JetBrains Mono", monospace', fontSize: 11, letterSpacing: ".14em",
-          textTransform: "uppercase", color: "rgba(255,255,255,.32)", marginTop: 32,
-        }}>Prototype only &mdash; this button will not exist in production</div>
+        <div className="wx-access-pending__note">Prototype only &mdash; this button will not exist in production</div>
       </div>
       <style>{`@keyframes accSpin { to { transform: rotate(360deg) } }`}</style>
     </div>
@@ -2328,7 +2176,6 @@ function AccessPending({ onApprove, onBack, email }) {
 // instantly via Stripe; this brief step animates the check, then hands straight
 // off to the dashboard. No 24–48 hr wait. */
 function StripeVerifying({ onDone }) {
-  const STRIPE = "#635bff";
   const [done, setDone] = React.useState(false);
   React.useEffect(() => {
     const t1 = setTimeout(() => setDone(true), 1500);
@@ -2336,43 +2183,32 @@ function StripeVerifying({ onDone }) {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
   return (
-    <div style={{
-      position: "fixed", inset: 0, overflowY: "auto", background: "#0c0c0e", color: "#fff",
-      fontFamily: '"Inter", system-ui, sans-serif',
-      display: "flex", alignItems: "center", justifyContent: "center", padding: 40,
-    }}>
-      <div style={{ textAlign: "center", maxWidth: 560 }}>
-        <div style={{ position: "relative", width: 88, height: 88, margin: "0 auto 40px" }}>
+    <div className="wx-stripe-verify">
+      <div className="wx-stripe-verify__content">
+        <div className="wx-stripe-verify__status">
           {!done && (
             <React.Fragment>
-              <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "2px solid rgba(255,255,255,.10)" }} />
-              <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "2px solid transparent", borderTopColor: STRIPE, borderRightColor: STRIPE, animation: "accSpin 0.9s linear infinite" }} />
+              <div className="wx-stripe-verify__track" />
+              <div className="wx-stripe-verify__spinner" />
             </React.Fragment>
           )}
           {done && (
-            <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#1f9d55", display: "flex", alignItems: "center", justifyContent: "center", animation: "accPop .35s cubic-bezier(.2,1.2,.4,1) both" }}>
+            <span className="wx-stripe-verify__done">
               <IconCheck size={38} style={{ strokeWidth: 3 }} />
             </span>
           )}
           {!done && (
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: STRIPE }}>
+            <div className="wx-stripe-verify__icon">
               <IconLock size={26} />
             </div>
           )}
         </div>
 
-        <div style={{
-          fontFamily: '"JetBrains Mono", monospace', fontSize: 12, fontWeight: 500,
-          letterSpacing: ".26em", textTransform: "uppercase", color: "rgba(255,255,255,.5)", marginBottom: 20,
-        }}>{done ? "Verified" : "Verifying with Stripe"}</div>
+        <div className="wx-stripe-verify__eyebrow">{done ? "Verified" : "Verifying with Stripe"}</div>
 
-        <h1 style={{
-          margin: "0 0 24px", fontFamily: '"Archivo", sans-serif', fontWeight: 900,
-          fontSize: "clamp(32px, 4.5vw, 52px)", lineHeight: 0.98, letterSpacing: "-0.01em",
-          textTransform: "uppercase",
-        }}>{done ? "You're All Set" : "Verifying Your Business"}</h1>
+        <h1 className="wx-stripe-verify__title">{done ? "You're All Set" : "Verifying Your Business"}</h1>
 
-        <p style={{ margin: "0 auto", maxWidth: 460, color: "rgba(255,255,255,.62)", fontSize: 16, lineHeight: 1.55, textWrap: "pretty" }}>
+        <p className="wx-stripe-verify__lead">
           {done
             ? "Your business is verified. Opening your Team Stores dashboard\u2026"
             : "We\u2019re confirming your business entity and banking details through Stripe. This only takes a moment \u2014 no manual review, no waiting."}
@@ -27179,22 +27015,18 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
   };
 
   return (
-    <div style={{ flex: 1, padding: "32px 40px 120px", background: "#fafafb" }}>
-      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+    <div className="wx-account">
+      <div className="wx-account__inner">
         {/* Page header */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+        <div className="wx-account__header">
           <div>
-            <h1 style={{ fontSize: 32, fontWeight: 800, margin: 0, color: "#0e0e10", letterSpacing: "-.01em" }}>My Account</h1>
-            <p style={{ fontSize: 15, color: "#6b6b72", margin: "8px 0 0", maxWidth: 620, lineHeight: 1.5 }}>
+            <h1 className="wx-account__title">My Account</h1>
+            <p className="wx-account__lead">
               {isCustomizerOnly ? "Your profile is synced from the Product Customizer account you signed in with. Review your details below." : "Your Team Stores account. Manage your details, sign-in methods and brand connections here."}
             </p>
           </div>
           {isCustomizerOnly && (
-          <button onClick={onEditProfile} style={{
-            border: "1px solid #d4d4d8", background: "#fff", color: "#0e0e10", borderRadius: 9,
-            padding: "12px 20px", cursor: "pointer", fontSize: 14, fontWeight: 700,
-            display: "inline-flex", alignItems: "center", gap: 8, flexShrink: 0,
-          }}
+          <button onClick={onEditProfile} className="wx-account__edit-profile"
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0e0e10"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4d4d8"; }}>
             <IconEdit size={16} /> Edit Profile <IconExternal size={15} style={{ color: "#9a9aa1" }} />
@@ -27203,48 +27035,44 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
         </div>
 
         {/* Identity strip */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "28px 0 28px" }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: "50%", background: "#0e0e10", color: "#fff",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            fontSize: 22, fontWeight: 800, fontFamily: "Archivo, sans-serif", flexShrink: 0,
-          }}>{(info.firstName[0] || "") + (info.lastName[0] || "")}</div>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 19, fontWeight: 800, color: "#0e0e10" }}>{info.firstName} {info.lastName}</div>
-            <div style={{ fontSize: 14, color: "#6b6b72", marginTop: 2, display: "inline-flex", alignItems: "center", gap: 8 }}>
+        <div className="wx-account__identity">
+          <div className="wx-account__avatar">{(info.firstName[0] || "") + (info.lastName[0] || "")}</div>
+          <div className="wx-account__identity-text">
+            <div className="wx-account__name">{info.firstName} {info.lastName}</div>
+            <div className="wx-account__email">
               <IconMail size={15} /> {info.email}
             </div>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div className="wx-account__cards">
           {/* ─── Card A — Personal Info & Sign-in (source depends on sign-in method) ─── */}
           <SettingsCard style={{ padding: "32px 36px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 4, flexWrap: "wrap" }}>
-              <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: "#0e0e10" }}>Personal Info</h2>
+            <div className="wx-account__info-header">
+              <h2 className="wx-account__card-title">Personal Info</h2>
               {isCustomizerOnly ? (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#6b6b72", background: "#f1f1f3", border: "1px solid #e5e5e9", borderRadius: 999, padding: "4px 12px" }}>
+                <span className="wx-account__read-only">
                   <IconLock size={13} /> Read-only
                 </span>
               ) : editingInfo ? (
-                <div style={{ display: "flex", gap: 8 }}>
-                  <button onClick={() => { setDraft(info); setEditingInfo(false); }} style={{ border: "1px solid #d4d4d8", background: "#fff", color: "#0e0e10", borderRadius: 8, padding: "8px 14px", cursor: "pointer", fontSize: 13.5, fontWeight: 700 }}>Cancel</button>
-                  <button onClick={saveInfo} style={{ border: 0, background: "#0e0e10", color: "#fff", borderRadius: 8, padding: "8px 14px", cursor: "pointer", fontSize: 13.5, fontWeight: 700 }}>Save changes</button>
+                <div className="wx-account__edit-actions">
+                  <button onClick={() => { setDraft(info); setEditingInfo(false); }} className="wx-account__cancel">Cancel</button>
+                  <button onClick={saveInfo} className="wx-account__save">Save changes</button>
                 </div>
               ) : (
-                <button onClick={() => { setDraft(info); setEditingInfo(true); }} style={{ border: "1px solid #d4d4d8", background: "#fff", color: "#0e0e10", borderRadius: 8, padding: "8px 14px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 8 }}
+                <button onClick={() => { setDraft(info); setEditingInfo(true); }} className="wx-account__edit"
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0e0e10"; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4d4d8"; }}>
                   <IconEdit size={15} /> Edit
                 </button>
               )}
             </div>
-            <p style={{ fontSize: 14, color: "#6b6b72", margin: "8px 0 28px" }}>
+            <p className="wx-account__info-lead">
               {isCustomizerOnly
-                ? <React.Fragment>Pulled directly from your primary brand, <strong style={{ color: "#09090b", fontWeight: 700 }}>{primaryBrand.name}</strong>. To edit these details, update them in your {primaryBrand.name} Customizer account or change your primary brand below.</React.Fragment>
-                : <React.Fragment>Stored on your <strong style={{ color: "#09090b", fontWeight: 700 }}>Team Stores account</strong> and editable here. Your dealership and brand entitlements still come from your dealership records.</React.Fragment>}
+                ? <React.Fragment>Pulled directly from your primary brand, <strong className="wx-account__strong">{primaryBrand.name}</strong>. To edit these details, update them in your {primaryBrand.name} Customizer account or change your primary brand below.</React.Fragment>
+                : <React.Fragment>Stored on your <strong className="wx-account__strong">Team Stores account</strong> and editable here. Your dealership and brand entitlements still come from your dealership records.</React.Fragment>}
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px 36px" }}>
+            <div className="wx-account__fields">
               <ProfileReadField label="First Name" value={shown.firstName} required editable={editingInfo} onChange={setD("firstName")} />
               <ProfileReadField label="Last Name" value={shown.lastName} required editable={editingInfo} onChange={setD("lastName")} />
               <ProfileReadField label="Email Address" value={shown.email} required />
@@ -27252,13 +27080,13 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
                 <ProfileReadField label="Phone Number" value={shown.phone} required editable onChange={setD("phone")} />
               ) : (
                 <ProfileReadField label="Phone Number" required>
-                  <div style={{ display: "flex", background: "#f5f5f7", border: "1px solid #ececf0", borderRadius: 8, overflow: "hidden", minHeight: 48, cursor: isCustomizerOnly ? "not-allowed" : "default" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 16px", borderRight: "1px solid #e5e5e9" }}>
-                      <span style={{ fontSize: 18, lineHeight: 1 }}>{profile.countryFlag}</span>
-                      <span style={{ fontSize: 15, color: "#52525b" }}>{profile.countryCode}</span>
+                  <div className={`wx-account__phone${isCustomizerOnly ? " wx-account__phone--locked" : ""}`}>
+                    <div className="wx-account__phone-country">
+                      <span className="wx-account__phone-flag">{profile.countryFlag}</span>
+                      <span className="wx-account__phone-code">{profile.countryCode}</span>
                       <IconChevron size={16} style={{ color: "#a1a1aa" }} />
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", padding: "0 16px", fontSize: 15, color: "#52525b" }}>{shown.phone}</div>
+                    <div className="wx-account__phone-number">{shown.phone}</div>
                   </div>
                 </ProfileReadField>
               )}
@@ -27269,43 +27097,43 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
             </div>
 
             {/* Sign-in methods & security — both methods resolve to this one Team Stores user record */}
-            <div style={{ marginTop: 32, paddingTop: 24, borderTop: "1px solid #ececf0" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#6b6b72", marginBottom: 12 }}>Sign-in &amp; Security</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div className="wx-account__security">
+              <div className="wx-account__security-label">Sign-in &amp; Security</div>
+              <div className="wx-account__methods">
                 {/* Team Stores account */}
-                <div style={{ display: "flex", alignItems: "center", gap: 14, border: "1px solid #ececf0", borderRadius: 12, padding: "14px 18px", background: "#fff", flexWrap: "wrap" }}>
-                  <span style={{ width: 44, height: 44, borderRadius: 10, background: "#0e0e10", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, letterSpacing: ".04em", fontFamily: "Archivo, sans-serif", flexShrink: 0 }}>TS</span>
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10" }}>Team Stores account</div>
-                    <div style={{ fontSize: 13, color: "#6b6b72", marginTop: 2 }}>{nativeSetUp ? <React.Fragment>{info.email} · Email &amp; password</React.Fragment> : "Not set up — add a password to sign in without a Customizer"}</div>
+                <div className="wx-account__method">
+                  <span className="wx-account__method-badge">TS</span>
+                  <div className="wx-account__method-text">
+                    <div className="wx-account__method-name">Team Stores account</div>
+                    <div className="wx-account__method-detail">{nativeSetUp ? <React.Fragment>{info.email} · Email &amp; password</React.Fragment> : "Not set up — add a password to sign in without a Customizer"}</div>
                   </div>
-                  <button onClick={() => openPw(nativeSetUp ? "change" : "create")} style={{ border: "1px solid #0e0e10", background: "#fff", color: "#0e0e10", borderRadius: 9, padding: "8px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 8 }}
+                  <button onClick={() => openPw(nativeSetUp ? "change" : "create")} className="wx-account__outline-button"
                     onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }} onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
                     <IconLock size={15} /> {nativeSetUp ? "Change password" : "Create password"}
                   </button>
                 </div>
                 {/* Customizer identity */}
-                <div style={{ display: "flex", alignItems: "center", gap: 14, border: "1px solid #ececf0", borderRadius: 12, padding: "14px 18px", background: "#fff", flexWrap: "wrap" }}>
+                <div className="wx-account__method">
                   <BrandTile id="victus" name="Victus" size={44} />
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10" }}>Victus Customizer</div>
-                    <div style={{ fontSize: 13, color: "#6b6b72", marginTop: 2 }}>{custLinked ? <React.Fragment>{info.email} · Linked automatically — matching email</React.Fragment> : "Not linked — link it to sign in either way and reuse your Customizer profile"}</div>
+                  <div className="wx-account__method-text">
+                    <div className="wx-account__method-name">Victus Customizer</div>
+                    <div className="wx-account__method-detail">{custLinked ? <React.Fragment>{info.email} · Linked automatically — matching email</React.Fragment> : "Not linked — link it to sign in either way and reuse your Customizer profile"}</div>
                   </div>
                   {custLinked ? (
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, fontWeight: 700, color: "#1f9d55", background: "#e7f5ed", border: "1px solid #c7ead4", borderRadius: 999, padding: "8px 16px", flexShrink: 0 }}><IconCheck size={16} /> Linked</span>
+                    <span className="wx-account__ok-pill"><IconCheck size={16} /> Linked</span>
                   ) : (
-                    <button onClick={() => openLogin({ id: "victus", name: "Victus", desc: "Primary customizer & catalog" }, false, true)} style={{ border: "1px solid #0e0e10", background: "#fff", color: "#0e0e10", borderRadius: 9, padding: "8px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 8 }}
+                    <button onClick={() => openLogin({ id: "victus", name: "Victus", desc: "Primary customizer & catalog" }, false, true)} className="wx-account__outline-button"
                       onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }} onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
                       Link account
                     </button>
                   )}
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 14, background: "#f7f7f8", border: "1px solid #ececf0", borderRadius: 10, padding: "14px 16px" }}>
-                <span style={{ width: 30, height: 30, borderRadius: 8, background: "#0e0e10", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><IconLock size={15} /></span>
-                <div style={{ fontSize: 13, color: "#52525b", lineHeight: 1.55, paddingTop: 2 }}>
+              <div className="wx-account__security-note">
+                <span className="wx-account__security-note-icon"><IconLock size={15} /></span>
+                <div className="wx-account__note-text">
                   {isCustomizerOnly
-                    ? <React.Fragment>Your password is managed in the <button onClick={onEditProfile} style={{ border: 0, background: "transparent", padding: 0, color: "#0e0e10", fontWeight: 700, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 2, fontSize: 13 }}>Victus Customizer</button>. Create a Team Stores password to sign in without one.</React.Fragment>
+                    ? <React.Fragment>Your password is managed in the <button onClick={onEditProfile} className="wx-account__inline-link">Victus Customizer</button>. Create a Team Stores password to sign in without one.</React.Fragment>
                     : <React.Fragment>Your Team Stores password applies only to Team Stores sign-in — it never changes your Customizer password. Stores, orders, access status and brand connections are shared across both sign-in methods.</React.Fragment>}
                 </div>
               </div>
@@ -27314,16 +27142,12 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
 
           {/* ─── Card B — Brand Access & Authentication (editable) ─── */}
           <SettingsCard style={{ padding: "32px 36px" }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: 24 }}>
-              <div style={{ minWidth: 0 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: "#0e0e10" }}>Connected Customizers</h2>
-                <p style={{ fontSize: 14, color: "#6b6b72", margin: "8px 0 0" }}>The corporate entity you're attached to and the brands you're authorized to sell.</p>
+            <div className="wx-account__brands-header">
+              <div className="wx-account__card-heading">
+                <h2 className="wx-account__card-title">Connected Customizers</h2>
+                <p className="wx-account__card-lead">The corporate entity you're attached to and the brands you're authorized to sell.</p>
               </div>
-              <button onClick={openAdd} style={{
-                border: "1px solid #d4d4d8", background: "#fff", color: "#0e0e10", borderRadius: 9,
-                padding: "10px 16px", cursor: "pointer", fontSize: 14, fontWeight: 700,
-                display: "inline-flex", alignItems: "center", gap: 8, flexShrink: 0,
-              }}
+              <button onClick={openAdd} className="wx-account__add"
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0e0e10"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4d4d8"; }}>
                 <IconPlus size={16} /> Add Customizer
@@ -27331,45 +27155,35 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
             </div>
 
             {/* Dealership callout */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 16, background: "#0e0e10", borderRadius: 12, padding: "16px 24px",
-            }}>
-              <span style={{ width: 44, height: 44, borderRadius: 10, background: "rgba(255,255,255,.12)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div className="wx-account__dealer">
+              <span className="wx-account__dealer-icon">
                 <IconShield size={22} />
               </span>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#a1a1aa" }}>Dealership</div>
-                <div style={{ fontSize: 17, fontWeight: 800, color: "#fff", marginTop: 4 }}>{profile.dealership}</div>
+              <div className="wx-account__dealer-text">
+                <div className="wx-account__dealer-label">Dealership</div>
+                <div className="wx-account__dealer-name">{profile.dealership}</div>
               </div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, fontWeight: 700, color: "#4ade80", background: "rgba(74,222,128,.12)", borderRadius: 999, padding: "8px 12px", flexShrink: 0 }}>
+              <span className="wx-account__verified">
                 <IconCircleCheck size={15} /> Verified
               </span>
             </div>
 
             {/* Brand list */}
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#6b6b72", margin: "28px 0 12px" }}>Authorized Brands</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div className="wx-account__brands-label">Authorized Brands</div>
+            <div className="wx-account__brands">
               {brands.map((b) => {
                 const isPrimary = primaryId === b.id;
                 const canPrimary = b.connected;
                 const hovered = hoverStar === b.id;
                 return (
-                <div key={b.id} style={{
-                  display: "flex", alignItems: "center", gap: 16,
-                  border: `1px solid ${isPrimary ? "#f0c64a" : "#ececf0"}`, borderRadius: 12, padding: "16px 20px",
-                  background: isPrimary ? "#fffdf5" : "#fff",
-                }}>
+                <div key={b.id} className={`wx-account__brand${isPrimary ? " wx-account__brand--primary" : ""}`}>
                   {/* Primary-brand star */}
-                  <div style={{ position: "relative", flexShrink: 0, display: "flex" }}
+                  <div className="wx-account__star"
                     onMouseEnter={() => setHoverStar(b.id)} onMouseLeave={() => setHoverStar(null)}>
                     <button
                       onClick={() => canPrimary && setPrimaryId(b.id)}
                       aria-label={isPrimary ? "Primary brand" : "Set as primary brand"}
-                      style={{
-                        border: 0, background: "transparent", padding: 4, lineHeight: 0,
-                        cursor: canPrimary ? "pointer" : "not-allowed",
-                        opacity: canPrimary ? 1 : 0.4,
-                      }}>
+                      className={`wx-account__star-button${canPrimary ? "" : " wx-account__star-button--disabled"}`}>
                       <svg width="22" height="22" viewBox="0 0 24 24"
                         fill={isPrimary ? "#f5b301" : "none"}
                         stroke={isPrimary ? "#f5b301" : "#a1a1aa"} strokeWidth="1.8" strokeLinejoin="round">
@@ -27377,40 +27191,31 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
                       </svg>
                     </button>
                     {hovered && (
-                      <div style={{
-                        position: "absolute", left: "50%", bottom: "calc(100% + 8px)", transform: "translateX(-50%)",
-                        width: 212, background: "#0e0e10", color: "#fff", borderRadius: 8, padding: "8px 12px",
-                        fontSize: 12.5, lineHeight: 1.45, fontWeight: 500, textAlign: "center", zIndex: 20,
-                        boxShadow: "0 8px 22px rgba(20,20,30,.28)", pointerEvents: "none",
-                      }}>
+                      <div className="wx-account__tooltip">
                         {!canPrimary
                           ? "Connect this brand to set it as your primary."
                           : isPrimary
                             ? "Your primary brand. Your profile details are pulled from here."
                             : "Make this your primary brand — the account your profile details are pulled from."}
-                        <span style={{ position: "absolute", left: "50%", top: "100%", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "6px solid transparent", borderRight: "6px solid transparent", borderTop: "6px solid #0e0e10" }} />
+                        <span className="wx-account__tooltip-arrow" />
                       </div>
                     )}
                   </div>
 
                   <BrandTile id={b.id} name={b.name} size={48} />
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ fontSize: 15.5, fontWeight: 800, color: "#0e0e10", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <div className="wx-account__brand-text">
+                    <div className="wx-account__brand-name">
                       {b.name}
-                      {isPrimary && <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "#a67c00", background: "#fdf1cf", border: "1px solid #f0d98a", borderRadius: 999, padding: "2px 8px" }}>Primary</span>}
+                      {isPrimary && <span className="wx-account__primary-tag">Primary</span>}
                     </div>
-                    <div style={{ fontSize: 13, color: "#6b6b72", marginTop: 2 }}>{b.desc}{b.connected && b.sso ? " · Single sign-on" : ""}{b.connected && !b.sso && b.authEmail ? ` · Signed in as ${b.authEmail}` : ""}</div>
+                    <div className="wx-account__brand-desc">{b.desc}{b.connected && b.sso ? " · Single sign-on" : ""}{b.connected && !b.sso && b.authEmail ? ` · Signed in as ${b.authEmail}` : ""}</div>
                   </div>
                   {b.connected ? (
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, fontWeight: 700, color: "#1f9d55", background: "#e7f5ed", border: "1px solid #c7ead4", borderRadius: 999, padding: "8px 16px", flexShrink: 0 }}>
+                    <span className="wx-account__ok-pill">
                       <IconCheck size={16} /> Connected
                     </span>
                   ) : (
-                    <button onClick={() => openLogin(b)} style={{
-                      border: "1px solid #0e0e10", background: "#fff", color: "#0e0e10", borderRadius: 9,
-                      padding: "8px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, flexShrink: 0,
-                      display: "inline-flex", alignItems: "center", gap: 8,
-                    }}
+                    <button onClick={() => openLogin(b)} className="wx-account__outline-button"
                       onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
                       <IconLock size={15} /> Log In to Brand
@@ -27424,45 +27229,41 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
 
           {/* ─── Card C — Archived Stores (restore) ─── */}
           <SettingsCard style={{ padding: "32px 36px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-              <div style={{ minWidth: 0 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: "#0e0e10" }}>Archived Stores</h2>
-                <p style={{ fontSize: 14, color: "#6b6b72", margin: "8px 0 0", maxWidth: 620, lineHeight: 1.5 }}>
+            <div className="wx-account__archive-header">
+              <div className="wx-account__card-heading">
+                <h2 className="wx-account__card-title">Archived Stores</h2>
+                <p className="wx-account__archive-lead">
                   Permanently shut-down stores, kept as read-only records. Order history and reports are retained. Restore a store to move it back into your active stores list.
                 </p>
               </div>
               {archivedStores.length > 0 && (
-                <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12.5, fontWeight: 700,
-                  color: "#52525b", background: "#f1f1f3", border: "1px solid #e5e5e9", borderRadius: 999,
-                  padding: "6px 14px", flexShrink: 0,
-                }}>
+                <span className="wx-account__archive-count">
                   {archivedStores.length} archived
                 </span>
               )}
             </div>
 
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, margin: "20px 0 4px", background: "#f7f7f8", border: "1px solid #ececf0", borderRadius: 10, padding: "14px 16px" }}>
-              <span style={{ width: 30, height: 30, borderRadius: 8, background: "#fdf1cf", color: "#92670b", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div className="wx-account__archive-note">
+              <span className="wx-account__archive-note-icon">
                 <IconLock size={15} />
               </span>
-              <div style={{ fontSize: 13, color: "#52525b", lineHeight: 1.55, paddingTop: 2 }}>
-                Archiving can&rsquo;t be self-reversed. Restoring an archived store is a <strong style={{ color: "#09090b", fontWeight: 700 }}>managing rep</strong> action.
+              <div className="wx-account__note-text">
+                Archiving can&rsquo;t be self-reversed. Restoring an archived store is a <strong className="wx-account__strong">managing rep</strong> action.
               </div>
             </div>
 
             {archivedStores.length === 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "40px 20px 28px", color: "#9a9aa1" }}>
-                <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#f5f5f7", border: "1px solid #ececf0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+              <div className="wx-account__empty">
+                <div className="wx-account__empty-icon">
                   <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" /><path d="M10 12h4" />
                   </svg>
                 </div>
-                <div style={{ fontSize: 14.5, fontWeight: 700, color: "#52525b" }}>No archived stores</div>
-                <div style={{ fontSize: 13, color: "#9a9aa1", marginTop: 4 }}>Stores you archive from the Stores tab will appear here.</div>
+                <div className="wx-account__empty-title">No archived stores</div>
+                <div className="wx-account__empty-text">Stores you archive from the Stores tab will appear here.</div>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(248px, 1fr))", gap: 16, marginTop: 20 }}>
+              <div className="wx-account__archive-grid">
                 {archivedStores.map((s) => (
                   <StoreCard
                     key={s.id}
@@ -27482,128 +27283,115 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
 
       {/* Add a brand — picker (brands the account couldn't link automatically) */}
       <Modal open={addOpen} onClose={() => setAddOpen(false)} width={520}>
-        <div style={{ padding: "28px 32px 24px", position: "relative" }}>
-          <button type="button" onClick={() => setAddOpen(false)} style={{
-            position: "absolute", top: 16, right: 16, border: 0, background: "transparent", cursor: "pointer",
-            color: "#9a9aa1", width: 32, height: 32, borderRadius: 7, display: "inline-flex", alignItems: "center", justifyContent: "center",
-          }} title="Close"><IconX size={18} /></button>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#0e0e10" }}>Add a customizer</div>
-          <div style={{ fontSize: 13.5, color: "#6b6b72", marginTop: 6, lineHeight: 1.5, maxWidth: 420 }}>
-            Brands linked to <strong style={{ color: "#09090b", fontWeight: 700 }}>{profile.email}</strong> connect automatically. If your customizer account for a brand uses a different email, add it here and sign in once.
+        <div className="wx-account__picker">
+          <button type="button" onClick={() => setAddOpen(false)} className="wx-account__modal-close" title="Close"><IconX size={18} /></button>
+          <div className="wx-account__modal-title">Add a customizer</div>
+          <div className="wx-account__picker-lead">
+            Brands linked to <strong className="wx-account__strong">{profile.email}</strong> connect automatically. If your customizer account for a brand uses a different email, add it here and sign in once.
           </div>
-          <div style={{ position: "relative", marginTop: 20 }}>
+          <div className="wx-account__search">
             <IconSearch size={16} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "#9a9aa1" }} />
             <input value={addQuery} onChange={(e) => setAddQuery(e.target.value)} autoFocus placeholder="Search brands"
-              style={{ width: "100%", border: "1px solid #d4d4d8", borderRadius: 8, padding: "11px 14px 11px 40px", fontSize: 14.5, outline: "none" }}
+              className="wx-account__search-input"
               onFocus={(e) => e.target.style.borderColor = "#0e0e10"} onBlur={(e) => e.target.style.borderColor = "#d4d4d8"} />
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, maxHeight: 360, overflowY: "auto", paddingRight: 2 }}>
+          <div className="wx-account__options">
             {addableBrands.length === 0 && (
-              <div style={{ padding: "32px 12px", textAlign: "center", fontSize: 13.5, color: "#9a9aa1" }}>
+              <div className="wx-account__no-options">
                 {addQuery.trim() ? `No brands match “${addQuery.trim()}”.` : "Every available brand is already on your account."}
               </div>
             )}
             {addableBrands.map((b) => {
               const st = addStates[b.id] || "connect";
               return (
-              <div key={b.id} style={{ display: "flex", alignItems: "center", gap: 14, border: st === "no-account" ? "1px dashed #d4d4d8" : "1px solid #ececf0", borderRadius: 10, padding: "12px 14px", background: st === "connect" ? "#fff" : "#fafafa", flexWrap: "wrap" }}>
+              <div key={b.id} className={`wx-account__option${st === "no-account" ? " wx-account__option--no-account" : ""}${st === "connect" ? " wx-account__option--connect" : ""}`}>
                 <BrandTile id={b.id} name={b.name} size={42} />
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: 14.5, fontWeight: 800, color: "#0e0e10" }}>{b.name}</div>
-                  <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 2, lineHeight: 1.45 }}>
+                <div className="wx-account__option-text">
+                  <div className="wx-account__option-name">{b.name}</div>
+                  <div className="wx-account__option-desc">
                     {st === "no-account" ? "You don't have an account for this Customizer yet. Accounts are added by Prolook." : st === "pending" ? "Access request sent to Prolook — we'll let you know when it's ready." : b.desc}
                   </div>
                 </div>
                 {st === "connect" && (
-                  <button onClick={() => openLogin(b, true)} style={{ border: "1px solid #0e0e10", background: "#fff", color: "#0e0e10", borderRadius: 8, padding: "7px 14px", cursor: "pointer", fontSize: 13, fontWeight: 700, flexShrink: 0 }}
+                  <button onClick={() => openLogin(b, true)} className="wx-account__option-connect"
                     onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
                     Connect
                   </button>
                 )}
                 {st === "pending" && (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 700, color: "#92670b", background: "#fdf1cf", border: "1px solid #f0d98a", borderRadius: 999, padding: "6px 12px", flexShrink: 0 }}><IconClock size={13} /> Access pending</span>
+                  <span className="wx-account__pending-pill"><IconClock size={13} /> Access pending</span>
                 )}
                 {st === "no-account" && (
-                  <div style={{ display: "flex", gap: 8, flexBasis: "100%", paddingLeft: 56, flexWrap: "wrap" }}>
-                    <button onClick={() => { setAddStates((s) => ({ ...s, [b.id]: "pending" })); onToast && onToast(`Access to ${b.name} requested — Prolook will set up your account`); }} style={{ border: 0, background: "#0e0e10", color: "#fff", borderRadius: 8, padding: "8px 13px", cursor: "pointer", fontSize: 12.5, fontWeight: 700 }}>Request access to this brand</button>
-                    <button onClick={() => openLogin(b, true)} style={{ border: "1px solid #d4d4d8", background: "#fff", color: "#0e0e10", borderRadius: 8, padding: "8px 13px", cursor: "pointer", fontSize: 12.5, fontWeight: 600 }}>Sign in with a different email</button>
+                  <div className="wx-account__option-actions">
+                    <button onClick={() => { setAddStates((s) => ({ ...s, [b.id]: "pending" })); onToast && onToast(`Access to ${b.name} requested — Prolook will set up your account`); }} className="wx-account__request">Request access to this brand</button>
+                    <button onClick={() => openLogin(b, true)} className="wx-account__other-email">Sign in with a different email</button>
                   </div>
                 )}
               </div>
               );
             })}
           </div>
-          <div style={{ marginTop: 18, paddingTop: 16, borderTop: "1px solid #ececf0", fontSize: 12.5, color: "#9a9aa1", lineHeight: 1.5 }}>
-            Don’t see your brand? Ask your managing rep to request access for <strong style={{ color: "#52525b", fontWeight: 700 }}>{profile.dealership}</strong>.
+          <div className="wx-account__picker-help">
+            Don’t see your brand? Ask your managing rep to request access for <strong className="wx-account__help-strong">{profile.dealership}</strong>.
           </div>
         </div>
       </Modal>
 
 {/* Team Stores password — change (native/linked) or create (Customizer-only rep) */}
       <Modal open={pwOpen} onClose={() => { if (!pwSaving) setPwOpen(false); }} width={440}>
-        <form onSubmit={submitPw} style={{ padding: "32px 36px 32px", position: "relative" }}>
-          <button type="button" onClick={() => { if (!pwSaving) setPwOpen(false); }} style={{ position: "absolute", top: 16, right: 16, border: 0, background: "transparent", cursor: "pointer", color: "#9a9aa1", width: 32, height: 32, borderRadius: 7, display: "inline-flex", alignItems: "center", justifyContent: "center" }} title="Close"><IconX size={18} /></button>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#0e0e10" }}>{pwMode === "create" ? "Create a Team Stores password" : "Change your Team Stores password"}</div>
-          <div style={{ fontSize: 13.5, color: "#6b6b72", marginTop: 6, lineHeight: 1.5 }}>
+        <form onSubmit={submitPw} className="wx-account__modal-body">
+          <button type="button" onClick={() => { if (!pwSaving) setPwOpen(false); }} className="wx-account__modal-close" title="Close"><IconX size={18} /></button>
+          <div className="wx-account__modal-title">{pwMode === "create" ? "Create a Team Stores password" : "Change your Team Stores password"}</div>
+          <div className="wx-account__password-lead">
             {pwMode === "create" ? "Lets you sign in with your email and a password, without a Customizer. " : "Used only for Team Stores sign-in. "}
             {custLinked && "It never changes your Victus Customizer password."}
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 22 }}>
+          <div className="wx-account__password-fields">
             {pwMode === "change" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase", color: "#3f3f46" }}>Current password</label>
+              <div className="wx-account__field">
+                <label className="wx-account__label">Current password</label>
                 <input type="password" autoFocus value={pw.current} disabled={pwSaving} onChange={(e) => setPw((c) => ({ ...c, current: e.target.value }))} placeholder="••••••••••••"
-                  style={{ border: "1px solid #d4d4d8", borderRadius: 8, padding: "12px 16px", fontSize: 15, outline: "none", width: "100%" }}
+                  className="wx-account__input"
                   onFocus={(e) => e.target.style.borderColor = "#0e0e10"} onBlur={(e) => e.target.style.borderColor = "#d4d4d8"} />
               </div>
             )}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase", color: "#3f3f46" }}>New password</label>
-                <button type="button" onClick={() => setPw((c) => ({ ...c, show: !c.show }))} style={{ border: 0, background: "transparent", padding: 0, fontSize: 12.5, fontWeight: 700, color: "#52525b", cursor: "pointer" }}>{pw.show ? "Hide" : "Show"}</button>
+            <div className="wx-account__field">
+              <div className="wx-account__label-row">
+                <label className="wx-account__label">New password</label>
+                <button type="button" onClick={() => setPw((c) => ({ ...c, show: !c.show }))} className="wx-account__show-toggle">{pw.show ? "Hide" : "Show"}</button>
               </div>
               <input type={pw.show ? "text" : "password"} autoFocus={pwMode === "create"} value={pw.next} disabled={pwSaving} onChange={(e) => setPw((c) => ({ ...c, next: e.target.value }))} placeholder="At least 12 characters"
-                style={{ border: "1px solid #d4d4d8", borderRadius: 8, padding: "12px 16px", fontSize: 15, outline: "none", width: "100%" }}
+                className="wx-account__input"
                 onFocus={(e) => e.target.style.borderColor = "#0e0e10"} onBlur={(e) => e.target.style.borderColor = "#d4d4d8"} />
               <PasswordChecklist rules={pwRules} />
               {pwMode === "change" && pw.current && pw.next && pw.current === pw.next && (
-                <div style={{ fontSize: 12.5, color: "#dc2626", fontWeight: 600 }}>New password must differ from your current password.</div>
+                <div className="wx-account__error">New password must differ from your current password.</div>
               )}
             </div>
           </div>
-          <button type="submit" disabled={!pwReady || pwSaving} style={{
-            marginTop: 22, width: "100%", border: 0, borderRadius: 9, padding: "15px",
-            background: (!pwReady || pwSaving) ? "#e5e5e9" : "#0e0e10", color: (!pwReady || pwSaving) ? "#9a9aa1" : "#fff",
-            fontSize: 15, fontWeight: 700, cursor: (!pwReady || pwSaving) ? "default" : "pointer",
-          }}>{pwSaving ? "Saving…" : (pwMode === "create" ? "Create password" : "Update password")}</button>
-          {pwMode === "change" && <div style={{ marginTop: 14, fontSize: 12.5, color: "#9a9aa1", lineHeight: 1.5, textAlign: "center" }}>Your other Team Stores sessions will be signed out and a confirmation email sent to {info.email}.</div>}
+          <button type="submit" disabled={!pwReady || pwSaving} className={`wx-account__password-submit${(!pwReady || pwSaving) ? " wx-account__password-submit--disabled" : ""}`}>{pwSaving ? "Saving…" : (pwMode === "create" ? "Create password" : "Update password")}</button>
+          {pwMode === "change" && <div className="wx-account__password-note">Your other Team Stores sessions will be signed out and a confirmation email sent to {info.email}.</div>}
         </form>
       </Modal>
 
       {/* Brand sign-in modal */}
       <Modal open={!!loginBrand} onClose={closeLogin} width={440}>
         {loginBrand && (
-          <form onSubmit={submitLogin} style={{ padding: "32px 36px 32px", position: "relative" }}>
+          <form onSubmit={submitLogin} className="wx-account__modal-body">
             {loginBrand.fromAdd && (
-              <button type="button" onClick={backToAdd} style={{
-                position: "absolute", top: 16, left: 16, border: 0, background: "transparent", cursor: "pointer",
-                color: "#6b6b72", padding: "6px 8px", borderRadius: 7, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700,
-              }}><IconChevron size={14} style={{ transform: "rotate(90deg)" }} /> Back</button>
+              <button type="button" onClick={backToAdd} className="wx-account__back"><IconChevron size={14} style={{ transform: "rotate(90deg)" }} /> Back</button>
             )}
-            <button type="button" onClick={closeLogin} style={{
-              position: "absolute", top: 16, right: 16, border: 0, background: "transparent", cursor: "pointer",
-              color: "#9a9aa1", width: 32, height: 32, borderRadius: 7, display: "inline-flex", alignItems: "center", justifyContent: "center",
-            }} title="Close">
+            <button type="button" onClick={closeLogin} className="wx-account__modal-close" title="Close">
               <IconX size={18} />
             </button>
 
             {/* Brand logo + name */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 16, marginBottom: 24 }}>
+            <div className="wx-account__login-brand">
               <BrandTile id={loginBrand.id} name={loginBrand.name} size={60} />
               <div>
-                <div style={{ fontSize: 20, fontWeight: 800, color: "#0e0e10" }}>{loginBrand.link ? `Link your ${loginBrand.name} Customizer` : `Sign in to ${loginBrand.name}`}</div>
-                <div style={{ fontSize: 13.5, color: "#6b6b72", marginTop: 4, lineHeight: 1.5, maxWidth: 320 }}>
+                <div className="wx-account__modal-title">{loginBrand.link ? `Link your ${loginBrand.name} Customizer` : `Sign in to ${loginBrand.name}`}</div>
+                <div className="wx-account__login-lead">
                   {loginBrand.link
                     ? `Sign in with your ${loginBrand.name} Customizer credentials to link it to this Team Stores account. Stores, orders and access stay shared.`
                     : loginBrand.fromAdd
@@ -27613,39 +27401,33 @@ function AccountProfile({ profile = ACCOUNT_PROFILE, brands: brandsProp = ACCOUN
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase", color: "#3f3f46" }}>Email</label>
+            <div className="wx-account__login-fields">
+              <div className="wx-account__field">
+                <label className="wx-account__label">Email</label>
                 <input
                   type="email" autoFocus value={creds.email} disabled={signingIn}
                   onChange={(e) => setCreds((c) => ({ ...c, email: e.target.value }))}
                   placeholder={`you@${loginBrand.id}.com`}
-                  style={{ border: "1px solid #d4d4d8", borderRadius: 8, padding: "12px 16px", fontSize: 15, outline: "none", width: "100%" }}
+                  className="wx-account__input"
                   onFocus={(e) => e.target.style.borderColor = "#0e0e10"}
                   onBlur={(e) => e.target.style.borderColor = "#d4d4d8"} />
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase", color: "#3f3f46" }}>Password</label>
+              <div className="wx-account__field">
+                <label className="wx-account__label">Password</label>
                 <input
                   type="password" value={creds.password} disabled={signingIn}
                   onChange={(e) => setCreds((c) => ({ ...c, password: e.target.value }))}
                   placeholder="••••••••"
-                  style={{ border: "1px solid #d4d4d8", borderRadius: 8, padding: "12px 16px", fontSize: 15, outline: "none", width: "100%" }}
+                  className="wx-account__input"
                   onFocus={(e) => e.target.style.borderColor = "#0e0e10"}
                   onBlur={(e) => e.target.style.borderColor = "#d4d4d8"} />
               </div>
             </div>
 
-            <button type="submit" disabled={!creds.email || !creds.password || signingIn} style={{
-              marginTop: 24, width: "100%", border: 0, borderRadius: 9, padding: "16px",
-              background: (!creds.email || !creds.password || signingIn) ? "#e5e5e9" : "#0e0e10",
-              color: (!creds.email || !creds.password || signingIn) ? "#9a9aa1" : "#fff",
-              fontSize: 15, fontWeight: 700, cursor: (!creds.email || !creds.password || signingIn) ? "default" : "pointer",
-              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-            }}>
+            <button type="submit" disabled={!creds.email || !creds.password || signingIn} className={`wx-account__login-submit${(!creds.email || !creds.password || signingIn) ? " wx-account__login-submit--disabled" : ""}`}>
               {signingIn ? "Authenticating…" : <React.Fragment><IconLock size={16} /> Sign In</React.Fragment>}
             </button>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 16, fontSize: 12.5, color: "#9a9aa1" }}>
+            <div className="wx-account__login-note">
               <IconLock size={12} /> {loginBrand.fromAdd ? `Credentials are verified by ${loginBrand.name} and never stored here` : `Secured by ${loginBrand.name} SSO`}
             </div>
           </form>
@@ -27670,104 +27452,90 @@ function WelcomeSSOModal({ open, originId = "victus", accessibleIds = ACCESSIBLE
 
   const brandGlyph = (b, size) => (
     b.logoBlack || b.logoInk
-      ? <img src={b.logoBlack || b.logoInk} alt={b.name} style={{ height: size, width: "auto", objectFit: "contain" }} />
-      : <span style={{ fontSize: Math.round(size * 0.62), fontWeight: 800, letterSpacing: "-.3px", color: "#0e0e10", lineHeight: 1, textAlign: "center" }}>{b.wordmark || b.name}</span>
+      ? <img src={b.logoBlack || b.logoInk} alt={b.name} className="wx-welcome__logo" style={{ height: size }} />
+      : <span className="wx-welcome__wordmark" style={{ fontSize: Math.round(size * 0.62) }}>{b.wordmark || b.name}</span>
   );
 
   return (
     <Modal open={open} onClose={() => {}} width={isMulti ? 640 : 520}>
-      <div style={{ padding: "40px 40px 32px", position: "relative" }}>
+      <div className="wx-welcome">
         {!native && (
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 8, background: "#e7f5ed", border: "1px solid #c7ead4",
-              color: "#1f9d55", borderRadius: 999, padding: "8px 16px", fontSize: 12.5, fontWeight: 700, letterSpacing: ".03em",
-            }}>
+          <div className="wx-welcome__badge-row">
+            <span className="wx-welcome__badge">
               <IconCircleCheck size={15} /> Signed in automatically
             </span>
           </div>
         )}
 
-        <h2 style={{ margin: "0 0 12px", fontSize: 28, fontWeight: 800, letterSpacing: "-.4px", color: "#09090b", textAlign: "center", fontFamily: "Archivo, sans-serif" }}>
+        <h2 className="wx-welcome__title">
           Welcome to Team Stores
         </h2>
-        <p style={{ margin: "0 auto", maxWidth: 440, fontSize: 15, lineHeight: 1.6, color: "#52525b", textAlign: "center" }}>
+        <p className="wx-welcome__lead">
           {native
             ? <React.Fragment>Your account is ready. Connect the brand Customizers you're entitled to so you can add their products to your stores.</React.Fragment>
-            : <React.Fragment>We've automatically signed you in using your <strong style={{ color: "#09090b", fontWeight: 700 }}>{origin.name}</strong> Customizer account and set it as your primary brand for this workspace session.</React.Fragment>}
+            : <React.Fragment>We've automatically signed you in using your <strong className="wx-welcome__strong">{origin.name}</strong> Customizer account and set it as your primary brand for this workspace session.</React.Fragment>}
         </p>
 
         {native ? (
-          <div style={{ marginTop: 28 }}>
-            <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", color: "#71717a", marginBottom: 12 }}>Brands found for {email}</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div className="wx-welcome__native">
+            <div className="wx-welcome__native-label">Brands found for {email}</div>
+            <div className="wx-welcome__native-list">
               {brands.map((b) => {
                 const on = !!connected[b.id];
                 return (
-                  <div key={b.id} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: "#fff", border: "1px solid #e4e4e7", borderRadius: 12 }}>
-                    <span style={{ width: 44, height: 44, borderRadius: 10, background: "#f4f4f5", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{brandGlyph(b, 18)}</span>
-                    <span style={{ flex: 1, minWidth: 0 }}>
-                      <span style={{ display: "block", fontSize: 15, fontWeight: 800, color: "#09090b" }}>{b.name}</span>
-                      <span style={{ display: "block", fontSize: 12.5, color: "#71717a", marginTop: 2 }}>{on ? `Connected · reuses your ${b.name} Customizer account` : "Customizer account found for your email"}</span>
+                  <div key={b.id} className="wx-welcome__native-brand">
+                    <span className="wx-welcome__native-logo">{brandGlyph(b, 18)}</span>
+                    <span className="wx-welcome__native-text">
+                      <span className="wx-welcome__native-name">{b.name}</span>
+                      <span className="wx-welcome__native-detail">{on ? `Connected · reuses your ${b.name} Customizer account` : "Customizer account found for your email"}</span>
                     </span>
                     {on ? (
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 700, color: "#1f9d55", background: "#e7f5ed", border: "1px solid #c7ead4", borderRadius: 999, padding: "7px 12px" }}><IconCheck size={14} /> Connected</span>
+                      <span className="wx-welcome__connected"><IconCheck size={14} /> Connected</span>
                     ) : (
-                      <button onClick={() => setConnected((c) => ({ ...c, [b.id]: true }))} style={{ background: "#fff", color: "#09090b", border: "1px solid #09090b", borderRadius: 8, padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+                      <button onClick={() => setConnected((c) => ({ ...c, [b.id]: true }))} className="wx-welcome__connect"
                         onMouseEnter={(e) => { e.currentTarget.style.background = "#09090b"; e.currentTarget.style.color = "#fff"; }} onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#09090b"; }}>Connect</button>
                     )}
                   </div>
                 );
               })}
             </div>
-            <p style={{ margin: "16px 0 0", fontSize: 12.5, lineHeight: 1.5, color: "#a1a1aa", textAlign: "center" }}>
+            <p className="wx-welcome__native-note">
               {anyConnected ? "Set your primary brand anytime from My Account." : "No primary brand is set until you connect one. You can connect brands later from My Account."}
             </p>
           </div>
         ) : isMulti ? (
-          <div style={{ marginTop: 32 }}>
-            <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", color: "#71717a", marginBottom: 16 }}>Primary Brand Selection</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+          <div className="wx-welcome__multi">
+            <div className="wx-welcome__multi-label">Primary Brand Selection</div>
+            <div className="wx-welcome__grid">
               {brands.map((b) => {
                 const on = primary === b.id;
                 return (
-                  <button key={b.id} onClick={() => setPrimary(b.id)} title={b.name} style={{
-                    position: "relative", aspectRatio: "1 / 1", display: "flex", flexDirection: "column",
-                    alignItems: "center", justifyContent: "center", gap: 8, padding: 12,
-                    background: on ? "#fff" : "#f4f4f5", border: `2px solid ${on ? "#09090b" : "#f4f4f5"}`,
-                    borderRadius: 14, cursor: "pointer", transition: "border-color .12s, background .12s",
-                  }}
+                  <button key={b.id} onClick={() => setPrimary(b.id)} title={b.name} className="wx-welcome__tile" style={{ background: on ? "#fff" : "#f4f4f5", border: `2px solid ${on ? "#09090b" : "#f4f4f5"}` }}
                     onMouseEnter={(e) => { if (!on) { e.currentTarget.style.borderColor = "#d4d4d8"; e.currentTarget.style.background = "#fff"; } }}
                     onMouseLeave={(e) => { if (!on) { e.currentTarget.style.borderColor = "#f4f4f5"; e.currentTarget.style.background = "#f4f4f5"; } }}>
-                    {on && <span style={{ position: "absolute", top: 8, right: 8, width: 20, height: 20, borderRadius: "50%", background: "#09090b", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><IconCheck size={13} /></span>}
-                    <span style={{ height: 32, display: "flex", alignItems: "center" }}>{brandGlyph(b, 22)}</span>
-                    <span style={{ fontSize: 11.5, fontWeight: 600, color: "#52525b", textAlign: "center", lineHeight: 1.2 }}>{b.name}</span>
+                    {on && <span className="wx-welcome__tile-check"><IconCheck size={13} /></span>}
+                    <span className="wx-welcome__logo-box">{brandGlyph(b, 22)}</span>
+                    <span className="wx-welcome__tile-name">{b.name}</span>
                   </button>
                 );
               })}
             </div>
-            <p style={{ margin: "16px 0 0", fontSize: 12.5, color: "#a1a1aa", textAlign: "center" }}>You can change your primary brand anytime from My Account.</p>
+            <p className="wx-welcome__multi-note">You can change your primary brand anytime from My Account.</p>
           </div>
         ) : (
-          <div style={{ marginTop: 28 }}>
-            <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", color: "#71717a", marginBottom: 12, textAlign: "center" }}>Your Primary Brand</div>
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 16,
-              background: "#f7f7f8", border: "1px solid #ececf0", borderRadius: 14, padding: "16px 24px", maxWidth: 340, margin: "0 auto",
-            }}>
-              <span style={{ height: 32, display: "flex", alignItems: "center" }}>{brandGlyph(origin, 24)}</span>
-              <span style={{ width: 1, height: 28, background: "#e4e4e7" }} />
-              <span style={{ fontSize: 15.5, fontWeight: 800, color: "#0e0e10" }}>{origin.name}</span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#1f9d55", fontSize: 12.5, fontWeight: 700 }}><IconCircleCheck size={15} /> Primary</span>
+          <div className="wx-welcome__single">
+            <div className="wx-welcome__single-label">Your Primary Brand</div>
+            <div className="wx-welcome__primary">
+              <span className="wx-welcome__logo-box">{brandGlyph(origin, 24)}</span>
+              <span className="wx-welcome__divider" />
+              <span className="wx-welcome__primary-name">{origin.name}</span>
+              <span className="wx-welcome__primary-tag"><IconCircleCheck size={15} /> Primary</span>
             </div>
           </div>
         )}
 
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 32 }}>
-          <button onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} style={{
-            border: 0, borderRadius: 9, padding: "16px 32px", background: "#09090b", color: "#fff",
-            fontSize: 15, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8,
-          }}
+        <div className="wx-welcome__footer">
+          <button onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} className="wx-welcome__confirm"
             onMouseEnter={(e) => e.currentTarget.style.background = "#dc2626"}
             onMouseLeave={(e) => e.currentTarget.style.background = "#09090b"}>
             {isMulti ? "Confirm & Enter" : "Continue to Workspace"} <IconArrowRight size={17} />

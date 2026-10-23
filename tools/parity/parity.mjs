@@ -50,10 +50,11 @@ async function launch() {
   throw new Error('No browser found. Install Google Chrome, or run: npx playwright install chromium');
 }
 
-// CDN files (React, Babel) are fetched once and reused across every page load.
+// CDN files (React, Babel, Google Fonts) are fetched once and reused across every page load,
+// so both sides get the same bytes at the same speed.
 const cdnCache = new Map();
 async function cacheCdn(context) {
-  await context.route(/^https:\/\/(unpkg\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com)\//, async (route) => {
+  await context.route(/^https:\/\/(unpkg\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//, async (route) => {
     const url = route.request().url();
     let hit = cdnCache.get(url);
     if (!hit) {
@@ -70,9 +71,14 @@ async function cacheCdn(context) {
 
 const stripOrigin = (url) => url.replace(/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?/, '');
 
-async function openPage(browser, viewport) {
+// Pages that show random sample data (scenario `seedRandom: true`) get the same Math.random
+// sequence on both sides, so two copies of the same page render the same numbers.
+const SEEDED_RANDOM = `(() => { let s = 0x2545f491; Math.random = () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; })();`;
+
+async function openPage(browser, viewport, { seedRandom = false } = {}) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
   await cacheCdn(context);
+  if (seedRandom) await context.addInitScript(SEEDED_RANDOM);
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
   const log = { errors: [], dialogs: [], requests: [], navigations: [], started: false };
@@ -100,7 +106,8 @@ async function settle(page, ms) {
   await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
   await page.waitForTimeout(ms);
   await page.evaluate(async () => {
-    await document.fonts?.ready;
+    // Wait until no font is still loading (a font requested late would otherwise change text widths).
+    for (let i = 0; i < 20 && document.fonts && document.fonts.status !== 'loaded'; i++) await document.fonts.ready;
     for (const a of document.getAnimations()) {
       try {
         if (a.effect?.getComputedTiming?.().iterations === Infinity) { a.pause(); a.currentTime = 0; } else a.finish();
@@ -110,7 +117,7 @@ async function settle(page, ms) {
 }
 
 function describe(step) {
-  const [kind, value] = Object.entries(step)[0];
+  const [kind, value] = Object.entries(step).find(([k]) => k !== 'label');
   return Array.isArray(value) ? `${kind} ${JSON.stringify(value[0])} = ${JSON.stringify(value[1])}` : `${kind} ${JSON.stringify(value)}`;
 }
 
@@ -121,11 +128,13 @@ async function runStep(page, step) {
   else if (step.type) await loc(step.type[0]).pressSequentially(step.type[1]);
   else if (step.hover) await loc(step.hover).hover();
   else if (step.focus) await loc(step.focus).focus();
+  else if (step.select) await loc(step.select[0]).selectOption(step.select[1]);
   else if (step.press) await page.keyboard.press(step.press);
   else if (step.scroll) await loc(step.scroll).scrollIntoViewIfNeeded();
   else if (step.wait) await page.clock.runFor(step.wait);
+  else if (step.eval) await page.evaluate(step.eval);
   else throw new Error(`Unknown step: ${JSON.stringify(step)}`);
-  if (!step.hover && !step.wait) await page.mouse.move(0, 0);
+  if (!step.hover && !step.wait && !step.eval) await page.mouse.move(0, 0);
 }
 
 // ── capture: styles mode ──
@@ -133,7 +142,14 @@ function collectStyles() {
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'TEMPLATE', 'NOSCRIPT', 'TITLE', 'BASE']);
   const hash = (s) => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); };
   // Sorted: Chrome enumerates custom properties in no fixed order.
-  const styleString = (cs) => Array.from(cs).sort().map((p) => p + ':' + cs.getPropertyValue(p)).join(';');
+  // Margins are compared by their computed CSS value ("auto", "12px"), not the resolved pixels:
+  // Chrome sometimes reports an auto margin as 0px although the element is laid out the same.
+  // Any visible effect of a margin still shows in the element's box and the pixel diff.
+  const value = (cs, p, el) => {
+    if (el && p.startsWith('margin') && el.computedStyleMap) { try { const v = el.computedStyleMap().get(p); if (v) return String(v); } catch {} }
+    return cs.getPropertyValue(p);
+  };
+  const styleString = (cs, el) => Array.from(cs).sort().map((p) => p + ':' + value(cs, p, el)).join(';');
   const pseudo = (el, which) => {
     const cs = getComputedStyle(el, which);
     const c = cs.getPropertyValue('content');
@@ -147,7 +163,7 @@ function collectStyles() {
     const text = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim().slice(0, 80);
     out.push({
       key, tag: el.tagName.toLowerCase(), id: el.id || '', cls: (el.getAttribute('class') || '').trim().split(/\s+/)[0] || '', text,
-      hash: hash(styleString(getComputedStyle(el)) + pseudo(el, '::before') + pseudo(el, '::after')),
+      hash: hash(styleString(getComputedStyle(el), el) + pseudo(el, '::before') + pseudo(el, '::after')),
       box: [r.x, r.y, r.width, r.height].map((v) => Math.round(v * 100) / 100),
     });
     const counts = {};
@@ -163,10 +179,19 @@ function collectStyles() {
   return out;
 }
 function styleDetails(keys) {
-  const read = (cs) => { const o = {}; for (let i = 0; i < cs.length; i++) o[cs[i]] = cs.getPropertyValue(cs[i]); return o; };
+  const read = (cs, el) => {
+    const o = {};
+    for (let i = 0; i < cs.length; i++) {
+      const p = cs[i];
+      let v = cs.getPropertyValue(p);
+      if (el && p.startsWith('margin') && el.computedStyleMap) { try { const t = el.computedStyleMap().get(p); if (t) v = String(t); } catch {} }
+      o[p] = v;
+    }
+    return o;
+  };
   return keys.map((k) => {
     const el = window.__parityEls?.get(k);
-    return el ? { self: read(getComputedStyle(el)), '::before': read(getComputedStyle(el, '::before')), '::after': read(getComputedStyle(el, '::after')) } : null;
+    return el ? { self: read(getComputedStyle(el), el), '::before': read(getComputedStyle(el, '::before')), '::after': read(getComputedStyle(el, '::after')) } : null;
   });
 }
 const label = (e) => `<${e.tag}${e.id ? '#' + e.id : ''}${e.cls ? '.' + e.cls : ''}>${e.text ? ` "${e.text.slice(0, 40)}"` : ''}`;
@@ -341,14 +366,15 @@ try {
   for (const viewport of viewports) {
     const vp = `${viewport.width}×${viewport.height}`;
     for (const state of states) {
-      const pages = await Promise.all([openPage(browser, viewport), openPage(browser, viewport)]);
+      const pageOpts = { seedRandom: !!scenario.seedRandom };
+      const pages = await Promise.all([openPage(browser, viewport, pageOpts), openPage(browser, viewport, pageOpts)]);
       const where = `${vp} · ${state.name}`;
       const dir = join(outDir, slug(vp), slug(state.name));
       try {
         // Load both, apply props, freeze timers so only `wait` steps advance them.
         const props = { ...(scenario.props || {}), ...(state.props || {}) };
         const startErrors = await Promise.all(pages.map(async (p, i) => {
-          await p.page.goto(sides[i].url(scenario.page || ''), { waitUntil: 'load', timeout: 60000 });
+          await p.page.goto(sides[i].url(scenario.page || '') + (state.query || ''), { waitUntil: 'load', timeout: 60000 });
           if (scenario.ready) await p.page.locator(scenario.ready).first().waitFor({ state: 'visible', timeout: 60000 });
           if (Object.keys(props).length && !(await applyProps(p.page, props))) return `${sides[i].label} has no way to set props (no window.__dcSetProps or window.__paritySetProps)`;
           // The installed clock keeps ticking until paused; leave a margin so the pause target is still ahead.

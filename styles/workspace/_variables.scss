@@ -1,0 +1,24 @@
+// Values used three or more times in the workspace styles. Values are unchanged from the original inline styles.
+// Names follow the custom properties in _global.scss where the value matches (--ink, --muted, --line, ...).
+$white: #fff;
+$ink: #0e0e10;
+$muted: #6b6b72;
+$muted-2: #9a9aa1;
+$line: #e5e5e9;
+$line-2: #ececf0;
+$bg-soft: #f7f7f8;
+$red: #e1251b;
+$stripe: #635bff;
+$ok: #1f9d55;
+$ok-soft: #e7f5ed;
+$ok-line: #c7ead4;
+$amber-soft: #fdf1cf;
+$zinc-950: #09090b;
+$zinc-600: #52525b;
+$zinc-500: #71717a;
+$zinc-400: #a1a1aa;
+$zinc-300: #d4d4d8;
+
+$font-sans: "Inter", system-ui, sans-serif;
+$font-mono: "JetBrains Mono", monospace;
+$font-display: "Archivo", sans-serif;

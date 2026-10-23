@@ -72,7 +72,7 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
 npm run styles
 ```
 
-This compiles `styles/app.scss` to `styles/app.css`. It must compile without errors. Fix any errors before continuing.
+This compiles every SCSS entry: `styles/app.scss` to `styles/app.css` (landing page) and `styles/workspace.scss` to `styles/workspace.css` (workspace). A new page with its own global rules gets its own entry, added to the `styles` script in `package.json`. It must compile without errors. Fix any errors before continuing.
 
 ---
 
