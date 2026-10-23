@@ -49,6 +49,7 @@ function describe(step) {
   if (step.type) return `Type "${step.type[1]}" into ${target(step.type[0])}`;
   if (step.hover) return `Hover over ${target(step.hover)}`;
   if (step.focus) return `Click into ${target(step.focus)}`;
+  if (step.select) return `Choose "${step.select[1]}" in ${target(step.select[0])}`;
   if (step.press) return `Press ${step.press}`;
   if (step.scroll) return `Scroll to ${target(step.scroll)}`;
   if (step.wait) return `Wait about ${String(Math.round(step.wait / 100) / 10)} s: the page moves on by itself`;

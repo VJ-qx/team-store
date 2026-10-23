@@ -128,6 +128,7 @@ async function runStep(page, step) {
   else if (step.type) await loc(step.type[0]).pressSequentially(step.type[1]);
   else if (step.hover) await loc(step.hover).hover();
   else if (step.focus) await loc(step.focus).focus();
+  else if (step.select) await loc(step.select[0]).selectOption(step.select[1]);
   else if (step.press) await page.keyboard.press(step.press);
   else if (step.scroll) await loc(step.scroll).scrollIntoViewIfNeeded();
   else if (step.wait) await page.clock.runFor(step.wait);

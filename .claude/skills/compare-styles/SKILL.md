@@ -60,7 +60,7 @@ If none exists, write one. It must cover **every state the page can show**:
 
 Use `tools/parity/scenarios/landing-page.mjs` as the template. Prefer role selectors (`role=button[name="Sign in" s]`) and input placeholders; they also work on the Vue version later.
 
-Step types: `click`, `fill: [selector, value]`, `type: [selector, value]`, `hover`, `focus`, `press`, `scroll`, `wait` (milliseconds), `eval` (a JavaScript expression run in the page, for example to open a prototype's settings panel).
+Step types: `click`, `fill: [selector, value]`, `type: [selector, value]`, `select: [selector, option value]` (a `<select>` dropdown), `hover`, `focus`, `press`, `scroll`, `wait` (milliseconds), `eval` (a JavaScript expression run in the page, for example to open a prototype's settings panel).
 
 Other options:
 
