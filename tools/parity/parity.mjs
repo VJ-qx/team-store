@@ -72,8 +72,35 @@ async function cacheCdn(context) {
 const stripOrigin = (url) => url.replace(/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?/, '');
 
 // Pages that show random sample data (scenario `seedRandom: true`) get the same Math.random
-// sequence on both sides, so two copies of the same page render the same numbers.
-const SEEDED_RANDOM = `(() => { let s = 0x2545f491; Math.random = () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; })();`;
+// numbers on both sides. Each calling function gets its own seeded sequence, named after the
+// nearest named function on the stack (makeSeedStores, …), so a Vue conversion that keeps the
+// data functions draws the same numbers as the prototype, even though the frameworks themselves
+// call Math.random a different number of times.
+const SEEDED_RANDOM = `(() => {
+  const streams = new Map();
+  const seedOf = (name) => { let h = 0x811c9dc5; for (let i = 0; i < name.length; i++) { h ^= name.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0) || 0x2545f491; };
+  const SKIP = /^(random|map|forEach|filter|reduce|reduceRight|flatMap|some|every|find|findIndex|from|sort|call|apply|eval|Function|<anonymous>)$/;
+  const caller = () => {
+    for (const line of (new Error().stack || '').split('\\n').slice(2)) {
+      const m = line.match(/^\\s*at (?:new |async )?([^\\s(]+) \\(/);
+      if (!m) continue;
+      const name = m[1].split('.').pop();
+      if (!SKIP.test(name)) return name;
+    }
+    return '';
+  };
+  Math.random = function random() {
+    const key = caller();
+    let s = streams.has(key) ? streams.get(key) : seedOf(key);
+    s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0;
+    streams.set(key, s);
+    return s / 4294967296;
+  };
+})();`;
+
+// Console messages from the prototype host's in-browser JSX compiler (Babel), not from the page itself.
+// A Vue build never prints them, so they are left out of the comparison.
+const RUNTIME_NOISE = [/^\[BABEL\] Note: The code generator has deoptimised the styling of /];
 
 async function openPage(browser, viewport, { seedRandom = false } = {}) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
@@ -82,7 +109,7 @@ async function openPage(browser, viewport, { seedRandom = false } = {}) {
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
   const log = { errors: [], dialogs: [], requests: [], navigations: [], started: false };
-  page.on('console', (m) => { if (m.type() === 'error') log.errors.push(m.text()); });
+  page.on('console', (m) => { if (m.type() === 'error' && !RUNTIME_NOISE.some((r) => r.test(m.text()))) log.errors.push(m.text()); });
   page.on('pageerror', (e) => log.errors.push(String(e?.message || e)));
   page.on('dialog', async (d) => { log.dialogs.push(`${d.type()}: ${d.message()}`); await d.dismiss().catch(() => {}); });
   page.on('request', (r) => {
@@ -117,7 +144,7 @@ async function settle(page, ms) {
 }
 
 function describe(step) {
-  const [kind, value] = Object.entries(step).find(([k]) => k !== 'label');
+  const [kind, value] = Object.entries(step).find(([k]) => k !== 'label' && k !== 'on');
   return Array.isArray(value) ? `${kind} ${JSON.stringify(value[0])} = ${JSON.stringify(value[1])}` : `${kind} ${JSON.stringify(value)}`;
 }
 
@@ -396,20 +423,30 @@ try {
           else results.push({ where, checkpoint: 'load', diffs: [{ kind: 'errors', detail: `Console errors on load differ: ${JSON.stringify(startupErrors[0])} → ${JSON.stringify(startupErrors[1])}` }] });
         }
 
+        // A step with `on: 'prototype'` or `on: 'vue'` runs only on that kind of side, for example the
+        // prototype's settings panel and the Vue version's __paritySetProps hook reaching the same state.
+        // Side A is the prototype; side B is the prototype in styles mode and the Vue version in behavior mode.
+        const kinds = ['prototype', opts.mode === 'behavior' ? 'vue' : 'prototype'];
+        const runsOn = (step) => kinds.map((k) => !step || !step.on || step.on === k);
+        const oneSided = (step) => { const r = runsOn(step); return r[0] !== r[1]; };
         const steps = [null, ...(state.steps || [])];
         for (let n = 0; n < steps.length; n++) {
           const step = steps[n];
-          const checkpoint = step ? `${n}. ${describe(step)}` : '0. start';
+          const runs = runsOn(step);
+          if (!runs[0] && !runs[1]) continue;
+          const checkpoint = step ? `${n}. ${describe(step)}${oneSided(step) ? ` (${step.on} only)` : ''}` : '0. start';
           const diffs = [];
           if (step) {
-            const outcome = await Promise.all(pages.map((p) => runStep(p.page, step).then(() => null, (e) => e.message.split('\n')[0])));
+            const outcome = await Promise.all(pages.map((p, i) => (runs[i] ? runStep(p.page, step).then(() => null, (e) => e.message.split('\n')[0]) : null)));
             if (outcome[0] || outcome[1]) {
               if (outcome[0] !== outcome[1]) diffs.push({ kind: 'step', detail: `Step failed — A: ${outcome[0] || 'ok'} · B: ${outcome[1] || 'ok'}` });
               else notes.push(`${where}: step "${describe(step)}" failed on both sides: ${outcome[0]}`);
               results.push({ where, checkpoint, diffs });
               break;
             }
-            await Promise.all(pages.map((p) => settle(p.page, settleMs)));
+            await Promise.all(pages.map((p, i) => (runs[i] ? settle(p.page, settleMs) : null)));
+            // One-sided steps are compared once both sides are back in step: after the last one in a row.
+            if (oneSided(step) && n + 1 < steps.length && oneSided(steps[n + 1])) continue;
           }
           const events = pages.map((p) => takeEvents(p.log));
           diffs.push(...compareEvents(events[0], events[1]));
