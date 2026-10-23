@@ -1,0 +1,544 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". The other workspace screens: the Stores and Earnings tabs, the account sheet, Stock Vault and Workspace Settings.
+
+// ws-stores: Team Stores
+
+.wm-stores__bar-actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.wm-stores__new {
+  height: 44px;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 700;
+  color: $ink;
+  padding: 0 8px;
+}
+
+.wm-stores__content {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wm-stores__store-row-current {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid $divider;
+  background: $divider;
+}
+
+.wm-stores__store-name {
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-stores__store-meta {
+  font-size: 13px;
+  color: $muted;
+  margin-top: 1px;
+}
+
+.wm-stores__status-open {
+  font-size: 12px;
+  font-weight: 700;
+  background: #d8f5e3;
+  color: $ok-ink;
+  border-radius: 999px;
+  padding: 4px 9px;
+  flex-shrink: 0;
+}
+
+.wm-stores__store-row {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid $divider;
+}
+
+.wm-stores__status-closed {
+  font-size: 12px;
+  font-weight: 700;
+  background: #fdf3d3;
+  color: #8a6408;
+  border-radius: 999px;
+  padding: 4px 9px;
+  flex-shrink: 0;
+}
+
+.wm-stores__store-row-last {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.wm-stores__status-draft {
+  font-size: 12px;
+  font-weight: 700;
+  background: #dbeafe;
+  color: $blue-ink;
+  border-radius: 999px;
+  padding: 4px 9px;
+  flex-shrink: 0;
+}
+
+.wm-stores__archived-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: $muted;
+}
+
+// ws-earnings: Team Stores
+
+.wm-earnings__breakdown-chip {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wm-earnings__total {
+  font-family: $font-display;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wm-earnings__trend {
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.wm-earnings__sparkline {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 48px;
+  margin-top: 14px;
+}
+
+.wm-earnings__spark-40 {
+  flex: 1;
+  height: 40%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-55 {
+  flex: 1;
+  height: 55%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-48 {
+  flex: 1;
+  height: 48%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-62 {
+  flex: 1;
+  height: 62%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-70 {
+  flex: 1;
+  height: 70%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-58 {
+  flex: 1;
+  height: 58%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-66 {
+  flex: 1;
+  height: 66%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-80 {
+  flex: 1;
+  height: 80%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-74 {
+  flex: 1;
+  height: 74%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-85 {
+  flex: 1;
+  height: 85%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-78 {
+  flex: 1;
+  height: 78%;
+  background: $line-2;
+  border-radius: 3px;
+}
+
+.wm-earnings__spark-current {
+  flex: 1;
+  height: 100%;
+  background: $ink;
+  border-radius: 3px;
+}
+
+// ws-account
+
+.wm-account__topbar {
+  padding: 59px 16px 0;
+  background: $white;
+  border-bottom: 1px solid $line-2;
+}
+
+.wm-account__ghost {
+  flex: 1;
+  overflow: hidden;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: .5;
+}
+
+.wm-account__ghost-title {
+  height: 34px;
+  width: 60%;
+  background: $line-2;
+  border-radius: 6px;
+}
+
+.wm-account__ghost-card {
+  height: 200px;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+}
+
+.wm-account__sheet {
+  background: $white;
+  border-radius: 20px 20px 0 0;
+  padding: 8px 0 34px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -12px 40px rgba(0,0,0,.18);
+}
+
+.wm-account__sheet-handle {
+  width: 36px;
+  height: 5px;
+  border-radius: 999px;
+  background: $zinc-300;
+  margin: 4px auto 10px;
+}
+
+.wm-account__profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px 14px;
+  border-bottom: 1px solid $line-2;
+}
+
+.wm-account__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $ink;
+  color: $white;
+  font-size: 15px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wm-account__item {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+}
+
+.wm-account__item-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: $zinc-600;
+  background: $divider;
+  border-radius: 4px;
+  padding: 3px 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.wm-account__item-divided {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  border-top: 1px solid $line-2;
+  margin-top: 4px;
+}
+
+.wm-account__logout {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: $red-ink;
+}
+
+// ws-vault: Stock Vault
+
+.wm-vault__clear {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  padding: 0 8px;
+  justify-self: end;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.wm-vault__product-selected {
+  background: $white;
+  border: 2px solid $ink;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.wm-vault__check-selected {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: $ink;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.wm-vault__product-image {
+  aspect-ratio: 1;
+  background: $placeholder;
+}
+
+.wm-vault__swatch-blue {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $blue-ink;
+}
+
+.wm-vault__swatch-red {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $red;
+}
+
+.wm-vault__swatch-ink {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $ink;
+}
+
+.wm-vault__swatch-gold {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f5b400;
+}
+
+.wm-vault__swatch-more {
+  font-size: 11px;
+  color: $muted-2;
+  margin-left: 2px;
+}
+
+.wm-vault__product {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.wm-vault__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid $zinc-300;
+  background: $white;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.wm-vault__swatch-white {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $white;
+  border: 1px solid $zinc-300;
+  box-sizing: border-box;
+}
+
+.wm-vault__hint {
+  font-size: 12px;
+  color: $muted-2;
+  line-height: 1.5;
+}
+
+.wm-vault__action-bar {
+  padding: 10px 16px 0;
+  background: $white;
+  border-top: 1px solid $line-2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wm-vault__selection {
+  font-size: 13px;
+  font-weight: 700;
+  color: $muted;
+}
+
+.wm-vault__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.wm-vault__add-to-store {
+  height: 48px;
+  border-radius: 12px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wm-vault__start-store {
+  height: 48px;
+  border-radius: 12px;
+  background: $red;
+  color: $white;
+  border: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+// ws-settings: Workspace Settings
+
+.wm-workspace-settings__pricing-row {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  border-bottom: 1px solid $divider;
+  background: $divider;
+}
+
+.wm-workspace-settings__section-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.wm-workspace-settings__tabs {
+  display: flex;
+  background: $line-2;
+  border-radius: 10px;
+  padding: 3px;
+  height: 36px;
+  margin: 12px 16px;
+}
+
+.wm-workspace-settings__tab-active {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $white;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+
+.wm-workspace-settings__tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: $zinc-600;
+}
+
+.wm-workspace-settings__tier {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-top: 1px solid $divider;
+}

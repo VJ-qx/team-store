@@ -1,0 +1,7 @@
+// Moved from the inline styles of "Workspace Mobile.dc.html". The app viewport inside the phone frame. It takes every tap (onTap) and holds the screens and the toast.
+
+.wm-app {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}

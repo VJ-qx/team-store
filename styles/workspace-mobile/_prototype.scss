@@ -1,0 +1,26 @@
+@use "variables" as *;
+
+// Prototype-only: the page around the iPhone frame and the "Restart prototype" button.
+// Moved from the inline styles of "Workspace Mobile.dc.html". The iPhone frame (x-import IOSDevice) keeps its inline
+// style: the prototype runtime reads it to size the frame's wrapper; it is not applied as CSS.
+
+.wm-prototype {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 16px;
+}
+
+.wm-prototype__restart {
+  height: 36px;
+  padding: 0 14px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $zinc-600;
+}

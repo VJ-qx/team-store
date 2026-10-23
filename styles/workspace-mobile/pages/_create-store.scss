@@ -1,0 +1,292 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". The create-store wizard.
+
+// wiz1: New store
+
+.wm-wizard-basics__option-selected {
+  background: $white;
+  border: 2px solid $red;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.wm-wizard-basics__radio-selected {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 7px solid $red;
+  background: $white;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin-top: 1px;
+}
+
+.wm-wizard-basics__option {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.wm-wizard-basics__radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #c4c4c8;
+  background: $white;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin-top: 1px;
+}
+
+// wiz2: New store
+
+.wm-wizard-teams__skip {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  padding: 0 8px;
+  justify-self: end;
+  font-size: 16px;
+  font-weight: 600;
+  color: $muted;
+}
+
+.wm-wizard-teams__division {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid $divider;
+  background: #fafafb;
+}
+
+.wm-wizard-teams__team {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px 8px 32px;
+  border-bottom: 1px solid $divider;
+}
+
+.wm-wizard-teams__team-dot-blue {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: $blue-ink;
+}
+
+.wm-wizard-teams__team-dot-red {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: $red;
+}
+
+.wm-wizard-teams__team-dot-gold {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f5b400;
+}
+
+.wm-wizard-teams__add-team {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wm-wizard-teams__add-team-inherit {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 32px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.wm-wizard-teams__add-division {
+  height: 48px;
+  border-radius: 10px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+// wiz3: New store
+
+.wm-wizard-products__back {
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: transparent;
+  border: 0;
+  padding: 0 4px;
+  justify-self: start;
+  max-width: 130px;
+}
+
+.wm-wizard-products__image {
+  aspect-ratio: 1;
+  background: $placeholder;
+  position: relative;
+}
+
+.wm-wizard-products__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  background: $white;
+  border-radius: 4px;
+  padding: 3px 6px;
+}
+
+.wm-wizard-products__added-button {
+  margin-top: 10px;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  background: $ink;
+  color: $white;
+  border: 0;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.wm-wizard-products__add-button {
+  margin-top: 10px;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wm-wizard-products__summary {
+  background: $divider;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: $zinc-600;
+  line-height: 1.45;
+}
+
+.wm-wizard-products__count {
+  font-size: 14px;
+  color: $muted;
+  white-space: nowrap;
+}
+
+// wiz4: New store
+
+.wm-wizard-review__preview-header {
+  height: 64px;
+  background: $blue-ink;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+}
+
+.wm-wizard-review__preview-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $white;
+  color: $blue-ink;
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wm-wizard-review__preview-name {
+  color: $white;
+  font-weight: 800;
+  font-family: $font-display;
+  font-size: 16px;
+}
+
+.wm-wizard-review__preview-body {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wm-wizard-review__preview-line {
+  height: 10px;
+  width: 70%;
+  background: $line-2;
+  border-radius: 4px;
+}
+
+.wm-wizard-review__preview-tile {
+  flex: 1;
+  aspect-ratio: 1;
+  background: $placeholder;
+  border-radius: 6px;
+}
+
+.wm-wizard-review__preview-footer {
+  padding: 10px 14px;
+  border-top: 1px solid $divider;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wm-wizard-review__warning-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: $red-ink;
+}
+
+.wm-wizard-review__tax-alert {
+  background: $white;
+  border: 1px solid $line-2;
+  border-left: 3px solid $red;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.wm-wizard-review__deploy-disabled {
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  background: $line-2;
+  color: $muted-2;
+  border: 0;
+  font-size: 16px;
+  font-weight: 700;
+}

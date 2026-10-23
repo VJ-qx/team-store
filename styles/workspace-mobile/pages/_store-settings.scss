@@ -1,0 +1,821 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". A store's Settings and its sub-screens.
+
+// set-general: General
+
+.wm-settings-general__details {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  font-size: 14px;
+}
+
+.wm-settings-general__assets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid $divider;
+}
+
+.wm-settings-general__asset {
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.wm-settings-general__asset-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.wm-settings-general__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: #7c1d2b;
+  color: $white;
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wm-settings-general__color-primary {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #7c1d2b;
+}
+
+.wm-settings-general__color-accent {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f5b400;
+}
+
+.wm-settings-general__color-base {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: $white;
+  border: 1px solid $zinc-300;
+}
+
+.wm-settings-general__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid $divider;
+}
+
+.wm-settings-general__codes-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fdecea;
+  color: $red;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wm-settings-general__enabled {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #e7f5ed;
+  color: $ok-ink;
+  flex-shrink: 0;
+}
+
+.wm-settings-general__contact-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.wm-settings-general__contact-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: $red;
+  margin-bottom: 4px;
+}
+
+.wm-settings-general__contact-email {
+  font-size: 13px;
+  color: $muted;
+  word-break: break-all;
+}
+
+.wm-settings-general__contact-phone {
+  font-size: 13px;
+  color: $muted;
+  font-variant-numeric: tabular-nums;
+}
+
+.wm-settings-general__address {
+  padding: 11px 16px 11px 0;
+  font-weight: 600;
+  border-bottom: 1px solid $divider;
+  line-height: 1.4;
+}
+
+.wm-settings-general__contact-options {
+  padding: 11px 16px 11px 0;
+  display: flex;
+  gap: 6px;
+}
+
+.wm-settings-general__option-on {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: $ink;
+  color: $white;
+}
+
+.wm-settings-general__option-off {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: $divider;
+  color: $muted;
+}
+
+// set-edit: Store details
+
+.wm-settings-edit__save {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  padding: 0 8px;
+  justify-self: end;
+  font-size: 16px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wm-settings-edit__input-focused {
+  height: 48px;
+  border: 1px solid $ink;
+  border-radius: 10px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 16px;
+}
+
+.wm-settings-edit__caret {
+  width: 2px;
+  height: 20px;
+  background: $ink;
+  margin-left: 1px;
+}
+
+.wm-settings-edit__select {
+  height: 48px;
+  border: 1px solid $zinc-300;
+  border-radius: 10px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-size: 16px;
+}
+
+.wm-settings-edit__input-locked {
+  height: 48px;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  background: #f7f7f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-size: 16px;
+  color: $muted;
+}
+
+.wm-settings-edit__logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #7c1d2b;
+  color: $white;
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wm-settings-edit__colors {
+  display: flex;
+  gap: 4px;
+}
+
+.wm-settings-edit__color-primary {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #7c1d2b;
+}
+
+.wm-settings-edit__color-accent {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #f5b400;
+}
+
+.wm-settings-edit__color-base {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: $white;
+  border: 1px solid $zinc-300;
+}
+
+// set-codes: Store Codes
+
+.wm-settings-codes__code-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.wm-settings-codes__code {
+  font-family: $font-mono;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.wm-settings-codes__tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.wm-settings-codes__tag-entry {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 3px 7px;
+  background: $ink;
+  color: $white;
+}
+
+.wm-settings-codes__tag-tier {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 3px 7px;
+  background: $divider;
+  color: $ink;
+}
+
+.wm-settings-codes__schedule {
+  font-size: 13px;
+  color: $muted;
+  margin-top: 6px;
+}
+
+.wm-settings-codes__tag-promo {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 3px 7px;
+  background: #dbeafe;
+  color: $blue-ink;
+}
+
+.wm-settings-codes__starts {
+  font-weight: 700;
+  color: #8a6408;
+}
+
+.wm-settings-codes__expired {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  opacity: .5;
+}
+
+.wm-settings-codes__code-expired {
+  font-family: $font-mono;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-decoration: line-through;
+}
+
+// set-code
+
+.wm-settings-code__save {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  padding: 0 8px;
+  justify-self: end;
+  font-size: 16px;
+  font-weight: 700;
+  color: $muted-2;
+}
+
+.wm-settings-code__share-button {
+  height: 48px;
+  border-radius: 10px;
+  background: $ink;
+  color: $white;
+  border: 0;
+  font-size: 15px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wm-settings-code__url {
+  font-size: 13px;
+  color: $muted;
+  text-align: center;
+  font-family: $font-mono;
+  word-break: break-all;
+}
+
+.wm-settings-code__code-input {
+  height: 48px;
+  border: 1px solid $zinc-300;
+  border-radius: 10px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 16px;
+  font-family: $font-mono;
+  letter-spacing: .06em;
+}
+
+.wm-settings-code__value {
+  font-size: 16px;
+  color: $muted;
+}
+
+// set-schedule: Schedule & Status
+
+.wm-settings-schedule__label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.wm-settings-schedule__store-name {
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-settings-schedule__days-left {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #eef3fb;
+  color: $blue;
+  flex-shrink: 0;
+}
+
+.wm-settings-schedule__track {
+  height: 8px;
+  border-radius: 999px;
+  background: $divider;
+  overflow: hidden;
+}
+
+.wm-settings-schedule__fill {
+  width: 60%;
+  height: 100%;
+  background: $ink;
+  border-radius: 999px;
+}
+
+.wm-settings-schedule__dates {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: $muted-2;
+}
+
+.wm-settings-schedule__date-input {
+  height: 48px;
+  border: 1px solid $zinc-300;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+.wm-settings-schedule__per-team {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $divider;
+}
+
+.wm-settings-schedule__status-open {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #e7f5ed;
+  color: $ok-ink;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.wm-settings-schedule__danger-zone {
+  padding-top: 14px;
+  border-top: 1px solid #f3c9c5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wm-settings-schedule__danger-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $red-ink;
+}
+
+.wm-settings-schedule__archive {
+  height: 48px;
+  border-radius: 10px;
+  background: $white;
+  border: 1px solid $red;
+  color: $red-ink;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+// close-sheet: Schedule & Status
+
+.wm-close-sheet__ghost {
+  flex: 1;
+  overflow: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: .5;
+}
+
+.wm-close-sheet__ghost-card {
+  height: 300px;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+}
+
+.wm-close-sheet__body {
+  font-size: 15px;
+  color: $muted;
+  line-height: 1.55;
+}
+
+// set-team: Team & Roster
+
+.wm-settings-team__section-title {
+  padding: 14px 16px 6px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: $font-display;
+}
+
+.wm-settings-team__toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 14px;
+}
+
+.wm-settings-team__override {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fafafb;
+  border-top: 1px solid $divider;
+}
+
+.wm-settings-team__override-text {
+  flex: 1;
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.45;
+}
+
+.wm-settings-team__section {
+  padding: 14px 16px 6px;
+}
+
+.wm-settings-team__option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-top: 1px solid $divider;
+}
+
+// set-custom: Customization
+
+.wm-settings-custom__color {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.wm-settings-custom__color-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #7c1d2b;
+  flex-shrink: 0;
+}
+
+.wm-settings-custom__color-hex {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: $font-mono;
+}
+
+.wm-settings-custom__preview {
+  margin: 0 16px 16px;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.wm-settings-custom__preview-bar {
+  height: 6px;
+  background: #7c1d2b;
+}
+
+.wm-settings-custom__preview-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wm-settings-custom__preview-line {
+  height: 10px;
+  width: 60%;
+  background: $line-2;
+  border-radius: 4px;
+}
+
+.wm-settings-custom__preview-line-short {
+  height: 10px;
+  width: 40%;
+  background: $line-2;
+  border-radius: 4px;
+}
+
+.wm-settings-custom__preview-button {
+  align-self: flex-start;
+  background: #7c1d2b;
+  color: $white;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wm-settings-custom__announcement {
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.wm-settings-custom__hint {
+  padding: 10px 16px;
+  background: #fafafb;
+  border-top: 1px solid $divider;
+  font-size: 13px;
+  color: $muted;
+}
+
+.wm-settings-custom__count {
+  color: $muted-2;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+// set-people: People & Access
+
+.wm-settings-people__invite {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wm-settings-people__invite-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+
+.wm-settings-people__select {
+  height: 48px;
+  border: 1px solid $zinc-300;
+  border-radius: 10px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 16px;
+  color: $muted-2;
+}
+
+.wm-settings-people__invite-disabled {
+  height: 48px;
+  border-radius: 10px;
+  background: $line-2;
+  color: $muted-2;
+  border: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.wm-settings-people__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $ink;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.wm-settings-people__email {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-settings-people__status-active {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $ok-ink;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.wm-settings-people__avatar-pending {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $divider;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.wm-settings-people__status-invited {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #b45309;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.wm-settings-people__invited-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d97706;
+}
+
+// set-dist: Distribution
+
+.wm-settings-distribution__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.wm-settings-distribution__option-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: $divider;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wm-settings-distribution__tag-free {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $ok;
+  background: #e7f5ed;
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+.wm-settings-distribution__option-desc {
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+.wm-settings-distribution__label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.wm-settings-distribution__tag-saved {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $zinc-600;
+  background: $divider;
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+.wm-settings-distribution__team-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.wm-settings-distribution__team-note {
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.5;
+  margin-top: -6px;
+}
+
+.wm-settings-distribution__teams {
+  padding: 8px 16px 12px;
+  font-size: 13px;
+  color: $muted-2;
+}
