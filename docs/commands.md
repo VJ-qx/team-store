@@ -5,7 +5,7 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 | Command | What it does |
 |---|---|
 | `npm install` | Installs the tools (`sass`, `playwright-core`). Run once, and again after `package.json` changes. |
-| [`npm run styles`](#npm-run-styles) | Compiles `styles/app.scss` to `styles/app.css`. |
+| [`npm run styles`](#npm-run-styles) | Compiles `styles/app.scss` to `styles/app.css` and `styles/workspace.scss` to `styles/workspace.css`. |
 | [`npm run preview`](#npm-run-preview) | Serves the original and your version side by side for checking by hand. |
 | [`npm run checklist`](#npm-run-checklist) | Writes a manual check list: every state, its settings, and how to reach it. |
 | [`npm run parity`](#npm-run-parity) | Runs the page's user flows on two versions in Chrome and reports every difference. |
@@ -18,9 +18,16 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 npm run styles
 ```
 
-Compiles `styles/app.scss` (and everything it imports) to `styles/app.css`, which the page links. Run it after every SCSS change.
+Compiles both stylesheets. Run it after every SCSS change.
 
-**Never edit `styles/app.css` by hand.** It's overwritten on every compile.
+| Entry | Compiled to | Linked by |
+|---|---|---|
+| `styles/app.scss` | `styles/app.css` | `Landing Page.dc.html` |
+| `styles/workspace.scss` | `styles/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
+
+The workspace has its own entry so its global rules (fonts, resets, scrollbars) don't reach the landing page. Its partials are in `styles/workspace/`.
+
+**Never edit the `.css` files by hand.** They're overwritten on every compile.
 
 ---
 

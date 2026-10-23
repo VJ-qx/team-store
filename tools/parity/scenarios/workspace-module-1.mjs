@@ -20,14 +20,16 @@ const openSettings = {
 const closeSettings = { click: button('Close tweaks'), label: 'Close the settings panel (✕ at its top right)' };
 const fromSettings = (name) => [openSettings, { click: button(name, false), label: `In the settings panel, click "▶ ${name}"` }, closeSettings];
 const multiBrandSwitch = 'xpath=//*[normalize-space(text())="Multi-brand account"]/ancestor::*[.//*[@role="switch"]][1]//*[@role="switch"]';
+const signInMethod = 'xpath=//*[normalize-space(text())="Sign-in method"]/ancestor::*[.//select][1]//select';
 const openMyAccount = (account) => [
   { hover: button(account), label: `Hover the account button (${account.split(' ').map((w) => w[0]).join('')}) at the top right` },
   { click: 'role=menuitem[name="My Account" s]', label: 'Click "My Account" in the menu' },
 ];
 
 // account: the signed-in rep shown in the header. welcome: whether the page renders the welcome pop-up
-// (the integrated workspace defines it but never renders it).
-export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true } = {}) => [
+// (the integrated workspace defines it but never renders it). customizerOnly: whether the settings panel
+// offers the "Customizer only" sign-in method. archivedStores: how many sample archived stores My Account lists.
+export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true, customizerOnly = true, archivedStores = 3 } = {}) => [
   // ── Business verification (FR-1.10.2) and the access gate ──
   {
     name: 'business verification form', query: ACCESS_NONE, steps: [
@@ -109,6 +111,37 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true 
       { hover: button('Update password') },
       { click: button('Update password') },
       { wait: 800 },
+    ],
+  },
+  {
+    name: 'my account password must differ', query: SIGNED_IN, steps: [
+      ...openMyAccount(account),
+      { click: button('Change password', false) },
+      { fill: ['input[placeholder="••••••••••••"]', 'same-passphrase-123'] },
+      { fill: ['input[placeholder="At least 12 characters"]', 'same-passphrase-123'] },
+    ],
+  },
+  ...(!customizerOnly ? [] : [{
+    name: 'my account customizer only', query: SIGNED_IN, steps: [
+      openSettings,
+      { select: [signInMethod, 'customizer'], label: 'In the settings panel, set "Sign-in method" to "Customizer only"' },
+      closeSettings,
+      ...openMyAccount(account),
+      { wait: 300, label: 'Move the mouse away and wait for the account menu to close' }, // it would cover "Edit Profile"
+      { hover: button('Edit Profile', false) },
+      { click: button('Create password', false) },
+      { fill: ['input[placeholder="At least 12 characters"]', 'a new long passphrase'] },
+    ],
+  }]),
+  {
+    // Restoring every sample archived store shows the empty state.
+    name: 'my account no archived stores', query: SIGNED_IN, steps: [
+      ...openMyAccount(account),
+      ...Array.from({ length: archivedStores }, (_, i) => i + 1).flatMap((n) => [
+        { click: button('Store actions'), label: `Click the ⋯ menu on the first archived store (${n} of ${archivedStores})` },
+        { click: 'text="Unarchive"', label: 'Click "Unarchive" in the menu' },
+        { click: button('Restore Store', false) },
+      ]),
     ],
   },
   {

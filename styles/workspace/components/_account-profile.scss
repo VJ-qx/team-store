@@ -1,0 +1,1011 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of AccountProfile in workspace-app.jsx and workspace-app-integrated.jsx.
+// My Account page, with the add-a-customizer, password, and brand sign-in modals.
+
+.wx-account {
+  flex: 1;
+  padding: 32px 40px 120px;
+  background: #fafafb;
+}
+
+.wx-account__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.wx-account__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.wx-account__title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0;
+  color: $ink;
+  letter-spacing: -.01em;
+}
+
+.wx-account__lead {
+  font-size: 15px;
+  color: $muted;
+  margin: 8px 0 0;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.wx-account__edit-profile {
+  border: 1px solid $zinc-300;
+  background: $white;
+  color: $ink;
+  border-radius: 9px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.wx-account__identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 28px 0 28px;
+}
+
+.wx-account__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $ink;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  font-family: Archivo, sans-serif;
+  flex-shrink: 0;
+}
+
+.wx-account__identity-text {
+  min-width: 0;
+}
+
+.wx-account__name {
+  font-size: 19px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-account__email {
+  font-size: 14px;
+  color: $muted;
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-account__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Card A: personal info
+
+.wx-account__info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.wx-account__card-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  color: $ink;
+}
+
+.wx-account__read-only {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: $muted;
+  background: #f1f1f3;
+  border: 1px solid $line;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.wx-account__edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.wx-account__cancel {
+  border: 1px solid $zinc-300;
+  background: $white;
+  color: $ink;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.wx-account__save {
+  border: 0;
+  background: $ink;
+  color: $white;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.wx-account__edit {
+  border: 1px solid $zinc-300;
+  background: $white;
+  color: $ink;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-account__info-lead {
+  font-size: 14px;
+  color: $muted;
+  margin: 8px 0 28px;
+}
+
+.wx-account__strong {
+  color: $zinc-950;
+  font-weight: 700;
+}
+
+.wx-account__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 36px;
+}
+
+.wx-account__phone {
+  display: flex;
+  background: #f5f5f7;
+  border: 1px solid $line-2;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 48px;
+  cursor: default;
+}
+
+.wx-account__phone--locked {
+  cursor: not-allowed;
+}
+
+.wx-account__phone-country {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-right: 1px solid $line;
+}
+
+.wx-account__phone-flag {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.wx-account__phone-code {
+  font-size: 15px;
+  color: $zinc-600;
+}
+
+.wx-account__phone-number {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 15px;
+  color: $zinc-600;
+}
+
+// Sign-in & security
+
+.wx-account__security {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid $line-2;
+}
+
+.wx-account__security-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: $muted;
+  margin-bottom: 12px;
+}
+
+.wx-account__methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wx-account__method {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: $white;
+  flex-wrap: wrap;
+}
+
+.wx-account__method-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: $ink;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  font-family: Archivo, sans-serif;
+  flex-shrink: 0;
+}
+
+.wx-account__method-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-account__method-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-account__method-detail {
+  font-size: 13px;
+  color: $muted;
+  margin-top: 2px;
+}
+
+.wx-account__outline-button {
+  border: 1px solid $ink;
+  background: $white;
+  color: $ink;
+  border-radius: 9px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-account__ok-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ok;
+  background: $ok-soft;
+  border: 1px solid $ok-line;
+  border-radius: 999px;
+  padding: 8px 16px;
+  flex-shrink: 0;
+}
+
+.wx-account__security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  background: $bg-soft;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.wx-account__security-note-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: $ink;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-account__note-text {
+  font-size: 13px;
+  color: $zinc-600;
+  line-height: 1.55;
+  padding-top: 2px;
+}
+
+.wx-account__inline-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: $ink;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 13px;
+}
+
+// Card B: connected customizers
+
+.wx-account__brands-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.wx-account__card-heading {
+  min-width: 0;
+}
+
+.wx-account__card-lead {
+  font-size: 14px;
+  color: $muted;
+  margin: 8px 0 0;
+}
+
+.wx-account__add {
+  border: 1px solid $zinc-300;
+  background: $white;
+  color: $ink;
+  border-radius: 9px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.wx-account__dealer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: $ink;
+  border-radius: 12px;
+  padding: 16px 24px;
+}
+
+.wx-account__dealer-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.12);
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-account__dealer-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-account__dealer-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $zinc-400;
+}
+
+.wx-account__dealer-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: $white;
+  margin-top: 4px;
+}
+
+.wx-account__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(74,222,128,.12);
+  border-radius: 999px;
+  padding: 8px 12px;
+  flex-shrink: 0;
+}
+
+.wx-account__brands-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: $muted;
+  margin: 28px 0 12px;
+}
+
+.wx-account__brands {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wx-account__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 16px 20px;
+  background: $white;
+}
+
+.wx-account__brand--primary {
+  border: 1px solid #f0c64a;
+  background: #fffdf5;
+}
+
+.wx-account__star {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.wx-account__star-button {
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  line-height: 0;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.wx-account__star-button--disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.wx-account__tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: 212px;
+  background: $ink;
+  color: $white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  text-align: center;
+  z-index: 20;
+  box-shadow: 0 8px 22px rgba(20,20,30,.28);
+  pointer-events: none;
+}
+
+.wx-account__tooltip-arrow {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid $ink;
+}
+
+.wx-account__brand-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-account__brand-name {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: $ink;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-account__primary-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: #a67c00;
+  background: $amber-soft;
+  border: 1px solid #f0d98a;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.wx-account__brand-desc {
+  font-size: 13px;
+  color: $muted;
+  margin-top: 2px;
+}
+
+// Card C: archived stores
+
+.wx-account__archive-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wx-account__archive-lead {
+  font-size: 14px;
+  color: $muted;
+  margin: 8px 0 0;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.wx-account__archive-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $zinc-600;
+  background: #f1f1f3;
+  border: 1px solid $line;
+  border-radius: 999px;
+  padding: 6px 14px;
+  flex-shrink: 0;
+}
+
+.wx-account__archive-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 20px 0 4px;
+  background: $bg-soft;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.wx-account__archive-note-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: $amber-soft;
+  color: #92670b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-account__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px 28px;
+  color: $muted-2;
+}
+
+.wx-account__empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f5f5f7;
+  border: 1px solid $line-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.wx-account__empty-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: $zinc-600;
+}
+
+.wx-account__empty-text {
+  font-size: 13px;
+  color: $muted-2;
+  margin-top: 4px;
+}
+
+.wx-account__archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+// Add-a-customizer modal
+
+.wx-account__picker {
+  padding: 28px 32px 24px;
+  position: relative;
+}
+
+.wx-account__modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: $muted-2;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-account__modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-account__picker-lead {
+  font-size: 13.5px;
+  color: $muted;
+  margin-top: 6px;
+  line-height: 1.5;
+  max-width: 420px;
+}
+
+.wx-account__search {
+  position: relative;
+  margin-top: 20px;
+}
+
+.wx-account__search-input {
+  width: 100%;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 11px 14px 11px 40px;
+  font-size: 14.5px;
+  outline: none;
+}
+
+.wx-account__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.wx-account__no-options {
+  padding: 32px 12px;
+  text-align: center;
+  font-size: 13.5px;
+  color: $muted-2;
+}
+
+.wx-account__option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fafafa;
+  flex-wrap: wrap;
+}
+
+.wx-account__option--no-account {
+  border: 1px dashed $zinc-300;
+}
+
+.wx-account__option--connect {
+  background: $white;
+}
+
+.wx-account__option-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-account__option-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-account__option-desc {
+  font-size: 12.5px;
+  color: $muted;
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+.wx-account__option-connect {
+  border: 1px solid $ink;
+  background: $white;
+  color: $ink;
+  border-radius: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.wx-account__pending-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #92670b;
+  background: $amber-soft;
+  border: 1px solid #f0d98a;
+  border-radius: 999px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+}
+
+.wx-account__option-actions {
+  display: flex;
+  gap: 8px;
+  flex-basis: 100%;
+  padding-left: 56px;
+  flex-wrap: wrap;
+}
+
+.wx-account__request {
+  border: 0;
+  background: $ink;
+  color: $white;
+  border-radius: 8px;
+  padding: 8px 13px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.wx-account__other-email {
+  border: 1px solid $zinc-300;
+  background: $white;
+  color: $ink;
+  border-radius: 8px;
+  padding: 8px 13px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.wx-account__picker-help {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid $line-2;
+  font-size: 12.5px;
+  color: $muted-2;
+  line-height: 1.5;
+}
+
+.wx-account__help-strong {
+  color: $zinc-600;
+  font-weight: 700;
+}
+
+// Password modal (the brand sign-in modal reuses these classes)
+
+.wx-account__modal-body {
+  padding: 32px 36px 32px;
+  position: relative;
+}
+
+.wx-account__password-lead {
+  font-size: 13.5px;
+  color: $muted;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.wx-account__password-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.wx-account__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wx-account__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: #3f3f46;
+}
+
+.wx-account__input {
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  outline: none;
+  width: 100%;
+}
+
+.wx-account__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wx-account__show-toggle {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $zinc-600;
+  cursor: pointer;
+}
+
+.wx-account__error {
+  font-size: 12.5px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.wx-account__password-submit {
+  margin-top: 22px;
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  padding: 15px;
+  background: $ink;
+  color: $white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wx-account__password-submit--disabled {
+  background: $line;
+  color: $muted-2;
+  cursor: default;
+}
+
+.wx-account__password-note {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: $muted-2;
+  line-height: 1.5;
+  text-align: center;
+}
+
+// Brand sign-in modal
+
+.wx-account__back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: $muted;
+  padding: 6px 8px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.wx-account__login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.wx-account__login-lead {
+  font-size: 13.5px;
+  color: $muted;
+  margin-top: 4px;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.wx-account__login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wx-account__login-submit {
+  margin-top: 24px;
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  padding: 16px;
+  background: $ink;
+  color: $white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wx-account__login-submit--disabled {
+  background: $line;
+  color: $muted-2;
+  cursor: default;
+}
+
+.wx-account__login-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: $muted-2;
+}

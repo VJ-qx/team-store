@@ -1,0 +1,345 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of FeatureGate and Crosshairs in workspace-app.jsx and workspace-app-integrated.jsx.
+// The access gate: a full-viewport splash shown to reps without Team Stores access.
+
+.wx-gate {
+  position: fixed;
+  inset: 0;
+  flex: none;
+  min-width: 0;
+  min-height: auto;
+  overflow: hidden;
+  background: $ink;
+  color: $white;
+  font-family: $font-sans;
+  display: flex;
+  flex-direction: column;
+}
+
+.wx-gate--embedded {
+  position: relative;
+  inset: auto;
+  flex: 1;
+  min-height: calc(100vh - 114px);
+}
+
+.wx-gate__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 32%;
+}
+
+.wx-gate__wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, rgba(8,8,10,.95) 0%, rgba(8,8,10,.86) 26%, rgba(8,8,10,.5) 48%, rgba(8,8,10,.12) 70%, rgba(8,8,10,.42) 100%);
+}
+
+.wx-gate__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,8,10,.6) 0%, transparent 16%, transparent 60%, rgba(8,8,10,.82) 100%);
+}
+
+.wx-gate__bloom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  background: radial-gradient(110% 70% at 88% 8%, rgba(225,37,27,.45), transparent 50%);
+}
+
+// Micro-header (standalone only)
+
+.wx-gate__header {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+}
+
+.wx-gate__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wx-gate__logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.wx-gate__divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,.22);
+}
+
+.wx-gate__tag {
+  font-family: $font-mono;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 4px 12px;
+}
+
+.wx-gate__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.82);
+  padding: 8px 2px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  transition: color .14s ease, border-color .14s ease;
+}
+
+.wx-gate__back-arrow {
+  font-size: 15px;
+  line-height: 1;
+}
+
+// Hero content
+
+.wx-gate__hero {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(8px, 2vh, 28px) 40px;
+  max-width: 980px;
+}
+
+.wx-gate__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(12px, 1.8vh, 20px);
+  font-family: $font-mono;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+}
+
+.wx-gate__eyebrow-rule {
+  width: 32px;
+  height: 2px;
+  background: $red;
+  display: inline-block;
+}
+
+.wx-gate__title {
+  margin: 0;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: clamp(34px, 5.4vh, 70px);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 30px rgba(0,0,0,.5);
+  max-width: 16ch;
+}
+
+.wx-gate__accent {
+  color: $red;
+}
+
+.wx-gate__lead {
+  margin: clamp(12px, 2vh, 24px) 0 0;
+  max-width: 560px;
+  color: rgba(255,255,255,.82);
+  font-size: clamp(13px, 1.7vh, 17px);
+  line-height: 1.5;
+  text-wrap: pretty;
+  text-shadow: 0 1px 12px rgba(0,0,0,.5);
+}
+
+.wx-gate__notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(16px, 2.4vh, 28px);
+  align-self: flex-start;
+  max-width: 600px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 8px 16px;
+}
+
+.wx-gate__notice-text {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.78);
+}
+
+.wx-gate__notice-strong {
+  color: $white;
+  font-weight: 700;
+}
+
+.wx-gate__actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: clamp(16px, 2.6vh, 32px);
+}
+
+.wx-gate__apply {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: $red;
+  color: $white;
+  border: none;
+  padding: 16px 28px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 14px 40px rgba(225,37,27,.4);
+  transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+.wx-gate__enter {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,.82);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 4px 0;
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  text-shadow: 0 1px 10px rgba(0,0,0,.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-gate__enter-arrow {
+  font-size: 14px;
+  line-height: 1;
+}
+
+// Pillar grid
+
+.wx-gate__pillars {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+
+.wx-gate__pillar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: clamp(12px, 2.2vh, 24px) clamp(20px, 2vw, 40px);
+  border-left: 1px solid rgba(255,255,255,.14);
+  background: rgba(10,10,12,.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.wx-gate__pillar--first {
+  border-left: none;
+}
+
+.wx-gate__pillar-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,.22);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $red;
+}
+
+.wx-gate__pillar-title {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  color: $white;
+}
+
+.wx-gate__pillar-body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.62);
+  text-wrap: pretty;
+}
+
+// Crosshairs: the corner frame. Its colour comes from the color prop and its offsets from the caller, so both stay inline.
+
+.wx-crosshairs__tick {
+  position: absolute;
+}
+
+.wx-crosshairs__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+
+.wx-crosshairs__corner-v {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 16px;
+}
+
+.wx-crosshairs__corner-h {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 2px;
+  width: 16px;
+}
+
+.wx-crosshairs {
+  position: absolute;
+  inset: 28px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.wx-crosshairs__frame {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,.08);
+}
