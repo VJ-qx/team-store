@@ -141,7 +141,14 @@ function collectStyles() {
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'TEMPLATE', 'NOSCRIPT', 'TITLE', 'BASE']);
   const hash = (s) => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); };
   // Sorted: Chrome enumerates custom properties in no fixed order.
-  const styleString = (cs) => Array.from(cs).sort().map((p) => p + ':' + cs.getPropertyValue(p)).join(';');
+  // Margins are compared by their computed CSS value ("auto", "12px"), not the resolved pixels:
+  // Chrome sometimes reports an auto margin as 0px although the element is laid out the same.
+  // Any visible effect of a margin still shows in the element's box and the pixel diff.
+  const value = (cs, p, el) => {
+    if (el && p.startsWith('margin') && el.computedStyleMap) { try { const v = el.computedStyleMap().get(p); if (v) return String(v); } catch {} }
+    return cs.getPropertyValue(p);
+  };
+  const styleString = (cs, el) => Array.from(cs).sort().map((p) => p + ':' + value(cs, p, el)).join(';');
   const pseudo = (el, which) => {
     const cs = getComputedStyle(el, which);
     const c = cs.getPropertyValue('content');
@@ -155,7 +162,7 @@ function collectStyles() {
     const text = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim().slice(0, 80);
     out.push({
       key, tag: el.tagName.toLowerCase(), id: el.id || '', cls: (el.getAttribute('class') || '').trim().split(/\s+/)[0] || '', text,
-      hash: hash(styleString(getComputedStyle(el)) + pseudo(el, '::before') + pseudo(el, '::after')),
+      hash: hash(styleString(getComputedStyle(el), el) + pseudo(el, '::before') + pseudo(el, '::after')),
       box: [r.x, r.y, r.width, r.height].map((v) => Math.round(v * 100) / 100),
     });
     const counts = {};
@@ -171,10 +178,19 @@ function collectStyles() {
   return out;
 }
 function styleDetails(keys) {
-  const read = (cs) => { const o = {}; for (let i = 0; i < cs.length; i++) o[cs[i]] = cs.getPropertyValue(cs[i]); return o; };
+  const read = (cs, el) => {
+    const o = {};
+    for (let i = 0; i < cs.length; i++) {
+      const p = cs[i];
+      let v = cs.getPropertyValue(p);
+      if (el && p.startsWith('margin') && el.computedStyleMap) { try { const t = el.computedStyleMap().get(p); if (t) v = String(t); } catch {} }
+      o[p] = v;
+    }
+    return o;
+  };
   return keys.map((k) => {
     const el = window.__parityEls?.get(k);
-    return el ? { self: read(getComputedStyle(el)), '::before': read(getComputedStyle(el, '::before')), '::after': read(getComputedStyle(el, '::after')) } : null;
+    return el ? { self: read(getComputedStyle(el), el), '::before': read(getComputedStyle(el, '::before')), '::after': read(getComputedStyle(el, '::after')) } : null;
   });
 }
 const label = (e) => `<${e.tag}${e.id ? '#' + e.id : ''}${e.cls ? '.' + e.cls : ''}>${e.text ? ` "${e.text.slice(0, 40)}"` : ''}`;
