@@ -5,7 +5,8 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 | Command | What it does |
 |---|---|
 | `npm install` | Installs the tools (`sass`, `playwright-core`). Run once, and again after `package.json` changes. |
-| [`npm run styles`](#npm-run-styles) | Compiles `styles/app.scss` to `styles/app.css`. |
+| [`npm run styles`](#npm-run-styles) | Compiles `styles/app.scss` to `styles/app.css` and `styles/workspace.scss` to `styles/workspace.css`. |
+| [`npm run dev`](#npm-run-dev) | Starts the Vue version (Vite dev server on http://localhost:5173/). |
 | [`npm run preview`](#npm-run-preview) | Serves the original and your version side by side for checking by hand. |
 | [`npm run checklist`](#npm-run-checklist) | Writes a manual check list: every state, its settings, and how to reach it. |
 | [`npm run parity`](#npm-run-parity) | Runs the page's user flows on two versions in Chrome and reports every difference. |
@@ -18,9 +19,36 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 npm run styles
 ```
 
-Compiles `styles/app.scss` (and everything it imports) to `styles/app.css`, which the page links. Run it after every SCSS change.
+Compiles both stylesheets. Run it after every SCSS change.
 
-**Never edit `styles/app.css` by hand.** It's overwritten on every compile.
+| Entry | Compiled to | Linked by |
+|---|---|---|
+| `styles/app.scss` | `styles/app.css` | `Landing Page.dc.html` |
+| `styles/workspace.scss` | `styles/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
+
+The workspace has its own entry so its global rules (fonts, resets, scrollbars) don't reach the landing page. Its partials are in `styles/workspace/`.
+
+**Never edit the `.css` files by hand.** They're overwritten on every compile.
+
+---
+
+## npm run dev
+
+```bash
+npm run dev
+```
+
+Starts the Vue version. One page per prototype page:
+
+| Vue page | Prototype page | Source |
+|---|---|---|
+| http://localhost:5173/ | `Landing Page.dc.html` | `src/pages/LandingPage.vue` |
+| http://localhost:5173/workspace.html | `Workspace.dc.html` | `src/pages/WorkspacePage.vue` |
+| http://localhost:5173/workspace-integrated.html | `Marucci Workspace.dc.html` | the same page, with the integration flag on |
+
+The workspace takes the same URL settings as the prototype, for example `workspace.html?brand=prolook&auth=native-connected`. Only the Module 1 screens are converted so far (access gate and business verification, welcome pop-up, Overview, My Account); the Stores, Earnings and other tabs show an empty page.
+
+The prototype's settings panel doesn't exist in Vue. In the development build, the browser console has `__paritySetProps({ … })` instead: settings such as `{ authMode: "customizer" }` or `{ ssoMultiBrand: true }`, and the panel's screen shortcuts as `{ screen: "gate" }`, `{ screen: "access-pending" }` or `{ screen: "stripe-verify" }`.
 
 ---
 
@@ -122,8 +150,10 @@ It ends with **Outside this page**: where the flows lead next, such as the works
 # SCSS step: is the extracted page identical to main?
 npm run parity -- tools/parity/scenarios/landing-page.mjs --mode styles
 
-# Vue step: does the Vue page behave like the prototype?
+# Vue step: does the Vue page behave like the prototype? (start npm run dev first)
 npm run parity -- tools/parity/scenarios/landing-page.mjs --mode behavior --b http://localhost:5173/
+npm run parity -- tools/parity/scenarios/workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace.html
+npm run parity -- tools/parity/scenarios/marucci-workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
 ```
 
 Opens both versions in headless Chrome and runs every state in the scenario. It compares them at the start and after every step. A full landing-page run (18 states, 129 checkpoints) takes about 2 minutes.

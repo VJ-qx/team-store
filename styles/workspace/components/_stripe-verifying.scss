@@ -1,0 +1,95 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of StripeVerifying in workspace-app.jsx and workspace-app-integrated.jsx.
+// Stripe verification screen. Its accSpin and accPop keyframes stay in the <style> element the component renders.
+
+.wx-stripe-verify {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: #0c0c0e;
+  color: $white;
+  font-family: $font-sans;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.wx-stripe-verify__content {
+  text-align: center;
+  max-width: 560px;
+}
+
+.wx-stripe-verify__status {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 40px;
+}
+
+.wx-stripe-verify__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.10);
+}
+
+.wx-stripe-verify__spinner {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: $stripe;
+  border-right-color: $stripe;
+  animation: accSpin 0.9s linear infinite;
+}
+
+.wx-stripe-verify__done {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: $ok;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: accPop .35s cubic-bezier(.2,1.2,.4,1) both;
+}
+
+.wx-stripe-verify__icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $stripe;
+}
+
+.wx-stripe-verify__eyebrow {
+  font-family: $font-mono;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 20px;
+}
+
+.wx-stripe-verify__title {
+  margin: 0 0 24px;
+  font-family: $font-display;
+  font-weight: 900;
+  font-size: clamp(32px, 4.5vw, 52px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.wx-stripe-verify__lead {
+  margin: 0 auto;
+  max-width: 460px;
+  color: rgba(255,255,255,.62);
+  font-size: 16px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
