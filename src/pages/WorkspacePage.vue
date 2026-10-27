@@ -1,7 +1,7 @@
 <!-- Converted from workspace-app.jsx / workspace-app-integrated.jsx: App, for the Module 1 screens — the
      access gate and business verification (FR-1.10.2), the welcome pop-up after sign-in, the Overview,
-     and My Account. The routing logic is the prototype's; screens that are not converted yet (Stores,
-     Earnings, Orders, the store dashboard, …) render nothing.
+     and My Account — and a store's page (its Home tab and the setup guides). The routing logic is the
+     prototype's; screens that are not converted yet (Stores, Earnings, Orders, …) render nothing.
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
      src/workspace/data/settings.js), the #frame= deep links and the frame overview grid. -->
 <template>
@@ -24,6 +24,7 @@
     <div :key="screen" :style="{ display: 'flex', minHeight: inEditor ? '100vh' : 'calc(100vh - 114px)', animation: 'pageIn .22s ease-out both' }">
       <OverviewDashboard v-if="screen === 'overview'" :key="overviewKey" :isEmpty="tweaks.overviewEmpty || tweaks.zeroState" :stores="activeStores" :leagues="leagues" :onManageStore="(id, tab) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab(tab || 'home'); setScreen('dashboard'); }" :onGoStores="goStores" :onViewOrders="() => { setOrdersOrigin('overview'); setNavTab('overview'); setScreen('orders'); }" :onAdd="goCreate" />
       <AccountProfile v-if="screen === 'account'" :authMode="INT ? 'native' : tweaks.authMode" :onEditProfile="onEditProfile" :onToast="setToast" :archivedStores="archivedStores" :onManageStore="(id) => { setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onUnarchive="(id) => setRestoreTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
+      <ManageStoreWorkspace v-if="screen === 'dashboard' && activeStore" :store="activeStore" :readOnly="!!activeStore.archived" :onBack="goStores" :onCustomize="() => setScreen('customizer')" :initialTab="dashboardTab" :liveStores="stores.filter((s) => s.live)" :onLaunch="handleLaunch" :onSetStatus="handleSetStatus" :onViewStore="handleViewStore" :onSwitchStore="(id) => { setActiveStoreId(id); setScreen('dashboard'); }" :onProductsChange="(changes) => updateStore(activeStore.id, changes)" :onUpdateStore="(patch) => updateStore(activeStore.id, patch)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
     </div>
     <RestoreStoreModal :open="!!restoreTargetStore" :store="restoreTargetStore" :onClose="() => setRestoreTargetId(null)" :onConfirm="confirmRestore" />
     <!-- Logout confirmation — confirm lands on the Team Stores landing page -->
@@ -38,6 +39,8 @@
       </div>
     </Modal>
     <Toast :message="toast" :onDone="() => setToast(null)" />
+    <!-- Store Setup Guide — informational modal, replaces the corner checklist -->
+    <StoreGuideModal :open="guideOpen && !isFrameRoute && !tweaks.overviewMode" :onClose="dismissGuide" :onComplete="() => persistFirstStore(false)" />
     <!-- The integrated workspace has no Customizer sign-in hand-off, so it never shows the welcome pop-up. -->
     <WelcomeSSOModal v-if="!INT" :open="showWelcome && !isFrameRoute && !tweaks.overviewMode" :originId="ssoOriginId" :multiBrand="tweaks.ssoMultiBrand" :native="tweaks.authMode === 'native'" :onConfirm="confirmWelcome" />
   </div>
@@ -59,7 +62,9 @@ import Modal from '../components/workspace/common/Modal.vue';
 import Toast from '../components/workspace/common/Toast.vue';
 import TeamStoresHeader from '../components/workspace/header/TeamStoresHeader.vue';
 import OverviewDashboard from '../components/workspace/overview/OverviewDashboard.vue';
+import ManageStoreWorkspace from '../components/workspace/store/ManageStoreWorkspace.vue';
 import RestoreStoreModal from '../components/workspace/stores/RestoreStoreModal.vue';
+import StoreGuideModal from '../components/workspace/guide/StoreGuideModal.vue';
 import WelcomeSSOModal from '../components/workspace/welcome/WelcomeSSOModal.vue';
 
 // The page the access screens, the account menu and logout send the rep to. It doesn't exist in the
@@ -68,7 +73,7 @@ const LANDING_FILE = "Team Stores Landing.dc.html";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, FeatureGate, Modal, OverviewDashboard, RestoreStoreModal, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -88,6 +93,12 @@ export default {
       navTab: "overview",
       showWelcome: false,
       showLogoutModal: false,
+      // Store Setup Guide — informational modal; dismissal is per rep, not per store.
+      guideOpen: false,
+      // is_first_store: global flag (the onboarding tour, not converted yet, reads it).
+      isFirstStore: (() => {
+        try { return localStorage.getItem("prolook_is_first_store") !== "false"; } catch (e) { return true; }
+      })(),
       ordersOrigin: "overview", // which tab the All-Stores Orders page was opened from
       primaryBrand: null,
       // Session grant: a no-access user who passes the splash unlocks Team Stores for the rest of the session.
@@ -121,6 +132,7 @@ export default {
     },
     accountName() { return `${ACCOUNT_PROFILE.firstName} ${ACCOUNT_PROFILE.lastName}`; },
     restoreTargetStore() { return this.stores.find((s) => s.id === this.restoreTargetId); },
+    activeStore() { return this.stores.find((s) => s.id === this.activeStoreId); },
     activeStores() { return this.stores.filter((s) => !s.archived); },
     archivedStores() { return this.stores.filter((s) => s.archived); },
     // Store-editor screens drop the storefront chrome entirely.
@@ -138,6 +150,8 @@ export default {
   watch: {
     // React: useEffect on [stores] — user-created stores survive a reload.
     stores() { this.persistCreatedStores(); },
+    // React: useEffect on [screen] — the Store Setup Guide opens the first time a rep opens a store.
+    screen() { this.autoOpenGuide(); },
   },
   created() {
     this.primaryBrand = this.ssoOriginId;
@@ -153,6 +167,7 @@ export default {
   },
   mounted() {
     // The prototype's effects, in their order.
+    this.autoOpenGuide();
     this.persistCreatedStores();
     if (!INTEGRATION.on) {
       // Native sign-in / sign-up hand-off from the landing page (?auth=native | native-new) sets the persona.
@@ -186,6 +201,30 @@ export default {
     setCreateTplStore(v) { this.createTplStore = v; },
     setShowLogoutModal(v) { this.showLogoutModal = v; },
     goLandingFile() { window.location.href = encodeURI(LANDING_FILE); },
+    autoOpenGuide() {
+      if (this.screen !== "dashboard" || this.isFrameRoute) return;
+      let seen = false;
+      try { seen = localStorage.getItem("ts_setup_guide_seen_v1") === "1"; } catch (e) {}
+      if (!seen) this.guideOpen = true;
+    },
+    dismissGuide() { this.guideOpen = false; try { localStorage.setItem("ts_setup_guide_seen_v1", "1"); } catch (e) {} },
+    persistFirstStore(v) {
+      this.isFirstStore = v;
+      try { localStorage.setItem("prolook_is_first_store", v ? "true" : "false"); } catch (e) {}
+    },
+    handleLaunch(id) {
+      this.updateStore(id, { live: true, status: "active" });
+      this.toast = "Your store is now live";
+      // Milestone 3 signal for the onboarding tour.
+      window.dispatchEvent(new CustomEvent("tour:store-live"));
+    },
+    handleSetStatus(id, status) {
+      this.updateStore(id, { status });
+      this.toast = status === "hold" ? "Store put on hold" : "Store is active again";
+    },
+    handleViewStore(s) {
+      this.toast = `Opening ${s.teamName || s.storeTitle} storefront…`;
+    },
     confirmWelcome(chosen) {
       this.primaryBrand = chosen || this.ssoOriginId;
       this.showWelcome = false;
