@@ -1,0 +1,66 @@
+// Moved from the inline styles of "Workspace Mobile.dc.html". Small layout helpers shared by many screens.
+
+.wm-grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.wm-fill {
+  flex: 1;
+}
+
+.wm-fixed {
+  flex-shrink: 0;
+}
+
+.wm-trailing {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.wm-spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wm-hstack {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wm-hstack--wrap {
+  flex-wrap: wrap;
+}
+
+.wm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wm-section--gap-8 {
+  gap: 8px;
+}
+
+.wm-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.wm-grid-2--gap-12 {
+  gap: 12px;
+}
+
+.wm-swatches {
+  display: flex;
+  gap: 6px;
+}
+
+.wm-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

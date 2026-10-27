@@ -1,0 +1,35 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". List rows inside cards. The modifiers set the minimum height, the gap and the padding; --last drops the divider.
+
+.wm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid $divider;
+}
+
+.wm-row--56 {
+  min-height: 56px;
+}
+
+.wm-row--60 {
+  min-height: 60px;
+}
+
+.wm-row--64 {
+  min-height: 64px;
+}
+
+.wm-row--gap-14 {
+  gap: 14px;
+}
+
+.wm-row--pad-12 {
+  padding: 12px 16px;
+}
+
+.wm-row--last {
+  border-bottom: 0;
+}

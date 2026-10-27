@@ -1,0 +1,175 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". Text styles.
+
+.wm-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.wm-title--bold {
+  font-weight: 700;
+}
+
+.wm-amount {
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.wm-amount--sm {
+  font-size: 15px;
+}
+
+.wm-amount--lg {
+  font-size: 17px;
+}
+
+.wm-meta {
+  font-size: 13px;
+  color: $muted-2;
+}
+
+.wm-meta--mt-2 {
+  margin-top: 2px;
+}
+
+.wm-meta--mt-3 {
+  margin-top: 3px;
+}
+
+.wm-meta--relaxed {
+  line-height: 1.5;
+}
+
+.wm-note {
+  font-size: 13px;
+  color: $muted;
+}
+
+.wm-note--mt-2 {
+  margin-top: 2px;
+}
+
+.wm-note--desc {
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+.wm-subtle {
+  font-size: 14px;
+  color: $muted;
+}
+
+.wm-subtle--lead {
+  margin-top: 4px;
+}
+
+.wm-subtle--relaxed {
+  line-height: 1.5;
+}
+
+.wm-caption {
+  font-size: 12px;
+  color: $muted-2;
+}
+
+.wm-caption--mt-6 {
+  margin-top: 6px;
+}
+
+.wm-danger-note {
+  font-size: 13px;
+  color: $red-ink;
+  font-weight: 600;
+}
+
+.wm-danger-note--mt-1 {
+  margin-top: 1px;
+}
+
+.wm-danger-note--mt-2 {
+  margin-top: 2px;
+}
+
+.wm-danger {
+  color: $red-ink;
+  font-weight: 600;
+}
+
+.wm-info {
+  color: $blue;
+  font-weight: 600;
+}
+
+.wm-up {
+  font-weight: 700;
+  color: $ok-ink;
+}
+
+.wm-strong {
+  color: $ink;
+}
+
+.wm-muted {
+  color: $muted;
+}
+
+.wm-count {
+  font-size: 14px;
+  color: $muted-2;
+}
+
+.wm-overline {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  color: $muted;
+  text-transform: uppercase;
+}
+
+.wm-section-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: $muted-2;
+  text-transform: uppercase;
+}
+
+.wm-heading {
+  font-size: 17px;
+  font-weight: 800;
+  font-family: $font-display;
+}
+
+.wm-heading--mt-4 {
+  margin-top: 4px;
+}
+
+.wm-display-title {
+  font-family: $font-display;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.wm-option-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.wm-figure {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.wm-action-text {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wm-code {
+  font-size: 17px;
+  font-weight: 700;
+  font-family: $font-mono;
+  letter-spacing: .06em;
+}
