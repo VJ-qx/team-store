@@ -4,7 +4,7 @@
   "description": "Team Store handover from Claude Design: SCSS extraction and Vue conversion",
   "scripts": {
     "parity": "node tools/parity/parity.mjs",
-    "styles": "sass styles/app.scss:styles/app.css styles/workspace-mobile.scss:styles/workspace-mobile.css --no-source-map",
+    "styles": "sass styles/app.scss:styles/app.css styles/workspace.scss:styles/workspace.css styles/workspace-mobile.scss:styles/workspace-mobile.css --no-source-map",
     "checklist": "node tools/parity/checklist.mjs",
     "preview": "node tools/parity/preview.mjs",
     "dev": "vite",

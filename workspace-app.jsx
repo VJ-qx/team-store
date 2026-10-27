@@ -1662,16 +1662,10 @@ function StoreWorkspaceBar({ store, liveStores = [], onViewStore, onSetStatus, o
     return () => document.removeEventListener("mousedown", h);
   }, []);
   return (
-    <div style={{
-      display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center",
-      padding: "16px 32px", background: "#18181B",
-    }}>
+    <div className="wx-store-bar">
       {/* Left — back to stores */}
-      <div style={{ justifySelf: "start" }}>
-        <button onClick={() => onBack && onBack()} style={{
-          display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: 0,
-          cursor: "pointer", color: "#fff", fontSize: 15, fontWeight: 600, padding: "8px 4px",
-        }}
+      <div className="wx-store-bar__start">
+        <button onClick={() => onBack && onBack()} className="wx-store-bar__back"
           onMouseEnter={(e) => (e.currentTarget.style.opacity = ".62")}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}>
           <IconChevronLeft size={20} /> Back to Stores
@@ -1679,31 +1673,21 @@ function StoreWorkspaceBar({ store, liveStores = [], onViewStore, onSetStatus, o
       </div>
 
       {/* Center — team identity, emblem stacked above the name */}
-      <div style={{ justifySelf: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      <div className="wx-store-bar__identity">
         <TeamEmblem store={store} size={34} />
-        <h1 style={{ fontSize: 14, fontWeight: 800, letterSpacing: ".14em", margin: 0, color: "#fff", textTransform: "uppercase", textAlign: "center" }}>
+        <h1 className="wx-store-bar__name">
           {store.teamName || store.storeTitle || "[TEAM NAME]"}
         </h1>
       </div>
 
       {/* Right — store guide + preview store + actions menu */}
-      <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={() => window.dispatchEvent(new CustomEvent("setupguide:open"))} title="Reopen the store setup guide" style={{
-          display: "inline-flex", alignItems: "center", gap: 8, background: "transparent",
-          color: "rgba(255,255,255,.85)", border: 0, padding: "12px 8px", cursor: "pointer",
-          fontSize: 13.5, fontWeight: 600, fontFamily: "inherit",
-        }}
+      <div className="wx-store-bar__end">
+        <button onClick={() => window.dispatchEvent(new CustomEvent("setupguide:open"))} title="Reopen the store setup guide" className="wx-store-bar__guide"
           onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,.85)")}>
           <IconInfo size={16} /> Setup guide
         </button>
-        <button onClick={readOnly ? undefined : previewStore} disabled={readOnly} title={readOnly ? "Storefront is closed for archived stores" : "Preview the customer storefront"} style={{
-          display: "inline-flex", alignItems: "center", gap: 12, background: "transparent",
-          color: "#fff", border: "1px solid rgba(255,255,255,.4)", borderRadius: 8,
-          padding: "12px 20px", cursor: readOnly ? "not-allowed" : "pointer", fontSize: 14, fontWeight: 700, fontFamily: "inherit",
-          opacity: readOnly ? 0.4 : 1,
-          transition: "background .14s, border-color .14s",
-        }}
+        <button onClick={readOnly ? undefined : previewStore} disabled={readOnly} title={readOnly ? "Storefront is closed for archived stores" : "Preview the customer storefront"} className={"wx-store-bar__preview" + (readOnly ? " wx-store-bar__preview--readonly" : "")}
           onMouseEnter={(e) => { if (readOnly) return; e.currentTarget.style.background = "rgba(255,255,255,.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,.7)"; }}
           onMouseLeave={(e) => { if (readOnly) return; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,.4)"; }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1716,6 +1700,7 @@ function StoreWorkspaceBar({ store, liveStores = [], onViewStore, onSetStatus, o
     </div>
   );
 }
+
 
 // ─────────── Workspace icon side-rail ───────────
 // Rendered by <Dashboard embedded>. Items map to the dashboard's internal tab
@@ -1739,35 +1724,23 @@ const WORKSPACE_NAV = [
 function StoreSideNav({ tab, onChange, badges = {}, store }) {
   const labelFor = (it) => it.id === "roster" ? ((store && store.storeType === "league") ? "My Teams" : "My Team") : it.label;
   return (
-    <nav style={{
-      width: 116, flexShrink: 0, background: "#fff", borderRight: "1px solid #eceef0",
-      padding: 16, display: "flex", flexDirection: "column", alignItems: "stretch", gap: 8,
-      position: "sticky", top: 80, alignSelf: "flex-start", height: "calc(100vh - 80px)",
-    }}>
+    <nav className="wx-store-nav">
       {WORKSPACE_NAV.map((it) => {
         const on = tab === it.id;
         const IconC = it.icon;
         const label = labelFor(it);
+        // The background stays inline: the hover handlers write it, and React resets it when the tab changes.
         return (
-          <button key={it.id} onClick={() => onChange && onChange(it.id)} title={label} style={{
-            background: on ? "#ececf0" : "transparent", border: 0, cursor: "pointer", borderRadius: 20,
-            padding: "16px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: "100%",
-            transition: "background .12s",
-          }}
+          <button key={it.id} onClick={() => onChange && onChange(it.id)} title={label} className="wx-store-nav__item" style={{ background: on ? "#ececf0" : "transparent" }}
             onMouseEnter={(e) => { if (!on) e.currentTarget.style.background = "#f6f6f8"; }}
             onMouseLeave={(e) => { if (!on) e.currentTarget.style.background = "transparent"; }}>
-            <span style={{
-              position: "relative", width: 44, height: 44, borderRadius: "50%",
-              background: on ? "#0e0e10" : "transparent",
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              color: on ? "#fff" : "#0e0e10", transition: "background .12s",
-            }}>
+            <span className={"wx-store-nav__icon" + (on ? " wx-store-nav__icon--active" : "")}>
               <IconC size={on ? 22 : 24} stroke={on ? 2 : 1.7} />
               {badges[it.id] && (
-                <span style={{ position: "absolute", top: 4, right: 4, width: 8, height: 8, borderRadius: "50%", background: "#e1251b", border: "1.5px solid #fff" }} />
+                <span className="wx-store-nav__badge" />
               )}
             </span>
-            <span style={{ fontSize: 13, fontWeight: on ? 700 : 600, color: on ? "#0e0e10" : "#52525a", letterSpacing: ".01em" }}>
+            <span className={"wx-store-nav__label" + (on ? " wx-store-nav__label--active" : "")}>
               {label}
             </span>
           </button>
@@ -1777,11 +1750,12 @@ function StoreSideNav({ tab, onChange, badges = {}, store }) {
   );
 }
 
+
 // ─────────── Wrapper ───────────
 function ManageStoreWorkspace(props) {
   const { store, liveStores, onViewStore, onSetStatus, onSwitchStore, onBack, onCreateTemplate, readOnly } = props;
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fbfbfc", minWidth: 0, height: "100vh", overflow: "hidden" }}>
+    <div className="wx-store-workspace">
       <StoreWorkspaceBar
         store={store}
         liveStores={liveStores}
@@ -1793,18 +1767,15 @@ function ManageStoreWorkspace(props) {
         readOnly={readOnly}
       />
       {readOnly && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: 14, padding: "14px 32px",
-          background: "#fdf6e3", borderBottom: "1px solid #f0e2b8", color: "#7a5b0b",
-        }}>
-          <span style={{ width: 34, height: 34, borderRadius: 9, background: "#f6e2a8", color: "#92670b", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div className="wx-store-workspace__archived">
+          <span className="wx-store-workspace__archived-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" /><path d="M10 12h4" />
             </svg>
           </span>
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: "#5c4408" }}>This store is archived — read-only</div>
-            <div style={{ fontSize: 12.5, color: "#8a6a17", marginTop: 1 }}>
+          <div className="wx-store-workspace__archived-text">
+            <div className="wx-store-workspace__archived-title">This store is archived — read-only</div>
+            <div className="wx-store-workspace__archived-note">
               Order history and reports are retained as a record. Restore this store from My Account to make changes again — restoring is a managing-rep action.
             </div>
           </div>
@@ -1814,6 +1785,7 @@ function ManageStoreWorkspace(props) {
     </div>
   );
 }
+
 
 Object.assign(window, { TeamEmblem, StoreWorkspaceBar, StoreSideNav, ManageStoreWorkspace, WORKSPACE_NAV });
 
@@ -10996,29 +10968,27 @@ function homeRedNavTabs(store, org) {
 }
 function HomeLinkBtn({ label, onClick, muted }) {
   return (
-    <button onClick={onClick} style={{ background: "transparent", border: 0, padding: 0, fontSize: 12, fontWeight: 700, color: muted ? "#6b6b72" : "#0e0e10", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>{label}</button>
+    <button onClick={onClick} className={"wx-home-link" + (muted ? " wx-home-link--muted" : "")}>{label}</button>
   );
 }
+
 function HomeAttentionCard({ card, readOnly, onAction }) {
-  const rail = card.tone === "red" ? "#e1251b" : card.tone === "blue" ? "#2563eb" : "#d4d4d8";
+  const rail = card.tone === "red" ? "red" : card.tone === "blue" ? "blue" : "grey";
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "1px solid #ececf0", borderLeft: "3px solid " + rail, borderRadius: 10, padding: "14px 18px" }}>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0e0e10" }}>{card.title}</div>
-        <div style={{ fontSize: 12, color: "#9a9aa1", marginTop: 2 }}>{card.detail}</div>
+    <div className={"wx-home-attention wx-home-attention--" + rail}>
+      <div className="wx-home-attention__text">
+        <div className="wx-home-attention__title">{card.title}</div>
+        <div className="wx-home-attention__detail">{card.detail}</div>
       </div>
       {!readOnly && (card.link ? (
-        <button onClick={onAction} style={{ flexShrink: 0, background: "transparent", border: 0, fontSize: 12, fontWeight: 700, color: "#0e0e10", cursor: "pointer", fontFamily: "inherit", padding: "8px 0" }}>{card.action} ›</button>
+        <button onClick={onAction} className="wx-home-attention__link">{card.action} ›</button>
       ) : (
-        <button onClick={onAction} style={{
-          flexShrink: 0, background: card.tone === "red" ? "#0e0e10" : "#fff", color: card.tone === "red" ? "#fff" : "#0e0e10",
-          border: "1px solid " + (card.tone === "red" ? "#0e0e10" : "#d4d4d8"), fontSize: 12, fontWeight: 700, borderRadius: 7,
-          padding: "8px 14px", cursor: "pointer", fontFamily: "inherit"
-        }}>{card.action}</button>
+        <button onClick={onAction} className={"wx-home-attention__action" + (card.tone === "red" ? " wx-home-attention__action--primary" : "")}>{card.action}</button>
       ))}
     </div>
   );
 }
+
 function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, onRosterBank, onManagers, onLaunch, onGoSettings, onUpdateStore }) {
   const model = buildHomeAttention(store, org);
   const lc = model.lc, oi = model.oi, bank = model.bank, close = model.close, cards = model.cards;
@@ -11051,10 +11021,10 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
   const visible = showAll ? cards : cards.slice(0, 5);
   const hiddenCount = cards.length - visible.length;
 
-  const pill = lc.archived ? { label: "Archived", bg: "#f1f1f3", color: "#6b6b72", dot: "#9a9aa1" }
-    : lc.closed ? { label: "Closed", bg: "#fdf3d3", color: "#8a6408", dot: "#d9a514" }
-    : lc.open ? { label: "Open", bg: "#d8f5e3", color: "#1f7a44", dot: "#1f9d55" }
-    : { label: "Draft", bg: "#dbeafe", color: "#1d4ed8", dot: "#3b82f6" };
+  const pill = lc.archived ? { label: "Archived", mod: "archived" }
+    : lc.closed ? { label: "Closed", mod: "closed" }
+    : lc.open ? { label: "Open", mod: "open" }
+    : { label: "Draft", mod: "draft" };
 
   // Manager panel rows — the record buyers see is tagged Point of Contact
   // (the exact name of the setting it feeds).
@@ -11108,41 +11078,39 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
     { id: "payouts", label: "Reports", sub: "Store analytics" }
   ];
 
-  const panelStyle = { background: "#fff", border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden" };
-  const sectionTitle = { fontSize: 15, fontWeight: 800, color: "#0e0e10" };
 
   return (
-    <div data-screen-label="Home" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div data-screen-label="Home" className="wx-store-home">
       {/* Status strip — the one place amber is allowed (canonical Closed pill). */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", background: "#fff", border: "1px solid #ececf0", borderRadius: 10, padding: "12px 18px" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 7, background: pill.bg, color: pill.color, borderRadius: 999, padding: "5px 12px", fontSize: 12, fontWeight: 700 }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: pill.dot }} />{pill.label}
+      <div className="wx-store-home__status">
+        <span className={"wx-store-home__pill wx-store-home__pill--" + pill.mod}>
+          <span className="wx-store-home__pill-dot" />{pill.label}
         </span>
-        {lc.open && close && <span style={{ fontSize: 12.5, color: "#52525a" }}>Closes <strong style={{ color: "#0e0e10" }}>{close.label}</strong> · {close.daysLeft} days left</span>}
-        {lc.closed && close && <span style={{ fontSize: 12.5, color: "#52525a" }}>Closed <strong style={{ color: "#0e0e10" }}>{close.label}</strong></span>}
-        {!lc.draft && <span style={{ width: 1, height: 16, background: "#e6e6ea" }} />}
-        {!lc.draft && <span style={{ fontSize: 12.5, color: "#52525a" }}><strong style={{ color: "#0e0e10" }}>{oi.total}</strong> orders · <strong style={{ color: "#0e0e10" }}>{fmtMoney(raised)}</strong> raised{lc.open ? " this window" : ""}</span>}
-        <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "#6b6b72", background: "#f6f6f8", borderRadius: 7, padding: "6px 10px" }}>
+        {lc.open && close && <span className="wx-store-home__meta">Closes <strong className="wx-store-home__strong">{close.label}</strong> · {close.daysLeft} days left</span>}
+        {lc.closed && close && <span className="wx-store-home__meta">Closed <strong className="wx-store-home__strong">{close.label}</strong></span>}
+        {!lc.draft && <span className="wx-store-home__divider" />}
+        {!lc.draft && <span className="wx-store-home__meta"><strong className="wx-store-home__strong">{oi.total}</strong> orders · <strong className="wx-store-home__strong">{fmtMoney(raised)}</strong> raised{lc.open ? " this window" : ""}</span>}
+        <span className="wx-store-home__url">
           {url}
-          {!readOnly && <button onClick={copyUrl} style={{ background: "transparent", border: 0, padding: 0, fontSize: 12, fontWeight: 700, color: "#0e0e10", cursor: "pointer", fontFamily: "inherit" }}>{copied ? "Copied" : "Copy"}</button>}
+          {!readOnly && <button onClick={copyUrl} className="wx-store-home__copy">{copied ? "Copied" : "Copy"}</button>}
         </span>
       </div>
 
-      <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+      <div className="wx-store-home__columns">
         {/* Main column */}
-        <div style={{ flex: 1.65, display: "flex", flexDirection: "column", gap: 20, minWidth: 0 }}>
+        <div className="wx-store-home__main">
           {/* Needs your attention — always renders, even empty. */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={sectionTitle}>Needs your attention</span>
-              {cards.length > 0 && <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 20, height: 20, borderRadius: 999, background: "#e1251b", color: "#fff", fontSize: 11.5, fontWeight: 800, padding: "0 6px" }}>{cards.length}</span>}
+          <div className="wx-store-home__section">
+            <div className="wx-store-home__section-head">
+              <span className="wx-store-home__section-title">Needs your attention</span>
+              {cards.length > 0 && <span className="wx-store-home__count">{cards.length}</span>}
             </div>
             {visible.map(function (card, i) { return <HomeAttentionCard key={i} card={card} readOnly={readOnly} onAction={function () { run(card); }} />; })}
             {hiddenCount > 0 && (
-              <button onClick={function () { setShowAll(true); }} style={{ alignSelf: "flex-start", background: "transparent", border: 0, padding: "2px 4px", fontSize: 12, fontWeight: 700, color: "#6b6b72", cursor: "pointer", fontFamily: "inherit" }}>{hiddenCount} more</button>
+              <button onClick={function () { setShowAll(true); }} className="wx-store-home__more">{hiddenCount} more</button>
             )}
             {cards.length === 0 && (
-              <div style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 10, padding: "16px 18px", fontSize: 13, color: "#6b6b72", lineHeight: 1.55 }}>
+              <div className="wx-store-home__empty">
                 {lc.archived ? "This store is archived and read-only — nothing is awaiting action." : lc.open ? "Nothing needs your attention right now. The store is open and taking orders." : "Nothing needs your attention right now."}
               </div>
             )}
@@ -11150,15 +11118,15 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
 
           {/* Recently worked on — absent entirely when there is nothing to show. */}
           {trail.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <span style={sectionTitle}>Recently worked on</span>
-              <div style={panelStyle}>
+            <div className="wx-store-home__section">
+              <span className="wx-store-home__section-title">Recently worked on</span>
+              <div className="wx-store-home__panel">
                 {trail.map(function (r, i) { return (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: i < trail.length - 1 ? "1px solid #f2f2f5" : "none" }}>
-                    <span style={{ width: 30, height: 30, borderRadius: 7, background: "#f4f4f5", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#52525a", flexShrink: 0 }}>{trailIcon(r.icon)}</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "#0e0e10" }}>{r.name}</div>
-                      <div style={{ fontSize: 11.5, color: "#9a9aa1" }}>{r.when} · {r.tabLabel}</div>
+                  <div key={i} className={"wx-store-home__trail-row" + (i < trail.length - 1 ? "" : " wx-store-home__trail-row--last")}>
+                    <span className="wx-store-home__trail-icon">{trailIcon(r.icon)}</span>
+                    <div className="wx-store-home__row-text">
+                      <div className="wx-store-home__trail-name">{r.name}</div>
+                      <div className="wx-store-home__row-sub">{r.when} · {r.tabLabel}</div>
                     </div>
                     <HomeLinkBtn label="Open ›" onClick={function () { onGoTab(r.tab); }} />
                   </div>
@@ -11168,55 +11136,55 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
           )}
 
           {/* Manager panel */}
-          <div style={panelStyle}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", borderBottom: "1px solid #f2f2f5" }}>
-              <span style={{ fontSize: 13.5, fontWeight: 800, color: "#0e0e10" }}>{isLeague ? "League Manager Information" : "Team Manager Information"}</span>
+          <div className="wx-store-home__panel">
+            <div className="wx-store-home__panel-head">
+              <span className="wx-store-home__panel-title">{isLeague ? "League Manager Information" : "Team Manager Information"}</span>
               {!readOnly && (
-                <button onClick={function () { onManagers(null); }} style={{ background: "#fff", border: "1px solid #d4d4d8", fontSize: 11.5, fontWeight: 700, borderRadius: 7, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit", color: "#0e0e10" }}>Add manager</button>
+                <button onClick={function () { onManagers(null); }} className="wx-store-home__add">Add manager</button>
               )}
             </div>
             {managerRows.map(function (m, i) { return (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: "1px solid #f2f2f5" }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{m.name}</span>
-                    {m.poc && <span style={{ fontSize: 10, fontWeight: 700, color: "#6b6b72", background: "#f4f4f5", borderRadius: 4, padding: "2px 6px" }}>Point of Contact</span>}
+              <div key={i} className="wx-store-home__manager">
+                <div className="wx-store-home__row-text">
+                  <div className="wx-store-home__name-row">
+                    <span className="wx-store-home__row-label">{m.name}</span>
+                    {m.poc && <span className="wx-store-home__tag">Point of Contact</span>}
                   </div>
-                  <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 2 }}>{[m.email, m.phone, m.pref].filter(Boolean).join(" · ") || "No contact details yet"}</div>
+                  <div className="wx-store-home__row-sub wx-store-home__row-sub--spaced">{[m.email, m.phone, m.pref].filter(Boolean).join(" · ") || "No contact details yet"}</div>
                 </div>
                 {!readOnly && (
-                  <span style={{ display: "inline-flex", gap: 14, flexShrink: 0 }}>
+                  <span className="wx-store-home__manager-actions">
                     {!m.poc && <HomeLinkBtn label="Invite" onClick={function () { onGoSettings("store"); }} />}
                     <HomeLinkBtn label="Edit ›" onClick={function () { m.poc ? onGoSettings("store") : onManagers(null); }} />
                   </span>
                 )}
               </div>
             ); })}
-            <div style={{ padding: "12px 18px", background: "#fafafb", fontSize: 11.5, color: "#6b6b72", lineHeight: 1.55 }}>
-              Adding a manager creates a contact record only — it does not grant portal access. Send invites from <strong style={{ color: "#0e0e10", cursor: readOnly ? "default" : "pointer" }} onClick={function () { if (!readOnly) onGoSettings("store"); }}>Settings → People &amp; Access</strong>.
+            <div className="wx-store-home__panel-foot">
+              Adding a manager creates a contact record only — it does not grant portal access. Send invites from <strong className={"wx-store-home__foot-link" + (readOnly ? " wx-store-home__foot-link--readonly" : "")} onClick={function () { if (!readOnly) onGoSettings("store"); }}>Settings → People &amp; Access</strong>.
             </div>
           </div>
         </div>
 
         {/* Right rail */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 14, minWidth: 0 }}>
+        <div className="wx-store-home__rail">
           {/* In your store — one row per tab; first row matches the nav label exactly. */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <span style={sectionTitle}>In your store</span>
-            <div style={panelStyle}>
+          <div className="wx-store-home__section">
+            <span className="wx-store-home__section-title">In your store</span>
+            <div className="wx-store-home__panel">
               {storeRows.map(function (row, i) { return (
                 <React.Fragment key={row.id}>
-                  <div onClick={function () { if (!readOnly) onGoTab(row.id); }} style={{ display: "flex", alignItems: "center", gap: 12, padding: (row.id === "products" && products.length > 0) ? "14px 18px 10px" : "14px 18px", borderBottom: (i < storeRows.length - 1 && !(row.id === "products" && products.length > 0)) ? "1px solid #f2f2f5" : "none", cursor: readOnly ? "default" : "pointer" }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{row.label}</div>
-                      <div style={{ fontSize: 11.5, color: "#9a9aa1" }}>{row.sub}{row.extra && <span> · <span style={{ color: row.extra.color, fontWeight: 700 }}>{row.extra.text}</span></span>}</div>
+                  <div onClick={function () { if (!readOnly) onGoTab(row.id); }} className={"wx-store-home__store-row" + ((row.id === "products" && products.length > 0) ? " wx-store-home__store-row--with-thumbs" : "") + (i < storeRows.length - 1 ? "" : " wx-store-home__store-row--last") + (readOnly ? " wx-store-home__store-row--readonly" : "")}>
+                    <div className="wx-store-home__row-text">
+                      <div className="wx-store-home__row-label">{row.label}</div>
+                      <div className="wx-store-home__row-sub">{row.sub}{row.extra && <span> · <span className="wx-store-home__extra" style={{ color: row.extra.color }}>{row.extra.text}</span></span>}</div>
                     </div>
-                    <span style={{ color: "#b9b9c2", fontWeight: 700 }}>›</span>
+                    <span className="wx-store-home__chevron">›</span>
                   </div>
                   {row.id === "products" && products.length > 0 && (
-                    <div style={{ padding: "0 18px 14px", display: "flex", gap: 8, borderBottom: i < storeRows.length - 1 ? "1px solid #f2f2f5" : "none" }}>
-                      {products.slice(0, 4).map(function (p, j) { return <span key={j} style={{ width: 44, height: 50, borderRadius: 6, background: "#f0f0f3" }} />; })}
-                      {products.length > 4 && <span style={{ width: 44, height: 50, borderRadius: 6, background: "#f6f6f8", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#6b6b72" }}>+{products.length - 4}</span>}
+                    <div className={"wx-store-home__thumbs" + (i < storeRows.length - 1 ? "" : " wx-store-home__thumbs--last")}>
+                      {products.slice(0, 4).map(function (p, j) { return <span key={j} className="wx-store-home__thumb" />; })}
+                      {products.length > 4 && <span className="wx-store-home__thumb-more">+{products.length - 4}</span>}
                     </div>
                   )}
                 </React.Fragment>
@@ -11226,31 +11194,31 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
 
           {/* League structure — League stores only; bounded so it can't push the attention list off screen. */}
           {isLeague && (
-            <div style={panelStyle}>
-              <div style={{ padding: "14px 18px", borderBottom: "1px solid #f2f2f5" }}>
-                <div style={{ fontSize: 13.5, fontWeight: 800, color: "#0e0e10" }}>League structure</div>
-                <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 2 }}>{st.divisions} division{st.divisions === 1 ? "" : "s"} · {st.teams} team{st.teams === 1 ? "" : "s"} · {st.players} player{st.players === 1 ? "" : "s"}</div>
+            <div className="wx-store-home__panel">
+              <div className="wx-store-home__panel-intro">
+                <div className="wx-store-home__panel-title">League structure</div>
+                <div className="wx-store-home__row-sub wx-store-home__row-sub--spaced">{st.divisions} division{st.divisions === 1 ? "" : "s"} · {st.teams} team{st.teams === 1 ? "" : "s"} · {st.players} player{st.players === 1 ? "" : "s"}</div>
               </div>
-              <div style={{ maxHeight: 300, overflowY: "auto" }}>
+              <div className="wx-store-home__structure">
                 {st.groups.length === 0 && st.loose.length === 0 && (
-                  <div style={{ padding: "16px 18px", fontSize: 12, color: "#9a9aa1", lineHeight: 1.5 }}>No divisions yet — build the structure from {"My Teams"}.</div>
+                  <div className="wx-store-home__structure-empty">No divisions yet — build the structure from {"My Teams"}.</div>
                 )}
                 {st.groups.map(function (g, i) { const caps = groupCaptures(g); return (
-                  <div key={g.id} onClick={function () { if (!readOnly) onRosterBank(); }} style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderBottom: "1px solid #f2f2f5", cursor: readOnly ? "default" : "pointer" }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{g.name}</div>
-                      <div style={{ fontSize: 11.5, color: "#9a9aa1" }}>{(g.rosters || []).length} teams · {(g.rosters || []).reduce(function (n, r) { return n + (r.players || 0); }, 0)} players{caps > 0 && <span> · <span style={{ color: "#2563eb", fontWeight: 700 }}>{caps} capture{caps === 1 ? "" : "s"}</span></span>}</div>
+                  <div key={g.id} onClick={function () { if (!readOnly) onRosterBank(); }} className={"wx-store-home__structure-row" + (readOnly ? " wx-store-home__structure-row--readonly" : "")}>
+                    <div className="wx-store-home__row-text">
+                      <div className="wx-store-home__row-label">{g.name}</div>
+                      <div className="wx-store-home__row-sub">{(g.rosters || []).length} teams · {(g.rosters || []).reduce(function (n, r) { return n + (r.players || 0); }, 0)} players{caps > 0 && <span> · <span className="wx-store-home__capture">{caps} capture{caps === 1 ? "" : "s"}</span></span>}</div>
                     </div>
-                    <span style={{ color: "#b9b9c2", fontWeight: 700 }}>›</span>
+                    <span className="wx-store-home__chevron">›</span>
                   </div>
                 ); })}
                 {st.loose.map(function (r, i) { const caps = bank.byTeam[r.id] || 0; return (
-                  <div key={r.id} onClick={function () { if (!readOnly) onRosterBank(); }} style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderBottom: i < st.loose.length - 1 ? "1px solid #f2f2f5" : "none", cursor: readOnly ? "default" : "pointer" }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{r.name} <span style={{ fontSize: 10, fontWeight: 700, color: "#6b6b72", background: "#f4f4f5", borderRadius: 4, padding: "2px 6px", marginLeft: 4 }}>STANDALONE</span></div>
-                      <div style={{ fontSize: 11.5, color: "#9a9aa1" }}>{r.players || 0} players{caps > 0 && <span> · <span style={{ color: "#2563eb", fontWeight: 700 }}>{caps} capture{caps === 1 ? "" : "s"}</span></span>}</div>
+                  <div key={r.id} onClick={function () { if (!readOnly) onRosterBank(); }} className={"wx-store-home__structure-row" + (i < st.loose.length - 1 ? "" : " wx-store-home__structure-row--last") + (readOnly ? " wx-store-home__structure-row--readonly" : "")}>
+                    <div className="wx-store-home__row-text">
+                      <div className="wx-store-home__row-label">{r.name} <span className="wx-store-home__tag wx-store-home__tag--standalone">STANDALONE</span></div>
+                      <div className="wx-store-home__row-sub">{r.players || 0} players{caps > 0 && <span> · <span className="wx-store-home__capture">{caps} capture{caps === 1 ? "" : "s"}</span></span>}</div>
                     </div>
-                    <span style={{ color: "#b9b9c2", fontWeight: 700 }}>›</span>
+                    <span className="wx-store-home__chevron">›</span>
                   </div>
                 ); })}
               </div>
@@ -11258,53 +11226,54 @@ function HomeTab({ store, org, readOnly, onGoTab, onPendingOrders, onAllOrders, 
           )}
 
           {/* Brand assets — editable after launch; only Archived locks it. */}
-          <div style={panelStyle}>
-            <div style={{ padding: "14px 18px", borderBottom: "1px solid #f2f2f5", fontSize: 13.5, fontWeight: 800, color: "#0e0e10" }}>Brand assets</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: "1px solid #f2f2f5" }}>
+          <div className="wx-store-home__panel">
+            <div className="wx-store-home__panel-intro wx-store-home__panel-title">Brand assets</div>
+            <div className="wx-store-home__asset">
               <TeamEmblem store={store} size={34} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0e0e10" }}>Team Logo</div>
-                <div style={{ fontSize: 11, color: "#9a9aa1" }}>From the Team Database</div>
+              <div className="wx-store-home__row-text">
+                <div className="wx-store-home__asset-label">Team Logo</div>
+                <div className="wx-store-home__asset-sub">From the Team Database</div>
               </div>
               {!readOnly && <HomeLinkBtn label="Edit ›" onClick={function () { onGoSettings("store"); }} />}
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: "1px solid #f2f2f5" }}>
-              <span style={{ display: "inline-flex", gap: 6 }}>
-                <span style={{ width: 22, height: 22, borderRadius: 5, background: (store.teamColors && store.teamColors[0]) || "#e1e2dd", border: "1px solid #ececf0" }} />
-                <span style={{ width: 22, height: 22, borderRadius: 5, background: (store.teamColors && store.teamColors[1]) || "#f4f4f5", border: "1px solid #ececf0" }} />
+            <div className="wx-store-home__asset">
+              <span className="wx-store-home__swatches">
+                <span className="wx-store-home__swatch" style={{ background: (store.teamColors && store.teamColors[0]) || "#e1e2dd" }} />
+                <span className="wx-store-home__swatch" style={{ background: (store.teamColors && store.teamColors[1]) || "#f4f4f5" }} />
               </span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0e0e10" }}>Team Colors</div>
+              <div className="wx-store-home__row-text">
+                <div className="wx-store-home__asset-label">Team Colors</div>
               </div>
               {!readOnly && <HomeLinkBtn label="Edit ›" onClick={function () { onGoSettings("store"); }} />}
             </div>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 18px", borderBottom: "1px solid #f2f2f5" }}>
-              <span style={{ width: 22, height: 22, borderRadius: 5, background: themeColor, flexShrink: 0, marginTop: 2, border: "1px solid #ececf0" }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 12.5, fontWeight: 700, color: "#0e0e10" }}>Store Theme Color</span>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: "#6b6b72", background: "#f4f4f5", borderRadius: 4, padding: "2px 6px" }}>{themeCustom ? "Custom" : "Team default"}</span>
+            <div className="wx-store-home__asset wx-store-home__asset--top">
+              <span className="wx-store-home__swatch wx-store-home__swatch--theme" style={{ background: themeColor }} />
+              <div className="wx-store-home__row-text">
+                <div className="wx-store-home__name-row">
+                  <span className="wx-store-home__asset-label">Store Theme Color</span>
+                  <span className="wx-store-home__tag">{themeCustom ? "Custom" : "Team default"}</span>
                 </div>
-                <div style={{ fontSize: 11, color: "#9a9aa1", marginTop: 2 }}>Applies to storefront buttons and accents only.</div>
+                <div className="wx-store-home__asset-sub wx-store-home__asset-sub--spaced">Applies to storefront buttons and accents only.</div>
                 {themeCustom && !readOnly && (
-                  <div onClick={function () { onUpdateStore && onUpdateStore({ primaryColor: defaultTheme }); }} style={{ fontSize: 11.5, fontWeight: 700, marginTop: 4, cursor: "pointer", color: "#0e0e10" }}>Reset to team color</div>
+                  <div onClick={function () { onUpdateStore && onUpdateStore({ primaryColor: defaultTheme }); }} className="wx-store-home__reset">Reset to team color</div>
                 )}
               </div>
               {!readOnly && <HomeLinkBtn label="Edit ›" onClick={function () { onGoSettings("customization"); }} />}
             </div>
-            <div onClick={function () { if (!readOnly) onGoSettings("store"); }} style={{ padding: "12px 18px", fontSize: 12, fontWeight: 700, color: "#0e0e10", cursor: readOnly ? "default" : "pointer" }}>
-              Team artwork library <span style={{ fontWeight: 500, color: "#9a9aa1" }}>— team-level, spans seasons</span> ›
+            <div onClick={function () { if (!readOnly) onGoSettings("store"); }} className={"wx-store-home__artwork" + (readOnly ? " wx-store-home__artwork--readonly" : "")}>
+              Team artwork library <span className="wx-store-home__artwork-note">— team-level, spans seasons</span> ›
             </div>
           </div>
 
-          <div style={{ background: "#f6f6f8", borderRadius: 10, padding: "14px 18px", fontSize: 12, color: "#6b6b72", lineHeight: 1.55 }}>
-            Need orientation? <strong style={{ color: "#0e0e10", cursor: "pointer" }} onClick={function () { window.dispatchEvent(new CustomEvent("setupguide:open")); }}>Reopen the setup guide</strong>.
+          <div className="wx-store-home__orientation">
+            Need orientation? <strong className="wx-store-home__orientation-link" onClick={function () { window.dispatchEvent(new CustomEvent("setupguide:open")); }}>Reopen the setup guide</strong>.
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 function Dashboard({ store, onBack, onCustomize, initialTab, onProductsChange, simulateOrders, liveStores, onLaunch, onSwitchStore, onSetStatus, onViewStore, onUpdateStore, onCreateTemplate, embedded, readOnly }) {
   const [tab, setTab] = React.useState(initialTab || "home");
@@ -11446,31 +11415,28 @@ function Dashboard({ store, onBack, onCustomize, initialTab, onProductsChange, s
       payouts: !viewed.payouts
     };
     return (
-      <div style={{ flex: 1, display: "flex", minWidth: 0, alignItems: "stretch", minHeight: 0, overflow: "hidden" }}>
+      <div className="wx-store-dash">
         <StoreSideNav tab={tab} onChange={setTab} badges={badges} store={store} />
-        <div ref={(el) => { if (el) { if (readOnly) el.setAttribute("inert", ""); else el.removeAttribute("inert"); } }} style={{ flex: 1, minWidth: 0, padding: "28px 36px 92px", background: "#fbfbfc", opacity: readOnly ? 0.72 : 1, transition: "opacity .15s", overflowY: "auto" }}>
+        <div ref={(el) => { if (el) { if (readOnly) el.setAttribute("inert", ""); else el.removeAttribute("inert"); } }} className={"wx-store-dash__content" + (readOnly ? " wx-store-dash__content--readonly" : "")}>
           {/* Draft-state launch banner (Store Status & Lifecycle, Epic A) */}
           {isDraftStore &&
-          <div style={{ display: "flex", alignItems: "center", gap: 20, background: "#fff", border: "1px solid #e4e4e7", borderRadius: 12, padding: "18px 22px", marginBottom: 24, boxShadow: "0 1px 2px rgba(20,20,30,.04)" }}>
-            <span style={{ width: 52, height: 52, borderRadius: 12, background: "#fdeeed", color: "#e1251b", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <div className="wx-store-dash__launch">
+            <span className="wx-store-dash__launch-icon">
               <IconStore size={24} />
             </span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 16, fontWeight: 800, color: "#0e0e10", letterSpacing: "-.005em" }}>Ready to launch?</div>
-              <div style={{ fontSize: 13.5, color: "#6b6b72", marginTop: 3, lineHeight: 1.5 }}>
+            <div className="wx-store-dash__launch-text">
+              <div className="wx-store-dash__launch-title">Ready to launch?</div>
+              <div className="wx-store-dash__launch-copy">
                 {canLaunch
-                  ? "This store is a draft \u2014 buyers can't see it yet. Launch when you're ready to start taking orders."
-                  : "This store is a draft \u2014 add at least one product, then launch to start taking orders."}
+                  ? "This store is a draft — buyers can't see it yet. Launch when you're ready to start taking orders."
+                  : "This store is a draft — add at least one product, then launch to start taking orders."}
               </div>
             </div>
+            {/* The background stays inline: the hover handlers write it, and React resets it when canLaunch changes. */}
             <button disabled={!canLaunch} onClick={() => canLaunch && setShowLaunchModal(true)}
             title={canLaunch ? "Launch this team store" : "Add at least one product to launch your store"}
-            style={{
-              flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 8,
-              background: canLaunch ? "#0e0e10" : "#ececf0", color: canLaunch ? "#fff" : "#9a9aa1",
-              border: 0, borderRadius: 8, padding: "14px 22px", fontSize: 14, fontWeight: 700,
-              fontFamily: "inherit", cursor: canLaunch ? "pointer" : "not-allowed", transition: "background .12s"
-            }}
+            className={"wx-store-dash__launch-btn" + (canLaunch ? "" : " wx-store-dash__launch-btn--disabled")}
+            style={{ background: canLaunch ? "#0e0e10" : "#ececf0" }}
             onMouseEnter={(e) => { if (canLaunch) e.currentTarget.style.background = "#1f1f22"; }}
             onMouseLeave={(e) => { if (canLaunch) e.currentTarget.style.background = "#0e0e10"; }}>
               Launch Store <IconArrowRight size={15} />
@@ -26701,41 +26667,42 @@ function ChecklistStyles() {
 function StoreGuideModal({ open, onClose }) {
   if (!open) return null;
   const sec = (title, body) => (
-    <div key={title} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-      <span style={{ width: 6, height: 6, borderRadius: 999, background: "#e1251b", marginTop: 7, flexShrink: 0 }} />
+    <div key={title} className="wx-store-guide__item">
+      <span className="wx-store-guide__bullet" />
       <div>
-        <div style={{ fontSize: 13.5, fontWeight: 800, color: "#0e0e10", marginBottom: 3 }}>{title}</div>
-        <div style={{ fontSize: 12.5, color: "#52525b", lineHeight: 1.6 }}>{body}</div>
+        <div className="wx-store-guide__item-title">{title}</div>
+        <div className="wx-store-guide__item-body">{body}</div>
       </div>
     </div>
   );
   return (
     <Modal open onClose={onClose} width={640}>
-      <div style={{ padding: "28px 32px 28px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+      <div className="wx-store-guide">
+        <div className="wx-store-guide__head">
           <div>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".12em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 6 }}>Store Setup Guide</div>
-            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>How your store comes together</h2>
+            <div className="wx-store-guide__eyebrow">Store Setup Guide</div>
+            <h2 className="wx-store-guide__title">How your store comes together</h2>
           </div>
-          <button onClick={onClose} aria-label="Close" style={{ background: "none", border: 0, cursor: "pointer", color: "#6b6b72", padding: 4 }}><IconX size={20} /></button>
+          <button onClick={onClose} aria-label="Close" className="wx-store-guide__close"><IconX size={20} /></button>
         </div>
-        <div style={{ fontSize: 13, color: "#6b6b72", lineHeight: 1.55, margin: "10px 0 20px" }}>
+        <div className="wx-store-guide__lead">
           A quick orientation — nothing here is required, and you can reopen it anytime from the workspace header.
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
+        <div className="wx-store-guide__items">
           {sec("The tabs", "Products holds your catalog. Orders tracks buyer purchases. My Team(s) manages rosters and team codes. Reports covers sales and fundraising. Settings edits everything you set at creation.")}
           {sec("How a product reaches the storefront", "Add it (Add Products), configure it (sizes, category, pricing), turn its Visibility on, then launch the store. Hidden items stay in your catalog but never show to buyers.")}
           {sec("Team Required vs. Team Supplied", "Team Required gear must be bought by rostered players at their own cost. Team Supplied gear is already paid for — players pick sizes and pay $0. Both file under the Team Gear category.")}
           {sec("The Stock Vault vs. a bundle", "The Stock Vault is your library of blank stock gear — Pro Stock and Sideline Stock. A bundle is buyer-facing: several catalog items sold together as one storefront line. A Catalog Template is a saved set of this store's own gear you can reuse in a later store.")}
           {sec("Launching, closing, re-opening", "Launch controls live in the workspace on the Settings tab. A store needs at least one visible product to launch; you can close and re-open it anytime.")}
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{ background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Got it</button>
+        <div className="wx-store-guide__foot">
+          <button onClick={onClose} className="wx-store-guide__done">Got it</button>
         </div>
       </div>
     </Modal>
   );
 }
+
 
 Object.assign(window, { OnboardingChecklist, CHECKLIST_STEPS, StoreGuideModal });
 
@@ -32798,7 +32765,7 @@ function sgCards(storeType) {
 // clip, so media can drop in later without moving anything. Neutral for now.
 function SgMediaSlot() {
   return (
-    <div aria-hidden="true" style={{ width: "min(560px, 100%)", aspectRatio: "16 / 9", margin: "32px auto 0", borderRadius: 12, background: "#f5f5f7", border: "1px solid " + CR_LINE, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0, color: "#c9c9cf" }}>
+    <div aria-hidden="true" className="wx-setup-guide__media">
       <IconImage size={26} />
     </div>
   );
@@ -32807,14 +32774,14 @@ function SgCover({ store, reduce }) {
   const chip = sgStatusChip(store);
   return (
     <CrFade k="sg-cover" reduce={reduce} style={{ textAlign: "center", maxWidth: 640, margin: "auto" }}>
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: 22 }}><CrLogo store={store} size={64} radius={14} /></div>
-      <h2 style={{ fontFamily: "Archivo, sans-serif", fontSize: 42, lineHeight: 1.1, fontWeight: 800, letterSpacing: "-.02em", color: CR_INK, margin: "0 0 16px", textWrap: "pretty" }}>{store?.teamName || store?.storeTitle || "Your store"}</h2>
-      <p style={{ fontSize: 16, lineHeight: 1.6, color: CR_MUTED, margin: "0 0 28px" }}>Your store is created. Here's how the workspace fits together.</p>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 16px", borderRadius: 999, background: "#f5f5f7", fontSize: 12.5, fontWeight: 600, color: CR_MUTED, ...CR_NUM }}>
-        <span style={{ width: 7, height: 7, borderRadius: "50%", background: chip.dot }} />
+      <div className="wx-setup-guide__cover-logo"><CrLogo store={store} size={64} radius={14} /></div>
+      <h2 className="wx-setup-guide__cover-title">{store?.teamName || store?.storeTitle || "Your store"}</h2>
+      <p className="wx-setup-guide__cover-lead">Your store is created. Here's how the workspace fits together.</p>
+      <div className="wx-setup-guide__chip">
+        <span className="wx-setup-guide__chip-dot" style={{ background: chip.dot }} />
         {chip.label}
       </div>
-      <div style={{ marginTop: 28, fontSize: 13, color: "#9a9aa1" }}>Nothing here is required — you can reopen this guide anytime from the workspace header.</div>
+      <div className="wx-setup-guide__cover-note">Nothing here is required — you can reopen this guide anytime from the workspace header.</div>
     </CrFade>
   );
 }
@@ -32822,23 +32789,24 @@ function SgCardView({ card, store, reduce }) {
   if (card.kind === "cover") return <SgCover store={store} reduce={reduce} />;
   return (
     <CrFade k={card.id} reduce={reduce} style={{ textAlign: "center", maxWidth: 720, width: "100%", margin: "auto" }}>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: CR_MUTED, marginBottom: 24 }}>{card.eyebrow}</div>
-      <h2 style={{ fontFamily: "Archivo, sans-serif", fontSize: 40, lineHeight: 1.1, fontWeight: 800, letterSpacing: "-.02em", color: CR_INK, margin: "0 0 16px", textWrap: "balance" }}>{card.title}</h2>
+      <div className="wx-setup-guide__eyebrow">{card.eyebrow}</div>
+      <h2 className="wx-setup-guide__title">{card.title}</h2>
       {card.lines ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 560, margin: "0 auto" }}>
+        <div className="wx-setup-guide__lines">
           {card.lines.map((l) => (
-            <p key={l[0]} style={{ fontSize: 15.5, lineHeight: 1.6, color: CR_MUTED, margin: 0 }}>
-              <strong style={{ color: CR_INK, fontWeight: 700 }}>{l[0]}</strong> — {l[1]}
+            <p key={l[0]} className="wx-setup-guide__line">
+              <strong className="wx-setup-guide__line-term">{l[0]}</strong> — {l[1]}
             </p>
           ))}
         </div>
       ) : (
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: CR_MUTED, margin: "0 auto", maxWidth: 560, textWrap: "pretty" }}>{card.copy}</p>
+        <p className="wx-setup-guide__copy">{card.copy}</p>
       )}
       <SgMediaSlot />
     </CrFade>
   );
 }
+
 function StoreSetupGuideOverlay({ store, storeType, onClose }) {
   const type = storeType || store?.storeType || "single";
   const cards = React.useMemo(() => sgCards(type), [type]);
@@ -32860,69 +32828,44 @@ function StoreSetupGuideOverlay({ store, storeType, onClose }) {
   return (
     <div
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      style={{
-        position: "fixed", inset: 0, zIndex: 4000, background: "rgba(9,9,11,.62)",
-        backdropFilter: "blur(3px)", WebkitBackdropFilter: "blur(3px)",
-        display: "flex", alignItems: "center", justifyContent: "center", padding: 24,
-      }}>
-      <div role="dialog" aria-modal="true" aria-label="Store Setup Guide" style={{
-        width: "min(1040px, 94vw)", height: "min(760px, 94vh)", background: "#fff", borderRadius: 14,
-        boxShadow: "0 30px 80px rgba(9,9,11,.34)", display: "flex", flexDirection: "column", overflow: "hidden",
-      }}>
+      className="wx-setup-guide">
+      <div role="dialog" aria-modal="true" aria-label="Store Setup Guide" className="wx-setup-guide__dialog">
         {/* Top bar */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 20px", borderBottom: "1px solid " + CR_LINE, flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+        <div className="wx-setup-guide__top">
+          <div className="wx-setup-guide__store">
             <CrLogo store={store} size={30} radius={7} />
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 13.5, fontWeight: 800, color: CR_INK, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{store?.teamName || store?.storeTitle || "Your store"}</div>
-              <div style={{ fontSize: 11.5, color: CR_MUTED }}>Store Setup Guide</div>
+            <div className="wx-setup-guide__store-text">
+              <div className="wx-setup-guide__store-name">{store?.teamName || store?.storeTitle || "Your store"}</div>
+              <div className="wx-setup-guide__store-sub">Store Setup Guide</div>
             </div>
           </div>
-          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
-            <button onClick={onClose} style={{
-              display: "inline-flex", alignItems: "center", gap: 6, background: "#fff", border: "1px solid #d4d4d8", borderRadius: 999,
-              padding: "7px 14px", fontSize: 12.5, fontWeight: 700, color: CR_INK, cursor: "pointer", fontFamily: "inherit",
-            }}>Skip to workspace</button>
-            <button onClick={onClose} aria-label="Close guide" style={{ background: "transparent", border: 0, cursor: "pointer", padding: 6, color: "#9a9aa1", display: "inline-flex" }}><IconX size={20} /></button>
+          <div className="wx-setup-guide__top-actions">
+            <button onClick={onClose} className="wx-setup-guide__skip">Skip to workspace</button>
+            <button onClick={onClose} aria-label="Close guide" className="wx-setup-guide__close"><IconX size={20} /></button>
           </div>
         </div>
         {/* Segmented progress — position in the sequence, never completion */}
-        <div style={{ display: "flex", gap: 6, padding: "12px 20px 0", flexShrink: 0 }}>
+        <div className="wx-setup-guide__progress">
           {cards.map((c, i) => (
-            <button key={c.id} onClick={() => setStep(i)} aria-label={"Card " + (i + 1)} style={{
-              flex: 1, height: 4, borderRadius: 2, border: 0, padding: 0, cursor: "pointer",
-              background: i <= step ? accent : "#ececf0", transition: "background .2s ease",
-            }} />
+            <button key={c.id} onClick={() => setStep(i)} aria-label={"Card " + (i + 1)} className="wx-setup-guide__segment" style={{ background: i <= step ? accent : "#ececf0" }} />
           ))}
         </div>
         {/* Stage */}
         <div onClick={(e) => { if (e.target === e.currentTarget || e.currentTarget.contains(e.target)) { if (!last) next(); } }}
-          style={{ flex: 1, display: "flex", padding: "24px 44px", cursor: last ? "default" : "pointer", overflowY: "auto" }}>
+          className={"wx-setup-guide__stage" + (last ? " wx-setup-guide__stage--last" : "")}>
           <SgCardView card={cards[step] || cards[0]} store={store} reduce={reduce} />
         </div>
         {/* Footer controls */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px", borderTop: "1px solid " + CR_LINE, flexShrink: 0 }}>
-          <button onClick={prev} disabled={step === 0} style={{
-            display: "inline-flex", alignItems: "center", gap: 6, background: "#fff", border: "1px solid #d4d4d8", borderRadius: 8,
-            padding: "10px 16px", fontSize: 13, fontWeight: 700, color: step === 0 ? "#b6b6bd" : CR_INK, cursor: step === 0 ? "not-allowed" : "pointer", fontFamily: "inherit",
-          }}><IconChevronLeft size={15} /> Back</button>
-          <span style={{ fontSize: 12.5, color: CR_MUTED, ...CR_NUM }}>{step + 1} / {cards.length}</span>
-          <button onClick={() => setStep(cards.length - 1)} disabled={last} style={{
-            background: "transparent", border: 0, fontSize: 12.5, fontWeight: 700, color: last ? "#b6b6bd" : CR_MUTED,
-            cursor: last ? "default" : "pointer", fontFamily: "inherit", padding: "6px 4px",
-          }}>Jump to end</button>
-          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
-            <button onClick={onClose} style={{ background: "transparent", border: 0, fontSize: 13, fontWeight: 700, color: CR_MUTED, cursor: "pointer", fontFamily: "inherit", padding: "10px 8px" }}>Done</button>
+        <div className="wx-setup-guide__footer">
+          <button onClick={prev} disabled={step === 0} className={"wx-setup-guide__back" + (step === 0 ? " wx-setup-guide__back--disabled" : "")}><IconChevronLeft size={15} /> Back</button>
+          <span className="wx-setup-guide__count">{step + 1} / {cards.length}</span>
+          <button onClick={() => setStep(cards.length - 1)} disabled={last} className={"wx-setup-guide__jump" + (last ? " wx-setup-guide__jump--disabled" : "")}>Jump to end</button>
+          <div className="wx-setup-guide__footer-end">
+            <button onClick={onClose} className="wx-setup-guide__done">Done</button>
             {last ? (
-              <button onClick={onClose} style={{
-                display: "inline-flex", alignItems: "center", gap: 8, background: CR_INK, color: "#fff", border: 0, borderRadius: 8,
-                padding: "11px 20px", fontSize: 13.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-              }}>Done</button>
+              <button onClick={onClose} className="wx-setup-guide__primary">Done</button>
             ) : (
-              <button onClick={next} style={{
-                display: "inline-flex", alignItems: "center", gap: 8, background: CR_INK, color: "#fff", border: 0, borderRadius: 8,
-                padding: "11px 20px", fontSize: 13.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-              }}>Next <IconChevronRight size={15} /></button>
+              <button onClick={next} className="wx-setup-guide__primary">Next <IconChevronRight size={15} /></button>
             )}
           </div>
         </div>
@@ -32930,6 +32873,7 @@ function StoreSetupGuideOverlay({ store, storeType, onClose }) {
     </div>
   );
 }
+
 // Reopen entry — lives in the workspace header, as the cover card promises.
 function SetupGuideHeaderButton({ store }) {
   return (

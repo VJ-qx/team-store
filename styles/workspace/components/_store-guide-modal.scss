@@ -1,0 +1,100 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of StoreGuideModal in workspace-app.jsx and workspace-app-integrated.jsx.
+// "How your store comes together": the single-page guide that opens the first time a rep opens a store.
+// The Modal around it keeps its inline styles (it is shared with screens outside this step).
+
+.wx-store-guide {
+  padding: 28px 32px 28px;
+}
+
+.wx-store-guide__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wx-store-guide__eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.wx-store-guide__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: $ink;
+  font-family: $font-display;
+}
+
+.wx-store-guide__close {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: $muted;
+  padding: 4px;
+}
+
+.wx-store-guide__lead {
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.55;
+  margin: 10px 0 20px;
+}
+
+.wx-store-guide__items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.wx-store-guide__item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.wx-store-guide__bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: $red;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.wx-store-guide__item-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: $ink;
+  margin-bottom: 3px;
+}
+
+.wx-store-guide__item-body {
+  font-size: 12.5px;
+  color: $zinc-600;
+  line-height: 1.6;
+}
+
+.wx-store-guide__foot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wx-store-guide__done {
+  background: $ink;
+  color: $white;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}

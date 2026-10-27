@@ -1,0 +1,76 @@
+@use "../variables" as *;
+
+// Moved from the inline styles of StoreSideNav in workspace-app.jsx and workspace-app-integrated.jsx.
+// The icon side menu on a store's page (Home, My Teams, Products, Orders, Reports, Settings).
+// Each item's background stays inline: its hover handlers write it, and React resets it when the tab changes.
+
+.wx-store-nav {
+  width: 116px;
+  flex-shrink: 0;
+  background: $white;
+  border-right: 1px solid #eceef0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+  height: calc(100vh - 80px);
+}
+
+.wx-store-nav__item {
+  border: 0;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  transition: background .12s;
+}
+
+.wx-store-nav__icon {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $ink;
+  transition: background .12s;
+}
+
+.wx-store-nav__icon--active {
+  background: $ink;
+  color: $white;
+}
+
+// Red dot: something on that tab needs attention.
+.wx-store-nav__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $red;
+  border: 1.5px solid $white;
+}
+
+.wx-store-nav__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $muted-3;
+  letter-spacing: .01em;
+}
+
+.wx-store-nav__label--active {
+  font-weight: 700;
+  color: $ink;
+}
