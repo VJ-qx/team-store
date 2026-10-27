@@ -133,7 +133,10 @@ async function settle(page, ms) {
   await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
   await page.waitForTimeout(ms);
   await page.evaluate(async () => {
-    // Wait until no font is still loading (a font requested late would otherwise change text widths).
+    // Load every declared font face, then wait until none is still loading. A weight first used in the
+    // middle of a run would otherwise still be downloading at the capture (the first state of a run, before
+    // the CDN cache has it), and a font requested late changes text widths.
+    if (document.fonts) await Promise.all([...document.fonts].map((f) => f.load().catch(() => {})));
     for (let i = 0; i < 20 && document.fonts && document.fonts.status !== 'loaded'; i++) await document.fonts.ready;
     for (const a of document.getAnimations()) {
       try {
@@ -404,11 +407,7 @@ try {
           await p.page.goto(sides[i].url(scenario.page || '') + (state.query || ''), { waitUntil: 'load', timeout: 60000 });
           if (scenario.ready) await p.page.locator(scenario.ready).first().waitFor({ state: 'visible', timeout: 60000 });
           if (Object.keys(props).length && !(await applyProps(p.page, props))) return `${sides[i].label} has no way to set props (no window.__dcSetProps or window.__paritySetProps)`;
-          // The installed clock keeps ticking until paused; leave a margin so the pause target is still ahead.
           await p.page.clock.install();
-          await p.page.clock.pauseAt((await p.page.evaluate(() => Date.now())) + 250);
-          await settle(p.page, settleMs);
-          p.log.started = true;
           return null;
         }));
         if (startErrors.some(Boolean)) {
@@ -416,6 +415,14 @@ try {
           console.log(`  SKIP  ${where}`);
           continue;
         }
+        // Freeze both sides at the same moment, so timestamps a page stores (Date.now()) match. The installed
+        // clocks keep ticking until paused; leave a margin so the pause target is still ahead on both.
+        const now = Math.max(...(await Promise.all(pages.map((p) => p.page.evaluate(() => Date.now())))));
+        await Promise.all(pages.map(async (p) => {
+          await p.page.clock.pauseAt(now + 250);
+          await settle(p.page, settleMs);
+          p.log.started = true;
+        }));
         const startupErrors = pages.map((p) => [...p.log.errors]);
         pages.forEach((p) => { p.log.errors.length = 0; });
         if (startupErrors[0].length || startupErrors[1].length) {
