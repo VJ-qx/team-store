@@ -100,6 +100,7 @@ The team ran this refactor on the Team Store MVP. Follow what it learned:
 - Partials with the same file name in different folders (`pages/_landing.scss`, `responsive/_landing.scss`) collide on the default `@use` namespace. Alias one: `@use "responsive/landing" as responsive-landing;`.
 - Don't invent breakpoints. If the original has no media queries, `responsive/` isn't needed.
 - Put `@keyframes` in `_global.scss`; they are global.
+- One `_variables.scss` and one `_global.scss` serve every page in the project. Don't create a second pair for a new page (`styles/<page>/_variables.scss`). Add the page's values to the shared `_variables.scss`: a name means one value everywhere, so when the page needs a different value, add a new name instead of changing an existing one. Add the page's base rules as its own `$page` section of `_global.scss`, which the page's entry selects with `@use "global" with ($page: "<page>");`.
 - Put prototype-only styling (device frames, preview toolbars, scaling stages) in its own partial, such as `styles/pages/_prototype.scss`, imported by one commented `@use` in `app.scss`. The later `/remove-prototype-wrapper` step then only has to delete that import.
 - When reorganizing SCSS that already compiles, compile before and after and `diff` the two CSS files. Apart from comments, they should match rule for rule.
 - Verify the result with `/compare-styles`. It runs the page's user flows on the original and the refactored version and compares every element's computed style; the refactor is done only when it reports `IDENTICAL`.

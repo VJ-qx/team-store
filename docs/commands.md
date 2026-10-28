@@ -5,7 +5,7 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 | Command | What it does |
 |---|---|
 | `npm install` | Installs the tools (`sass`, `playwright-core`). Run once, and again after `package.json` changes. |
-| [`npm run styles`](#npm-run-styles) | Compiles `styles/app.scss` to `styles/app.css` and `styles/workspace.scss` to `styles/workspace.css`. |
+| [`npm run styles`](#npm-run-styles) | Compiles each page's SCSS entry (`styles/app.scss`, `styles/workspace.scss`, `styles/workspace-mobile.scss`) to its `.css`. |
 | [`npm run dev`](#npm-run-dev) | Starts the Vue version (Vite dev server on http://localhost:5173/). |
 | [`npm run preview`](#npm-run-preview) | Serves the original and your version side by side for checking by hand. |
 | [`npm run checklist`](#npm-run-checklist) | Writes a manual check list: every state, its settings, and how to reach it. |
@@ -19,14 +19,15 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 npm run styles
 ```
 
-Compiles both stylesheets. Run it after every SCSS change.
+Compiles every page's stylesheet. Run it after every SCSS change.
 
 | Entry | Compiled to | Linked by |
 |---|---|---|
 | `styles/app.scss` | `styles/app.css` | `Landing Page.dc.html` |
 | `styles/workspace.scss` | `styles/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
+| `styles/workspace-mobile.scss` | `styles/workspace-mobile.css` | `Workspace Mobile.dc.html` |
 
-The workspace has its own entry so its global rules (fonts, resets, scrollbars) don't reach the landing page. Its partials are in `styles/workspace/`.
+Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. A page's own partials are in its folder (`styles/workspace/`, `styles/workspace-mobile/`); the landing page's are in `styles/components/`, `styles/layouts/` and `styles/pages/`.
 
 **Never edit the `.css` files by hand.** They're overwritten on every compile.
 
