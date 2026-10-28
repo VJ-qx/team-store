@@ -12,6 +12,7 @@ After each step, an automated check proves that nothing changed that shouldn't h
 |---|---|
 | [commands.md](commands.md) | The `npm run …` commands: compile styles, compare versions, preview side by side, manual check lists |
 | [skills.md](skills.md) | The Claude Code slash commands (`/extract-styles`, `/migrate-to-vue`, …) and when to use each |
+| [how-to-access.md](how-to-access.md) | How to open each converted screen and reach the BRD's states, in Vue and in the prototype |
 
 ## Quick start
 
