@@ -63,6 +63,10 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
    - Keep `style="{{ … }}"` bindings inline. Their values are computed in the page's script, which the extraction skill forbids changing.
    - Link the compiled stylesheet inside `<helmet>`, after the design-system links.
    - Put prototype-only rules, such as `#__bundler_thumbnail`, in their own partial (for example `styles/pages/_prototype.scss`).
+4. **One `_variables.scss` and one `_global.scss` for every page.** All pages share `styles/_variables.scss` and `styles/_global.scss`. Don't create page copies such as `styles/<page>/_variables.scss` or `styles/<page>/_global.scss`.
+   - **Variables:** add the page's repeated values to the shared list. A name means one value on every page, so reuse a name only when the value is exactly the same. When the page needs a different value, add a new name (for example `$red-600` beside `$red`). Never change an existing value: other pages compile from it.
+   - **Global rules:** add the page's base rules (resets, `html` and `body`, `:root` tokens, `@keyframes`) as a new section of `_global.scss`, `} @else if $page == "<page>" { … }`, before the final `@else` that reports an unknown page. Each section keeps one page's fonts, background and tokens away from the other pages.
+   - **Entry:** each page has its own entry, `styles/<page>.scss`, compiled to `styles/<page>.css`. Its first line selects the page's section, `@use "global" with ($page: "<page>");`, so the page's base rules are emitted first, before its partials.
 
 ---
 
@@ -72,7 +76,7 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
 npm run styles
 ```
 
-This compiles every SCSS entry: `styles/app.scss` to `styles/app.css` (landing page) and `styles/workspace.scss` to `styles/workspace.css` (workspace). A new page with its own global rules gets its own entry, added to the `styles` script in `package.json`. It must compile without errors. Fix any errors before continuing.
+This compiles every SCSS entry: `styles/app.scss` to `styles/app.css` (landing page), `styles/workspace.scss` to `styles/workspace.css` (workspace) and `styles/workspace-mobile.scss` to `styles/workspace-mobile.css` (Workspace Mobile). A new page gets its own entry, added to the `styles` script in `package.json`; its global rules go in its section of `styles/_global.scss` (Stage 3). It must compile without errors. Fix any errors before continuing.
 
 ---
 

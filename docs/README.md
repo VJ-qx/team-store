@@ -39,10 +39,13 @@ Each step ends with a manual check list. Use it to review the result by hand bef
 ```text
 Landing Page.dc.html, Workspace.dc.html, …   prototype pages (Claude Design format)
 workspace-app.jsx, workspace-app-integrated.jsx   workspace code (React)
-styles/                    SCSS: app.scss (landing page) → styles/app.css
-                           workspace.scss + styles/workspace/ (workspace) → styles/workspace.css
+styles/                    SCSS: one entry per page, compiled to styles/<entry>.css
+                           app.scss (landing page), workspace.scss + styles/workspace/,
+                           workspace-mobile.scss + styles/workspace-mobile/
+                           _variables.scss and _global.scss are shared by every page
 index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
-src/                       Vue code: pages/, components/workspace/, workspace/ (data, settings, helpers)
+src/                       Vue code: pages/, components/workspace/ (each folder holds its data),
+                           workspace/ (integration flag, directives, style helpers)
 tools/parity/              comparison, check list, and preview tools
 tools/parity/scenarios/    user flows per page (one file per page or module)
 .claude/skills/            Claude Code slash commands
