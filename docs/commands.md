@@ -47,9 +47,16 @@ Starts the Vue version. One page per prototype page:
 | http://localhost:5173/workspace.html | `Workspace.dc.html` | `src/pages/WorkspacePage.vue` |
 | http://localhost:5173/workspace-integrated.html | `Marucci Workspace.dc.html` | the same page, with the integration flag on |
 
-The workspace takes the same URL settings as the prototype, for example `workspace.html?brand=prolook&auth=native-connected`. Only the Module 1 screens are converted so far (access gate and business verification, welcome pop-up, Overview, My Account); the Stores, Earnings and other tabs show an empty page.
+The workspace takes the same URL settings as the prototype, for example `workspace.html?brand=prolook&auth=native-connected`. Converted so far:
 
-The prototype's settings panel doesn't exist in Vue. In the development build, the browser console has `__paritySetProps({ … })` instead: settings such as `{ authMode: "customizer" }` or `{ ssoMultiBrand: true }`, and the panel's screen shortcuts as `{ screen: "gate" }`, `{ screen: "access-pending" }` or `{ screen: "stripe-verify" }`.
+- **Module 1:** the access gate and business verification, the welcome pop-up, the Overview, and My Account.
+- **A store's page:** open a store with **Manage Store** under *Frequently visited* on the Overview. Its top bar, side menu, Home tab, the "How your store comes together" guide and the Store Setup Guide (**Setup guide** at the top right) are converted.
+
+Everything else shows an empty page: the Stores and Earnings tabs, and a store's other tabs (My Teams, Products, Orders, Reports and Settings show only their title).
+
+The dev server also serves the prototype pages, from your current branch: http://localhost:5173/Workspace.dc.html is the original of http://localhost:5173/workspace.html. Use `npm run preview` to compare against `main` instead.
+
+The prototype's settings panel doesn't exist in Vue. In the development build, the browser console has `__paritySetProps({ … })` instead: settings such as `{ authMode: "customizer" }` or `{ ssoMultiBrand: true }`, and the panel's screen shortcuts as `{ screen: "gate" }`, `{ screen: "access-pending" }` or `{ screen: "stripe-verify" }`. The panel's "Open · Individual (6 cards)" for the Store Setup Guide is an event that works in both versions: `window.dispatchEvent(new CustomEvent("setupguide:open", { detail: { storeType: "single" } }))`.
 
 ---
 
@@ -155,6 +162,8 @@ npm run parity -- tools/parity/scenarios/landing-page.mjs --mode styles
 npm run parity -- tools/parity/scenarios/landing-page.mjs --mode behavior --b http://localhost:5173/
 npm run parity -- tools/parity/scenarios/workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace.html
 npm run parity -- tools/parity/scenarios/marucci-workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
+npm run parity -- tools/parity/scenarios/workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace.html
+npm run parity -- tools/parity/scenarios/marucci-workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
 ```
 
 Opens both versions in headless Chrome and runs every state in the scenario. It compares them at the start and after every step. A full landing-page run (18 states, 129 checkpoints) takes about 2 minutes.
@@ -179,11 +188,20 @@ Opens both versions in headless Chrome and runs every state in the scenario. It 
 - **pixels:** `-a.png`, `-b.png` and `-diff.png` screenshots, with the changed pixels in red.
 - **Notes:** states that end in a redirect, and anything skipped.
 
-Timers on the page are frozen after it loads, so redirects and delays only happen at the scenario's `wait` steps.
+Timers on the page are frozen after it loads, so redirects and delays only happen at the scenario's `wait` steps. Both versions are frozen at the same moment, so timestamps a page saves (for example the Overview's store visits) match. Every font is loaded before each capture, so the first state of a run isn't captured mid-download.
 
 ### Scenarios
 
 Each page or module has a scenario in `tools/parity/scenarios/`, listing every state to check and how to reach it. Use `landing-page.mjs` as the template. See the "Find or Write the Scenario" section of `.claude/skills/compare-styles/SKILL.md` for the format.
+
+| Scenario | Page | Covers |
+|---|---|---|
+| `landing-page.mjs` | `Landing Page.dc.html` | The landing page, sign-in, registration, and the welcome pop-up |
+| `workspace-module-1.mjs` | `Workspace.dc.html` | The access gate and business verification, the welcome pop-up, and My Account |
+| `marucci-workspace-module-1.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace |
+| `workspace-store-home.mjs` | `Workspace.dc.html` | A store's page: the Home tab and both setup guides |
+| `marucci-workspace-store-home.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace (no individual or draft sample store there) |
+| `workspace-mobile.mjs` | `Workspace Mobile.dc.html` | The mobile prototype (styles step; no Vue version yet) |
 
 ---
 
@@ -198,7 +216,7 @@ Each page or module has a scenario in `tools/parity/scenarios/`, listing every s
 | A console setting only changed one tab | Each tab has its own console. Run the command in both. |
 | `No browser found` | Install Google Chrome, or run `npx playwright install chromium` |
 | Differences only in the pixels, a few pixels each | Rounded-corner anti-aliasing noise is already filtered. If it persists, open the `-diff.png` and check for a real change. |
-| `Error: Can't find stylesheet to import` | A `@use` path is wrong. Partials in subfolders use `@use "../variables" as *;` |
+| `Error: Can't find stylesheet to import` | A `@use` path is wrong. Every partial loads the one `styles/_variables.scss`: `@use "../variables" as *;` from `styles/components/` (landing page), `@use "../../variables" as *;` from `styles/workspace/components/` and other page folders. |
 
 
 
