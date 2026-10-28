@@ -86,6 +86,13 @@ Follow `.claude/skills/convert-to-vue/SKILL.md` and `.claude/skills/convert-to-v
 
   `config` must be the reactive object that holds the pinned settings.
 - Use the same SCSS files and class names the SCSS step produced. Do not copy styles into components.
+- **Put the code in the page's feature folder.** This project's layout takes priority over the standard structure in `/convert-to-vue`:
+  - Each page has its own folder, `src/<page>/` (`src/landing/`, `src/workspace/`), with its entry `main.js` (which the page's HTML file loads) and the page component (`LandingPage.vue`, `WorkspacePage.vue`). A screen added to an existing page goes in that page's folder.
+  - Components go in `components/<area>/`, one Vue file per prototype component.
+  - Data goes by kind, never next to a component: `data/` for static fixtures, `seed/` for functions that build sample records, `storage/` for localStorage reads and writes, `lib/` for pure helpers, and `theme.js` for colour constants. Split a prototype module that mixes kinds declaration by declaration, copied unchanged.
+  - Setup used across the whole page stays at the folder's top level (for example `integration.js` and `directives.js` in `src/workspace/`).
+  - Only code other pages share goes in `src/utils/`.
+  - Templates converted from JSX compile with the whitespace handling in `vite.config.js` (`CONDENSE`, which covers `src/workspace/`). Add a new feature folder to it when its templates come from JSX.
 - Keep the prototype's behavior exactly, including its bugs (for example, a redirect to a file that doesn't exist). List each bug kept in the report.
 
 ---
