@@ -1,6 +1,6 @@
 // The signed-in rep and their brand connections. Moved unchanged from workspace-app.jsx and
 // workspace-app-integrated.jsx (integrated: Jack White at Marucci, Victus as the connected brand).
-import { INTEGRATION } from '../integration.js';
+import { INTEGRATION } from '../../../workspace/integration.js';
 
 // Read-only profile mirrored from the Product Customizer identity the rep used to sign in.
 export const ACCOUNT_PROFILE = {

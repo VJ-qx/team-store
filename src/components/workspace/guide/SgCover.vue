@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { sgStatusChip } from '../../../workspace/data/setup-guide.js';
+import { sgStatusChip } from './setup-guide.js';
 import CrFade from '../close-report/CrFade.vue';
 import CrLogo from '../close-report/CrLogo.vue';
 

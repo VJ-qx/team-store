@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED } from '../../../workspace/data/overview.js';
+import { OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED } from './overview.js';
 import { IconChevronRight, IconTrendDown, IconTrendUp } from '../icons.js';
 
 export default {

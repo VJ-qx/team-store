@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { crAccent } from '../../../workspace/data/close-report.js';
+import { crAccent } from './close-report.js';
 import { px } from '../../../workspace/style.js';
 
 export default {

@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { CUSTOMIZER_BRANDS } from '../../../workspace/data/brands.js';
+import { CUSTOMIZER_BRANDS } from './brands.js';
 import { px } from '../../../workspace/style.js';
 
 export default {

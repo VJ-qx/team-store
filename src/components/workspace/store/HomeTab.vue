@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import { buildHomeAttention, homeFailedProducts, homeStructureInfo, tcStoreSlug } from '../../../workspace/data/store-home.js';
+import { buildHomeAttention, homeFailedProducts, homeStructureInfo, tcStoreSlug } from './store-home.js';
 import { IconSettings, IconShirt, IconUsers } from '../icons.js';
 import TeamEmblem from '../common/TeamEmblem.vue';
 import HomeAttentionCard from './HomeAttentionCard.vue';

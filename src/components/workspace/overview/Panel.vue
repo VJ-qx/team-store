@@ -17,7 +17,7 @@
 
 <script>
 import { INTEGRATION } from '../../../workspace/integration.js';
-import { OV_INK, OV_LINE, OV_MUTED } from '../../../workspace/data/overview.js';
+import { OV_INK, OV_LINE, OV_MUTED } from './overview.js';
 
 export default {
   name: 'Panel',

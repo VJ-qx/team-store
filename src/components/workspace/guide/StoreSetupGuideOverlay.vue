@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import { crAccent, crPrefersReduced } from '../../../workspace/data/close-report.js';
-import { sgCards } from '../../../workspace/data/setup-guide.js';
+import { crAccent, crPrefersReduced } from '../close-report/close-report.js';
+import { sgCards } from './setup-guide.js';
 import { IconChevronLeft, IconChevronRight, IconX } from '../icons.js';
 import CrLogo from '../close-report/CrLogo.vue';
 import SgCardView from './SgCardView.vue';

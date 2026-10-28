@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { STATE_ABBR } from '../../../workspace/data/stores.js';
+import { STATE_ABBR } from './stores.js';
 import { IconLayers, IconUsers } from '../icons.js';
 
 export default {

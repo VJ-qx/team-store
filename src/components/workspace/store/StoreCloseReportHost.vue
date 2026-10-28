@@ -4,7 +4,7 @@
      (StoreCloseReportOverlay) is not converted yet, so nothing renders when it opens. The Tweaks panel's
      "Replay first-after-close" (closereport:replay, window.__crCanReplay) is prototype-only and left out. -->
 <script>
-import { crIsSeen, crSyncEvent } from '../../../workspace/data/close-report.js';
+import { crIsSeen, crSyncEvent } from '../close-report/close-report.js';
 
 export default {
   name: 'StoreCloseReportHost',
