@@ -2,7 +2,7 @@
 // pinned to the values each workspace shipped with. The Tweaks panel itself is prototype-only and
 // not part of the Vue version; in development builds the parity tool sets these through
 // window.__paritySetProps (see src/pages/WorkspacePage.vue).
-import { INTEGRATION } from '../workspace/integration.js';
+import { INTEGRATION } from '../utils/integration.js';
 
 export const SETTINGS_DEFAULTS = {
   "overviewMode": false,

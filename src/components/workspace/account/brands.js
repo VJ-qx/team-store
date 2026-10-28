@@ -1,6 +1,6 @@
 // Customizer brands. Moved unchanged from workspace-app.jsx (standard) and
 // workspace-app-integrated.jsx (integrated: adds Victus, and Victus is the accessible customizer).
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 
 export const CUSTOMIZER_BRANDS = INTEGRATION.on
   ? {

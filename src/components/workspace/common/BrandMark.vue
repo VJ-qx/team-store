@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
-import { px } from '../../../workspace/style.js';
+import { INTEGRATION } from '../../../utils/integration.js';
+import { px } from '../../../utils/style.js';
 
 export default {
   name: 'BrandMark',

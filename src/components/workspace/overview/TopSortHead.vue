@@ -21,7 +21,7 @@
 
 <script>
 import { OV_INK, OV_MUTED } from './overview.js';
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 
 export default {
   name: 'TopSortHead',

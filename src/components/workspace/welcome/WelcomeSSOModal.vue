@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { ACCOUNT_PROFILE } from '../account/account.js';
 import { ACCESSIBLE_CUSTOMIZERS, CUSTOMIZER_BRANDS } from '../account/brands.js';
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 import Modal from '../common/Modal.vue';
 import { IconArrowRight, IconCheck, IconCircleCheck } from '../icons.js';
 

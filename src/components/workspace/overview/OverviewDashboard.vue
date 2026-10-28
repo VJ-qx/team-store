@@ -267,9 +267,9 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { BAYSHORE_BANK_SEED, bankSeedCounts, ovFmt, OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, WASATCH_BANK_SEED } from './overview.js';
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 import IconBankInbox from '../common/IconBankInbox.vue';
 import { IconChevron, IconClock, IconDollar, IconPlus, IconReceipt, IconSearch, IconStore, IconTrendDown, IconTrendUp, IconWallet } from '../icons.js';
 import FrequentlyVisitedShelf from './FrequentlyVisitedShelf.vue';

@@ -1,7 +1,7 @@
 // Converted from workspace-app.jsx / workspace-app-integrated.jsx (identical in both apart from the
 // pick-up location): a store's Home tab model, copied unchanged. One attention model feeds both the Home
 // tab's "Needs your attention" cards and the side menu's red dots.
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { makeOrdersDataset } from './orders.js';
 import { managerComplete } from './rosters.js';
 

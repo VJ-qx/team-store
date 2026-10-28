@@ -2,7 +2,7 @@
 import { createApp } from 'vue';
 import '../styles/workspace.scss';
 import WorkspacePage from './pages/WorkspacePage.vue';
-import { autofocus, controlled, patchStyle } from './workspace/directives.js';
+import { autofocus, controlled, patchStyle } from './utils/directives.js';
 
 createApp(WorkspacePage)
   .directive('patch-style', patchStyle)

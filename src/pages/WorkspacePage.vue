@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../workspace/integration.js';
+import { INTEGRATION } from '../utils/integration.js';
 import { ACCOUNT_PROFILE } from '../components/workspace/account/account.js';
 import { ACCESSIBLE_CUSTOMIZERS, CUSTOMIZER_BRANDS } from '../components/workspace/account/brands.js';
 import { recordStoreVisit } from '../components/workspace/overview/overview.js';
