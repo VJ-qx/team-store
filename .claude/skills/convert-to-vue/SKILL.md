@@ -650,6 +650,7 @@ The file was converted to Vue while preserving the existing functionality and lo
 
 # Team Store Notes
 
+- **Folder structure.** This project's layout takes priority over the standard structure above. Each page's Vue code lives in its own feature folder, `src/<page>/`: its `main.js`, the page component, `components/<area>/`, and data by kind in `data/` (static fixtures), `seed/` (sample-record factories), `storage/` (localStorage), `lib/` (pure helpers) and `theme.js` (colours). Only code other pages share goes in `src/utils/`. `/migrate-to-vue` Stage 4 has the details.
 - Keep the original React file unchanged until the Vue version is verified. It is the reference for checking parity.
 - For large files, convert in units: leaf components first, then the components that use them. Verify each unit before starting the next.
 - Carry existing bugs over as they are and list them under Notes in the report. Fixing them is a separate task.
