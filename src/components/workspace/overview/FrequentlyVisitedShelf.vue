@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { OV_INK, OV_MUTED, rankFrequentStores, readStoreVisits, visitLabel } from '../../../workspace/data/overview.js';
+import { OV_INK, OV_MUTED, rankFrequentStores, readStoreVisits, visitLabel } from './overview.js';
 import { IconClock } from '../icons.js';
 import StoreCard from '../stores/StoreCard.vue';
 

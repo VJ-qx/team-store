@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of "Workspace Mobile.dc.html". My Teams: divisions, rosters, players and the Roster Bank.
 
@@ -111,7 +111,7 @@
 }
 
 .wm-team-group__team-code {
-  font-family: $font-mono;
+  font-family: $font-system-mono;
 }
 
 .wm-team-group__bank-badge {

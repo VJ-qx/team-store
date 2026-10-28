@@ -276,8 +276,8 @@
 
 <script>
 import { INTEGRATION } from '../../../workspace/integration.js';
-import { ACCOUNT_BRANDS, ACCOUNT_PROFILE, BRAND_ADD_DESC, BRAND_ADD_STATE, tsPasswordRules } from '../../../workspace/data/account.js';
-import { CUSTOMIZER_BRANDS } from '../../../workspace/data/brands.js';
+import { ACCOUNT_BRANDS, ACCOUNT_PROFILE, BRAND_ADD_DESC, BRAND_ADD_STATE, tsPasswordRules } from './account.js';
+import { CUSTOMIZER_BRANDS } from './brands.js';
 import Modal from '../common/Modal.vue';
 import { IconCheck, IconChevron, IconCircleCheck, IconClock, IconEdit, IconExternal, IconLock, IconMail, IconPlus, IconSearch, IconShield, IconX } from '../icons.js';
 import StoreCard from '../stores/StoreCard.vue';

@@ -55,7 +55,7 @@
   gap: 8px;
   background: #e7f5ed;
   border: 1px solid #c7ead4;
-  color: $green-text;
+  color: $ok;
   border-radius: 999px;
   padding: 8px 16px;
   font-size: 12.5px;
@@ -68,7 +68,7 @@
   font-size: 28px;
   font-weight: 800;
   letter-spacing: -.4px;
-  color: $ink;
+  color: $zinc-950;
   text-align: center;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .tsl-welcome__strong {
-  color: $ink;
+  color: $zinc-950;
   font-weight: 700;
 }
 
@@ -147,7 +147,7 @@
   display: block;
   font-size: 15px;
   font-weight: 800;
-  color: $ink;
+  color: $zinc-950;
 }
 
 .tsl-welcome__brand-sub {
@@ -163,7 +163,7 @@
   gap: 6px;
   font-size: 12.5px;
   font-weight: 700;
-  color: $green-text;
+  color: $ok;
   background: #e7f5ed;
   border: 1px solid #c7ead4;
   border-radius: 999px;
@@ -172,8 +172,8 @@
 
 .tsl-welcome__connect {
   background: $white;
-  color: $ink;
-  border: 1px solid $ink;
+  color: $zinc-950;
+  border: 1px solid $zinc-950;
   border-radius: 8px;
   padding: 8px 14px;
   font-family: inherit;
@@ -227,7 +227,7 @@
 .tsl-welcome__tile-ring {
   position: absolute;
   inset: 0;
-  border: 2px solid $ink;
+  border: 2px solid $zinc-950;
   border-radius: 14px;
   background: $white;
 }
@@ -240,7 +240,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: $ink;
+  background: $zinc-950;
   color: $white;
   display: inline-flex;
   align-items: center;
@@ -327,7 +327,7 @@
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -.3px;
-  color: $ink-soft;
+  color: $ink;
 }
 
 .tsl-welcome__primary-divider {
@@ -339,14 +339,14 @@
 .tsl-welcome__primary-name {
   font-size: 15.5px;
   font-weight: 800;
-  color: $ink-soft;
+  color: $ink;
 }
 
 .tsl-welcome__primary-check {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: $green-text;
+  color: $ok;
   font-size: 12.5px;
   font-weight: 700;
 }
@@ -361,7 +361,7 @@
   border: 0;
   border-radius: 9px;
   padding: 16px 32px;
-  background: $ink;
+  background: $zinc-950;
   color: $white;
   font-family: inherit;
   font-size: 15px;

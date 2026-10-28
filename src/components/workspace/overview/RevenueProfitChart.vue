@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { buildRevenueSeries, ovFmt, OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, RPC_PROF, RPC_REV } from '../../../workspace/data/overview.js';
+import { buildRevenueSeries, ovFmt, OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, RPC_PROF, RPC_REV } from './overview.js';
 import { px } from '../../../workspace/style.js';
 
 const tickStep = (v) => { const raw = Math.max(v, 1) / 5; const p = Math.pow(10, Math.floor(Math.log10(raw))); const m = raw / p; const s = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10; return s * p; };

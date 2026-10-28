@@ -3,7 +3,7 @@
      and My Account — and a store's page (its Home tab and the setup guides). The routing logic is the
      prototype's; screens that are not converted yet (Stores, Earnings, Orders, …) render nothing.
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
-     src/workspace/data/settings.js), the #frame= deep links and the frame overview grid. -->
+     WorkspacePage.settings.js), the #frame= deep links and the frame overview grid. -->
 <template>
   <!-- ─── No-access flow: the gate, the application form, and the review states are full-viewport
        standalone pages (no prolook.com shell) ─── -->
@@ -48,11 +48,11 @@
 
 <script>
 import { INTEGRATION } from '../workspace/integration.js';
-import { ACCOUNT_PROFILE } from '../workspace/data/account.js';
-import { ACCESSIBLE_CUSTOMIZERS, CUSTOMIZER_BRANDS } from '../workspace/data/brands.js';
-import { recordStoreVisit } from '../workspace/data/overview.js';
-import { SETTINGS_DEFAULTS } from '../workspace/data/settings.js';
-import { loadCreatedStores, makePrefill, makeSampleLeagues, makeSeededStores, saveCreatedStores } from '../workspace/data/stores.js';
+import { ACCOUNT_PROFILE } from '../components/workspace/account/account.js';
+import { ACCESSIBLE_CUSTOMIZERS, CUSTOMIZER_BRANDS } from '../components/workspace/account/brands.js';
+import { recordStoreVisit } from '../components/workspace/overview/overview.js';
+import { SETTINGS_DEFAULTS } from './WorkspacePage.settings.js';
+import { loadCreatedStores, makePrefill, makeSampleLeagues, makeSeededStores, saveCreatedStores } from '../components/workspace/stores/stores.js';
 import AccessApplyForm from '../components/workspace/access/AccessApplyForm.vue';
 import AccessPending from '../components/workspace/access/AccessPending.vue';
 import FeatureGate from '../components/workspace/access/FeatureGate.vue';

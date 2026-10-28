@@ -57,7 +57,7 @@ button {
   height: 100%;
   display: flex;
   flex-direction: column;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   color: #0e0e10;
   background: #fbfbfc;
 }
@@ -378,7 +378,7 @@ button {
 .wm-card__title {
   font-size: 15px;
   font-weight: 800;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
 }
 
 .wm-card__section {
@@ -447,7 +447,7 @@ button {
 }
 
 .wm-stat__value {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 26px;
   font-weight: 800;
   margin-top: 4px;
@@ -708,7 +708,7 @@ button {
 .wm-heading {
   font-size: 17px;
   font-weight: 800;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
 }
 
 .wm-heading--mt-4 {
@@ -716,7 +716,7 @@ button {
 }
 
 .wm-display-title {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 20px;
   font-weight: 800;
 }
@@ -1046,7 +1046,7 @@ button {
 }
 
 .wm-step__title {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 24px;
   font-weight: 800;
   margin-top: 4px;
@@ -1070,7 +1070,7 @@ button {
   height: 40px;
   border-radius: 50%;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 13px;
   display: inline-flex;
@@ -1233,7 +1233,7 @@ button {
 }
 
 .wm-overview__title {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 24px;
   font-weight: 800;
   margin: 0;
@@ -1574,7 +1574,7 @@ button {
 }
 
 .wm-overview__kpi-value {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 26px;
   font-weight: 800;
   color: #0e0e10;
@@ -2185,7 +2185,7 @@ button {
 }
 
 .wm-earnings__total {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 36px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -2813,7 +2813,7 @@ button {
   border-radius: 50%;
   background: #fff;
   color: #1d4ed8;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 12px;
   display: inline-flex;
@@ -2824,7 +2824,7 @@ button {
 .wm-wizard-review__preview-name {
   color: #fff;
   font-weight: 800;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 16px;
 }
 
@@ -3168,7 +3168,7 @@ button {
   border-radius: 10px;
   background: #7c1d2b;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 13px;
   display: inline-flex;
@@ -3183,7 +3183,7 @@ button {
   border-radius: 10px;
   background: #1e3a6e;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 13px;
   display: inline-flex;
@@ -3206,7 +3206,7 @@ button {
   border-radius: 10px;
   background: #0f766e;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 13px;
   display: inline-flex;
@@ -3236,7 +3236,7 @@ button {
   height: 48px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.18);
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 16px;
   display: inline-flex;
@@ -3325,7 +3325,7 @@ button {
   border-radius: 50%;
   background: #1d4ed8;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 14px;
   display: inline-flex;
@@ -3340,7 +3340,7 @@ button {
   border-radius: 50%;
   background: #f1f1f3;
   color: #9a9aa1;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 14px;
   display: inline-flex;
@@ -3374,7 +3374,7 @@ button {
   border-radius: 50%;
   background: #1d4ed8;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 18px;
   display: inline-flex;
@@ -3838,7 +3838,7 @@ button {
 }
 
 .wm-reports__total {
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-size: 34px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -4119,7 +4119,7 @@ button {
   border-radius: 6px;
   background: #7c1d2b;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 15px;
   display: inline-flex;
@@ -4297,7 +4297,7 @@ button {
   border-radius: 8px;
   background: #7c1d2b;
   color: #fff;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
   font-weight: 800;
   font-size: 14px;
   display: inline-flex;
@@ -4587,7 +4587,7 @@ button {
   padding: 14px 16px 6px;
   font-size: 15px;
   font-weight: 800;
-  font-family: Archivo, sans-serif;
+  font-family: "Archivo", sans-serif;
 }
 
 .wm-settings-team__toggle-row {

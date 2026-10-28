@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of "Workspace Mobile.dc.html". The Overview tab of the workspace.
 
@@ -532,7 +532,7 @@
   text-align: right;
   transform: translateY(-50%);
   font-size: 10px;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   color: #8a8a92;
   pointer-events: none;
   line-height: 1;
@@ -545,7 +545,7 @@
   text-align: left;
   transform: translateY(-50%);
   font-size: 10px;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   color: #b45309;
   pointer-events: none;
   line-height: 1;
@@ -583,7 +583,7 @@
 .wm-overview__tooltip-revenue {
   font-size: 12.5px;
   font-weight: 700;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   color: #c4b5fd;
 }
 
@@ -595,7 +595,7 @@
 .wm-overview__tooltip-profit {
   font-size: 12.5px;
   font-weight: 700;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   color: #fcd34d;
 }
 
@@ -679,7 +679,7 @@
 .wm-overview__top-store-revenue {
   font-size: 16px;
   font-weight: 700;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   letter-spacing: -.01em;
 }
 
@@ -719,7 +719,7 @@
 
 .wm-overview__completion-value {
   font-size: 12px;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   color: $ink;
   flex-shrink: 0;
 }

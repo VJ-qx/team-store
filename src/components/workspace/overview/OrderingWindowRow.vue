@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { fmtWindowDate, ovFmt, OV_INK, OV_LINE, OV_MUTED } from '../../../workspace/data/overview.js';
+import { fmtWindowDate, ovFmt, OV_INK, OV_LINE, OV_MUTED } from './overview.js';
 
 export default {
   name: 'OrderingWindowRow',

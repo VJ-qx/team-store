@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of "Workspace Mobile.dc.html". Orders, pending orders, an order and the submit sheet.
 
@@ -216,7 +216,7 @@
 .wm-order__details-code {
   padding: 11px 16px 11px 0;
   font-weight: 600;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
 }
 
 .wm-order__totals {

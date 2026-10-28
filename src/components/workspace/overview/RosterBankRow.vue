@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { OV_INK, OV_MUTED } from '../../../workspace/data/overview.js';
+import { OV_INK, OV_MUTED } from './overview.js';
 import IconBankInbox from '../common/IconBankInbox.vue';
 
 export default {

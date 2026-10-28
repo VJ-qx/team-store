@@ -2,7 +2,7 @@
 // "Marucci Workspace.dc.html". Kept apart from app.scss so the workspace globals don't reach the landing page.
 // Extracted so far: the Module 1 components and a store's page (top bar, side menu, Home tab, setup guides);
 // the rest of the workspace still uses inline styles.
-@use "workspace/global";
+@use "global" with ($page: "workspace");
 @use "workspace/components/feature-gate";
 @use "workspace/components/access-apply-form";
 @use "workspace/components/access-pending";

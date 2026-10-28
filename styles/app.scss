@@ -1,5 +1,5 @@
 // Entry point. Compiled to app.css (npm run styles); linked by "Landing Page.dc.html".
-@use "global";
+@use "global" with ($page: "landing");
 @use "layouts/page";
 @use "layouts/header";
 @use "pages/landing";

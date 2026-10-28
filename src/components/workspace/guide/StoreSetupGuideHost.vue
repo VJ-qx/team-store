@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { crReadJSON, crWriteJSON } from '../../../workspace/data/close-report.js';
-import { sgSeenKey } from '../../../workspace/data/setup-guide.js';
+import { crReadJSON, crWriteJSON } from '../close-report/close-report.js';
+import { sgSeenKey } from './setup-guide.js';
 import StoreSetupGuideOverlay from './StoreSetupGuideOverlay.vue';
 
 export default {

@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of AccessApplyForm in workspace-app.jsx and workspace-app-integrated.jsx.
 // Business verification form (FR-1.10.2). The input border and focus ring stay inline: they depend on validation, and the focus handlers write the same properties.

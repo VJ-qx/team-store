@@ -1,8 +1,8 @@
 // Converted from workspace-app.jsx / workspace-app-integrated.jsx: the roster sample data a store's page
 // reads (Dashboard's roster org: the Home tab's league structure, manager panel and Roster Bank counts),
 // copied unchanged. The two workspaces differ only in the seeded divisions (ROSTER_GROUP_SEED).
-import { INTEGRATION } from '../integration.js';
-import { BAYSHORE_BANK_SEED, TEAMS_ONLY_GROUP_SEED, WASATCH_BANK_SEED } from './overview.js';
+import { INTEGRATION } from '../../../workspace/integration.js';
+import { BAYSHORE_BANK_SEED, TEAMS_ONLY_GROUP_SEED, WASATCH_BANK_SEED } from '../overview/overview.js';
 
 export const ROSTER_GROUP_SEED = INTEGRATION.on ? [
   { id: "sf", name: "10U Division", sport: "Baseball", color: "#1e3a6e", rosters: [

@@ -42,8 +42,8 @@
 
 <script>
 import { INTEGRATION } from '../../../workspace/integration.js';
-import { makeRosterOrg, owTeams } from '../../../workspace/data/rosters.js';
-import { homeRedNavTabs, loadBadgeState, saveBadgeState } from '../../../workspace/data/store-home.js';
+import { makeRosterOrg, owTeams } from './rosters.js';
+import { homeRedNavTabs, loadBadgeState, saveBadgeState } from './store-home.js';
 import { IconArrowRight, IconStore } from '../icons.js';
 import StoreSetupGuideHost from '../guide/StoreSetupGuideHost.vue';
 import HomeTab from './HomeTab.vue';
