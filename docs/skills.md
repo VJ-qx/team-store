@@ -43,3 +43,5 @@ The one-command steps use these, from the team's original command set. Run them 
 - **The original is the source of truth.** If the comparison finds a difference, the new version is fixed. The test flows are never changed to hide it.
 - **The prototype's bugs are kept** in the styles and Vue steps, for example the broken sign-in redirect. They're listed in the reports and fixed separately.
 - **Work happens on a branch.** Every step refuses to run on `main`, or with uncommitted changes.
+- **One `_variables.scss` and one `_global.scss`.** Every page shares `styles/_variables.scss` and `styles/_global.scss`. A new page adds its values to the shared list (a new name when a value differs) and its base rules as its own section of `_global.scss`, never a copy of either file.
+- **Data lives next to its components.** In the Vue code, a data file goes in the folder of the components that use it (`src/components/workspace/<area>/`); a file several folders share goes with its main user, and page-only data sits beside the page (`src/pages/WorkspacePage.settings.js`).
