@@ -23,7 +23,7 @@ const staticNotFound = {
 // The workspace components are converted from JSX, which drops the whitespace between elements on
 // separate lines. Vue's "condense" mode does the same, so those files compile with it, plus splitText
 // below. The landing page keeps "preserve": its prototype is HTML, where that whitespace renders.
-const CONDENSE = /[\\/]src[\\/](components[\\/]workspace[\\/]|pages[\\/]WorkspacePage\.vue)/;
+const CONDENSE = /[\\/]src[\\/]workspace[\\/]/;
 const condense = (filename) => CONDENSE.test(filename || '');
 
 // JSX makes each text chunk and each {expression} its own DOM text node; Vue joins neighbouring text

@@ -43,8 +43,8 @@ Starts the Vue version. One page per prototype page:
 
 | Vue page | Prototype page | Source |
 |---|---|---|
-| http://localhost:5173/ | `Landing Page.dc.html` | `src/pages/LandingPage.vue` |
-| http://localhost:5173/workspace.html | `Workspace.dc.html` | `src/pages/WorkspacePage.vue` |
+| http://localhost:5173/ | `Landing Page.dc.html` | `src/landing/LandingPage.vue` |
+| http://localhost:5173/workspace.html | `Workspace.dc.html` | `src/workspace/WorkspacePage.vue` |
 | http://localhost:5173/workspace-integrated.html | `Marucci Workspace.dc.html` | the same page, with the integration flag on |
 
 The workspace takes the same URL settings as the prototype, for example `workspace.html?brand=prolook&auth=native-connected`. Converted so far:
