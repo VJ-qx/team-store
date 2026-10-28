@@ -48,7 +48,8 @@ index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/workspace/             the Vue workspace: main.js, WorkspacePage.vue, components/,
                            data/ (fixtures), seed/ (sample-record factories), storage/ (localStorage),
                            lib/ (pure helpers), theme.js
-src/                       the Vue landing page: main.js, App.vue, pages/; utils/ (shared: dc-logic.js)
+src/landing/               the Vue landing page: main.js, LandingPage.vue, LandingPage.logic.js
+src/utils/                 shared helpers: dc-logic.js (the Claude Design runtime's logic class)
 tools/parity/              comparison, check list, and preview tools
 tools/parity/scenarios/    user flows per page (one file per page or module)
 .claude/skills/            Claude Code slash commands
