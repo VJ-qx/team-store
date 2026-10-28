@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { OV_INK, OV_LINE, OV_MUTED } from './overview.js';
 
 export default {

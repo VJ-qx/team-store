@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 
 const CSS = `
         @keyframes fadeIn  { from{opacity:0}                                       to{opacity:1} }

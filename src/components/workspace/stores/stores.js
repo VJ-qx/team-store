@@ -2,7 +2,7 @@
 // integrated workspace has its own two seed stores, two archived stores and vault products.
 // The function names stay as in the prototype: the parity tool seeds Math.random per calling
 // function (makeSeedStores draws the random revenue figures).
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { vaultDefaultProducts } from './vault.js';
 
 export const CREATED_STORES_KEY = "ts_created_stores_v1";

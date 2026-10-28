@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { reactStyle } from '../../../workspace/style.js';
+import { reactStyle } from '../../../utils/style.js';
 
 export default {
   name: 'Crosshairs',

@@ -275,7 +275,7 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { ACCOUNT_BRANDS, ACCOUNT_PROFILE, BRAND_ADD_DESC, BRAND_ADD_STATE, tsPasswordRules } from './account.js';
 import { CUSTOMIZER_BRANDS } from './brands.js';
 import Modal from '../common/Modal.vue';

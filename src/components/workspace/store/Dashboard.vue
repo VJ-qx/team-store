@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { makeRosterOrg, owTeams } from './rosters.js';
 import { homeRedNavTabs, loadBadgeState, saveBadgeState } from './store-home.js';
 import { IconArrowRight, IconStore } from '../icons.js';

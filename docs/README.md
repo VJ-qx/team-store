@@ -46,7 +46,7 @@ styles/                    SCSS: one entry per page, compiled to styles/<entry>.
                            _variables.scss and _global.scss are shared by every page
 index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/                       Vue code: pages/, components/workspace/ (each folder holds its data),
-                           workspace/ (integration flag, directives, style helpers)
+                           utils/ (shared helpers: integration flag, directives, style helpers, dc-logic)
 tools/parity/              comparison, check list, and preview tools
 tools/parity/scenarios/    user flows per page (one file per page or module)
 .claude/skills/            Claude Code slash commands

@@ -5,7 +5,7 @@
 
 <script>
 import { CUSTOMIZER_BRANDS } from './brands.js';
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 
 export default {
   name: 'BrandTile',

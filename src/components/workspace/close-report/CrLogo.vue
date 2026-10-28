@@ -8,7 +8,7 @@
 
 <script>
 import { crAccent } from './close-report.js';
-import { px } from '../../../workspace/style.js';
+import { px } from '../../../utils/style.js';
 
 export default {
   name: 'CrLogo',

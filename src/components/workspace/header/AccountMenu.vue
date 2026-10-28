@@ -20,7 +20,7 @@
 
 <script>
 import { markRaw } from 'vue';
-import { INTEGRATION } from '../../../workspace/integration.js';
+import { INTEGRATION } from '../../../utils/integration.js';
 import { IconBag, IconLayers, IconLogout, IconSettings, IconUser } from '../icons.js';
 import CustomizerBrandGlyph from './CustomizerBrandGlyph.vue';
 
