@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of "Workspace Mobile.dc.html". Text styles.
 
@@ -170,6 +170,6 @@
 .wm-code {
   font-size: 17px;
   font-weight: 700;
-  font-family: $font-mono;
+  font-family: $font-system-mono;
   letter-spacing: .06em;
 }

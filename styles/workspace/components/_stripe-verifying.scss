@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of StripeVerifying in workspace-app.jsx and workspace-app-integrated.jsx.
 // Stripe verification screen. Its accSpin and accPop keyframes stay in the <style> element the component renders.

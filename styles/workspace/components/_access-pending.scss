@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../../variables" as *;
 
 // Moved from the inline styles of AccessPending in workspace-app.jsx and workspace-app-integrated.jsx.
 // Awaiting-approval screen. Its accSpin keyframes stay in the <style> element the component renders.

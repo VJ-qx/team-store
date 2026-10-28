@@ -1,89 +1,218 @@
 @use "variables" as *;
 
-// Global rules, moved unchanged from the page's former <style> block.
+// Global rules for every page, moved unchanged from each page's former <style> block. Each page has its own
+// entry (app.scss, workspace.scss, workspace-mobile.scss), and each one picks its section here with
+// @use "global" with ($page: "..."), so one page's base rules (fonts, background, tokens) never reach another.
+// Like the separate files this replaces, the section is emitted first, where the entry loads this file.
 
-* {
-  box-sizing: border-box;
-}
+$page: null !default;
 
-html,body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: #ffffff;
-  font-family: $font-sans;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  color: $ink;
-}
-
-summary {
-  list-style: none;
-  cursor: pointer;
-}
-
-summary::-webkit-details-marker {
-  display: none;
-}
-
-details[open] span[data-chev] {
-  transform: rotate(45deg);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-@keyframes tsModalIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(.98);
+@if $page == "landing" {
+  // "Landing Page.dc.html"
+  * {
+    box-sizing: border-box;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@keyframes tsOverlayIn {
-  from {
-    opacity: 0;
+  html,body {
+    margin: 0;
+    padding: 0;
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes tsCheckPop {
-  0% {
-    transform: scale(.3);
-    opacity: 0;
+  body {
+    background: #ffffff;
+    font-family: $font-gotham;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color: $zinc-950;
   }
-  60% {
-    transform: scale(1.12);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 
-@keyframes tsRing {
-  from {
-    transform: rotate(0);
+  summary {
+    list-style: none;
+    cursor: pointer;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-@keyframes tsDraw {
-  from {
-    stroke-dashoffset: 34;
+  summary::-webkit-details-marker {
+    display: none;
   }
-  to {
-    stroke-dashoffset: 0;
+
+  details[open] span[data-chev] {
+    transform: rotate(45deg);
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @keyframes tsModalIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes tsOverlayIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes tsCheckPop {
+    0% {
+      transform: scale(.3);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.12);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes tsRing {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes tsDraw {
+    from {
+      stroke-dashoffset: 34;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+} @else if $page == "workspace" {
+  // "Workspace.dc.html" and "Marucci Workspace.dc.html". The custom properties are runtime tokens: the
+  // workspace's inline styles read them with var(--ink) and so on.
+  :root {
+    --ink: #0e0e10;
+    --ink-2: #1a1a1d;
+    --muted: #6b6b72;
+    --muted-2: #9a9aa1;
+    --line: #e5e5e9;
+    --line-2: #ececf0;
+    --bg: #ffffff;
+    --bg-soft: #f7f7f8;
+    --bg-soft-2: #f1f1f3;
+    --accent: #e1251b;
+    --accent-ink: #b81d14;
+    --ok: #1f9d55;
+    --ok-soft: #e7f5ed;
+    --blue: #2563eb;
+    --focus: rgba(225,37,27,.18);
+    --radius: 6px;
+    --shadow-card: 0 1px 2px rgba(20,20,30,.04);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  input,select,textarea {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d8d8de;
+    border-radius: 10px;
+    border: 2px solid #fff;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+} @else if $page == "workspace-mobile" {
+  // "Workspace Mobile.dc.html"
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ececef;
+    color: #0e0e10;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: #0e0e10;
+  }
+
+  a:hover {
+    color: #e1251b;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  // Every tappable element carries data-go (a screen id, "back" or "toast:<message>").
+  [data-go] {
+    cursor: pointer;
+  }
+
+  // The toast's fade in and out (components/_toast.scss).
+  @keyframes wmToast {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 8px);
+    }
+    12% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+} @else {
+  @error "styles/_global.scss: set $page to \"landing\", \"workspace\" or \"workspace-mobile\" (got #{$page}).";
 }
