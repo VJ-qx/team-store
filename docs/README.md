@@ -56,6 +56,33 @@ tools/parity/scenarios/    user flows per page (one file per page or module)
 .parity/                   reports and check lists (not committed)
 ```
 
+## Running the Vue app
+
+```bash
+npm install
+npm run dev     # http://localhost:5173/
+```
+
+[how-to-access.md](how-to-access.md) gives the address of every converted screen.
+
+The Vue app needs only these files. Nothing in `src/` imports the prototype files, so the app runs without them.
+
+| File or folder | Why the app needs it |
+|---|---|
+| `src/` | The Vue code: `landing/`, `workspace/`, and `utils/` for code both pages share. |
+| `styles/` | The SCSS sources. The landing page imports `styles/vue.scss` and the workspace imports `styles/workspace.scss`. Vite compiles them itself; the compiled `.css` files are for the prototype pages. |
+| `_ds/` | The Prolook design system. The landing page (`index.html`) loads its fonts, colours, typography and spacing. |
+| `assets/` | The images the pages show, such as logos and brand logos. The code refers to them as `assets/…`, relative to the page. |
+| `index.html`, `workspace.html`, `workspace-integrated.html` | The three pages: landing, workspace, and Marucci workspace. |
+| `vite.config.js` | Settings the pages depend on: a missing page returns "Not found" as on a static host, image paths stay as written, and the workspace components keep JSX's whitespace rules so text renders as in the prototype. |
+| `package.json`, `package-lock.json` | Dependencies (Vue, Vite, Sass) and the `npm run` commands. |
+
+Not needed to run the app:
+
+- **Reference for the conversion:** the prototype pages (`*.dc.html`), `workspace-app.jsx`, `workspace-app-integrated.jsx` and `support.js`. The screens not converted yet exist only here, and `tools/parity/` compares the Vue version against them.
+- **Requirements:** the US team's feature specs, as `.md` files in `uploads/Team Store Workspace/` and `uploads/Consumer Storefront/`, and the [BRD M-1.0](https://docs.google.com/document/d/18UFKmsIhbKLlOutMd4mL5-GqYE1kxBQN/edit).
+- **Not used by anything:** `handoff/`, `export-assets/`, `scratch/`, `screenshots/` and `Design Exploration.dc.html`.
+
 ## Known issues in the handover
 
 - **Broken sign-in redirect:** successful sign-in and registration redirect to `Team Stores Workspace.dc.html`, which doesn't exist (the page is now `Workspace.dc.html`). The conversion steps keep this behaviour on purpose; it needs a separate fix. To reach the workspace, open `Workspace.dc.html?brand=prolook&auth=native` directly.
