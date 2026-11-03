@@ -1,11 +1,11 @@
 ---
-name: implement-approved-change
+name: add-approved-design
 description: Add a design change that the US team approved, but that isn't in the prototype yet, to a converted Vue page. Reads the approved design and the BRD, builds the change in the page's SCSS and Vue code without touching the prototype, proves every existing state still matches the prototype with /compare-behavior, checks the new states against the design, records the change, and commits. Each stage must pass before the next one starts.
 argument-hint: "<design-image> \"<what changed>\" [--page <vue-page>]"
 disable-model-invocation: true
 ---
 
-# Implement Approved Change
+# Add Approved Design
 
 Change: `$ARGUMENTS`
 

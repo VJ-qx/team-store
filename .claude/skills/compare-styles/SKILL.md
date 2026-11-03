@@ -73,7 +73,7 @@ Two optional fields feed the manual check list (`npm run checklist`):
 - **`label`** on a step: the plain-language description of the step, for selectors that don't read well on their own. For example: `{ click: 'summary >> nth=0', label: 'Click the first FAQ question to open it' }`.
 - **`related`** on the scenario: the places the page's flows lead outside the page, as `{ name, where, how }`. For example, the page another page's sign-in redirects to, and how to open it directly.
 
-One more list, for approved changes the prototype doesn't have yet (see `/implement-approved-change`):
+One more list, for approved changes the prototype doesn't have yet (see `/add-approved-design`):
 
 - **`approved`** on the scenario: states that exist only in the Vue version, in the same format as `states`, plus **`design`**: the path of the approved design image, for example `docs/approved-changes/sign-in-lockout.png`. Normal runs skip them and say so in the notes. `npm run parity -- <scenario> --approved --b <vue-url>` runs them on the Vue version only and saves a screenshot of every checkpoint to compare with the design. When the prototype gets the change, move the states into `states`.
 
