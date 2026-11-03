@@ -128,4 +128,4 @@ md.push('');
 const out = opts.out ? resolve(opts.out) : join(repoRoot, '.parity', `checklist-${slug}-${opts.mode}.md`);
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, md.join('\n'));
-console.log(`Manual check list (${states.length} states${approved.length ? `, ${approved.length} approved` : ''}${(scenario.related || []).length ? `, ${scenario.related.length} related` : ''}):${out.startsWith(repoRoot) ? out.slice(repoRoot.length + 1) : out}`);
+console.log(`Manual check list (${states.length} states${approved.length ? `, ${approved.length} approved` : ''}${(scenario.related || []).length ? `, ${scenario.related.length} related` : ''}): ${out.startsWith(repoRoot) ? out.slice(repoRoot.length + 1) : out}`);
