@@ -209,6 +209,8 @@ A scenario's `approved` list holds the states of approved changes the prototype 
 | `marucci-workspace-module-1.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace |
 | `workspace-store-home.mjs` | `Workspace.dc.html` | A store's page: the Home tab and both setup guides |
 | `marucci-workspace-store-home.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace (no individual or draft sample store there) |
+| `workspace-overview.mjs` | `Workspace.dc.html` | Module 2: the Overview (All Stores filter, search, Frequently visited, KPI cards, Revenue & Dealer Profit, Top Performing Stores, ordering windows, Roster Bank) and the empty Overview |
+| `marucci-workspace-overview.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace |
 | `workspace-mobile.mjs` | `Workspace Mobile.dc.html` | The mobile prototype (styles step; no Vue version yet) |
 
 ---

@@ -1,0 +1,48 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of Panel in workspace-app.jsx and workspace-app-integrated.jsx: the
+// white card every Overview section sits in (title, optional subtitle, and a link or control on the right).
+
+.wx-ov-panel {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.wx-ov-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.wx-ov-panel__title {
+  font-size: 15.5px;
+  font-weight: 800;
+  margin: 0;
+  color: $ink;
+  letter-spacing: .01em;
+}
+
+// workspace-app-integrated.jsx: the integrated workspace's panel titles are slightly larger.
+.wx-ov-panel__title--marucci {
+  font-size: 16px;
+}
+
+.wx-ov-panel__subtitle {
+  font-size: 12px;
+  color: $muted;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.wx-ov-panel__action {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: $blue;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0;
+}

@@ -1,0 +1,129 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of StoreScopeSelector in workspace-app.jsx and
+// workspace-app-integrated.jsx: the Overview's All Stores filter (FR-2.2), a button and its list of
+// stores with checkboxes. A store's avatar color comes from the data, so it stays inline.
+
+.wx-ov-scope {
+  position: relative;
+}
+
+.wx-ov-scope__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $ink;
+}
+
+// One or more stores are selected.
+.wx-ov-scope__btn--active {
+  background: $divider;
+  border: 1px solid #c4c4c8;
+}
+
+.wx-ov-scope__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  width: 280px;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(20,20,30,.14);
+  overflow: hidden;
+}
+
+.wx-ov-scope__menu-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid $line-2;
+}
+
+.wx-ov-scope__menu-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: $muted;
+  text-transform: uppercase;
+}
+
+.wx-ov-scope__clear {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: $red;
+}
+
+.wx-ov-scope__list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.wx-ov-scope__item {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.wx-ov-scope__item--on {
+  background: #fafafb;
+}
+
+.wx-ov-scope__check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: $white;
+  border: 1.5px solid #c4c4c8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-ov-scope__check--on {
+  background: $ink;
+  border: 1.5px solid $ink;
+}
+
+.wx-ov-scope__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 9.5px;
+  flex-shrink: 0;
+}
+
+.wx-ov-scope__name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

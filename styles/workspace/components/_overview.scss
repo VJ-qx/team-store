@@ -1,0 +1,260 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of OverviewDashboard in workspace-app.jsx and workspace-app-integrated.jsx:
+// the Overview page (BRD M-2.0): its heading and actions, the search field (FR-2.3), the KPI row
+// (FR-2.5), Top Performing Stores (FR-2.7), and the footers of Active Ordering Windows and Roster Bank.
+// A store's color, and the widths of the leaderboard's bars, come from the data, so they stay inline.
+
+.wx-ov {
+  flex: 1;
+  min-width: 0;
+  padding: 28px max(32px, calc((100% - 1376px)/2)) 80px;
+  background: $bg-app;
+}
+
+// ── Heading ──
+
+.wx-ov__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.wx-ov__title {
+  font-family: $font-display;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: $ink;
+  letter-spacing: -.3px;
+}
+
+.wx-ov__lead {
+  font-size: 14px;
+  color: $muted;
+}
+
+.wx-ov__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wx-ov__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $ink;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $white;
+}
+
+.wx-ov__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 240px;
+  border: 1px solid #d8d8de;
+  border-radius: 8px;
+  background: $white;
+}
+
+.wx-ov__search-input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 12px 40px 12px 16px;
+  font-size: 13.5px;
+}
+
+// ── KPI row ──
+
+.wx-ov__kpi-head {
+  padding-top: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.wx-ov__kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.wx-ov__panels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+// ── Top Performing Stores ──
+
+.wx-ov-top__head {
+  display: grid;
+  grid-template-columns: minmax(190px,1.8fr) repeat(7, 1fr);
+  gap: 12px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid $line-2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: $muted;
+  text-transform: uppercase;
+}
+
+// The row's hover background is written by its event handlers, as in the prototype.
+.wx-ov-top__row {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(190px,1.8fr) repeat(7, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f4f4f6;
+}
+
+.wx-ov-top__store {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.wx-ov-top__name-wrap {
+  min-width: 0;
+}
+
+.wx-ov-top__name {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-ov-top__sport {
+  display: block;
+  font-size: 12px;
+  color: $muted;
+}
+
+.wx-ov-top__created {
+  font-size: 13px;
+  color: $muted;
+  font-family: $font-mono;
+}
+
+.wx-ov-top__num {
+  text-align: right;
+  padding-right: 24px;
+  font-size: 13.5px;
+  color: $ink;
+  font-family: $font-mono;
+}
+
+.wx-ov-top__num--strong {
+  font-weight: 700;
+}
+
+.wx-ov-top__meter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.wx-ov-top__meter-value {
+  font-size: 13px;
+  color: $ink;
+  font-family: $font-mono;
+}
+
+.wx-ov-top__meter-note {
+  color: $muted;
+  font-family: inherit;
+  font-size: 11.5px;
+}
+
+.wx-ov-top__bar {
+  width: 70%;
+  height: 4px;
+  border-radius: 999px;
+  background: $divider;
+  overflow: hidden;
+}
+
+.wx-ov-top__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: $ink;
+}
+
+// Completion: 80% or more of the roster has ordered.
+.wx-ov-top__fill--done {
+  background: $ok;
+}
+
+.wx-ov-top__fill--short {
+  background: #e0a92b;
+}
+
+.wx-ov-top__trend {
+  text-align: right;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.wx-ov-top__trend--up {
+  color: $ok;
+}
+
+.wx-ov-top__trend--down {
+  color: $red;
+}
+
+.wx-ov-top__none {
+  padding: 32px 0;
+  text-align: center;
+  color: $muted;
+  font-size: 13px;
+}
+
+// ── Active Ordering Windows and Roster Bank ──
+
+.wx-ov__none {
+  padding: 24px 0;
+  text-align: center;
+  color: $muted;
+  font-size: 13px;
+}
+
+.wx-ov__panel-foot {
+  padding-top: 16px;
+  font-size: 12.5px;
+  color: $muted;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

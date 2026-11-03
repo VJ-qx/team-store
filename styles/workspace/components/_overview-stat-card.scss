@@ -1,0 +1,84 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of StatCard in workspace-app.jsx and workspace-app-integrated.jsx: the
+// Overview's KPI cards (FR-2.5). The Orders card is a link; its hover lift is written by its event
+// handlers, as in the prototype.
+
+.wx-ov-stat {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: default;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+}
+
+.wx-ov-stat--link {
+  cursor: pointer;
+}
+
+.wx-ov-stat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wx-ov-stat__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  color: $muted;
+  text-transform: uppercase;
+}
+
+.wx-ov-stat__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #f5f5f7;
+  color: $ink;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-ov-stat__value {
+  font-family: $font-display;
+  font-size: 32px;
+  font-weight: 800;
+  color: $ink;
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.wx-ov-stat__foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.wx-ov-stat__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.wx-ov-stat__delta--up {
+  color: $ok;
+}
+
+.wx-ov-stat__delta--down {
+  color: $red;
+}
+
+.wx-ov-stat__sub {
+  color: $muted;
+}
