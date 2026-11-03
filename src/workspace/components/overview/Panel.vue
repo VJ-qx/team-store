@@ -2,14 +2,14 @@
      Overview. "right" is a slot for a control beside the title. A style passed by the caller lands
      after the panel's own, as in the prototype's {...style}. -->
 <template>
-  <div :style="{ background: '#fff', border: `1px solid ${OV_LINE}`, borderRadius: '12px', padding: '20px 24px' }">
-    <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }">
+  <div class="wx-ov-panel">
+    <div class="wx-ov-panel__head">
       <div>
-        <h3 :style="{ fontSize: INT ? '16px' : '15.5px', fontWeight: 800, margin: '0', color: OV_INK, letterSpacing: '.01em' }">{{ title }}</h3>
-        <div v-if="subtitle" :style="{ fontSize: '12px', color: OV_MUTED, marginTop: '4px', lineHeight: 1.45 }">{{ subtitle }}</div>
+        <h3 :class="`wx-ov-panel__title${INT ? ' wx-ov-panel__title--marucci' : ''}`">{{ title }}</h3>
+        <div v-if="subtitle" class="wx-ov-panel__subtitle">{{ subtitle }}</div>
       </div>
       <slot name="right" />
-      <button v-if="action" @click="onAction" :style="{ background: 'transparent', border: '0', cursor: 'pointer', color: '#2563eb', fontSize: '13px', fontWeight: 600, padding: '0' }">{{ action }}</button>
+      <button v-if="action" @click="onAction" class="wx-ov-panel__action">{{ action }}</button>
     </div>
     <slot />
   </div>
@@ -17,7 +17,6 @@
 
 <script>
 import { INTEGRATION } from '../../integration.js';
-import { OV_INK, OV_LINE, OV_MUTED } from '../../theme.js';
 
 export default {
   name: 'Panel',
@@ -28,7 +27,7 @@ export default {
     onAction: { type: Function, default: undefined },
   },
   data() {
-    return { INT: INTEGRATION.on, OV_INK, OV_LINE, OV_MUTED };
+    return { INT: INTEGRATION.on };
   },
 };
 </script>
