@@ -60,9 +60,10 @@ function describeStep(step) {
   if (step.eval) return `In the browser console, run \`${step.eval}\``;
   return JSON.stringify(step);
 }
-function settings(props) {
+function settings(props, vueOnly = false) {
   if (!Object.keys(props).length) return ['Settings: default (reload the page first)'];
   const json = JSON.stringify(props);
+  if (vueOnly) return [`Settings: reload the page, then run in the browser console (⌥⌘J): \`__paritySetProps(${json})\``];
   const lines = ['Settings: reload the page, then run in the browser console (⌥⌘J):'];
   lines.push(`  - Original: \`__dcSetProps(__dcRootName(), ${json})\``);
   lines.push(behavior ? `  - Vue: \`__paritySetProps(${json})\` (development build only)` : `  - New: same command`);
@@ -70,6 +71,8 @@ function settings(props) {
 }
 
 const states = scenario.states || [];
+// Approved changes the prototype doesn't have yet: checked on the Vue version only, so listed in behavior mode.
+const approved = behavior ? scenario.approved || [] : [];
 const viewports = (scenario.viewports || [{ width: 1440, height: 900 }]).map((v) => `${v.width}×${v.height}`).join(', ');
 const md = [
   `# Manual check: ${name}`,
@@ -93,18 +96,25 @@ const md = [
   `## States (${states.length})`,
   '',
 ];
-states.forEach((state, i) => {
+const item = (state, i, vueOnly = false) => {
   md.push(`- [ ] **${i + 1}. ${state.name}**`);
-  if (state.query) md.push(`  - Open: ${aUrl}${state.query} and ${bUrl}${state.query}`);
-  for (const line of settings({ ...(scenario.props || {}), ...(state.props || {}) })) md.push(`  ${line.startsWith('  ') ? line : '- ' + line}`);
-  const steps = state.steps || [];
+  if (vueOnly) md.push(`  - Design: ${state.design ? `\`${state.design}\`` : '(none given)'}`);
+  if (state.query) md.push(vueOnly ? `  - Open: ${bUrl}${state.query}` : `  - Open: ${aUrl}${state.query} and ${bUrl}${state.query}`);
+  for (const line of settings({ ...(scenario.props || {}), ...(state.props || {}) }, vueOnly)) md.push(`  ${line.startsWith('  ') ? line : '- ' + line}`);
+  const steps = (state.steps || []).filter((s) => behavior || s.on !== 'vue');
   if (steps.length) {
     md.push('  - Steps:');
-    steps.filter((s) => behavior || s.on !== 'vue').forEach((s, n) => md.push(`    ${n + 1}. ${describe(s)}`));
+    steps.forEach((s, n) => md.push(`    ${n + 1}. ${vueOnly ? describeStep(s) : describe(s)}`));
   } else {
     md.push('  - Steps: none, check the page as it loads');
   }
-});
+};
+states.forEach((state, i) => item(state, i));
+if (approved.length) {
+  md.push('', `## Approved changes, Vue only (${approved.length})`, '');
+  md.push('The prototype doesn\'t have these yet. Check them on the Vue version against each state\'s approved design.', '');
+  approved.forEach((state, i) => item(state, i, true));
+}
 if ((scenario.related || []).length) {
   md.push('', '## Outside this page', '');
   md.push(behavior
@@ -118,4 +128,4 @@ md.push('');
 const out = opts.out ? resolve(opts.out) : join(repoRoot, '.parity', `checklist-${slug}-${opts.mode}.md`);
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, md.join('\n'));
-console.log(`Manual check list (${states.length} states${(scenario.related || []).length ? `, ${scenario.related.length} related` : ''}): ${out.startsWith(repoRoot) ? out.slice(repoRoot.length + 1) : out}`);
+console.log(`Manual check list (${states.length} states${approved.length ? `, ${approved.length} approved` : ''}${(scenario.related || []).length ? `, ${scenario.related.length} related` : ''}):${out.startsWith(repoRoot) ? out.slice(repoRoot.length + 1) : out}`);
