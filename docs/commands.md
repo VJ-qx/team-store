@@ -143,7 +143,7 @@ Writes `.parity/checklist-<scenario>-<mode>.md`, with one checkbox per state. Fo
 
 In behavior mode, a scenario's approved changes get their own section, **Approved changes, Vue only**: the states to check on the Vue version, each with its design image.
 
-It ends with **Outside this page**: where the flows lead next, such as the workspace after sign-in, and how to open each place directly. `/extract-styles`, `/migrate-to-vue` and `/implement-approved-change` generate this list automatically at the end of their run.
+It ends with **Outside this page**: where the flows lead next, such as the workspace after sign-in, and how to open each place directly. `/extract-styles`, `/migrate-to-vue` and `/add-approved-design` generate this list automatically at the end of their run.
 
 | Option | Default | Meaning |
 |---|---|---|
