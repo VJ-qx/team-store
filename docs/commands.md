@@ -141,7 +141,9 @@ Writes `.parity/checklist-<scenario>-<mode>.md`, with one checkbox per state. Fo
 - **Settings:** the console command to run in each version.
 - **Steps:** the clicks and typing that reach the state, in plain language.
 
-It ends with **Outside this page**: where the flows lead next, such as the workspace after sign-in, and how to open each place directly. `/extract-styles` and `/migrate-to-vue` generate this list automatically at the end of their run.
+In behavior mode, a scenario's approved changes get their own section, **Approved changes, Vue only**: the states to check on the Vue version, each with its design image.
+
+It ends with **Outside this page**: where the flows lead next, such as the workspace after sign-in, and how to open each place directly. `/extract-styles`, `/migrate-to-vue` and `/add-approved-design` generate this list automatically at the end of their run.
 
 | Option | Default | Meaning |
 |---|---|---|
@@ -164,6 +166,9 @@ npm run parity -- tools/parity/scenarios/workspace-module-1.mjs --mode behavior 
 npm run parity -- tools/parity/scenarios/marucci-workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
 npm run parity -- tools/parity/scenarios/workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace.html
 npm run parity -- tools/parity/scenarios/marucci-workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
+
+# Approved changes: the states the prototype doesn't have yet, on the Vue version only
+npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/
 ```
 
 Opens both versions in headless Chrome and runs every state in the scenario. It compares them at the start and after every step. A full landing-page run (18 states, 129 checkpoints) takes about 2 minutes.
@@ -181,6 +186,7 @@ Opens both versions in headless Chrome and runs every state in the scenario. It 
 | `--viewports 1440x900,1024x768` | from the scenario | Window sizes to test |
 | `--pixel-tolerance <n>` | `10` | Per-channel colour difference ignored as anti-aliasing noise. Don't raise it to hide a difference. |
 | `--keep` | | Keep the temporary copy of the original for inspection |
+| `--approved` | | Run the scenario's `approved` states instead: approved changes the prototype doesn't have yet. Needs `--b <vue-url>`; both sides are the Vue version, so the run checks each state loads the same way every time. Saves a screenshot of every checkpoint, listed in the report under "Compare with the approved design". |
 
 **Result:** `IDENTICAL` (exit code 0), `DIFFERENCES FOUND` (1), or a failed run (2). The report is written to `.parity/<date>-<scenario>-<mode>/report.md`:
 
@@ -193,6 +199,8 @@ Timers on the page are frozen after it loads, so redirects and delays only happe
 ### Scenarios
 
 Each page or module has a scenario in `tools/parity/scenarios/`, listing every state to check and how to reach it. Use `landing-page.mjs` as the template. See the "Find or Write the Scenario" section of `.claude/skills/compare-styles/SKILL.md` for the format.
+
+A scenario's `approved` list holds the states of approved changes the prototype doesn't have yet, each with the path of its design image. Normal runs skip them (the report's notes say how many); `--approved` runs them on the Vue version. When the prototype gets the change, its states move into `states`.
 
 | Scenario | Page | Covers |
 |---|---|---|

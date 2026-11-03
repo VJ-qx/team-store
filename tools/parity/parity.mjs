@@ -11,7 +11,12 @@
 // Usage:
 //   node tools/parity/parity.mjs <scenario.mjs> --mode styles   [--a main] [--b .]
 //   node tools/parity/parity.mjs <scenario.mjs> --mode behavior  --a main --b http://localhost:5173/
+//   node tools/parity/parity.mjs <scenario.mjs> --approved       --b http://localhost:5173/
 //   Options: --only <text>            run only states whose name contains <text>
+//            --approved               run the scenario's `approved` states instead: approved changes the
+//                                     prototype doesn't have yet. Both sides are the Vue version (--b), so
+//                                     the run proves each state loads the same way every time, and a
+//                                     screenshot of every checkpoint is saved to compare with the design
 //            --viewports 1440x900,...  override the scenario's viewports
 //            --pixel-tolerance <n>     per-channel colour difference ignored as noise (default 10)
 //            --keep                    keep the temporary git worktree for inspection
@@ -27,13 +32,23 @@ import { chromium } from 'playwright-core';
 import { git, openSide, repoRoot } from './lib.mjs';
 
 // ── arguments ──
-const opts = { a: 'main', b: '.', mode: null, only: null, keep: false };
+const opts = { a: 'main', b: '.', mode: null, only: null, keep: false, approved: false };
 const positional = [];
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--keep') opts.keep = true;
+  else if (argv[i] === '--approved') opts.approved = true;
   else if (argv[i].startsWith('--')) opts[argv[i].slice(2)] = argv[++i];
   else positional.push(argv[i]);
+}
+// Approved changes exist only in the Vue version, so both sides are the Vue version.
+if (opts.approved) {
+  if (!/^https?:\/\//.test(opts.b)) {
+    console.error('--approved checks the Vue version: add --b <vue-url>, for example --b http://localhost:5173/');
+    process.exit(2);
+  }
+  opts.mode = 'behavior';
+  opts.a = opts.b;
 }
 if (!positional[0] || !['styles', 'behavior'].includes(opts.mode)) {
   console.error('Usage: node tools/parity/parity.mjs <scenario.mjs> --mode styles|behavior [--a <ref|.|url>] [--b <ref|.|url>] [--only <text>] [--keep]');
@@ -370,18 +385,27 @@ const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g
 const scenarioPath = resolve(positional[0]);
 const scenario = (await import(pathToFileURL(scenarioPath).href)).default;
 const scenarioName = scenario.name || basename(scenarioPath).replace(/\.m?js$/, '');
+const approved = scenario.approved || [];
+if (opts.approved && !approved.length) {
+  console.error(`${scenarioName} has no approved states.`);
+  process.exit(2);
+}
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-const outDir = join(repoRoot, '.parity', `${stamp}-${slug(scenarioName)}-${opts.mode}`);
+const outDir = join(repoRoot, '.parity', `${stamp}-${slug(scenarioName)}-${opts.approved ? 'approved' : opts.mode}`);
 mkdirSync(outDir, { recursive: true });
 const viewports = opts.viewports
   ? opts.viewports.split(',').map((v) => { const [width, height] = v.split('x').map(Number); return { width, height }; })
   : scenario.viewports || [{ width: 1440, height: 900 }];
-const states = (scenario.states || [{ name: 'default' }]).filter((s) => !opts.only || s.name.includes(opts.only));
+const states = (opts.approved ? approved : scenario.states || [{ name: 'default' }]).filter((s) => !opts.only || s.name.includes(opts.only));
 const settleMs = scenario.settleMs ?? 150;
 const pixelTolerance = Number(opts['pixel-tolerance'] ?? scenario.pixelTolerance ?? 10);
 
 const results = [];
 const notes = [];
+const captures = []; // --approved: the screenshot of every checkpoint, to compare with the design
+if (!opts.approved && approved.length) {
+  notes.push(`${approved.length} approved-change state(s) not compared: the prototype doesn't have them yet. Check them with --approved --b <vue-url>.`);
+}
 let sides = [];
 let browser = null;
 const cleanup = async () => { await browser?.close().catch(() => {}); for (const s of sides) await s.close().catch(() => {}); };
@@ -433,7 +457,8 @@ try {
         // A step with `on: 'prototype'` or `on: 'vue'` runs only on that kind of side, for example the
         // prototype's settings panel and the Vue version's __paritySetProps hook reaching the same state.
         // Side A is the prototype; side B is the prototype in styles mode and the Vue version in behavior mode.
-        const kinds = ['prototype', opts.mode === 'behavior' ? 'vue' : 'prototype'];
+        // With --approved, both sides are the Vue version.
+        const kinds = opts.approved ? ['vue', 'vue'] : ['prototype', opts.mode === 'behavior' ? 'vue' : 'prototype'];
         const runsOn = (step) => kinds.map((k) => !step || !step.on || step.on === k);
         const oneSided = (step) => { const r = runsOn(step); return r[0] !== r[1]; };
         const steps = [null, ...(state.steps || [])];
@@ -465,6 +490,12 @@ try {
               diffs.push(...compareBehavior(caps[0], caps[1]));
             }
             const shots = await Promise.all(pages.map((p) => p.page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' })));
+            if (opts.approved) {
+              mkdirSync(dir, { recursive: true });
+              const file = join(dir, `${String(n).padStart(2, '0')}.png`);
+              writeFileSync(file, shots[1]);
+              captures.push({ state, checkpoint, file: file.slice(repoRoot.length + 1) });
+            }
             const px = await pixelDiff(browser, shots[0], shots[1], pixelTolerance);
             if (px.diff) {
               mkdirSync(dir, { recursive: true });
@@ -504,7 +535,7 @@ const failing = results.filter((r) => r.diffs.length);
 const errored = notes.filter((n) => n.startsWith('Error in')).length;
 const verdict = failing.length ? 'DIFFERENCES FOUND' : errored ? 'INCOMPLETE' : 'IDENTICAL';
 const md = [
-  `# Parity report: ${scenarioName} (${opts.mode})`, '',
+  `# Parity report: ${scenarioName} (${opts.approved ? 'approved changes, Vue only' : opts.mode})`, '',
   `- A: ${sides[0].desc}`, `- B: ${sides[1].desc}`, `- Date: ${new Date().toISOString()}`,
   `- Result: **${verdict}** — ${results.length - failing.length} of ${results.length} checkpoints identical`, '',
   '## Checkpoints', '', '| Where | Checkpoint | Result |', '|---|---|---|',
@@ -518,6 +549,16 @@ if (failing.length) {
       md.push(`- **${d.kind}**: ${d.detail}`);
       for (const c of (d.changes || []).slice(0, 80)) md.push(`  - \`${c.replace(/`/g, "'")}\``);
     }
+    md.push('');
+  }
+}
+if (captures.length) {
+  md.push('## Compare with the approved design', '', 'The prototype doesn\'t have these states yet. Compare each screenshot with the state\'s design.', '');
+  for (const state of states) {
+    const shots = captures.filter((c) => c.state === state);
+    if (!shots.length) continue;
+    md.push(`### ${state.name}`, '', `- Design: ${state.design ? `\`${state.design}\`` : '(none given)'}`);
+    for (const c of shots) md.push(`- ${c.checkpoint.replace(/\|/g, '\\|')}: \`${c.file}\``);
     md.push('');
   }
 }
