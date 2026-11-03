@@ -295,10 +295,21 @@
               Email or password is incorrect
             </div>
           </template>
+          <!-- Approved change, not in the prototype yet: sign-in lockout (docs/README.md#approved-changes). -->
+          <template v-if="vals.signInPaused">
+            <div class="tsl-auth__paused">
+              <p class="tsl-auth__paused-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+                Sign-in paused for this account
+              </p>
+              <p class="tsl-auth__paused-copy">Too many failed sign-in attempts. You can try again in <strong class="tsl-auth__paused-time">{{ vals.signInPausedFor }}</strong>, or reset your password now.</p>
+              <button class="tsl-auth__paused-btn" type="button" @click="vals.goForgot">Reset password</button>
+            </div>
+          </template>
           <div class="tsl-auth__forgot-row">
             <button class="tsl-auth__forgot" @click="vals.goForgot">Forgot password?</button>
           </div>
-          <button @click="vals.doNativeSignIn" :disabled="vals.nativeSignInDisabled" :style="vals.nativeSignInStyle">Sign in</button>
+          <button @click="vals.doNativeSignIn" :disabled="vals.nativeSignInDisabled" :style="vals.nativeSignInStyle"><template v-if="vals.signInPaused">Sign-in paused</template><template v-else>Sign in</template></button>
           <div class="tsl-auth__divider">
             <span class="tsl-auth__divider-line"></span>
             <span class="tsl-auth__divider-text">OR</span>

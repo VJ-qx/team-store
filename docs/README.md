@@ -88,3 +88,11 @@ Not needed to run the app:
 - **Broken sign-in redirect:** successful sign-in and registration redirect to `Team Stores Workspace.dc.html`, which doesn't exist (the page is now `Workspace.dc.html`). The conversion steps keep this behaviour on purpose; it needs a separate fix. To reach the workspace, open `Workspace.dc.html?brand=prolook&auth=native` directly.
 - **Broken "Preview Store" link:** on a store's page, "Preview Store" redirects to `Team Store Storefront.dc.html`, which doesn't exist (the storefront prototype is `Storefront.html`). Kept on purpose, like the sign-in redirect.
 - **Out-of-date `CLAUDE.md`:** it refers to `Team Stores Workspace.dc.html` and `Team Stores Workspace - Third Party Integration.dc.html`, which have since been renamed.
+
+## Approved changes
+
+Designs the US team approved that aren't in their prototype yet. They're in the Vue version only, so on these states the Vue version differs from the prototype on purpose. Each was added with `/implement-approved-change`. Its states are in the scenario's `approved` list, checked with `npm run parity -- <scenario> --approved --b <vue-url>`. When the US team's prototype update includes a change, its states move into the scenario's `states` and the prototype becomes the reference again.
+
+| Change | Page | Requirement | Design | Code |
+|---|---|---|---|---|
+| Sign-in lockout: the fifth wrong password in a row pauses sign-in for that email for 15 minutes, with a countdown and a Reset password button | Landing page, sign-in pop-up | BRD FR-1.11, Lockout | [sign-in-lockout.png](approved-changes/sign-in-lockout.png) | `src/landing/sign-in-lockout.js`, `LandingPage.logic.js`, `LandingPage.vue`, `styles/components/_auth-modal.scss` (`.tsl-auth__paused*`) |

@@ -1,10 +1,13 @@
 // Logic of "Landing Page.dc.html", copied verbatim from its <script type="text/x-dc">.
-// Only the import and export lines are new. DCLogic is a stand-in for the prototype runtime's base class.
+// Only the import and export lines are new, plus the approved changes marked "Approved change" below.
+// DCLogic is a stand-in for the prototype runtime's base class.
 import { DCLogic } from '../utils/dc-logic.js';
+import { anyPaused, formatRemaining, pausedUntil, recordFailure } from './sign-in-lockout.js';
 
 class Component extends DCLogic {
   state = {
     step: null, chosen: "prolook", email: "", pw: "", showPw: false, signInError: false,
+    lockout: {}, // Approved change, not in the prototype yet: sign-in lockout. Email -> failed attempts and pause.
     profile: { firstName: "", lastName: "", phone: "", country: "", state: "", city: "", zip: "" },
     requested: {}, // brandId -> true once "Request access" was sent
     welcomePrimary: null, welcomeDismissed: false, welcomeConnected: {},
@@ -99,7 +102,20 @@ class Component extends DCLogic {
   // the literal password "wrong" shows the non-revealing failure message.
   doNativeSignIn() {
     if (!this.isValidEmail(this.state.email) || !this.state.pw) return;
-    if (this.state.pw.toLowerCase() === "wrong") { this.setState({ signInError: true }); return; }
+    // Approved change, not in the prototype yet: sign-in lockout (docs/README.md#approved-changes).
+    // No attempt while sign-in for this email is paused. The fifth wrong password in a row pauses it,
+    // clears the password, and shows the paused notice instead of the error.
+    if (pausedUntil(this.state.lockout, this.state.email, Date.now())) return;
+    if (this.state.pw.toLowerCase() === "wrong") {
+      const lockout = recordFailure(this.state.lockout, this.state.email, Date.now());
+      if (pausedUntil(lockout, this.state.email, Date.now())) {
+        this.setState({ lockout, pw: "", signInError: false });
+        this.watchPause();
+      } else {
+        this.setState({ lockout, signInError: true });
+      }
+      return;
+    }
     const hasAccess = this.props.hasAccess ?? true;
     if (hasAccess) {
       this.setState({ step: "success", signInError: false });
@@ -107,6 +123,22 @@ class Component extends DCLogic {
     } else {
       this.gotoWorkspace("prolook", true, "native");
     }
+  }
+
+  // Approved change, not in the prototype yet: sign-in lockout (docs/README.md#approved-changes).
+  // While any email is paused, re-render every second so the countdown moves and the notice goes
+  // away when the pause ends.
+  watchPause() {
+    if (this.pauseTimer) return;
+    this.pauseTimer = setInterval(() => {
+      const now = Date.now();
+      this.setState({ pauseTick: now });
+      if (!anyPaused(this.state.lockout, now)) { clearInterval(this.pauseTimer); this.pauseTimer = null; }
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.pauseTimer);
   }
 
   // Native sign-up complete → dealership check against qx7.
@@ -164,6 +196,9 @@ class Component extends DCLogic {
     });
     const chosen = this.customizerList().find((c) => c.id === s.chosen) || this.customizerList()[0];
     const emailValid = this.isValidEmail(s.email);
+    // Approved change, not in the prototype yet: sign-in lockout. When sign-in for the typed email is paused until.
+    const now = Date.now();
+    const paused = pausedUntil(s.lockout, s.email, now);
     const rules = this.pwRules();
     const pwOk = rules.every((r) => r.ok);
     const emailTaken = emailValid && /^(hinglemycringle|demo|existing)@/i.test(s.email.trim());
@@ -230,8 +265,11 @@ class Component extends DCLogic {
 
       // native sign-in
       signInError: s.signInError,
-      nativeSignInDisabled: !(emailValid && s.pw),
-      nativeSignInStyle: btn(emailValid && s.pw, 18),
+      // Approved change, not in the prototype yet: sign-in lockout (docs/README.md#approved-changes).
+      signInPaused: paused > 0,
+      signInPausedFor: formatRemaining(paused - now),
+      nativeSignInDisabled: !(emailValid && s.pw) || paused > 0,
+      nativeSignInStyle: btn(emailValid && s.pw && !paused, 18),
       doNativeSignIn: () => this.doNativeSignIn(),
 
       // sign-up
