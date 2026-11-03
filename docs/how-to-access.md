@@ -31,6 +31,8 @@ Other states are settings. In Vue run `__paritySetProps({ … })`; in the protot
 
 A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't in the handover, so it ends on "Not found". Open the workspace addresses below directly instead.
 
+**Sign-in paused (Vue only, [approved change](README.md#approved-changes)):** click **SIGN IN**, type any email, type the password `wrong`, and click **Sign in** 5 times. Sign-in for that email is paused for 15 minutes, with a countdown and a **Reset password** button. Another email isn't paused. Reload the page to clear the pause. The prototype doesn't have this yet: there, every wrong password shows "Email or password is incorrect".
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).

@@ -43,6 +43,10 @@ const registerSteps = [
   { wait: 1500 },
 ];
 
+// Approved change, not in the prototype yet: sign-in lockout. Five wrong passwords in a row.
+const LOCKOUT_DESIGN = 'docs/approved-changes/sign-in-lockout.png';
+const pauseSignIn = [openSignIn, { fill: [EMAIL, 'rep@dealership.com'] }, { fill: [PASSWORD, 'wrong'] }, signIn, signIn, signIn, signIn, signIn];
+
 export default {
   name: 'Landing page (Module 1)',
   page: 'Landing Page.dc.html',
@@ -90,5 +94,14 @@ export default {
     { name: 'welcome modal native', props: { signedIn: true, showWelcomeModal: true }, steps: [{ click: button('Connect') }, close] },
     { name: 'welcome modal federated', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false }, steps: [{ click: button('Continue to Workspace', false) }] },
     { name: 'welcome modal multi-brand', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false, welcomeMultiBrand: true }, steps: [{ click: button('Confirm & Enter', false) }] },
+  ],
+  // Approved changes the prototype doesn't have yet (docs/README.md#approved-changes), checked on the
+  // Vue version only: npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/
+  approved: [
+    // Sign-in lockout (BRD FR-1.11): the fifth wrong password in a row pauses sign-in for 15 minutes.
+    { name: 'sign-in paused', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 9000, label: 'Wait 9 seconds: the countdown shows 14:51, as in the design' }] },
+    { name: 'sign-in paused reset password', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { click: button('Reset password') }] },
+    { name: 'sign-in paused other email', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { fill: [EMAIL, 'other@dealership.com'] }, { fill: [EMAIL, 'rep@dealership.com'] }] },
+    { name: 'sign-in pause ends', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 15 * 60 * 1000, label: 'Wait 15 minutes: the pause ends' }, { fill: [PASSWORD, 'correct-horse'] }] },
   ],
 };
