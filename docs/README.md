@@ -91,7 +91,7 @@ Not needed to run the app:
 
 ## Approved changes
 
-Designs the US team approved that aren't in their prototype yet. They're in the Vue version only, so on these states the Vue version differs from the prototype on purpose. Each was added with `/implement-approved-change`. Its states are in the scenario's `approved` list, checked with `npm run parity -- <scenario> --approved --b <vue-url>`. When the US team's prototype update includes a change, its states move into the scenario's `states` and the prototype becomes the reference again.
+Designs the US team approved that aren't in their prototype yet. They're in the Vue version only, so on these states the Vue version differs from the prototype on purpose. Each was added with `/add-approved-design`. Its states are in the scenario's `approved` list, checked with `npm run parity -- <scenario> --approved --b <vue-url>`. When the US team's prototype update includes a change, its states move into the scenario's `states` and the prototype becomes the reference again.
 
 | Change | Page | Requirement | Design | Code |
 |---|---|---|---|---|
