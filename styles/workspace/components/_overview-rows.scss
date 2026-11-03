@@ -1,0 +1,199 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of OrderingWindowRow, TopSortHead and RosterBankRow in workspace-app.jsx
+// and workspace-app-integrated.jsx: the rows of Active Ordering Windows (FR-2.8) and Roster Bank
+// (FR-2.9), and the sortable column headings of Top Performing Stores (FR-2.7). A store's color and
+// a window's progress come from the data, so they stay inline.
+
+// A store's initials in its team color (ordering windows, Roster Bank, Top Performing Stores).
+.wx-ov-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+// ── Active Ordering Windows ──
+
+.wx-ov-window {
+  padding: 20px 0;
+  border-bottom: 1px solid $line-2;
+}
+
+.wx-ov-window__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.wx-ov-window__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-ov-window__name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-ov-window__meta {
+  font-size: 12px;
+  color: $muted;
+  margin-top: 1px;
+}
+
+.wx-ov-window__raised {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: #dcf6e3;
+  color: $ok;
+}
+
+.wx-ov-window__track {
+  height: 8px;
+  border-radius: 999px;
+  background: #ececef;
+  overflow: hidden;
+}
+
+.wx-ov-window__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #5cb924;
+}
+
+.wx-ov-window__dates {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.wx-ov-window__date {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: $muted-2;
+}
+
+// ── Top Performing Stores column headings ──
+
+.wx-ov-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: flex-start;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: $muted;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wx-ov-sort--right {
+  justify-content: flex-end;
+}
+
+.wx-ov-sort--active {
+  color: $ink;
+}
+
+.wx-ov-sort__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-ov-sort__icon {
+  flex-shrink: 0;
+  opacity: .45;
+}
+
+.wx-ov-sort__icon--active {
+  opacity: 1;
+}
+
+// ── Roster Bank ──
+
+.wx-ov-bank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f4f4f6;
+}
+
+.wx-ov-bank__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-ov-bank__name {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-ov-bank__meta {
+  display: block;
+  font-size: 12px;
+  color: $muted;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-ov-bank__proposed {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #8a5f10;
+  background: #fdf6e7;
+  border: 1px solid #efdcae;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.wx-ov-bank__review {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  color: $ink;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+// The row is hovered (RosterBankRow's hover state).
+.wx-ov-bank__review--hover {
+  background: $white;
+  border: 1px solid $zinc-300;
+}

@@ -3498,33 +3498,33 @@ function StoreCard({ store, onManage, onArchive, onCreateTemplate, archived = fa
   if (condensed) {
     return (
       <div onClick={onManage} title={"Open " + (store.storeTitle || store.teamName || "store")}
-        style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 2px rgba(20,20,30,.03)", display: "flex", flexDirection: "column", height: "100%", cursor: "pointer", transition: "box-shadow .15s ease, border-color .15s ease" }}
+        className="wx-store-mini"
         onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(20,20,30,.09)"; e.currentTarget.style.borderColor = "#d4d4d8"; }}
         onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 2px rgba(20,20,30,.03)"; e.currentTarget.style.borderColor = "#ececf0"; }}>
-        <div style={{ position: "relative", background: "#fafafb", padding: 12, minHeight: 78, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ position: "absolute", top: 9, left: 9, background: tagBg, color: tagColor, padding: "3px 8px", borderRadius: 999, fontSize: 10, fontWeight: 700 }}>{tagLabel}</div>
+        <div className="wx-store-mini__media">
+          <div className="wx-store-mini__tag" style={{ background: tagBg, color: tagColor }}>{tagLabel}</div>
           {store.teamLogo?.url ? (
-            <img src={store.teamLogo.url} alt="" style={{ maxWidth: 64, maxHeight: 54, objectFit: "contain" }} />
+            <img src={store.teamLogo.url} alt="" className="wx-store-mini__logo" />
           ) : (
-            <div style={{ width: 42, height: 42, borderRadius: "50%", background: store.teamLogo?.color || store.teamColors?.[0] || "#1d3a8a", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 13.5, fontFamily: "Archivo, sans-serif", border: (store.teamColors?.[0] || "").toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none" }}>
+            <div className="wx-store-mini__mono" style={{ background: store.teamLogo?.color || store.teamColors?.[0] || "#1d3a8a", border: (store.teamColors?.[0] || "").toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none" }}>
               {store.teamLogo?.mono || (store.teamName || store.storeTitle || "T").slice(0, 2).toUpperCase()}
             </div>
           )}
         </div>
-        <div style={{ padding: "10px 12px 9px", textAlign: "center", flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13, fontWeight: 800, color: "#0e0e10", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{store.storeTitle || store.teamName || "Team Store"}</div>
-          <div style={{ fontSize: 11, color: "#9a9aa1", marginTop: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{typeLabel} · {store.sport || "Sport"}</div>
+        <div className="wx-store-mini__body">
+          <div className="wx-store-mini__name">{store.storeTitle || store.teamName || "Team Store"}</div>
+          <div className="wx-store-mini__type">{typeLabel} · {store.sport || "Sport"}</div>
           {context && (
-            <div style={{ marginTop: 7, display: "flex", justifyContent: "center" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, maxWidth: "100%", fontSize: 10.5, fontWeight: 600, color: "#6b6b72", background: "#f5f5f7", borderRadius: 999, padding: "3px 9px", whiteSpace: "nowrap", overflow: "hidden" }}>
+            <div className="wx-store-mini__context">
+              <span className="wx-store-mini__context-pill">
                 {contextIcon}
-                <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{context}</span>
+                <span className="wx-store-mini__context-text">{context}</span>
               </span>
             </div>
           )}
         </div>
-        <div style={{ borderTop: "1px solid #ececf0", padding: "9px 10px" }}>
-          <button onClick={(e) => { e.stopPropagation(); onManage && onManage(); }} style={{ width: "100%", background: "#fff", border: "1px solid #0e0e10", color: "#0e0e10", padding: "8px 12px", borderRadius: 6, fontSize: 11.5, fontWeight: 700, cursor: "pointer", transition: "all .12s" }}
+        <div className="wx-store-mini__foot">
+          <button onClick={(e) => { e.stopPropagation(); onManage && onManage(); }} className="wx-store-mini__manage"
             onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
             Manage Store
@@ -3964,34 +3964,28 @@ function buildRevenueSeries(total, scale) {
 
 function StatCard({ label, value, icon, delta, deltaDir = "up", sub, onClick }) {
   const Trend = deltaDir === "up" ? IconTrendUp : IconTrendDown;
-  const trendColor = deltaDir === "up" ? OV_GREEN : OV_RED;
   return (
     <div
       onClick={onClick}
       role={onClick ? "button" : undefined}
       title={onClick ? "View all orders" : undefined}
-      style={{
-        background: "#fff", border: `1px solid ${OV_LINE}`, borderRadius: 12, padding: "20px 24px",
-        display: "flex", flexDirection: "column", gap: 16,
-        cursor: onClick ? "pointer" : "default",
-        transition: "box-shadow .15s, border-color .15s, transform .15s",
-      }}
+      className={"wx-ov-stat" + (onClick ? " wx-ov-stat--link" : "")}
       onMouseEnter={onClick ? (e) => { e.currentTarget.style.borderColor = "#c4c4c8"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(20,20,30,.07)"; e.currentTarget.style.transform = "translateY(-1px)"; } : undefined}
       onMouseLeave={onClick ? (e) => { e.currentTarget.style.borderColor = OV_LINE; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; } : undefined}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 700, letterSpacing: ".07em", color: OV_MUTED, textTransform: "uppercase" }}>
+      <div className="wx-ov-stat__head">
+        <span className="wx-ov-stat__label">
           {label}{onClick && <IconChevronRight size={13} style={{ color: "#c4c4c8" }} />}
         </span>
-        <span style={{ width: 36, height: 36, borderRadius: 9, background: "#f5f5f7", color: OV_INK, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
+        <span className="wx-ov-stat__icon">{icon}</span>
       </div>
-      <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 32, fontWeight: 800, color: OV_INK, lineHeight: 1, letterSpacing: "-.01em" }}>{value}</div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5 }}>
+      <div className="wx-ov-stat__value">{value}</div>
+      <div className="wx-ov-stat__foot">
         {delta != null && (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: trendColor, fontWeight: 700 }}>
+          <span className={"wx-ov-stat__delta " + (deltaDir === "up" ? "wx-ov-stat__delta--up" : "wx-ov-stat__delta--down")}>
             <Trend size={15} /> {delta}
           </span>
         )}
-        <span style={{ color: OV_MUTED }}>{sub}</span>
+        <span className="wx-ov-stat__sub">{sub}</span>
       </div>
     </div>
   );
@@ -4004,21 +3998,14 @@ function RevenueScaleToggle({ scale, onChange }) {
     { key: "year", label: "Year" },
   ];
   return (
-    <div style={{ display: "inline-flex", background: "#f5f5f7", border: `1px solid ${OV_LINE}`, borderRadius: 9, padding: 4, gap: 2 }}>
+    <div className="wx-ov-scale">
       {scales.map((s) => {
         const active = scale === s.key;
         return (
           <button
             key={s.key}
             onClick={() => onChange(s.key)}
-            style={{
-              border: 0, cursor: "pointer", borderRadius: 6, padding: "8px 16px",
-              fontSize: 12.5, fontWeight: 700, fontFamily: "inherit",
-              background: active ? "#fff" : "transparent",
-              color: active ? OV_INK : OV_MUTED,
-              boxShadow: active ? "0 1px 2px rgba(20,20,30,.10)" : "none",
-              transition: "background .12s, color .12s",
-            }}>
+            className={"wx-ov-scale__btn" + (active ? " wx-ov-scale__btn--active" : "")}>
             {s.label}
           </button>
         );
@@ -4131,23 +4118,23 @@ function RevenueProfitChart({ totalRevenue = 0, scale = "month" }) {
   ];
   return (
     <div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+      <div className="wx-ov-rpc__kpis">
         {kpis.map((k) => (
-          <div key={k.label} style={{ minWidth: 200, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 8, padding: 16, background: "#fff", display: "flex", flexDirection: "column", gap: 3.5, alignItems: "flex-start" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", lineHeight: "16px", color: "#71717a" }}>{k.label}</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-              <span style={{ fontSize: 24, fontWeight: 700, lineHeight: "32px", letterSpacing: "-.01em", color: OV_INK }}>{k.value}</span>
-              <span style={{ fontSize: 14, fontWeight: 700, lineHeight: "20px", letterSpacing: ".01em", color: k.up ? OV_GREEN : OV_RED }}>{k.delta}</span>
+          <div key={k.label} className="wx-ov-rpc__kpi">
+            <div className="wx-ov-rpc__kpi-label">{k.label}</div>
+            <div className="wx-ov-rpc__kpi-row">
+              <span className="wx-ov-rpc__kpi-value">{k.value}</span>
+              <span className={"wx-ov-rpc__kpi-delta " + (k.up ? "wx-ov-rpc__kpi-delta--up" : "wx-ov-rpc__kpi-delta--down")}>{k.delta}</span>
             </div>
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 20, padding: "14px 0 10px", fontSize: 12.5, fontWeight: 600, color: OV_INK }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ width: 9, height: 9, borderRadius: 999, background: RPC_REV }} />Revenue <span style={{ color: OV_MUTED, fontWeight: 400 }}>(left axis)</span></span>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 7 }}><span style={{ width: 9, height: 9, borderRadius: 999, background: RPC_PROF }} />Dealer Profit <span style={{ color: OV_MUTED, fontWeight: 400 }}>(right axis)</span></span>
+      <div className="wx-ov-rpc__legend">
+        <span className="wx-ov-rpc__legend-item"><span className="wx-ov-rpc__dot wx-ov-rpc__dot--rev" />Revenue <span className="wx-ov-rpc__legend-note">(left axis)</span></span>
+        <span className="wx-ov-rpc__legend-item"><span className="wx-ov-rpc__dot wx-ov-rpc__dot--profit" />Dealer Profit <span className="wx-ov-rpc__legend-note">(right axis)</span></span>
       </div>
-      <div ref={wrapRef} style={{ position: "relative" }}>
-        <svg viewBox={`0 0 ${w} 380`} style={{ width: "100%", height: 380, display: "block" }}>
+      <div ref={wrapRef} className="wx-ov-rpc__plot">
+        <svg viewBox={`0 0 ${w} 380`} className="wx-ov-rpc__svg">
           <g stroke="#f1f1f3" strokeDasharray="3 4">
             {revTicks.slice(1).map((t) => <line key={t} x1={X0} y1={yR(t)} x2={X1} y2={yR(t)} />)}
           </g>
@@ -4181,13 +4168,13 @@ function RevenueProfitChart({ totalRevenue = 0, scale = "month" }) {
         </svg>
         {pts.map((d, i) => (
           <div key={"h" + i} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)}
-            style={{ position: "absolute", top: 0, bottom: 44, left: x(i) - stepPx / 2, width: stepPx }} />
+            className="wx-ov-rpc__hit" style={{ left: x(i) - stepPx / 2, width: stepPx }} />
         ))}
         {hover != null && (
-          <div style={{ position: "absolute", top: -6, left: x(hover), transform: "translateX(-50%)", background: OV_INK, color: "#fff", borderRadius: 8, padding: "8px 12px", whiteSpace: "nowrap", zIndex: 5, boxShadow: "0 6px 18px rgba(20,20,30,.22)", pointerEvents: "none" }}>
-            <div style={{ fontSize: 11, color: "#a4a4ab", marginBottom: 3 }}>{pts[hover].label}{pts[hover].current ? " · current" : ""}</div>
-            <div style={{ fontSize: 12.5, fontWeight: 700, fontFamily: "JetBrains Mono, monospace", color: "#c4b5fd" }}>{dollars(pts[hover].revenue)} <span style={{ color: "#a4a4ab", fontWeight: 400 }}>rev</span></div>
-            <div style={{ fontSize: 12.5, fontWeight: 700, fontFamily: "JetBrains Mono, monospace", color: "#fcd34d" }}>{dollars(pts[hover].profit)} <span style={{ color: "#a4a4ab", fontWeight: 400 }}>profit · {Math.round(pts[hover].margin * 100)}%</span></div>
+          <div className="wx-ov-rpc__tip" style={{ left: x(hover) }}>
+            <div className="wx-ov-rpc__tip-label">{pts[hover].label}{pts[hover].current ? " · current" : ""}</div>
+            <div className="wx-ov-rpc__tip-value wx-ov-rpc__tip-value--rev">{dollars(pts[hover].revenue)} <span className="wx-ov-rpc__tip-unit">rev</span></div>
+            <div className="wx-ov-rpc__tip-value wx-ov-rpc__tip-value--profit">{dollars(pts[hover].profit)} <span className="wx-ov-rpc__tip-unit">profit · {Math.round(pts[hover].margin * 100)}%</span></div>
           </div>
         )}
       </div>
@@ -4205,24 +4192,21 @@ function OrderingWindowRow({ name, color, mono, daysLeft, pct, raised, startDate
   const endLabel = fmtWindowDate(endDate);
   const dayCount = Math.max(Math.round((endDate - startDate) / 86400000), 1);
   return (
-    <div style={{ padding: "20px 0", borderBottom: `1px solid ${OV_LINE}` }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-        <span style={{ width: 32, height: 32, borderRadius: "50%", background: color, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, flexShrink: 0 }}>{mono}</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13.5, fontWeight: 700, color: OV_INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
-          <div style={{ fontSize: 12, color: OV_MUTED, marginTop: 1 }}>{dayCount} day window</div>
+    <div className="wx-ov-window">
+      <div className="wx-ov-window__head">
+        <span className="wx-ov-avatar" style={{ background: color }}>{mono}</span>
+        <div className="wx-ov-window__body">
+          <div className="wx-ov-window__name">{name}</div>
+          <div className="wx-ov-window__meta">{dayCount} day window</div>
         </div>
-        <span style={{
-          flexShrink: 0, fontSize: 13, fontWeight: 700, borderRadius: 999, padding: "8px 16px",
-          background: "#dcf6e3", color: "#1f9d55",
-        }}>{ovFmt(raised)} raised</span>
+        <span className="wx-ov-window__raised">{ovFmt(raised)} raised</span>
       </div>
-      <div style={{ height: 8, borderRadius: 999, background: "#ececef", overflow: "hidden" }}>
-        <div style={{ width: `${pct}%`, height: "100%", borderRadius: 999, background: "#5cb924" }} />
+      <div className="wx-ov-window__track">
+        <div className="wx-ov-window__fill" style={{ width: `${pct}%` }} />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12 }}>
-        <span style={{ fontSize: 12.5, fontWeight: 600, color: "#9a9aa1" }}>{startLabel}</span>
-        <span style={{ fontSize: 12.5, fontWeight: 600, color: "#9a9aa1" }}>{endLabel}</span>
+      <div className="wx-ov-window__dates">
+        <span className="wx-ov-window__date">{startLabel}</span>
+        <span className="wx-ov-window__date">{endLabel}</span>
       </div>
     </div>
   );
@@ -4235,15 +4219,10 @@ function TopSortHead({ label, sortKey, sort, onSort, align, pad }) {
     <button
       onClick={() => onSort(sortKey)}
       title={active ? `Sorted ${sort.dir === "desc" ? "descending" : "ascending"}` : "Sort by " + label}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: 5,
-        justifyContent: align === "right" ? "flex-end" : "flex-start",
-        paddingRight: pad || 0, background: "transparent", border: 0, cursor: "pointer", padding: `0 ${pad || 0}px 0 0`,
-        font: "inherit", fontSize: 11, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase",
-        color: active ? OV_INK : OV_MUTED, whiteSpace: "nowrap", minWidth: 0,
-      }}>
-      <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: active ? 1 : 0.45 }}>
+      className={"wx-ov-sort" + (align === "right" ? " wx-ov-sort--right" : "") + (active ? " wx-ov-sort--active" : "")}
+      style={{ padding: `0 ${pad || 0}px 0 0` }}>
+      <span className="wx-ov-sort__label">{label}</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={"wx-ov-sort__icon" + (active ? " wx-ov-sort__icon--active" : "")}>
         {active
           ? (sort.dir === "desc"
               ? <><path d="M12 5v14" /><path d="M6 13l6 6 6-6" /></>
@@ -4260,14 +4239,14 @@ function RosterBankRow({ name, color, mono, team, proposed, captures, onReview }
   const [hover, setHover] = React.useState(false);
   return (
     <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
-      style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 0", borderBottom: "1px solid #f4f4f6" }}>
-      <span style={{ width: 32, height: 32, borderRadius: "50%", background: color, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, flexShrink: 0 }}>{mono}</span>
-      <span style={{ flex: 1, minWidth: 0 }}>
-        <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: OV_INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</span>
-        <span style={{ display: "block", fontSize: 12, color: OV_MUTED, marginTop: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{team} · {captures} capture{captures === 1 ? "" : "s"}</span>
+      className="wx-ov-bank">
+      <span className="wx-ov-avatar" style={{ background: color }}>{mono}</span>
+      <span className="wx-ov-bank__body">
+        <span className="wx-ov-bank__name">{name}</span>
+        <span className="wx-ov-bank__meta">{team} · {captures} capture{captures === 1 ? "" : "s"}</span>
       </span>
-      <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 800, color: "#8a5f10", background: "#fdf6e7", border: "1px solid #efdcae", borderRadius: 999, padding: "4px 10px" }}><IconBankInbox size={12} /> {proposed} proposed</span>
-      <button type="button" onClick={onReview} style={{ flexShrink: 0, background: hover ? "#fff" : "transparent", border: `1px solid ${hover ? "#d4d4d8" : "transparent"}`, color: "#0e0e10", borderRadius: 6, padding: "7px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Review</button>
+      <span className="wx-ov-bank__proposed"><IconBankInbox size={12} /> {proposed} proposed</span>
+      <button type="button" onClick={onReview} className={"wx-ov-bank__review" + (hover ? " wx-ov-bank__review--hover" : "")}>Review</button>
     </div>);
 }
 
@@ -4313,14 +4292,14 @@ Object.assign(window, { SegmentedPills });
 
 function Panel({ title, subtitle, action, onAction, right, children, style }) {
   return (
-    <div style={{ background: "#fff", border: `1px solid ${OV_LINE}`, borderRadius: 12, padding: "20px 24px", ...style }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+    <div className="wx-ov-panel" style={style}>
+      <div className="wx-ov-panel__head">
         <div>
-          <h3 style={{ fontSize: 15.5, fontWeight: 800, margin: 0, color: OV_INK, letterSpacing: ".01em" }}>{title}</h3>
-          {subtitle && <div style={{ fontSize: 12, color: OV_MUTED, marginTop: 4, lineHeight: 1.45 }}>{subtitle}</div>}
+          <h3 className="wx-ov-panel__title">{title}</h3>
+          {subtitle && <div className="wx-ov-panel__subtitle">{subtitle}</div>}
         </div>
         {right}
-        {action && <button onClick={onAction} style={{ background: "transparent", border: 0, cursor: "pointer", color: "#2563eb", fontSize: 13, fontWeight: 600, padding: 0 }}>{action}</button>}
+        {action && <button onClick={onAction} className="wx-ov-panel__action">{action}</button>}
       </div>
       {children}
     </div>
@@ -4347,44 +4326,29 @@ function StoreScopeSelector({ stores = [], scope, onChange }) {
     ? (stores.find((s) => scope.has(s.id))?.teamName || stores.find((s) => scope.has(s.id))?.storeTitle || "1 store")
     : `${scope.size} stores`;
   return (
-    <div ref={ref} style={{ position: "relative" }}>
-      <button onClick={() => setOpen((o) => !o)} style={{
-        display: "inline-flex", alignItems: "center", gap: 8,
-        background: scope.size ? "#f1f1f3" : "#fff", border: `1px solid ${scope.size ? "#c4c4c8" : "#d4d4d8"}`,
-        borderRadius: 8, padding: "12px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 600, color: "#0e0e10",
-      }}>
+    <div ref={ref} className="wx-ov-scope">
+      <button onClick={() => setOpen((o) => !o)} className={"wx-ov-scope__btn" + (scope.size ? " wx-ov-scope__btn--active" : "")}>
         <IconStore size={16} /> {label} <IconChevron size={15} style={{ color: "#6b6b72" }} />
       </button>
       {open &&
-      <div style={{
-        position: "absolute", top: "calc(100% + 8px)", right: 0, zIndex: 60,
-        width: 280, background: "#fff", border: "1px solid #e5e5e9", borderRadius: 10,
-        boxShadow: "0 12px 32px rgba(20,20,30,.14)", overflow: "hidden",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #ececf0" }}>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".04em", color: "#6b6b72", textTransform: "uppercase" }}>Filter by store</span>
+      <div className="wx-ov-scope__menu">
+        <div className="wx-ov-scope__menu-head">
+          <span className="wx-ov-scope__menu-title">Filter by store</span>
           {scope.size > 0 &&
-          <button onClick={() => onChange(new Set())} style={{ background: "none", border: 0, padding: 0, cursor: "pointer", fontSize: 12.5, fontWeight: 600, color: "#e1251b" }}>Clear</button>
+          <button onClick={() => onChange(new Set())} className="wx-ov-scope__clear">Clear</button>
           }
         </div>
-        <div style={{ maxHeight: 280, overflowY: "auto", padding: "8px 0" }}>
+        <div className="wx-ov-scope__list">
           {stores.map((s) => {
             const on = scope.has(s.id);
             const nm = s.teamName || s.storeTitle || "Store";
             return (
-              <button key={s.id} onClick={() => toggle(s.id)} style={{
-                width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 12,
-                background: on ? "#fafafb" : "transparent", border: 0, cursor: "pointer", padding: "8px 16px",
-              }}>
-                <span style={{
-                  width: 16, height: 16, borderRadius: 4, flexShrink: 0,
-                  background: on ? "#0e0e10" : "#fff", border: `1.5px solid ${on ? "#0e0e10" : "#c4c4c8"}`,
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                }}>
+              <button key={s.id} onClick={() => toggle(s.id)} className={"wx-ov-scope__item" + (on ? " wx-ov-scope__item--on" : "")}>
+                <span className={"wx-ov-scope__check" + (on ? " wx-ov-scope__check--on" : "")}>
                   {on && <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12l5 5L20 6" /></svg>}
                 </span>
-                <span style={{ width: 24, height: 24, borderRadius: "50%", background: s.teamColors?.[0] || "#1d3a8a", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 9.5, flexShrink: 0 }}>{nm.slice(0, 2).toUpperCase()}</span>
-                <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0e0e10", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{nm}</span>
+                <span className="wx-ov-scope__avatar" style={{ background: s.teamColors?.[0] || "#1d3a8a" }}>{nm.slice(0, 2).toUpperCase()}</span>
+                <span className="wx-ov-scope__name">{nm}</span>
               </button>
             );
           })}
@@ -4444,20 +4408,20 @@ function FrequentlyVisitedShelf({ stores = [], onManageStore, onGoStores }) {
   const ranked = rankFrequentStores(stores, visits);
   const open = (id) => { onManageStore && onManageStore(id); };
   return (
-    <div style={{ marginBottom: 20 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: OV_MUTED }}>Frequently Visited</span>
-          <span style={{ fontSize: 11.5, color: "#9a9aa1" }}>Updated automatically from your activity</span>
+    <div className="wx-ov-shelf">
+      <div className="wx-ov-shelf__head">
+        <div className="wx-ov-shelf__titles">
+          <span className="wx-ov__eyebrow">Frequently Visited</span>
+          <span className="wx-ov__caption">Updated automatically from your activity</span>
         </div>
         {ranked.length > 0 && (
-          <button onClick={onGoStores} style={{ background: "transparent", border: 0, padding: 0, cursor: "pointer", color: "#2563eb", fontSize: 13, fontWeight: 600 }}>All stores →</button>
+          <button onClick={onGoStores} className="wx-ov-shelf__all">All stores →</button>
         )}
       </div>
       {ranked.length > 0 ? (
-        <div style={{ display: "flex", gap: 12, alignItems: "stretch", justifyContent: "flex-start", overflowX: "auto", overflowY: "hidden", paddingBottom: 6, scrollbarWidth: "thin" }}>
+        <div className="wx-ov-shelf__row">
           {ranked.map((r) => (
-            <div key={r.store.id} style={{ flex: "0 0 300px", width: 300, minWidth: 0 }}>
+            <div key={r.store.id} className="wx-ov-shelf__cell">
               <StoreCard
                 store={r.store}
                 condensed
@@ -4469,15 +4433,15 @@ function FrequentlyVisitedShelf({ stores = [], onManageStore, onGoStores }) {
           ))}
         </div>
       ) : (
-        <div style={{ border: "1px dashed #d8d8de", borderRadius: 10, background: "#fff", padding: "18px 22px", display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ width: 38, height: 38, borderRadius: 9, background: "#f5f5f7", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div className="wx-ov-shelf__empty">
+          <span className="wx-ov-shelf__empty-icon">
             <IconClock size={18} style={{ color: "#9a9aa1" }} />
           </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 13.5, fontWeight: 800, color: OV_INK }}>Nothing to shortcut yet</div>
-            <div style={{ fontSize: 12.5, color: OV_MUTED, marginTop: 3 }}>Open a store and it earns its place here — the stores you work most land in this row.</div>
+          <div className="wx-ov-shelf__empty-body">
+            <div className="wx-ov-shelf__empty-title">Nothing to shortcut yet</div>
+            <div className="wx-ov-shelf__empty-text">Open a store and it earns its place here — the stores you work most land in this row.</div>
           </div>
-          <button onClick={onGoStores} style={{ flexShrink: 0, background: "#fff", border: "1px solid " + OV_INK, borderRadius: 7, padding: "9px 16px", fontSize: 12.5, fontWeight: 700, color: OV_INK, cursor: "pointer" }}>Browse stores →</button>
+          <button onClick={onGoStores} className="wx-ov-shelf__browse">Browse stores →</button>
         </div>
       )}
     </div>
@@ -4604,71 +4568,71 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
       { label: "Avg. Order Value", icon: React.createElement(IconWallet,  { size: 18 }), hint: "Average dollars spent per order — a key indicator of athlete basket size — will populate here." },
     ];
     return (
-      <div style={{ flex: 1, minWidth: 0, padding: "28px 32px 80px", background: "#fbfbfc" }}>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24 }}>
+      <div className="wx-ov-empty">
+        <div className="wx-ov__head">
           <div>
-            <h1 style={{ fontFamily: "Archivo, sans-serif", fontSize: 27, fontWeight: 800, margin: 0, color: OV_INK, letterSpacing: "-.01em" }}>Overview</h1>
-            <div style={{ fontSize: 14, color: OV_MUTED, marginTop: 4 }}>Launch your first store to start tracking performance</div>
+            <h1 className="wx-ov-empty__title">Overview</h1>
+            <div className="wx-ov-empty__lead">Launch your first store to start tracking performance</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button onClick={onAdd} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: OV_INK, border: 0, borderRadius: 8, padding: "12px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, color: "#fff" }}>
+          <div className="wx-ov__actions">
+            <button onClick={onAdd} className="wx-ov__add">
               <IconPlus size={16} style={{ strokeWidth: 2.4 }} /> Add Store
             </button>
-            <button disabled style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#f5f5f7", border: "1px solid #ececf0", borderRadius: 8, padding: "12px 16px", cursor: "not-allowed", fontSize: 13.5, fontWeight: 600, color: "#c4c4c8" }}>
+            <button disabled className="wx-ov-empty__scope">
               <IconStore size={16} /> All Stores <IconChevron size={15} />
             </button>
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
+        <div className="wx-ov__kpis">
           {GHOST_KPI.map((c) => (
-            <div key={c.label} style={{ background: "#fff", border: `1px solid ${OV_LINE}`, borderRadius: 12, padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", color: "#c4c4c8", textTransform: "uppercase" }}>{c.label}</span>
-                <span style={{ width: 36, height: 36, borderRadius: 9, background: "#f5f5f7", color: "#d4d4d8", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{c.icon}</span>
+            <div key={c.label} className="wx-ov-empty__kpi">
+              <div className="wx-ov-empty__kpi-head">
+                <span className="wx-ov-empty__kpi-label">{c.label}</span>
+                <span className="wx-ov-empty__kpi-icon">{c.icon}</span>
               </div>
-              <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 32, fontWeight: 800, color: "#d8d8dc", lineHeight: 1, letterSpacing: "-.01em" }}>—</div>
-              <div style={{ fontSize: 12, color: "#c4c4c8" }}>{c.hint}</div>
+              <div className="wx-ov-empty__kpi-value">—</div>
+              <div className="wx-ov-empty__kpi-hint">{c.hint}</div>
             </div>
           ))}
         </div>
-        <div style={{ background: "#fff", border: `1px solid ${OV_LINE}`, borderRadius: 12, padding: "20px 24px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 10, background: "#fff0ef", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div className="wx-ov-empty__banner">
+          <div className="wx-ov-empty__banner-main">
+            <div className="wx-ov-empty__banner-icon">
               <IconStore size={22} style={{ color: OV_RED }} />
             </div>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 800, color: OV_INK, marginBottom: 4 }}>Your dashboard is ready — no stores are live yet</div>
-              <div style={{ fontSize: 13.5, color: OV_MUTED }}>Revenue, orders, and analytics populate the moment a store goes live and receives its first order.</div>
+              <div className="wx-ov-empty__banner-title">Your dashboard is ready — no stores are live yet</div>
+              <div className="wx-ov-empty__banner-text">Revenue, orders, and analytics populate the moment a store goes live and receives its first order.</div>
             </div>
           </div>
-          <button onClick={onGoStores} style={{ flexShrink: 0, background: OV_INK, color: "#fff", border: 0, borderRadius: 8, padding: "12px 24px", fontSize: 13.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+          <button onClick={onGoStores} className="wx-ov-empty__banner-btn">
             Create a Store →
           </button>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 380px", gap: 16, alignItems: "start" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
+        <div className="wx-ov-empty__grid">
+          <div className="wx-ov-empty__col wx-ov-empty__col--main">
             <Panel title="Dealer Profit">
-              <div style={{ position: "relative", height: 260, paddingLeft: 48, paddingBottom: 28 }}>
-                <div style={{ position: "absolute", left: 0, top: 0, bottom: 28, width: 44, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                  {[0,1,2,3,4].map((i) => <div key={i} style={{ width: 28, height: 12, background: "#ebebed", borderRadius: 4 }} />)}
+              <div className="wx-ov-empty__chart">
+                <div className="wx-ov-empty__chart-axis">
+                  {[0,1,2,3,4].map((i) => <div key={i} className="wx-ov-empty__chart-tick" />)}
                 </div>
-                <div style={{ position: "relative", height: "100%", borderLeft: `1px solid ${OV_LINE}`, borderBottom: `1px solid ${OV_LINE}` }}>
-                  {[0,1,2,3].map((i) => <div key={i} style={{ position: "absolute", left: 0, right: 0, top: `${(i/4)*100}%`, borderTop: "1px dashed #f1f1f3" }} />)}
-                  <div style={{ position: "absolute", inset: "8px 8px 0", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
+                <div className="wx-ov-empty__chart-plot">
+                  {[0,1,2,3].map((i) => <div key={i} className="wx-ov-empty__chart-grid" style={{ top: `${(i/4)*100}%` }} />)}
+                  <div className="wx-ov-empty__chart-bars">
                     {GHOST_BARS.map((h, i) => (
-                      <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", height: "100%", justifyContent: "flex-end" }}>
-                        <div style={{ width: "100%", maxWidth: 32, height: `${h}%`, borderRadius: 5, background: "#ebebed" }} />
-                        <span style={{ fontSize: 11, color: "#d4d4d8", position: "absolute", bottom: -24 }}>{GHOST_MONTHS[i]}</span>
+                      <div key={i} className="wx-ov-empty__chart-col">
+                        <div className="wx-ov-empty__chart-bar" style={{ height: `${h}%` }} />
+                        <span className="wx-ov-empty__chart-month">{GHOST_MONTHS[i]}</span>
                       </div>
                     ))}
                   </div>
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div className="wx-ov-empty__chart-overlay">
+                    <div className="wx-ov-empty__chart-icon">
                       <IconTrendUp size={20} style={{ color: "#c4c4c8" }} />
                     </div>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: OV_INK, marginBottom: 8 }}>Performance Charting</div>
-                      <div style={{ fontSize: 12.5, color: OV_MUTED, maxWidth: 280, lineHeight: 1.55 }}>This space will evolve into a dynamic snapshot of your monthly team store profit margins as orders roll in.</div>
+                    <div className="wx-ov-empty__chart-copy">
+                      <div className="wx-ov-empty__chart-title">Performance Charting</div>
+                      <div className="wx-ov-empty__chart-text">This space will evolve into a dynamic snapshot of your monthly team store profit margins as orders roll in.</div>
                     </div>
                   </div>
                 </div>
@@ -4676,77 +4640,77 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
             </Panel>
             <Panel title="Top Performing Stores" action="All stores →" onAction={onGoStores}>
               <div>
-                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 0.8fr", gap: 12, padding: "0 0 12px", borderBottom: `1px solid ${OV_LINE}`, fontSize: 11.5, fontWeight: 700, letterSpacing: ".05em", color: "#c4c4c8", textTransform: "uppercase" }}>
-                  <span>Store</span><span style={{ textAlign: "right" }}>Orders</span><span style={{ textAlign: "right" }}>Revenue</span><span style={{ textAlign: "right" }}>Trend</span>
+                <div className="wx-ov-empty__top-head">
+                  <span>Store</span><span className="wx-ov-empty__right">Orders</span><span className="wx-ov-empty__right">Revenue</span><span className="wx-ov-empty__right">Trend</span>
                 </div>
                 {[80,65,55,45,35].map((w, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 0.8fr", gap: 12, alignItems: "center", padding: "12px 0", borderBottom: "1px solid #f4f4f6" }}>
-                    <div style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#ebebed", flexShrink: 0 }} />
-                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <div style={{ width: w, height: 12, background: "#ebebed", borderRadius: 4 }} />
-                        <div style={{ width: Math.round(w * 0.6), height: 8, background: "#f1f1f3", borderRadius: 4 }} />
+                  <div key={i} className="wx-ov-empty__top-row">
+                    <div className="wx-ov-empty__top-store">
+                      <div className="wx-ov-empty__avatar" />
+                      <div className="wx-ov-empty__lines">
+                        <div className="wx-ov-empty__line" style={{ width: w }} />
+                        <div className="wx-ov-empty__subline" style={{ width: Math.round(w * 0.6) }} />
                       </div>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "flex-end" }}><div style={{ width: 28, height: 12, background: "#ebebed", borderRadius: 4 }} /></div>
-                    <div style={{ display: "flex", justifyContent: "flex-end" }}><div style={{ width: 48, height: 12, background: "#ebebed", borderRadius: 4 }} /></div>
-                    <div style={{ display: "flex", justifyContent: "flex-end" }}><div style={{ width: 32, height: 12, background: "#ebebed", borderRadius: 4 }} /></div>
+                    <div className="wx-ov-empty__num"><div className="wx-ov-empty__num-bar wx-ov-empty__num-bar--orders" /></div>
+                    <div className="wx-ov-empty__num"><div className="wx-ov-empty__num-bar wx-ov-empty__num-bar--revenue" /></div>
+                    <div className="wx-ov-empty__num"><div className="wx-ov-empty__num-bar wx-ov-empty__num-bar--trend" /></div>
                   </div>
                 ))}
-                <div style={{ padding: "24px 0 8px", textAlign: "center" }}>
-                  <div style={{ fontSize: 13.5, color: OV_MUTED, marginBottom: 12 }}>Store rankings will appear once sales begin</div>
-                  <button onClick={onGoStores} style={{ background: "transparent", border: `1px solid ${OV_LINE}`, borderRadius: 7, padding: "8px 16px", fontSize: 13, fontWeight: 700, color: OV_INK, cursor: "pointer" }}>Create a Store →</button>
+                <div className="wx-ov-empty__top-foot">
+                  <div className="wx-ov-empty__top-foot-text">Store rankings will appear once sales begin</div>
+                  <button onClick={onGoStores} className="wx-ov-empty__top-foot-btn">Create a Store →</button>
                 </div>
               </div>
             </Panel>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="wx-ov-empty__col">
             <Panel title="Active Ordering Windows">
               {[0,1,2].map((i) => (
-                <div key={i} style={{ padding: "16px 0", borderBottom: `1px solid ${OV_LINE}` }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#ebebed", flexShrink: 0 }} />
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-                      <div style={{ width: "70%", height: 12, background: "#ebebed", borderRadius: 4 }} />
-                      <div style={{ width: "45%", height: 8, background: "#f1f1f3", borderRadius: 4 }} />
+                <div key={i} className="wx-ov-empty__window">
+                  <div className="wx-ov-empty__window-head">
+                    <div className="wx-ov-empty__avatar" />
+                    <div className="wx-ov-empty__lines wx-ov-empty__lines--fill">
+                      <div className="wx-ov-empty__line wx-ov-empty__line--70" />
+                      <div className="wx-ov-empty__subline wx-ov-empty__subline--45" />
                     </div>
-                    <div style={{ width: 36, height: 24, background: "#f1f1f3", borderRadius: 999 }} />
+                    <div className="wx-ov-empty__pill wx-ov-empty__pill--window" />
                   </div>
-                  <div style={{ height: 8, borderRadius: 999, background: "#f1f1f3" }} />
+                  <div className="wx-ov-empty__window-track" />
                 </div>
               ))}
-              <div style={{ padding: "16px 0 4px", fontSize: 12.5, color: OV_MUTED, lineHeight: 1.6 }}>Active ordering window cutoffs will organize and countdown automatically here once your stores go live.</div>
+              <div className="wx-ov-empty__note">Active ordering window cutoffs will organize and countdown automatically here once your stores go live.</div>
             </Panel>
             <Panel title="Roster Bank">
               {[0, 1].map((i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 0", borderBottom: `1px solid ${OV_LINE}` }}>
-                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#ebebed", flexShrink: 0 }} />
-                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-                    <div style={{ width: "60%", height: 12, background: "#ebebed", borderRadius: 4 }} />
-                    <div style={{ width: "40%", height: 8, background: "#f1f1f3", borderRadius: 4 }} />
+                <div key={i} className="wx-ov-empty__bank">
+                  <div className="wx-ov-empty__avatar" />
+                  <div className="wx-ov-empty__lines wx-ov-empty__lines--fill">
+                    <div className="wx-ov-empty__line wx-ov-empty__line--60" />
+                    <div className="wx-ov-empty__subline wx-ov-empty__subline--40" />
                   </div>
-                  <div style={{ width: 84, height: 24, background: "#f1f1f3", borderRadius: 999 }} />
+                  <div className="wx-ov-empty__pill wx-ov-empty__pill--bank" />
                 </div>
               ))}
-              <div style={{ padding: "16px 0 4px", fontSize: 12.5, color: OV_MUTED, lineHeight: 1.6 }}>Team-gear checkout captures will queue here as proposed players once buyers opt in — commit them to rosters in one click.</div>
+              <div className="wx-ov-empty__note">Team-gear checkout captures will queue here as proposed players once buyers opt in — commit them to rosters in one click.</div>
             </Panel>
             <Panel title="Payouts">
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 16 }}>
+              <div className="wx-ov-empty__pay-head">
                 <div>
-                  <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 26, fontWeight: 800, color: "#d8d8dc", lineHeight: 1 }}>$—</div>
-                  <div style={{ fontSize: 12, color: "#c4c4c8", marginTop: 4 }}>Available to pay out</div>
+                  <div className="wx-ov-empty__pay-amount">$—</div>
+                  <div className="wx-ov-empty__pay-label">Available to pay out</div>
                 </div>
-                <div style={{ width: 64, height: 24, background: "#f1f1f3", borderRadius: 999 }} />
+                <div className="wx-ov-empty__pill wx-ov-empty__pill--payout" />
               </div>
               {["Pending clearance", "Paid this season"].map((label) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f4f4f6", fontSize: 13 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#c4c4c8" }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#d8d8dc" }} /> {label}
+                <div key={label} className="wx-ov-empty__pay-row">
+                  <span className="wx-ov-empty__pay-name">
+                    <span className="wx-ov-empty__pay-dot" /> {label}
                   </span>
-                  <span style={{ fontWeight: 700, color: "#d8d8dc" }}>$—</span>
+                  <span className="wx-ov-empty__pay-value">$—</span>
                 </div>
               ))}
-              <div style={{ marginTop: 8, paddingTop: 16, borderTop: `1px solid ${OV_LINE}`, fontSize: 12.5, color: "#9a9aa1", lineHeight: 1.6 }}>Payout status, pending banking clearances, and active ordering window cutoffs will organize themselves automatically right here.</div>
+              <div className="wx-ov-empty__pay-note">Payout status, pending banking clearances, and active ordering window cutoffs will organize themselves automatically right here.</div>
             </Panel>
           </div>
         </div>
@@ -4755,20 +4719,20 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
   }
 
   return (
-    <div style={{ flex: 1, minWidth: 0, padding: "28px max(32px, calc((100% - 1376px)/2)) 80px", background: "#fbfbfc" }}>
+    <div className="wx-ov">
       {/* Page heading */}
-      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24 }}>
+      <div className="wx-ov__head">
         <div>
-          <h1 style={{ fontFamily: "Archivo, sans-serif", fontSize: 24, fontWeight: 800, margin: "0 0 8px", color: OV_INK, letterSpacing: "-.3px" }}>Overview</h1>
-          <div style={{ fontSize: 14, color: OV_MUTED }}>Your stores at a glance: activity, performance, and what needs attention.</div>
+          <h1 className="wx-ov__title">Overview</h1>
+          <div className="wx-ov__lead">Your stores at a glance: activity, performance, and what needs attention.</div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <button onClick={onAdd} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: OV_INK, border: 0, borderRadius: 8, padding: "12px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, color: "#fff" }}>
+        <div className="wx-ov__actions">
+          <button onClick={onAdd} className="wx-ov__add">
             <IconPlus size={16} style={{ strokeWidth: 2.4 }} /> Add Store
           </button>
           <StoreScopeSelector stores={stores} scope={scope} onChange={setScope} />
-          <div style={{ position: "relative", display: "flex", alignItems: "center", minWidth: 240, border: "1px solid #d8d8de", borderRadius: 8, background: "#fff" }}>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Team Stores" style={{ width: "100%", border: 0, outline: 0, background: "transparent", padding: "12px 40px 12px 16px", fontSize: 13.5 }} />
+          <div className="wx-ov__search">
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Team Stores" className="wx-ov__search-input" />
             <IconSearch size={16} style={{ position: "absolute", right: 12, color: "#9a9aa1" }} />
           </div>
         </div>
@@ -4778,15 +4742,15 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
       <FrequentlyVisitedShelf stores={stores} onManageStore={onManageStore} onGoStores={onGoStores} />
 
       {/* KPI row */}
-      <div style={{ paddingTop: 8, display: "flex", alignItems: "baseline", gap: 10, marginBottom: 10 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", color: OV_MUTED }}>Performance summary</span>
-        <span style={{ fontSize: 11.5, color: "#9a9aa1" }}>
+      <div className="wx-ov__kpi-head">
+        <span className="wx-ov__eyebrow">Performance summary</span>
+        <span className="wx-ov__caption">
           {scope.size
             ? `Performance across ${scope.size} selected store${scope.size > 1 ? "s" : ""}`
             : `Performance across ${stores.length} stores${leagues.length ? ` and ${leagues.length} league${leagues.length > 1 ? "s" : ""}` : ""}`}
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
+      <div className="wx-ov__kpis">
         <StatCard label="Total Revenue" value={ovFmt(totalRevenue)} icon={<IconDollar size={18} />} delta="12.4%" deltaDir="up" sub="vs last month" />
         <StatCard label="Orders" value={orders.toLocaleString()} icon={<IconReceipt size={18} />} delta="8.1%" deltaDir="up" sub="vs last month" onClick={onViewOrders} />
         <StatCard label="Active Stores" value={String(liveCount)} icon={<IconStore size={18} />} sub={`${stores.length} total`} />
@@ -4794,7 +4758,7 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
       </div>
 
       {/* Main content — full-width stacked panels */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
+      <div className="wx-ov__panels">
         {/* Dealer-side money only — team revenue & fundraising live on each store's Reports tab. */}
         <Panel title="Revenue & Dealer Profit" subtitle="Gross revenue across all stores vs. dealer profit — revenue minus manufacturing cost (COGS), platform fee, sales tax, and team fundraising." right={<RevenueScaleToggle scale={moneyScale} onChange={setMoneyScale} />}>
           <RevenueProfitChart totalRevenue={totalRevenue} scale={moneyScale} />
@@ -4803,7 +4767,7 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
         <Panel title="Top Performing Stores" action="All stores →" onAction={onGoStores}>
           <div>
             {/* head */}
-            <div style={{ display: "grid", gridTemplateColumns: "minmax(190px,1.8fr) repeat(7, 1fr)", gap: 12, padding: "0 0 12px", borderBottom: `1px solid ${OV_LINE}`, fontSize: 11, fontWeight: 700, letterSpacing: ".05em", color: OV_MUTED, textTransform: "uppercase" }}>
+            <div className="wx-ov-top__head">
               <TopSortHead label="Store" sortKey="name" sort={topSort} onSort={toggleTopSort} />
               <TopSortHead label="Store Created" sortKey="created" sort={topSort} onSort={toggleTopSort} />
               <TopSortHead label="Orders" sortKey="orders" sort={topSort} onSort={toggleTopSort} align="right" pad={24} />
@@ -4814,52 +4778,48 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
               <TopSortHead label="Trend" sortKey="trend" sort={topSort} onSort={toggleTopSort} align="right" />
             </div>
             {sortedTop.map((s) => (
-              <button key={s.id} onClick={() => onManageStore && onManageStore(s.id)} style={{
-                width: "100%", textAlign: "left", background: "transparent", border: 0, cursor: "pointer",
-                display: "grid", gridTemplateColumns: "minmax(190px,1.8fr) repeat(7, 1fr)", gap: 12, alignItems: "center",
-                padding: "16px 0", borderBottom: `1px solid #f4f4f6`,
-              }}
+              <button key={s.id} onClick={() => onManageStore && onManageStore(s.id)} className="wx-ov-top__row"
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-                  <span style={{ width: 32, height: 32, borderRadius: "50%", background: s.color, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, flexShrink: 0 }}>{s.mono}</span>
-                  <span style={{ minWidth: 0 }}>
-                    <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: OV_INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.name}</span>
-                    <span style={{ display: "block", fontSize: 12, color: OV_MUTED }}>{s.sport}</span>
+                <span className="wx-ov-top__store">
+                  <span className="wx-ov-avatar" style={{ background: s.color }}>{s.mono}</span>
+                  <span className="wx-ov-top__name-wrap">
+                    <span className="wx-ov-top__name">{s.name}</span>
+                    <span className="wx-ov-top__sport">{s.sport}</span>
                   </span>
                 </span>
-                <span style={{ fontSize: 13, color: OV_MUTED, fontFamily: "JetBrains Mono, monospace" }}>{s.created}</span>
-                <span style={{ textAlign: "right", paddingRight: 24, fontSize: 13.5, color: OV_INK, fontFamily: "JetBrains Mono, monospace" }}>{s.orders}</span>
-                <span style={{ textAlign: "right", paddingRight: 24, fontSize: 13.5, fontWeight: 700, color: OV_INK, fontFamily: "JetBrains Mono, monospace" }}>{ovFmt(s.revenue)}</span>
-                <span style={{ textAlign: "right", paddingRight: 24, fontSize: 13.5, color: OV_INK, fontFamily: "JetBrains Mono, monospace" }}>{ovFmt(s.aov)}</span>
-                <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                  <span style={{ fontSize: 13, color: OV_INK, fontFamily: "JetBrains Mono, monospace" }}>{s.pctOfTotal.toFixed(1)}%</span>
-                  <span style={{ width: "70%", height: 4, borderRadius: 999, background: "#f1f1f3", overflow: "hidden" }}>
-                    <span style={{ display: "block", width: `${Math.min(s.pctOfTotal, 100)}%`, height: "100%", borderRadius: 999, background: OV_INK }} />
+                <span className="wx-ov-top__created">{s.created}</span>
+                <span className="wx-ov-top__num">{s.orders}</span>
+                <span className="wx-ov-top__num wx-ov-top__num--strong">{ovFmt(s.revenue)}</span>
+                <span className="wx-ov-top__num">{ovFmt(s.aov)}</span>
+                <span className="wx-ov-top__meter">
+                  <span className="wx-ov-top__meter-value">{s.pctOfTotal.toFixed(1)}%</span>
+                  <span className="wx-ov-top__bar">
+                    <span className="wx-ov-top__fill" style={{ width: `${Math.min(s.pctOfTotal, 100)}%` }} />
                   </span>
                 </span>
-                <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                  <span style={{ fontSize: 13, color: OV_INK, fontFamily: "JetBrains Mono, monospace" }}>
-                    {s.completion}% <span style={{ color: OV_MUTED, fontFamily: "inherit", fontSize: 11.5 }}>· {s.rosterOrdered}/{s.rosterSize}</span>
+                <span className="wx-ov-top__meter">
+                  <span className="wx-ov-top__meter-value">
+                    {s.completion}% <span className="wx-ov-top__meter-note">· {s.rosterOrdered}/{s.rosterSize}</span>
                   </span>
-                  <span style={{ width: "70%", height: 4, borderRadius: 999, background: "#f1f1f3", overflow: "hidden" }}>
-                    <span style={{ display: "block", width: `${Math.min(s.completion, 100)}%`, height: "100%", borderRadius: 999, background: s.completion >= 80 ? OV_GREEN : "#e0a92b" }} />
+                  <span className="wx-ov-top__bar">
+                    <span className={"wx-ov-top__fill " + (s.completion >= 80 ? "wx-ov-top__fill--done" : "wx-ov-top__fill--short")} style={{ width: `${Math.min(s.completion, 100)}%` }} />
                   </span>
                 </span>
-                <span style={{ textAlign: "right", fontSize: 12.5, fontWeight: 700, color: s.trend >= 0 ? OV_GREEN : OV_RED, display: "inline-flex", alignItems: "center", justifyContent: "flex-end", gap: 4 }}>
+                <span className={"wx-ov-top__trend " + (s.trend >= 0 ? "wx-ov-top__trend--up" : "wx-ov-top__trend--down")}>
                   {s.trend >= 0 ? <IconTrendUp size={14} /> : <IconTrendDown size={14} />}{Math.abs(s.trend)}%
                 </span>
               </button>
             ))}
-            {top.length === 0 && <div style={{ padding: "32px 0", textAlign: "center", color: OV_MUTED, fontSize: 13 }}>No stores yet.</div>}
+            {top.length === 0 && <div className="wx-ov-top__none">No stores yet.</div>}
           </div>
         </Panel>
 
         <Panel title="Active Ordering Windows">
           {windows.length ? windows.map((w) => <OrderingWindowRow key={w.id} {...w} />) : (
-            <div style={{ padding: "24px 0", textAlign: "center", color: OV_MUTED, fontSize: 13 }}>No open windows.</div>
+            <div className="wx-ov__none">No open windows.</div>
           )}
-          <div style={{ paddingTop: 16, fontSize: 12.5, color: OV_MUTED, display: "flex", alignItems: "center", gap: 8 }}>
+          <div className="wx-ov__panel-foot">
             <IconClock size={14} /> {windows.length} window{windows.length === 1 ? "" : "s"} open now
           </div>
         </Panel>
@@ -4868,9 +4828,9 @@ function OverviewDashboard({ stores = [], leagues = [], onManageStore, onGoStore
           {bankRows.length ? bankRows.map((b) => (
             <RosterBankRow key={b.id} {...b} onReview={() => onManageStore && onManageStore(b.id, "roster")} />
           )) : (
-            <div style={{ padding: "24px 0", textAlign: "center", color: OV_MUTED, fontSize: 13 }}>No captures waiting — team-gear orders with roster opt-in land here.</div>
+            <div className="wx-ov__none">No captures waiting — team-gear orders with roster opt-in land here.</div>
           )}
-          <div style={{ paddingTop: 16, fontSize: 12.5, color: OV_MUTED, display: "flex", alignItems: "center", gap: 8 }}>
+          <div className="wx-ov__panel-foot">
             <IconBankInbox size={14} /> {bankTotal} proposed player{bankTotal === 1 ? "" : "s"} across {bankRows.length} store{bankRows.length === 1 ? "" : "s"} — commit them in My Teams
           </div>
         </Panel>

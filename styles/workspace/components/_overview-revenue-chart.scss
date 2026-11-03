@@ -1,0 +1,190 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of RevenueScaleToggle and RevenueProfitChart in workspace-app.jsx and
+// workspace-app-integrated.jsx: Revenue & Dealer Profit (FR-2.6). The chart itself is SVG drawn from
+// the data; the hover zones' and tooltip's positions are computed, so they stay inline.
+
+// ── Day / Month / Year ──
+
+.wx-ov-scale {
+  display: inline-flex;
+  background: #f5f5f7;
+  border: 1px solid $line-2;
+  border-radius: 9px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.wx-ov-scale__btn {
+  border: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: inherit;
+  background: transparent;
+  color: $muted;
+  box-shadow: none;
+  transition: background .12s, color .12s;
+}
+
+.wx-ov-scale__btn--active {
+  background: $white;
+  color: $ink;
+  box-shadow: 0 1px 2px rgba(20,20,30,.10);
+}
+
+// ── Summary tiles ──
+
+.wx-ov-rpc__kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wx-ov-rpc__kpi {
+  min-width: 200px;
+  box-sizing: border-box;
+  border: 1px solid $zinc-300;
+  border-radius: 8px;
+  padding: 16px;
+  background: $white;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5px;
+  align-items: flex-start;
+}
+
+.wx-ov-rpc__kpi-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  line-height: 16px;
+  color: $zinc-500;
+}
+
+.wx-ov-rpc__kpi-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.wx-ov-rpc__kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -.01em;
+  color: $ink;
+}
+
+.wx-ov-rpc__kpi-delta {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: .01em;
+}
+
+.wx-ov-rpc__kpi-delta--up {
+  color: $ok;
+}
+
+.wx-ov-rpc__kpi-delta--down {
+  color: $red;
+}
+
+// ── Legend ──
+
+.wx-ov-rpc__legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.wx-ov-rpc__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.wx-ov-rpc__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+}
+
+// The series colors (RPC_REV and RPC_PROF in the prototype, which the SVG lines also use).
+.wx-ov-rpc__dot--rev {
+  background: #7c3aed;
+}
+
+.wx-ov-rpc__dot--profit {
+  background: #d97706;
+}
+
+.wx-ov-rpc__legend-note {
+  color: $muted;
+  font-weight: 400;
+}
+
+// ── Plot ──
+
+.wx-ov-rpc__plot {
+  position: relative;
+}
+
+.wx-ov-rpc__svg {
+  width: 100%;
+  height: 380px;
+  display: block;
+}
+
+.wx-ov-rpc__hit {
+  position: absolute;
+  top: 0;
+  bottom: 44px;
+}
+
+.wx-ov-rpc__tip {
+  position: absolute;
+  top: -6px;
+  transform: translateX(-50%);
+  background: $ink;
+  color: $white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  z-index: 5;
+  box-shadow: 0 6px 18px rgba(20,20,30,.22);
+  pointer-events: none;
+}
+
+.wx-ov-rpc__tip-label {
+  font-size: 11px;
+  color: #a4a4ab;
+  margin-bottom: 3px;
+}
+
+.wx-ov-rpc__tip-value {
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: $font-mono;
+}
+
+.wx-ov-rpc__tip-value--rev {
+  color: #c4b5fd;
+}
+
+.wx-ov-rpc__tip-value--profit {
+  color: #fcd34d;
+}
+
+.wx-ov-rpc__tip-unit {
+  color: #a4a4ab;
+  font-weight: 400;
+}

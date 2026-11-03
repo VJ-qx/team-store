@@ -1,0 +1,241 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of FrequentlyVisitedShelf, and of StoreCard's condensed variant, in
+// workspace-app.jsx and workspace-app-integrated.jsx: the Overview's Frequently visited shelf (FR-2.4).
+// The full StoreCard (the Stores tab) keeps its inline styles. A store's status tag colors, logo color
+// and logo border come from the data, so they stay inline. The cards' hover lift and the "Manage Store"
+// fill are written by their event handlers, as in the prototype.
+
+// The small uppercase section heading and its caption (also used by the KPI row, in _overview.scss).
+.wx-ov__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: $muted;
+}
+
+.wx-ov__caption {
+  font-size: 11.5px;
+  color: $muted-2;
+}
+
+// ── Shelf ──
+
+.wx-ov-shelf {
+  margin-bottom: 20px;
+}
+
+.wx-ov-shelf__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.wx-ov-shelf__titles {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.wx-ov-shelf__all {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: $blue;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wx-ov-shelf__row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.wx-ov-shelf__cell {
+  flex: 0 0 300px;
+  width: 300px;
+  min-width: 0;
+}
+
+// No store visited yet.
+.wx-ov-shelf__empty {
+  border: 1px dashed #d8d8de;
+  border-radius: 10px;
+  background: $white;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wx-ov-shelf__empty-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: #f5f5f7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-ov-shelf__empty-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-ov-shelf__empty-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-ov-shelf__empty-text {
+  font-size: 12.5px;
+  color: $muted;
+  margin-top: 3px;
+}
+
+.wx-ov-shelf__browse {
+  flex-shrink: 0;
+  background: $white;
+  border: 1px solid $ink;
+  border-radius: 7px;
+  padding: 9px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $ink;
+  cursor: pointer;
+}
+
+// ── StoreCard, condensed ──
+
+.wx-store-mini {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(20,20,30,.03);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.wx-store-mini__media {
+  position: relative;
+  background: #fafafb;
+  padding: 12px;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-store-mini__tag {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.wx-store-mini__logo {
+  max-width: 64px;
+  max-height: 54px;
+  object-fit: contain;
+}
+
+.wx-store-mini__mono {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $white;
+  font-weight: 800;
+  font-size: 13.5px;
+  font-family: $font-display;
+}
+
+.wx-store-mini__body {
+  padding: 10px 12px 9px;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-store-mini__name {
+  font-size: 13px;
+  font-weight: 800;
+  color: $ink;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-store-mini__type {
+  font-size: 11px;
+  color: $muted-2;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-store-mini__context {
+  margin-top: 7px;
+  display: flex;
+  justify-content: center;
+}
+
+.wx-store-mini__context-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: $muted;
+  background: #f5f5f7;
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.wx-store-mini__context-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-store-mini__foot {
+  border-top: 1px solid $line-2;
+  padding: 9px 10px;
+}
+
+.wx-store-mini__manage {
+  width: 100%;
+  background: $white;
+  border: 1px solid $ink;
+  color: $ink;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .12s;
+}
