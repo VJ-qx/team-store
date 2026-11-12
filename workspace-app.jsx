@@ -3286,33 +3286,33 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
   const storeCount = activeLeague ? scopeStores.length : finalStores.length;
 
   return (
-    <div style={{ flex: 1, minWidth: 0, padding: "28px max(32px, calc((100% - 1376px)/2)) 120px", background: "#fbfbfc", position: "relative" }}>
+    <div className="wx-stores">
       {/* Header */}
       {activeLeague ? (
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24, gap: 16, flexWrap: "wrap" }}>
+        <div className="wx-stores__league-head">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, fontSize: 13 }}>
-              <button onClick={onBackToLeagues} style={{ border: 0, background: "transparent", padding: 0, cursor: "pointer", color: "#9a9aa1", fontWeight: 700, letterSpacing: ".04em" }}>LEAGUES</button>
+            <div className="wx-stores__crumbs">
+              <button onClick={onBackToLeagues} className="wx-stores__crumb">LEAGUES</button>
               <IconChevronRight size={14} style={{ color: "#c9c9cf" }} />
               {activeGroup ? (
                 <React.Fragment>
-                  <button onClick={onCloseGroup} style={{ border: 0, background: "transparent", padding: 0, cursor: "pointer", color: "#9a9aa1", fontWeight: 700, letterSpacing: ".04em" }}>{(activeLeague.name || "LEAGUE").toUpperCase()}</button>
+                  <button onClick={onCloseGroup} className="wx-stores__crumb">{(activeLeague.name || "LEAGUE").toUpperCase()}</button>
                   <IconChevronRight size={14} style={{ color: "#c9c9cf" }} />
-                  <span style={{ fontWeight: 800, color: "#0e0e10" }}>{activeGroup.name.toUpperCase()}</span>
+                  <span className="wx-stores__crumb-current">{activeGroup.name.toUpperCase()}</span>
                 </React.Fragment>
               ) : (
-                <span style={{ fontWeight: 800, color: "#0e0e10" }}>{activeLeague.name.toUpperCase()}</span>
+                <span className="wx-stores__crumb-current">{activeLeague.name.toUpperCase()}</span>
               )}
             </div>
-            <h1 style={{ fontFamily: "Archivo, sans-serif", fontSize: 26, fontWeight: 800, margin: 0, color: "#0e0e10" }}>{activeGroup ? activeGroup.name : activeLeague.name}</h1>
-            <div style={{ display: "flex", gap: 24, alignItems: "center", color: "#6b6b72", fontSize: 13.5, marginTop: 8 }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><IconStore size={16} /> {storeCount} {storeCount === 1 ? "Store" : "Stores"}</span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><IconDollar size={16} style={{ color: "#1f9d55" }} /><span style={{ color: "#1f9d55", fontWeight: 700 }}>${totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span></span>
+            <h1 className="wx-stores__league-title">{activeGroup ? activeGroup.name : activeLeague.name}</h1>
+            <div className="wx-stores__league-meta">
+              <span className="wx-stores__meta-item"><IconStore size={16} /> {storeCount} {storeCount === 1 ? "Store" : "Stores"}</span>
+              <span className="wx-stores__meta-item"><IconDollar size={16} style={{ color: "#1f9d55" }} /><span className="wx-stores__revenue">${totalRevenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span></span>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div className="wx-stores__league-actions">
             {!activeGroup && (
-              <button onClick={onOpenSettings} style={{ border: "1px solid #d8d8de", background: "#fff", color: "#0e0e10", borderRadius: 8, padding: "12px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <button onClick={onOpenSettings} className="wx-stores__settings-btn">
                 <IconSettings size={17} /> League Settings
               </button>
             )}
@@ -3321,7 +3321,7 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
         </div>
       ) : (
         <ListPageHeader title="Stores" subtitle={(() => { const inLeague = new Set(leagues.flatMap((l) => l.storeIds || [])); const teamN = stores.filter((s) => !inLeague.has(s.id)).length; return `${teamN} Team Stores \u2022 ${stores.length - teamN} League Stores`; })()}>
-          <button onClick={onAdd} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#0e0e10", border: 0, borderRadius: 8, padding: "12px 16px", cursor: "pointer", fontSize: 13.5, fontWeight: 700, color: "#fff", whiteSpace: "nowrap" }}>
+          <button onClick={onAdd} className="wx-stores__add">
             <IconPlus size={16} style={{ strokeWidth: 2.4 }} /> Add Store
           </button>
           {storeToolbar}
@@ -3339,8 +3339,8 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
 
       {/* Cards grid */}
       {zeroTop ? (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "92px 20px 40px" }}>
-          <div style={{ width: 152, height: 152, borderRadius: "50%", background: "#f5f5f7", border: "1px solid #ececf0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 32 }}>
+        <div className="wx-stores__zero">
+          <div className="wx-stores__zero-icon">
             <svg width="78" height="78" viewBox="0 0 64 64" fill="none" stroke="#a1a1aa" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               {/* Storefront awning + shutter — empty retail rack */}
               <path d="M8 24 L12 12 H52 L56 24" />
@@ -3350,20 +3350,20 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
               <path d="M24 54 V38 a8 8 0 0 1 16 0 V54" />
             </svg>
           </div>
-          <h2 style={{ fontFamily: "Archivo, sans-serif", fontSize: 24, fontWeight: 800, color: "#0e0e10", margin: "0 0 12px", letterSpacing: "-.01em" }}>You don&rsquo;t have any Team Stores yet.</h2>
-          <p style={{ fontSize: 15, color: "#6b6b72", lineHeight: 1.6, maxWidth: 460, margin: "0 0 28px" }}>Create an always-on locker or a temporary pop-up store to start assigning customized gear collections to your teams.</p>
-          <button onClick={onAdd} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#0e0e10", color: "#fff", border: 0, borderRadius: 8, padding: "16px 28px", fontSize: 15, fontWeight: 700, cursor: "pointer" }}
+          <h2 className="wx-stores__zero-title">You don&rsquo;t have any Team Stores yet.</h2>
+          <p className="wx-stores__zero-text">Create an always-on locker or a temporary pop-up store to start assigning customized gear collections to your teams.</p>
+          <button onClick={onAdd} className="wx-stores__zero-btn"
             onMouseEnter={(e) => (e.currentTarget.style.background = "#1f1f22")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#0e0e10")}>
             <IconPlus size={18} style={{ strokeWidth: 2.6 }} /> Create Your First Store
           </button>
         </div>
       ) : (
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(248px, 1fr))", gap: 16 }}>
+      <div className="wx-stores__grid">
         {activeLeague && !activeGroup && groups.map((g) => <GroupCard key={g.id} group={g} onOpen={() => onOpenGroup(g.id)} />)}
         {finalStores.map((s) => <StoreCard key={s.id} store={s} onManage={() => onManage(s.id)} onArchive={() => onArchive && onArchive(s.id)} onCreateTemplate={onCreateTemplate} />)}
         {finalStores.length === 0 && !(activeLeague && !activeGroup && groups.length) && (
-          <div style={{ gridColumn: "1 / -1", padding: "92px 20px", textAlign: "center", color: "#9a9aa1", fontSize: 14 }}>
+          <div className="wx-stores__none">
             {filter !== "All" ? `No stores match “${filter}”.` :
              ownership === "mine" ? "You haven’t created any stores yet." : ownership === "joined" ? "No stores have been shared with you yet." : "No stores here yet."}
           </div>
@@ -3373,8 +3373,8 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
 
       {/* Floating actions — Add Group only (Add Store moved to toolbar) */}
       {activeLeague && (
-        <div style={{ position: "fixed", bottom: 28, right: 36, zIndex: 40, display: "flex", alignItems: "center", gap: 12 }}>
-          <button onClick={onAddGroup} style={{ background: "#fff", color: "#0e0e10", border: "1px solid #d4d4d8", padding: "16px 24px", borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 800, letterSpacing: ".06em", display: "inline-flex", alignItems: "center", gap: 8, boxShadow: "0 8px 20px rgba(20,20,30,.12)" }}>
+        <div className="wx-stores__fab">
+          <button onClick={onAddGroup} className="wx-stores__add-group">
             <IconGroupAdd size={17} /> Add Group
           </button>
         </div>
@@ -3387,21 +3387,21 @@ function StoreList({ stores, onAdd, onAddLeague, onAddGroup, onManage, onArchive
 function GroupCard({ group, onOpen }) {
   const count = (group.storeIds || []).length;
   return (
-    <div style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 2px rgba(20,20,30,.03)", display: "flex", flexDirection: "column", transition: "box-shadow .15s ease, border-color .15s ease" }}
+    <div className="wx-group-card"
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(20,20,30,.09)"; e.currentTarget.style.borderColor = "#d4d4d8"; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 2px rgba(20,20,30,.03)"; e.currentTarget.style.borderColor = "#ececf0"; }}>
-      <div style={{ position: "relative", background: "#fafafb", padding: "20px", minHeight: 172, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "absolute", top: 16, left: 16, background: "#e3edff", color: "#2657c4", padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 700 }}>Group</div>
-        <div style={{ width: 92, height: 92, borderRadius: "50%", background: "#ececf0", color: "#6b6b72", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="wx-group-card__media">
+        <div className="wx-group-card__tag">Group</div>
+        <div className="wx-group-card__icon">
           <IconGrid size={32} stroke={1.7} />
         </div>
       </div>
-      <div style={{ padding: "16px 16px 16px", textAlign: "center" }}>
-        <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4, color: "#0e0e10" }}>{group.name}</div>
-        <div style={{ fontSize: 12.5, color: "#9a9aa1" }}>{count} {count === 1 ? "team" : "teams"}</div>
+      <div className="wx-group-card__body">
+        <div className="wx-group-card__name">{group.name}</div>
+        <div className="wx-group-card__count">{count} {count === 1 ? "team" : "teams"}</div>
       </div>
-      <div style={{ borderTop: "1px solid #ececf0", padding: 16 }}>
-        <button onClick={onOpen} style={{ width: "100%", background: "#fff", border: "1px solid #0e0e10", color: "#0e0e10", padding: "12px 16px", borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all .12s" }}
+      <div className="wx-group-card__foot">
+        <button onClick={onOpen} className="wx-group-card__open"
           onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
           Open Group
@@ -3415,27 +3415,24 @@ function ArchiveStoreModal({ open, store, onClose, onConfirm }) {
   if (!store) return null;
   return (
     <Modal open={open} onClose={onClose} width={480}>
-      <div style={{ padding: "28px 28px 8px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-          <span style={{ width: 40, height: 40, borderRadius: "50%", background: "#fbe3e1", color: "#b81d14", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <div className="wx-archive-modal__body">
+        <div className="wx-archive-modal__head">
+          <span className="wx-archive-modal__icon">
             <IconAlert size={19} style={{ strokeWidth: 2.2 }} />
           </span>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Archive {store.teamName || store.storeTitle}?</h2>
+          <h2 className="wx-archive-modal__title">Archive {store.teamName || store.storeTitle}?</h2>
         </div>
-        <p style={{ margin: "0 0 12px", fontSize: 13.5, color: "#6b6b72", lineHeight: 1.6 }}>Archiving a store will:</p>
-        <ul style={{ margin: "0 0 4px", paddingLeft: 20, fontSize: 13.5, color: "#0e0e10", lineHeight: 1.85 }}>
+        <p className="wx-archive-modal__lead">Archiving a store will:</p>
+        <ul className="wx-archive-modal__list">
           <li>Hide the storefront from all buyers immediately</li>
           <li>Stop all new orders and close any active ordering window</li>
           <li>Remove it from your active stores list</li>
         </ul>
-        <p style={{ margin: "12px 0 0", fontSize: 13, color: "#6b6b72", lineHeight: 1.6 }}>Order history and reports are retained. This can be undone by support.</p>
+        <p className="wx-archive-modal__note">Order history and reports are retained. This can be undone by support.</p>
       </div>
-      <div style={{ padding: "20px 28px", display: "flex", justifyContent: "flex-end", gap: 12 }}>
+      <div className="wx-archive-modal__foot">
         <Button variant="secondary" onClick={onClose}>Cancel</Button>
-        <button onClick={onConfirm} style={{
-          display: "inline-flex", alignItems: "center", gap: 8, background: "#e1251b", border: 0,
-          borderRadius: 6, padding: "12px 20px", fontSize: 14, fontWeight: 700, color: "#fff", cursor: "pointer", fontFamily: "inherit",
-        }}>
+        <button onClick={onConfirm} className="wx-archive-modal__confirm">
           <IconTrash size={14} style={{ strokeWidth: 2.2 }} /> Archive Store
         </button>
       </div>
@@ -3535,12 +3532,12 @@ function StoreCard({ store, onManage, onArchive, onCreateTemplate, archived = fa
   }
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 2px rgba(20,20,30,.03)", display: "flex", flexDirection: "column", transition: "box-shadow .15s ease, border-color .15s ease" }}
+    <div className="wx-store-card"
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 22px rgba(20,20,30,.09)"; e.currentTarget.style.borderColor = "#d4d4d8"; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 2px rgba(20,20,30,.03)"; e.currentTarget.style.borderColor = "#ececf0"; }}>
-      <div style={{ position: "relative", background: "#fafafb", padding: "20px", minHeight: 172, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "absolute", top: 16, left: 16, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8 }}>
-          <div style={{ background: tagBg, color: tagColor, padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 5 }}>
+      <div className="wx-store-card__media">
+        <div className="wx-store-card__tags">
+          <div className="wx-store-card__status" style={{ background: tagBg, color: tagColor }}>
             {archived && (
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" /><path d="M10 12h4" />
@@ -3548,28 +3545,23 @@ function StoreCard({ store, onManage, onArchive, onCreateTemplate, archived = fa
             )}
             {tagLabel}
           </div>
-          <div style={{
-            background: isLeague ? "#0e0e10" : "#fff", color: isLeague ? "#fff" : "#0e0e10",
-            border: isLeague ? "1px solid #0e0e10" : "1px solid #d4d4d8",
-            padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 700,
-            display: "inline-flex", alignItems: "center", gap: 4
-          }}>
+          <div className={`wx-store-card__type${isLeague ? " wx-store-card__type--league" : ""}`}>
             {isLeague ? <IconLayers size={12} style={{ strokeWidth: 2.2 }} /> : <IconUsers size={12} style={{ strokeWidth: 2.2 }} />}
             {typeLabel}
           </div>
         </div>
-        <div ref={menuRef} style={{ position: "absolute", top: 12, right: 12 }}>
-        <button onClick={() => setMenuOpen((v) => !v)} style={{ background: "transparent", border: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 8, borderRadius: 6 }} title="Store actions"
+        <div ref={menuRef} className="wx-store-card__actions">
+        <button onClick={() => setMenuOpen((v) => !v)} className="wx-store-card__menu-btn" title="Store actions"
           onMouseEnter={(e) => (e.currentTarget.style.background = "#ececf0")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-          <span style={{ display: "inline-flex", gap: 4 }}>
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#1a1a1d" }} />
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#1a1a1d" }} />
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#1a1a1d" }} />
+          <span className="wx-store-card__dots">
+            <span className="wx-store-card__dot" />
+            <span className="wx-store-card__dot" />
+            <span className="wx-store-card__dot" />
           </span>
         </button>
         {menuOpen && (
-          <div style={{ position: "absolute", top: 36, right: 0, zIndex: 5, background: "#fff", border: "1px solid #ececf0", borderRadius: 6, boxShadow: "0 8px 24px rgba(20,20,30,.10)", padding: 4, minWidth: 140 }}>
+          <div className="wx-store-card__menu">
             {(archived ? [
               { label: "View", onClick: () => { setMenuOpen(false); (onView || onManage) && (onView || onManage)(); } },
               { label: "Unarchive", onClick: () => { setMenuOpen(false); onUnarchive && onUnarchive(); } },
@@ -3580,7 +3572,7 @@ function StoreCard({ store, onManage, onArchive, onCreateTemplate, archived = fa
               { label: "Use as Template", onClick: () => { setMenuOpen(false); onCreateTemplate && onCreateTemplate(store); } },
               { label: "Archive", onClick: () => { setMenuOpen(false); onArchive && onArchive(); } },
             ]).map(({ label, onClick }) => (
-              <div key={label} onClick={onClick} style={{ padding: "8px 12px", fontSize: 13, cursor: "pointer", borderRadius: 4 }}
+              <div key={label} onClick={onClick} className="wx-store-card__menu-item"
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>{label}</div>
             ))}
@@ -3588,22 +3580,22 @@ function StoreCard({ store, onManage, onArchive, onCreateTemplate, archived = fa
         )}
         </div>
         {store.teamLogo?.url ? (
-          <img src={store.teamLogo.url} alt="" style={{ maxWidth: 120, maxHeight: 104, objectFit: "contain", filter: archived ? "grayscale(1)" : "none", opacity: archived ? 0.5 : 1 }} />
+          <img src={store.teamLogo.url} alt="" className={`wx-store-card__logo${archived ? " wx-store-card__logo--archived" : ""}`} />
         ) : (
-          <div style={{ width: 92, height: 92, borderRadius: "50%", background: store.teamLogo?.color || store.teamColors?.[0] || "#1d3a8a", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 28, fontFamily: "Archivo, sans-serif", border: (store.teamColors?.[0] || "").toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none", filter: archived ? "grayscale(1)" : "none", opacity: archived ? 0.5 : 1 }}>
+          <div className={`wx-store-card__mono${archived ? " wx-store-card__mono--archived" : ""}`} style={{ background: store.teamLogo?.color || store.teamColors?.[0] || "#1d3a8a", border: (store.teamColors?.[0] || "").toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none" }}>
             {store.teamLogo?.mono || (store.teamName || store.storeTitle || "T").slice(0, 2).toUpperCase()}
           </div>
         )}
       </div>
 
-      <div style={{ padding: "16px 16px 16px", textAlign: "center", flex: 1 }}>
-        <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4, color: "#0e0e10" }}>{store.storeTitle || store.teamName || "Team Store"}</div>
-        <div style={{ fontSize: 12.5, color: "#9a9aa1", marginBottom: 4 }}>{store.sport || "Sport"}</div>
-        <div style={{ fontSize: 12.5, color: "#6b6b72" }}>Created by {store.createdByName || store.managerName || store.contactName || "—"}</div>
+      <div className="wx-store-card__body">
+        <div className="wx-store-card__name">{store.storeTitle || store.teamName || "Team Store"}</div>
+        <div className="wx-store-card__sport">{store.sport || "Sport"}</div>
+        <div className="wx-store-card__by">Created by {store.createdByName || store.managerName || store.contactName || "—"}</div>
       </div>
 
-      <div style={{ borderTop: "1px solid #ececf0", padding: 16 }}>
-        <button onClick={onManage} style={{ width: "100%", background: "#fff", border: "1px solid #0e0e10", color: "#0e0e10", padding: "12px 16px", borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all .12s" }}
+      <div className="wx-store-card__foot">
+        <button onClick={onManage} className="wx-store-card__manage"
           onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
           Manage Store
@@ -3633,30 +3625,19 @@ function ToolbarMenu({ options, value, onSelect, onClose, align = "left", width 
     return () => { document.removeEventListener("mousedown", h); document.removeEventListener("keydown", k); };
   }, [onClose]);
 
-  const rowBase = {
-    display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
-    padding: "16px 16px", fontSize: 13.5, fontWeight: 600, color: "#0e0e10",
-    cursor: "pointer", background: "#fff", transition: "background .1s",
-  };
-
   return (
-    <div ref={ref} style={{
-      position: "absolute", top: "calc(100% + 8px)", [align]: 0, zIndex: 70,
-      background: "#fff", border: "1px solid #ececf0", borderRadius: 12,
-      boxShadow: "0 16px 38px rgba(20,20,30,.14)", width, overflow: "hidden",
-    }}>
+    <div ref={ref} className={`wx-toolbar-menu wx-toolbar-menu--${align}`} style={{ width }}>
       {options.map((opt, i) => {
         const label = typeof opt === "string" ? opt : opt.label;
         const sub = typeof opt === "object" ? opt.sub : null;
         const selected = value === label;
         const subOpen = openSub === label;
-        const divider = i > 0 ? { borderTop: "1px solid #f1f1f3" } : {};
         return (
           <div key={label}>
             <div
               role="menuitem"
               onClick={() => { if (sub) setOpenSub(subOpen ? null : label); else { onSelect(label); onClose(); } }}
-              style={{ ...rowBase, ...divider, background: selected && !sub ? "#fafafb" : "#fff" }}
+              className={`wx-toolbar-menu__row${i > 0 ? " wx-toolbar-menu__row--divided" : ""}${selected && !sub ? " wx-toolbar-menu__row--selected" : ""}`}
               onMouseEnter={(e) => (e.currentTarget.style.background = "#f6f6f8")}
               onMouseLeave={(e) => (e.currentTarget.style.background = selected && !sub ? "#fafafb" : "#fff")}>
               <span>{label}</span>
@@ -3665,14 +3646,14 @@ function ToolbarMenu({ options, value, onSelect, onClose, align = "left", width 
                 : selected ? <IconCheck size={15} style={{ color: "#0e0e10" }} /> : null}
             </div>
             {sub && subOpen && (
-              <div style={{ background: "#fafafb", borderTop: "1px solid #f1f1f3" }}>
+              <div className="wx-toolbar-menu__sub">
                 {sub.map((s) => {
                   const sLabel = typeof s === "string" ? s : s.label;
                   const sSel = value === sLabel;
                   return (
                     <div key={sLabel}
                       onClick={() => { onSelect(sLabel); onClose(); }}
-                      style={{ ...rowBase, background: sSel ? "#f1f1f3" : "#fafafb", padding: "12px 16px 12px 32px", fontSize: 13, fontWeight: 500, color: sSel ? "#0e0e10" : "#4a4a52" }}
+                      className={`wx-toolbar-menu__sub-row${sSel ? " wx-toolbar-menu__sub-row--selected" : ""}`}
                       onMouseEnter={(e) => (e.currentTarget.style.background = "#eeeef1")}
                       onMouseLeave={(e) => (e.currentTarget.style.background = sSel ? "#f1f1f3" : "#fafafb")}>
                       <span>{sLabel}</span>
@@ -3695,24 +3676,17 @@ function ToolbarMenu({ options, value, onSelect, onClose, align = "left", width 
 function ListToolbar({ searchPlaceholder = "Search Team Stores", sort, filter, showSearch = true, searchValue, onSearch }) {
   const [open, setOpen] = React.useState(null); // 'sort' | 'filter' | null
   const legacy = !sort && !filter;
-  const btn = (active) => ({
-    display: "inline-flex", alignItems: "center", gap: 8,
-    background: active ? "#fafafb" : "#fff",
-    border: `1px solid ${active ? "#c9c9d0" : "#d8d8de"}`, borderRadius: 8, padding: "12px 16px",
-    cursor: "pointer", fontSize: 13.5, fontWeight: 600, color: "#0e0e10", whiteSpace: "nowrap",
-  });
-
   if (legacy) {
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <button style={btn(false)} onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")} onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}>
+      <div className="wx-list-toolbar">
+        <button className="wx-list-toolbar__btn" onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")} onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}>
           <IconFilter size={16} /> Show Filters
         </button>
-        <button style={btn(false)} onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")} onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}>
+        <button className="wx-list-toolbar__btn" onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafb")} onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}>
           <IconSort size={16} /> Sort By: Default
         </button>
-        <div style={{ position: "relative", display: "flex", alignItems: "center", minWidth: 240, border: "1px solid #d8d8de", borderRadius: 8, background: "#fff" }}>
-          <input placeholder={searchPlaceholder} style={{ width: "100%", border: 0, outline: 0, background: "transparent", padding: "12px 40px 12px 16px", fontSize: 13.5 }} />
+        <div className="wx-list-toolbar__search">
+          <input placeholder={searchPlaceholder} className="wx-list-toolbar__input" />
           <IconSearch size={16} style={{ position: "absolute", right: 12, color: "#9a9aa1" }} />
         </div>
       </div>
@@ -3721,10 +3695,10 @@ function ListToolbar({ searchPlaceholder = "Search Team Stores", sort, filter, s
 
   const filterLabel = filter && filter.value && filter.value !== "All" ? `Filter: ${filter.value}` : "Show Filters";
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+    <div className="wx-list-toolbar">
       {filter && (
-        <div style={{ position: "relative" }}>
-          <button style={btn(open === "filter")} onClick={() => setOpen(open === "filter" ? null : "filter")}>
+        <div className="wx-list-toolbar__dropdown">
+          <button className={`wx-list-toolbar__btn${open === "filter" ? " wx-list-toolbar__btn--active" : ""}`} onClick={() => setOpen(open === "filter" ? null : "filter")}>
             <IconFilter size={16} /> {filterLabel}
           </button>
           {open === "filter" && (
@@ -3734,8 +3708,8 @@ function ListToolbar({ searchPlaceholder = "Search Team Stores", sort, filter, s
         </div>
       )}
       {sort && (
-        <div style={{ position: "relative" }}>
-          <button style={btn(open === "sort")} onClick={() => setOpen(open === "sort" ? null : "sort")}>
+        <div className="wx-list-toolbar__dropdown">
+          <button className={`wx-list-toolbar__btn${open === "sort" ? " wx-list-toolbar__btn--active" : ""}`} onClick={() => setOpen(open === "sort" ? null : "sort")}>
             <IconSort size={16} /> Sort By: {sort.value}
           </button>
           {open === "sort" && (
@@ -3745,8 +3719,8 @@ function ListToolbar({ searchPlaceholder = "Search Team Stores", sort, filter, s
         </div>
       )}
       {showSearch && (
-        <div style={{ position: "relative", display: "flex", alignItems: "center", minWidth: 240, border: "1px solid #d8d8de", borderRadius: 8, background: "#fff" }}>
-          <input value={searchValue || ""} onChange={(e) => onSearch && onSearch(e.target.value)} placeholder={searchPlaceholder} style={{ width: "100%", border: 0, outline: 0, background: "transparent", padding: "12px 40px 12px 16px", fontSize: 13.5 }} />
+        <div className="wx-list-toolbar__search">
+          <input value={searchValue || ""} onChange={(e) => onSearch && onSearch(e.target.value)} placeholder={searchPlaceholder} className="wx-list-toolbar__input" />
           <IconSearch size={16} style={{ position: "absolute", right: 12, color: "#9a9aa1" }} />
         </div>
       )}
@@ -3756,24 +3730,24 @@ function ListToolbar({ searchPlaceholder = "Search Team Stores", sort, filter, s
 
 function ListPageHeader({ title, storeCount, revenue, subtitle, children }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 16 }}>
+    <div className="wx-list-head">
       <div>
-        <h1 style={{ fontFamily: "Archivo, sans-serif", fontSize: 24, fontWeight: 800, margin: "0 0 8px", color: "#0e0e10", letterSpacing: "-.3px" }}>{title}</h1>
+        <h1 className="wx-list-head__title">{title}</h1>
         {subtitle ? (
-          <div style={{ color: "#6b6b72", fontSize: 14 }}>{subtitle}</div>
+          <div className="wx-list-head__subtitle">{subtitle}</div>
         ) : (
-        <div style={{ display: "flex", gap: 24, alignItems: "center", color: "#6b6b72", fontSize: 13.5 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+        <div className="wx-list-head__meta">
+          <span className="wx-list-head__meta-item">
             <IconStore size={16} /> {storeCount} {storeCount === 1 ? "Store" : "Stores"}
           </span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <span className="wx-list-head__meta-item">
             <IconDollar size={16} style={{ color: "#1f9d55" }} />
-            <span style={{ color: "#1f9d55", fontWeight: 700 }}>${revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+            <span className="wx-list-head__revenue">${revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
           </span>
         </div>
         )}
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>{children}</div>
+      <div className="wx-list-head__actions">{children}</div>
     </div>
   );
 }
@@ -4266,22 +4240,14 @@ function SegmentedPills({ items, value, onChange, style }) {
   React.useLayoutEffect(() => { measure(); }, [measure, items.map((i) => i.label + ":" + i.count).join("|")]);
   React.useEffect(() => { const h = () => measure(); window.addEventListener("resize", h); return () => window.removeEventListener("resize", h); }, [measure]);
   return (
-    <div ref={ref} role="tablist" style={{ position: "relative", display: "inline-flex", background: "#f1f1f3", borderRadius: 999, padding: 4, gap: 4, ...style }}>
-      {ind && <span aria-hidden="true" style={{ position: "absolute", top: ind.y, left: 0, width: ind.w, height: ind.h, borderRadius: 999, background: "#0e0e10", transform: "translateX(" + ind.x + "px)", transition: "transform .28s cubic-bezier(.2,0,0,1), width .28s cubic-bezier(.2,0,0,1)", pointerEvents: "none" }} />}
+    <div ref={ref} role="tablist" className="wx-pills" style={style}>
+      {ind && <span aria-hidden="true" className="wx-pills__indicator" style={{ top: ind.y, width: ind.w, height: ind.h, transform: "translateX(" + ind.x + "px)" }} />}
       {items.map((t) => {
         const on = value === t.id;
         return (
-          <button key={t.id} type="button" role="tab" aria-selected={on} data-seg={t.id} onClick={() => onChange(t.id)} style={{
-            position: "relative", zIndex: 1, background: "transparent", color: on ? "#fff" : "#52525a",
-            border: 0, borderRadius: 999, padding: "8px 20px", cursor: "pointer", fontSize: 13, fontWeight: 700, fontFamily: "inherit",
-            whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", transition: "color .2s",
-          }}>
+          <button key={t.id} type="button" role="tab" aria-selected={on} data-seg={t.id} onClick={() => onChange(t.id)} className={`wx-pills__tab${on ? " wx-pills__tab--on" : ""}`}>
             {t.label}
-            {t.count != null && <span style={{
-              marginLeft: 8, display: "inline-flex", alignItems: "center", justifyContent: "center",
-              minWidth: 20, height: 20, padding: "0 8px", borderRadius: 999, fontSize: 11.5, fontWeight: 700,
-              background: on ? "rgba(255,255,255,.18)" : "#e4e4e7", color: on ? "#fff" : "#52525a", transition: "background .2s, color .2s",
-            }}>{t.count}</span>}
+            {t.count != null && <span className={`wx-pills__count${on ? " wx-pills__count--on" : ""}`}>{t.count}</span>}
           </button>
         );
       })}

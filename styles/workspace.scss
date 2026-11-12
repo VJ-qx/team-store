@@ -1,7 +1,7 @@
 // Workspace entry point. Compiled to css/workspace.css (npm run styles); linked by "Workspace.dc.html" and
 // "Marucci Workspace.dc.html". Kept apart from app.scss so the workspace globals don't reach the landing page.
 // Extracted so far: the Module 1 components, a store's page (top bar, side menu, Home tab, setup guides),
-// and the Overview (Module 2); the rest of the workspace still uses inline styles.
+// the Overview (Module 2) and the Stores page (Module 3); the rest of the workspace still uses inline styles.
 @use "global" with ($page: "workspace");
 @use "components/workspace/feature-gate";
 @use "components/workspace/access-apply-form";
@@ -23,6 +23,11 @@
 @use "components/workspace/overview-rows";
 @use "components/workspace/overview-store-scope";
 @use "components/workspace/overview-shelf";
+@use "components/workspace/stores";
+@use "components/workspace/store-card";
+@use "components/workspace/list-toolbar";
+@use "components/workspace/segmented-pills";
+@use "components/workspace/archive-store-modal";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";

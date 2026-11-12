@@ -1,0 +1,303 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of StoreList and GroupCard in workspace-app.jsx and
+// workspace-app-integrated.jsx: the Stores page (Module 3, BRD M-3.0). Its cards are in _store-card.scss,
+// its toolbar and heading in _list-toolbar.scss, its All / My / Joined Stores tabs in _segmented-pills.scss
+// and the archive confirmation in _archive-store-modal.scss.
+// The league view (breadcrumbs, group cards, League Settings, Add Group) is extracted with the rest of the
+// component, though leagues are out of the MVP and the prototype can't show it.
+// The zero state button's hover and the group card's hover lift are written by their event handlers, as
+// in the prototype.
+
+.wx-stores {
+  flex: 1;
+  min-width: 0;
+  padding: 28px max(32px, calc((100% - 1376px) / 2)) 120px;
+  background: $bg-app;
+  position: relative;
+}
+
+// ── League view heading ──
+
+.wx-stores__league-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wx-stores__crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.wx-stores__crumb {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: $muted-2;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.wx-stores__crumb-current {
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-stores__league-title {
+  font-family: $font-display;
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: $ink;
+}
+
+// The Marucci workspace's heading is smaller (workspace-app-integrated.jsx only).
+.wx-stores__league-title--marucci {
+  font-size: 24px;
+  letter-spacing: -.3px;
+}
+
+.wx-stores__league-meta {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  color: $muted;
+  font-size: 13.5px;
+  margin-top: 8px;
+}
+
+.wx-stores__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-stores__revenue {
+  color: $ok;
+  font-weight: 700;
+}
+
+.wx-stores__league-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wx-stores__settings-btn {
+  border: 1px solid #d8d8de;
+  background: $white;
+  color: $ink;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// ── Stores heading ──
+
+.wx-stores__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $ink;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $white;
+  white-space: nowrap;
+}
+
+// ── Zero state ("Zero state usability test") ──
+
+.wx-stores__zero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 92px 20px 40px;
+}
+
+.wx-stores__zero-icon {
+  width: 152px;
+  height: 152px;
+  border-radius: 50%;
+  background: #f5f5f7;
+  border: 1px solid $line-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.wx-stores__zero-title {
+  font-family: $font-display;
+  font-size: 24px;
+  font-weight: 800;
+  color: $ink;
+  margin: 0 0 12px;
+  letter-spacing: -.01em;
+}
+
+.wx-stores__zero-text {
+  font-size: 15px;
+  color: $muted;
+  line-height: 1.6;
+  max-width: 460px;
+  margin: 0 0 28px;
+}
+
+.wx-stores__zero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $ink;
+  color: $white;
+  border: 0;
+  border-radius: 8px;
+  padding: 16px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+// ── Cards grid ──
+
+.wx-stores__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 16px;
+}
+
+// "No stores match …", "No stores here yet."
+.wx-stores__none {
+  grid-column: 1 / -1;
+  padding: 92px 20px;
+  text-align: center;
+  color: $muted-2;
+  font-size: 14px;
+}
+
+// ── Floating "Add Group" (league view) ──
+
+.wx-stores__fab {
+  position: fixed;
+  bottom: 28px;
+  right: 36px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wx-stores__add-group {
+  background: $white;
+  color: $ink;
+  border: 1px solid $zinc-300;
+  padding: 16px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(20,20,30,.12);
+}
+
+// ── Group card (league view) ──
+
+.wx-group-card {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(20,20,30,.03);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.wx-group-card__media {
+  position: relative;
+  background: #fafafb;
+  padding: 20px;
+  min-height: 172px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-group-card__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #e3edff;
+  color: #2657c4;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.wx-group-card__icon {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: $line-2;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-group-card__body {
+  padding: 16px 16px 16px;
+  text-align: center;
+}
+
+.wx-group-card__name {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: $ink;
+}
+
+.wx-group-card__count {
+  font-size: 12.5px;
+  color: $muted-2;
+}
+
+.wx-group-card__foot {
+  border-top: 1px solid $line-2;
+  padding: 16px;
+}
+
+.wx-group-card__open {
+  width: 100%;
+  background: $white;
+  border: 1px solid $ink;
+  color: $ink;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .12s;
+}

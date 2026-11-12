@@ -1,0 +1,79 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of ArchiveStoreModal in workspace-app.jsx and workspace-app-integrated.jsx:
+// the "Archive <store>?" confirmation the card's ⋮ menu opens (Module 3, FR-3.11.1). The pop-up frame is
+// the shared Modal, and Cancel is the shared Button; both keep their inline styles.
+// RestoreStoreModal (My Account) has the same layout but belongs to Module 1, so it isn't changed here.
+
+.wx-archive-modal__body {
+  padding: 28px 28px 8px;
+}
+
+.wx-archive-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.wx-archive-modal__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fbe3e1;
+  color: $red-ink;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wx-archive-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.wx-archive-modal__lead {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: $muted;
+  line-height: 1.6;
+}
+
+.wx-archive-modal__list {
+  margin: 0 0 4px;
+  padding-left: 20px;
+  font-size: 13.5px;
+  color: $ink;
+  line-height: 1.85;
+}
+
+.wx-archive-modal__note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.6;
+}
+
+.wx-archive-modal__foot {
+  padding: 20px 28px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.wx-archive-modal__confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $red;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: $white;
+  cursor: pointer;
+  font-family: inherit;
+}

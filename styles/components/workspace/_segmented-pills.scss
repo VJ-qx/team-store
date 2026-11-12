@@ -1,0 +1,67 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of SegmentedPills in workspace-app.jsx and workspace-app-integrated.jsx:
+// the All Stores / My Stores / Joined Stores tabs on the Stores page (Module 3, FR-3.5 to FR-3.7).
+// The black indicator slides under the selected tab: its position and size are measured, so they stay
+// inline. A caller's style prop (the Stores page's bottom margin) stays inline on the root too.
+
+.wx-pills {
+  position: relative;
+  display: inline-flex;
+  background: $divider;
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.wx-pills__indicator {
+  position: absolute;
+  left: 0;
+  border-radius: 999px;
+  background: $ink;
+  transition: transform .28s cubic-bezier(.2,0,0,1), width .28s cubic-bezier(.2,0,0,1);
+  pointer-events: none;
+}
+
+.wx-pills__tab {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: $muted-3;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  transition: color .2s;
+}
+
+.wx-pills__tab--on {
+  color: $white;
+}
+
+.wx-pills__count {
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: $zinc-200;
+  color: $muted-3;
+  transition: background .2s, color .2s;
+}
+
+.wx-pills__count--on {
+  background: rgba(255,255,255,.18);
+  color: $white;
+}

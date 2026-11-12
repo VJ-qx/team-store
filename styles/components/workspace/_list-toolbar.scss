@@ -1,0 +1,179 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles of ListToolbar, ToolbarMenu and ListPageHeader in workspace-app.jsx and
+// workspace-app-integrated.jsx: the Stores page's heading, and its Show Filters / Sort By / Search toolbar
+// with the dropdown list the two buttons open (Module 3, FR-3.2 to FR-3.4). The same toolbar serves the
+// Leagues grid and a store's Roster and Products tabs, with the same values.
+// The dropdown's width is a prop, so it stays inline; the rows' hover is written by their event handlers,
+// as in the prototype.
+
+// ── Heading: title, "n Team Stores • n League Stores", and the actions on the right ──
+
+.wx-list-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wx-list-head__title {
+  font-family: $font-display;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: $ink;
+  letter-spacing: -.3px;
+}
+
+.wx-list-head__subtitle {
+  color: $muted;
+  font-size: 14px;
+}
+
+.wx-list-head__meta {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  color: $muted;
+  font-size: 13.5px;
+}
+
+.wx-list-head__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-list-head__revenue {
+  color: $ok;
+  font-weight: 700;
+}
+
+.wx-list-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// ── Toolbar ──
+
+.wx-list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wx-list-toolbar__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid #d8d8de;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $ink;
+  white-space: nowrap;
+}
+
+// While its list is open.
+.wx-list-toolbar__btn--active {
+  background: #fafafb;
+  border-color: #c9c9d0;
+}
+
+.wx-list-toolbar__dropdown {
+  position: relative;
+}
+
+.wx-list-toolbar__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 240px;
+  border: 1px solid #d8d8de;
+  border-radius: 8px;
+  background: $white;
+}
+
+.wx-list-toolbar__input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 12px 40px 12px 16px;
+  font-size: 13.5px;
+}
+
+// ── Dropdown list (filter and sort) ──
+
+.wx-toolbar-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  z-index: 70;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  box-shadow: 0 16px 38px rgba(20,20,30,.14);
+  overflow: hidden;
+}
+
+.wx-toolbar-menu--left {
+  left: 0;
+}
+
+.wx-toolbar-menu--right {
+  right: 0;
+}
+
+.wx-toolbar-menu__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $ink;
+  cursor: pointer;
+  background: $white;
+  transition: background .1s;
+}
+
+// Every row but the first.
+.wx-toolbar-menu__row--divided {
+  border-top: 1px solid $divider;
+}
+
+.wx-toolbar-menu__row--selected {
+  background: #fafafb;
+}
+
+// The Status / Sport / Location options, under their row.
+.wx-toolbar-menu__sub {
+  background: #fafafb;
+  border-top: 1px solid $divider;
+}
+
+.wx-toolbar-menu__sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px 12px 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a4a52;
+  cursor: pointer;
+  background: #fafafb;
+  transition: background .1s;
+}
+
+.wx-toolbar-menu__sub-row--selected {
+  background: $divider;
+  color: $ink;
+}
