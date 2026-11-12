@@ -123,7 +123,7 @@ The team ran this refactor on the Team Store MVP. Follow what it learned.
 
 **SCSS**
 
-- Browsers can't load `.scss`. Compile `app.scss` (`npx sass styles/app.scss styles/app.css --no-source-map`), or import it from the entry file if the project has a Vite or webpack build, and load the result from the page. If that page is outside the target folder, don't edit it; tell the user what to add. Never edit compiled CSS by hand.
+- Browsers can't load `.scss`. Compile `app.scss` (`npx sass styles/app.scss styles/css/app.css --no-source-map`; Team Store keeps compiled CSS in `styles/css/` and runs `npm run styles`), or import it from the entry file if the project has a Vite or webpack build, and load the result from the page. If that page is outside the target folder, don't edit it; tell the user what to add. Never edit compiled CSS by hand.
 - Put the `@use` lines first in every partial, before any comment. dart-sass copies a `/* */` comment placed above `@use` into the compiled CSS ahead of other modules.
 - Partials with the same file name in different folders (`pages/_landing.scss`, `responsive/_landing.scss`) collide on the default `@use` namespace. Alias one: `@use "responsive/landing" as responsive-landing;`.
 - Don't invent breakpoints. If the original has no media queries, `responsive/` isn't needed.

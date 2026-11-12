@@ -1,4 +1,4 @@
-// Workspace Mobile entry point. Compiled to workspace-mobile.css (npm run styles); linked by "Workspace Mobile.dc.html".
+// Workspace Mobile entry point. Compiled to css/workspace-mobile.css (npm run styles); linked by "Workspace Mobile.dc.html".
 // Kept apart from app.scss so the mobile prototype's globals don't reach the landing page.
 // Shared pieces (layouts, components) come first, then one partial per area of the app (pages).
 @use "global" with ($page: "workspace-mobile");

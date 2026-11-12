@@ -1,4 +1,4 @@
-// Entry point. Compiled to app.css (npm run styles); linked by "Landing Page.dc.html".
+// Entry point. Compiled to css/app.css (npm run styles); linked by "Landing Page.dc.html".
 @use "global" with ($page: "landing");
 @use "layouts/landing/page";
 @use "layouts/landing/header";

@@ -23,9 +23,11 @@ Compiles every page's stylesheet. Run it after every SCSS change.
 
 | Entry | Compiled to | Linked by |
 |---|---|---|
-| `styles/app.scss` | `styles/app.css` | `Landing Page.dc.html` |
-| `styles/workspace.scss` | `styles/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
-| `styles/workspace-mobile.scss` | `styles/workspace-mobile.css` | `Workspace Mobile.dc.html` |
+| `styles/app.scss` | `styles/css/app.css` | `Landing Page.dc.html` |
+| `styles/workspace.scss` | `styles/css/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
+| `styles/workspace-mobile.scss` | `styles/css/workspace-mobile.css` | `Workspace Mobile.dc.html` |
+
+The compiled CSS in `styles/css/` is committed, because the prototype pages link it directly. The Vue pages don't use it: Vite compiles the SCSS entries itself. Never edit it by hand; `npm run styles` regenerates it.
 
 Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. Partials are grouped by type, then by page: `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/`, with `landing`, `workspace` and `workspace-mobile` as the page folders. A component several pages use with exactly the same values goes in `styles/components/shared/` (`ts-` classes), imported by each of those pages' entries. `styles/pages/_prototype.scss` holds the prototype-only rules the landing page and the workspace share.
 

@@ -40,7 +40,7 @@ Each step ends with a manual check list. Use it to review the result by hand bef
 ```text
 Landing Page.dc.html, Workspace.dc.html, …   prototype pages (Claude Design format)
 workspace-app.jsx, workspace-app-integrated.jsx   workspace code (React)
-styles/                    SCSS: one entry per page, compiled to styles/<entry>.css:
+styles/                    SCSS: one entry per page, compiled to styles/css/<entry>.css:
                            app.scss (landing page), workspace.scss, workspace-mobile.scss
                            partials by type, then page: components/<page>/, layouts/<page>/,
                            pages/<page>/ (landing, workspace, workspace-mobile);
