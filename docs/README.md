@@ -43,7 +43,8 @@ workspace-app.jsx, workspace-app-integrated.jsx   workspace code (React)
 styles/                    SCSS: one entry per page, compiled to styles/<entry>.css:
                            app.scss (landing page), workspace.scss, workspace-mobile.scss
                            partials by type, then page: components/<page>/, layouts/<page>/,
-                           pages/<page>/ (landing, workspace, workspace-mobile)
+                           pages/<page>/ (landing, workspace, workspace-mobile);
+                           components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
 index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/workspace/             the Vue workspace: main.js, WorkspacePage.vue, components/,
