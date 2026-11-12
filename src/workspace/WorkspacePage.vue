@@ -1,7 +1,8 @@
 <!-- Converted from workspace-app.jsx / workspace-app-integrated.jsx: App, for the Module 1 screens — the
      access gate and business verification (FR-1.10.2), the welcome pop-up after sign-in, the Overview,
-     and My Account — and a store's page (its Home tab and the setup guides). The routing logic is the
-     prototype's; screens that are not converted yet (Stores, Earnings, Orders, …) render nothing.
+     and My Account — a store's page (its Home tab and the setup guides), the Overview (Module 2) and the
+     Stores page (Module 3). The routing logic is the prototype's; screens that are not converted yet
+     (the Add Store wizard, Earnings, Orders, …) render nothing.
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
      data/settings.js), the #frame= deep links and the frame overview grid. -->
 <template>
@@ -24,8 +25,10 @@
     <div :key="screen" :style="{ display: 'flex', minHeight: inEditor ? '100vh' : 'calc(100vh - 114px)', animation: 'pageIn .22s ease-out both' }">
       <OverviewDashboard v-if="screen === 'overview'" :key="overviewKey" :isEmpty="tweaks.overviewEmpty || tweaks.zeroState" :stores="activeStores" :leagues="leagues" :onManageStore="(id, tab) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab(tab || 'home'); setScreen('dashboard'); }" :onGoStores="goStores" :onViewOrders="() => { setOrdersOrigin('overview'); setNavTab('overview'); setScreen('orders'); }" :onAdd="goCreate" />
       <AccountProfile v-if="screen === 'account'" :authMode="INT ? 'native' : tweaks.authMode" :onEditProfile="onEditProfile" :onToast="setToast" :archivedStores="archivedStores" :onManageStore="(id) => { setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onUnarchive="(id) => setRestoreTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
+      <StoreList v-if="screen === 'list'" :stores="activeStores" :zeroState="tweaks.zeroState" :onAdd="goCreate" :onAddLeague="() => setShowLeagueModal(true)" :onAddGroup="() => setShowGroupModal(true)" :onManage="(id) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onArchive="(id) => setArchiveTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" :leagues="leagues" :activeLeagueId="activeLeagueId" :onSelectLeague="(id) => { setActiveLeagueId(id); setActiveGroupId(null); }" :activeGroupId="activeGroupId" :onOpenGroup="(gid) => setActiveGroupId(gid)" :onCloseGroup="() => setActiveGroupId(null)" :onOpenSettings="() => setScreen('league-settings')" :onBackToLeagues="goLeagues" />
       <ManageStoreWorkspace v-if="screen === 'dashboard' && activeStore" :store="activeStore" :readOnly="!!activeStore.archived" :onBack="goStores" :onCustomize="() => setScreen('customizer')" :initialTab="dashboardTab" :liveStores="stores.filter((s) => s.live)" :onLaunch="handleLaunch" :onSetStatus="handleSetStatus" :onViewStore="handleViewStore" :onSwitchStore="(id) => { setActiveStoreId(id); setScreen('dashboard'); }" :onProductsChange="(changes) => updateStore(activeStore.id, changes)" :onUpdateStore="(patch) => updateStore(activeStore.id, patch)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
     </div>
+    <ArchiveStoreModal :open="!!archiveTargetStore" :store="archiveTargetStore" :onClose="() => setArchiveTargetId(null)" :onConfirm="confirmArchive" />
     <RestoreStoreModal :open="!!restoreTargetStore" :store="restoreTargetStore" :onClose="() => setRestoreTargetId(null)" :onConfirm="confirmRestore" />
     <!-- Logout confirmation — confirm lands on the Team Stores landing page -->
     <Modal :open="showLogoutModal" :onClose="() => setShowLogoutModal(false)" :width="440">
@@ -64,7 +67,9 @@ import Toast from './components/common/Toast.vue';
 import TeamStoresHeader from './components/header/TeamStoresHeader.vue';
 import OverviewDashboard from './components/overview/OverviewDashboard.vue';
 import ManageStoreWorkspace from './components/store/ManageStoreWorkspace.vue';
+import ArchiveStoreModal from './components/stores/ArchiveStoreModal.vue';
 import RestoreStoreModal from './components/stores/RestoreStoreModal.vue';
+import StoreList from './components/stores/StoreList.vue';
 import StoreGuideModal from './components/guide/StoreGuideModal.vue';
 import WelcomeSSOModal from './components/welcome/WelcomeSSOModal.vue';
 
@@ -74,7 +79,7 @@ const LANDING_FILE = "Team Stores Landing.dc.html";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -116,6 +121,11 @@ export default {
       activeLeagueId: null,
       activeGroupId: null,
       createTplStore: null,
+      // The create-league and create-group pop-ups (not converted; leagues are out of the MVP).
+      showLeagueModal: false,
+      showGroupModal: false,
+      // Archive confirmation triggered from a store card's ⋮ menu on the Stores page.
+      archiveTargetId: null,
       // Restore confirmation triggered from the My Account archived-stores list.
       restoreTargetId: null,
       // Header logo → Overview. Bumping the key remounts the dashboard when already there (acts as a refresh).
@@ -132,6 +142,7 @@ export default {
         : (this.tweaks.ssoOriginBrand || "prolook");
     },
     accountName() { return `${ACCOUNT_PROFILE.firstName} ${ACCOUNT_PROFILE.lastName}`; },
+    archiveTargetStore() { return this.stores.find((s) => s.id === this.archiveTargetId); },
     restoreTargetStore() { return this.stores.find((s) => s.id === this.restoreTargetId); },
     activeStore() { return this.stores.find((s) => s.id === this.activeStoreId); },
     activeStores() { return this.stores.filter((s) => !s.archived); },
@@ -198,7 +209,12 @@ export default {
     setActiveStoreId(v) { this.activeStoreId = v; },
     setDashboardTab(v) { this.dashboardTab = v; },
     setOrdersOrigin(v) { this.ordersOrigin = v; },
+    setArchiveTargetId(v) { this.archiveTargetId = v; },
     setRestoreTargetId(v) { this.restoreTargetId = v; },
+    setActiveLeagueId(v) { this.activeLeagueId = v; },
+    setActiveGroupId(v) { this.activeGroupId = v; },
+    setShowLeagueModal(v) { this.showLeagueModal = v; },
+    setShowGroupModal(v) { this.showGroupModal = v; },
     setCreateTplStore(v) { this.createTplStore = v; },
     setShowLogoutModal(v) { this.showLogoutModal = v; },
     goLandingFile() { window.location.href = encodeURI(LANDING_FILE); },
@@ -233,6 +249,11 @@ export default {
     },
     updateStore(id, patch) {
       this.stores = this.stores.map((s) => s.id === id ? { ...s, ...patch } : s);
+    },
+    confirmArchive() {
+      this.updateStore(this.archiveTargetId, { status: "archived", live: false, archived: true });
+      this.archiveTargetId = null;
+      this.toast = "Store archived";
     },
     confirmRestore() {
       this.updateStore(this.restoreTargetId, { status: "active", live: false, archived: false });
@@ -274,6 +295,7 @@ export default {
       else if (id === "logout") { this.showLogoutModal = true; }
     },
     goStores() { this.onTabChange("stores"); },
+    goLeagues() { this.onTabChange("leagues"); },
     unlockFromGate(msg) {
       this.gatePassed = true; this.navTab = "overview"; this.activeLeagueId = null; this.activeGroupId = null; this.screen = "overview"; this.toast = msg;
     },
