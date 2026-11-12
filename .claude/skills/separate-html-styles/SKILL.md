@@ -65,10 +65,11 @@ Create only the folders that are required.
 - Remove all embedded `<style>` blocks.
 - Preserve selector names whenever possible.
 - Extract repeated values into `_variables.scss` where appropriate.
-- Place reusable styles in `/styles/components`.
-- Place shared layout styles in `/styles/layouts`.
-- Place page-specific styles in `/styles/pages`.
-- Place responsive styles in `/styles/responsive`.
+- Place reusable styles in `/styles/components/<page>/`.
+- Place shared layout styles in `/styles/layouts/<page>/`.
+- Place page-specific styles in `/styles/pages/<page>/`.
+- Place responsive styles in `/styles/responsive/<page>/`.
+- Group by type first, then by page: `<page>` is the page's folder name (for example `landing`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
 - Import all partials through `app.scss`.
 - Use SCSS features only where they improve maintainability without changing specificity or behavior.
 

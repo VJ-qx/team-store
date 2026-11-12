@@ -64,10 +64,11 @@ Create only the folders that are required.
 
 - Remove every `style={{ ... }}` inline style object.
 - Extract repeated values into `_variables.scss` where appropriate.
-- Place reusable component styles in `/styles/components`.
-- Place shared layout styles in `/styles/layouts`.
-- Place page-specific styles in `/styles/pages`.
-- Place responsive rules in `/styles/responsive`.
+- Place reusable component styles in `/styles/components/<page>/`.
+- Place shared layout styles in `/styles/layouts/<page>/`.
+- Place page-specific styles in `/styles/pages/<page>/`.
+- Place responsive rules in `/styles/responsive/<page>/`.
+- Group by type first, then by page: `<page>` is the page's folder name (for example `workspace`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
 - Import all SCSS partials through `app.scss`.
 - Use SCSS features such as nesting and variables only when they improve maintainability without changing specificity or behavior.
 - Preserve selector specificity and rendered output.

@@ -67,6 +67,7 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
    - **Variables:** add the page's repeated values to the shared list. A name means one value on every page, so reuse a name only when the value is exactly the same. When the page needs a different value, add a new name (for example `$red-600` beside `$red`). Never change an existing value: other pages compile from it.
    - **Global rules:** add the page's base rules (resets, `html` and `body`, `:root` tokens, `@keyframes`) as a new section of `_global.scss`, `} @else if $page == "<page>" { … }`, before the final `@else` that reports an unknown page. Each section keeps one page's fonts, background and tokens away from the other pages.
    - **Entry:** each page has its own entry, `styles/<page>.scss`, compiled to `styles/<page>.css`. Its first line selects the page's section, `@use "global" with ($page: "<page>");`, so the page's base rules are emitted first, before its partials.
+5. **Partials by type, then by page.** Put the page's partials in `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/` (for example `styles/components/workspace/_store-home.scss`), creating only the folders the page needs. Each partial starts with `@use "../../variables" as *;`, and the entry names it from `styles/`: `@use "components/<page>/<name>";`. Never add a `styles/<page>/` folder.
 
 ---
 
