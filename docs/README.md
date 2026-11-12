@@ -40,9 +40,11 @@ Each step ends with a manual check list. Use it to review the result by hand bef
 ```text
 Landing Page.dc.html, Workspace.dc.html, …   prototype pages (Claude Design format)
 workspace-app.jsx, workspace-app-integrated.jsx   workspace code (React)
-styles/                    SCSS: one entry per page, compiled to styles/<entry>.css
-                           app.scss (landing page), workspace.scss + styles/workspace/,
-                           workspace-mobile.scss + styles/workspace-mobile/
+styles/                    SCSS: one entry per page, compiled to styles/css/<entry>.css:
+                           app.scss (landing page), workspace.scss, workspace-mobile.scss
+                           partials by type, then page: components/<page>/, layouts/<page>/,
+                           pages/<page>/ (landing, workspace, workspace-mobile);
+                           components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
 index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/workspace/             the Vue workspace: main.js, WorkspacePage.vue, components/,
@@ -95,4 +97,4 @@ Designs the US team approved that aren't in their prototype yet. They're in the 
 
 | Change | Page | Requirement | Design | Code |
 |---|---|---|---|---|
-| Sign-in lockout: the fifth wrong password in a row pauses sign-in for that email for 15 minutes, with a countdown and a Reset password button | Landing page, sign-in pop-up | BRD FR-1.11, Lockout | [sign-in-lockout.png](approved-changes/sign-in-lockout.png) | `src/landing/sign-in-lockout.js`, `LandingPage.logic.js`, `LandingPage.vue`, `styles/components/_auth-modal.scss` (`.tsl-auth__paused*`) |
+| Sign-in lockout: the fifth wrong password in a row pauses sign-in for that email for 15 minutes, with a countdown and a Reset password button | Landing page, sign-in pop-up | BRD FR-1.11, Lockout | [sign-in-lockout.png](approved-changes/sign-in-lockout.png) | `src/landing/sign-in-lockout.js`, `LandingPage.logic.js`, `LandingPage.vue`, `styles/components/landing/_auth-modal.scss` (`.tsl-auth__paused*`) |

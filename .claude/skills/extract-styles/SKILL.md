@@ -66,7 +66,9 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
 4. **One `_variables.scss` and one `_global.scss` for every page.** All pages share `styles/_variables.scss` and `styles/_global.scss`. Don't create page copies such as `styles/<page>/_variables.scss` or `styles/<page>/_global.scss`.
    - **Variables:** add the page's repeated values to the shared list. A name means one value on every page, so reuse a name only when the value is exactly the same. When the page needs a different value, add a new name (for example `$red-600` beside `$red`). Never change an existing value: other pages compile from it.
    - **Global rules:** add the page's base rules (resets, `html` and `body`, `:root` tokens, `@keyframes`) as a new section of `_global.scss`, `} @else if $page == "<page>" { … }`, before the final `@else` that reports an unknown page. Each section keeps one page's fonts, background and tokens away from the other pages.
-   - **Entry:** each page has its own entry, `styles/<page>.scss`, compiled to `styles/<page>.css`. Its first line selects the page's section, `@use "global" with ($page: "<page>");`, so the page's base rules are emitted first, before its partials.
+   - **Entry:** each page has its own entry, `styles/<page>.scss`, compiled to `styles/css/<page>.css` (which the page links). Its first line selects the page's section, `@use "global" with ($page: "<page>");`, so the page's base rules are emitted first, before its partials.
+5. **Partials by type, then by page.** Put the page's partials in `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/` (for example `styles/components/workspace/_store-home.scss`), creating only the folders the page needs. Each partial starts with `@use "../../variables" as *;`, and the entry names it from `styles/`: `@use "components/<page>/<name>";`. Never add a `styles/<page>/` folder.
+   - **Shared components:** a component another page already has with exactly the same values goes in `styles/components/shared/` (its README has the rules), with the `ts-` prefix instead of the page's prefix, and each page that uses it imports it from its own entry. If any value differs, keep separate partials in each page's folder. Moving another page's existing component into `shared/` changes that page too: compile and run `/compare-styles` for every page that uses it, and list the move in the report.
 
 ---
 
@@ -76,7 +78,7 @@ If it isn't identical, fix the **scenario**, never the page, and rerun. If it ca
 npm run styles
 ```
 
-This compiles every SCSS entry: `styles/app.scss` to `styles/app.css` (landing page), `styles/workspace.scss` to `styles/workspace.css` (workspace) and `styles/workspace-mobile.scss` to `styles/workspace-mobile.css` (Workspace Mobile). A new page gets its own entry, added to the `styles` script in `package.json`; its global rules go in its section of `styles/_global.scss` (Stage 3). It must compile without errors. Fix any errors before continuing.
+This compiles every SCSS entry into `styles/css/`: `styles/app.scss` to `styles/css/app.css` (landing page), `styles/workspace.scss` to `styles/css/workspace.css` (workspace) and `styles/workspace-mobile.scss` to `styles/css/workspace-mobile.css` (Workspace Mobile). A new page gets its own entry, added to the `styles` script in `package.json` with its output in `styles/css/`; its global rules go in its section of `styles/_global.scss` (Stage 3). It must compile without errors. Fix any errors before continuing.
 
 ---
 

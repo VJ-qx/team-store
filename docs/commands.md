@@ -23,11 +23,13 @@ Compiles every page's stylesheet. Run it after every SCSS change.
 
 | Entry | Compiled to | Linked by |
 |---|---|---|
-| `styles/app.scss` | `styles/app.css` | `Landing Page.dc.html` |
-| `styles/workspace.scss` | `styles/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
-| `styles/workspace-mobile.scss` | `styles/workspace-mobile.css` | `Workspace Mobile.dc.html` |
+| `styles/app.scss` | `styles/css/app.css` | `Landing Page.dc.html` |
+| `styles/workspace.scss` | `styles/css/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
+| `styles/workspace-mobile.scss` | `styles/css/workspace-mobile.css` | `Workspace Mobile.dc.html` |
 
-Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. A page's own partials are in its folder (`styles/workspace/`, `styles/workspace-mobile/`); the landing page's are in `styles/components/`, `styles/layouts/` and `styles/pages/`.
+The compiled CSS in `styles/css/` is committed, because the prototype pages link it directly. The Vue pages don't use it: Vite compiles the SCSS entries itself. Never edit it by hand; `npm run styles` regenerates it.
+
+Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. Partials are grouped by type, then by page: `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/`, with `landing`, `workspace` and `workspace-mobile` as the page folders. A component several pages use with exactly the same values goes in `styles/components/shared/` (`ts-` classes), imported by each of those pages' entries. `styles/pages/_prototype.scss` holds the prototype-only rules the landing page and the workspace share.
 
 **Never edit the `.css` files by hand.** They're overwritten on every compile.
 
@@ -224,7 +226,7 @@ A scenario's `approved` list holds the states of approved changes the prototype 
 | A console setting only changed one tab | Each tab has its own console. Run the command in both. |
 | `No browser found` | Install Google Chrome, or run `npx playwright install chromium` |
 | Differences only in the pixels, a few pixels each | Rounded-corner anti-aliasing noise is already filtered. If it persists, open the `-diff.png` and check for a real change. |
-| `Error: Can't find stylesheet to import` | A `@use` path is wrong. Every partial loads the one `styles/_variables.scss`: `@use "../variables" as *;` from `styles/components/` (landing page), `@use "../../variables" as *;` from `styles/workspace/components/` and other page folders. |
+| `Error: Can't find stylesheet to import` | A `@use` path is wrong. Every partial is two folders deep (`styles/components/<page>/`, `styles/layouts/<page>/`, `styles/pages/<page>/`) and loads the one `styles/_variables.scss` with `@use "../../variables" as *;`. Entries name partials from `styles/`, for example `@use "components/workspace/store-home";`. |
 
 
 

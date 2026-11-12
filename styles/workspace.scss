@@ -1,20 +1,20 @@
-// Workspace entry point. Compiled to workspace.css (npm run styles); linked by "Workspace.dc.html" and
+// Workspace entry point. Compiled to css/workspace.css (npm run styles); linked by "Workspace.dc.html" and
 // "Marucci Workspace.dc.html". Kept apart from app.scss so the workspace globals don't reach the landing page.
 // Extracted so far: the Module 1 components and a store's page (top bar, side menu, Home tab, setup guides);
 // the rest of the workspace still uses inline styles.
 @use "global" with ($page: "workspace");
-@use "workspace/components/feature-gate";
-@use "workspace/components/access-apply-form";
-@use "workspace/components/access-pending";
-@use "workspace/components/stripe-verifying";
-@use "workspace/components/welcome-sso-modal";
-@use "workspace/components/account-profile";
-@use "workspace/components/store-workspace-bar";
-@use "workspace/components/store-side-nav";
-@use "workspace/components/store-workspace";
-@use "workspace/components/store-home";
-@use "workspace/components/store-guide-modal";
-@use "workspace/components/store-setup-guide";
+@use "components/workspace/feature-gate";
+@use "components/workspace/access-apply-form";
+@use "components/workspace/access-pending";
+@use "components/workspace/stripe-verifying";
+@use "components/workspace/welcome-sso-modal";
+@use "components/workspace/account-profile";
+@use "components/workspace/store-workspace-bar";
+@use "components/workspace/store-side-nav";
+@use "components/workspace/store-workspace";
+@use "components/workspace/store-home";
+@use "components/workspace/store-guide-modal";
+@use "components/workspace/store-setup-guide";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";

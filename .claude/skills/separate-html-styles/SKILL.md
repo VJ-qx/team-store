@@ -65,10 +65,12 @@ Create only the folders that are required.
 - Remove all embedded `<style>` blocks.
 - Preserve selector names whenever possible.
 - Extract repeated values into `_variables.scss` where appropriate.
-- Place reusable styles in `/styles/components`.
-- Place shared layout styles in `/styles/layouts`.
-- Place page-specific styles in `/styles/pages`.
-- Place responsive styles in `/styles/responsive`.
+- Place reusable styles in `/styles/components/<page>/`.
+- Place shared layout styles in `/styles/layouts/<page>/`.
+- Place page-specific styles in `/styles/pages/<page>/`.
+- Place responsive styles in `/styles/responsive/<page>/`.
+- Group by type first, then by page: `<page>` is the page's folder name (for example `landing`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
+- A component that several pages use with exactly the same values goes in `/styles/components/shared/`, with a prefix that belongs to no page (`ts-` in Team Store, where the folder's README has the rules). Keep a component in its page's folder if any value differs.
 - Import all partials through `app.scss`.
 - Use SCSS features only where they improve maintainability without changing specificity or behavior.
 
@@ -93,7 +95,7 @@ Create only the folders that are required.
 
 The team ran this refactor on the Team Store MVP. Follow what it learned:
 
-- Browsers can't load `.scss`. Compile `app.scss` to CSS (`npx sass styles/app.scss styles/app.css --no-source-map`) and link the compiled `.css` from the HTML. Never edit the compiled CSS by hand.
+- Browsers can't load `.scss`. Compile `app.scss` to CSS (`npx sass styles/app.scss styles/css/app.css --no-source-map`; Team Store keeps compiled CSS in `styles/css/` and runs `npm run styles`) and link the compiled `.css` from the HTML. Never edit the compiled CSS by hand.
 - Import partials in `app.scss` in the order their rules appeared in the original, so the cascade stays the same.
 - An inline `style=""` beats every stylesheet rule. After moving one into a class, check whether another rule for the same element and property now wins. Fix it with import order or a more specific selector rather than `!important`, and list each case in the summary.
 - Put the `@use` lines first in every partial, before any comment. dart-sass copies a `/* */` comment placed above `@use` into the compiled CSS ahead of other modules.
