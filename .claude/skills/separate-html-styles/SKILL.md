@@ -70,7 +70,7 @@ Create only the folders that are required.
 - Place page-specific styles in `/styles/pages/<page>/`.
 - Place responsive styles in `/styles/responsive/<page>/`.
 - Group by type first, then by page: `<page>` is the page's folder name (for example `landing`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
-- A component that several pages use with exactly the same values goes in `/styles/components/shared/`, with a prefix that belongs to no page (`ts-` in Team Store). Create the folder only with its first shared component, and keep a component in its page's folder if any value differs.
+- A component that several pages use with exactly the same values goes in `/styles/components/shared/`, with a prefix that belongs to no page (`ts-` in Team Store, where the folder's README has the rules). Keep a component in its page's folder if any value differs.
 - Import all partials through `app.scss`.
 - Use SCSS features only where they improve maintainability without changing specificity or behavior.
 
