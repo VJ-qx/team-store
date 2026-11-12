@@ -2,66 +2,66 @@
      Overview: Frequently Visited, KPIs, revenue chart, top stores, ordering windows and roster bank.
      isEmpty shows the empty-state variant. -->
 <template>
-  <div v-if="isEmpty" :style="{ flex: 1, minWidth: '0', padding: '28px 32px 80px', background: '#fbfbfc' }">
-    <div :style="{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '24px' }">
+  <div v-if="isEmpty" class="wx-ov-empty">
+    <div class="wx-ov__head">
       <div>
-        <h1 :style="{ fontFamily: 'Archivo, sans-serif', fontSize: INT ? '24px' : '27px', fontWeight: 800, margin: '0', color: OV_INK, letterSpacing: INT ? '-.3px' : '-.01em' }">Overview</h1>
-        <div :style="{ fontSize: '14px', color: OV_MUTED, marginTop: '4px' }">Launch your first store to start tracking performance</div>
+        <h1 :class="`wx-ov-empty__title${INT ? ' wx-ov-empty__title--marucci' : ''}`">Overview</h1>
+        <div class="wx-ov-empty__lead">Launch your first store to start tracking performance</div>
       </div>
-      <div :style="{ display: 'flex', alignItems: 'center', gap: '12px' }">
-        <button @click="onAdd" :style="{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: OV_INK, border: '0', borderRadius: '8px', padding: '12px 16px', cursor: 'pointer', fontSize: '13.5px', fontWeight: 700, color: '#fff' }">
+      <div class="wx-ov__actions">
+        <button @click="onAdd" class="wx-ov__add">
           <IconPlus :size="16" :style="{ strokeWidth: 2.4 }" /> Add Store</button>
-        <button disabled :style="{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#f5f5f7', border: '1px solid #ececf0', borderRadius: '8px', padding: '12px 16px', cursor: 'not-allowed', fontSize: '13.5px', fontWeight: 600, color: '#c4c4c8' }">
+        <button disabled class="wx-ov-empty__scope">
           <IconStore :size="16" /> All Stores <IconChevron :size="15" />
         </button>
       </div>
     </div>
-    <div :style="{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '16px' }">
-      <div v-for="c in GHOST_KPI" :key="c.label" :style="{ background: '#fff', border: `1px solid ${OV_LINE}`, borderRadius: '12px', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }">
-        <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }">
-          <span :style="{ fontSize: '12px', fontWeight: 700, letterSpacing: '.07em', color: '#c4c4c8', textTransform: 'uppercase' }">{{ c.label }}</span>
-          <span :style="{ width: '36px', height: '36px', borderRadius: '9px', background: '#f5f5f7', color: '#d4d4d8', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }">
+    <div class="wx-ov__kpis">
+      <div v-for="c in GHOST_KPI" :key="c.label" class="wx-ov-empty__kpi">
+        <div class="wx-ov-empty__kpi-head">
+          <span class="wx-ov-empty__kpi-label">{{ c.label }}</span>
+          <span class="wx-ov-empty__kpi-icon">
             <component :is="c.icon" :size="18" />
           </span>
         </div>
-        <div :style="{ fontFamily: 'Archivo, sans-serif', fontSize: '32px', fontWeight: 800, color: '#d8d8dc', lineHeight: 1, letterSpacing: '-.01em' }">—</div>
-        <div :style="{ fontSize: '12px', color: '#c4c4c8' }">{{ c.hint }}</div>
+        <div class="wx-ov-empty__kpi-value">—</div>
+        <div class="wx-ov-empty__kpi-hint">{{ c.hint }}</div>
       </div>
     </div>
-    <div :style="{ background: '#fff', border: `1px solid ${OV_LINE}`, borderRadius: '12px', padding: '20px 24px', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }">
-      <div :style="{ display: 'flex', alignItems: 'center', gap: '16px' }">
-        <div :style="{ width: '44px', height: '44px', borderRadius: '10px', background: '#fff0ef', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }">
+    <div class="wx-ov-empty__banner">
+      <div class="wx-ov-empty__banner-main">
+        <div class="wx-ov-empty__banner-icon">
           <IconStore :size="22" :style="{ color: OV_RED }" />
         </div>
         <div>
-          <div :style="{ fontSize: '15px', fontWeight: 800, color: OV_INK, marginBottom: '4px' }">Your dashboard is ready — no stores are live yet</div>
-          <div :style="{ fontSize: '13.5px', color: OV_MUTED }">Revenue, orders, and analytics populate the moment a store goes live and receives its first order.</div>
+          <div class="wx-ov-empty__banner-title">Your dashboard is ready — no stores are live yet</div>
+          <div class="wx-ov-empty__banner-text">Revenue, orders, and analytics populate the moment a store goes live and receives its first order.</div>
         </div>
       </div>
-      <button @click="onGoStores" :style="{ flexShrink: 0, background: OV_INK, color: '#fff', border: '0', borderRadius: '8px', padding: '12px 24px', fontSize: '13.5px', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }">Create a Store →</button>
+      <button @click="onGoStores" class="wx-ov-empty__banner-btn">Create a Store →</button>
     </div>
-    <div :style="{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 380px', gap: '16px', alignItems: 'start' }">
-      <div :style="{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '0' }">
+    <div class="wx-ov-empty__grid">
+      <div class="wx-ov-empty__col wx-ov-empty__col--main">
         <Panel title="Dealer Profit">
-          <div :style="{ position: 'relative', height: '260px', paddingLeft: '48px', paddingBottom: '28px' }">
-            <div :style="{ position: 'absolute', left: '0', top: '0', bottom: '28px', width: '44px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end' }">
-              <div v-for="i in [0,1,2,3,4]" :key="i" :style="{ width: '28px', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
+          <div class="wx-ov-empty__chart">
+            <div class="wx-ov-empty__chart-axis">
+              <div v-for="i in [0,1,2,3,4]" :key="i" class="wx-ov-empty__chart-tick" />
             </div>
-            <div :style="{ position: 'relative', height: '100%', borderLeft: `1px solid ${OV_LINE}`, borderBottom: `1px solid ${OV_LINE}` }">
-              <div v-for="i in [0,1,2,3]" :key="i" :style="{ position: 'absolute', left: '0', right: '0', top: `${(i/4)*100}%`, borderTop: '1px dashed #f1f1f3' }" />
-              <div :style="{ position: 'absolute', inset: '8px 8px 0', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '12px' }">
-                <div v-for="(h, i) in GHOST_BARS" :key="i" :style="{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end' }">
-                  <div :style="{ width: '100%', maxWidth: '32px', height: `${h}%`, borderRadius: '5px', background: '#ebebed' }" />
-                  <span :style="{ fontSize: '11px', color: '#d4d4d8', position: 'absolute', bottom: '-24px' }">{{ GHOST_MONTHS[i] }}</span>
+            <div class="wx-ov-empty__chart-plot">
+              <div v-for="i in [0,1,2,3]" :key="i" class="wx-ov-empty__chart-grid" :style="{ top: `${(i/4)*100}%` }" />
+              <div class="wx-ov-empty__chart-bars">
+                <div v-for="(h, i) in GHOST_BARS" :key="i" class="wx-ov-empty__chart-col">
+                  <div class="wx-ov-empty__chart-bar" :style="{ height: `${h}%` }" />
+                  <span class="wx-ov-empty__chart-month">{{ GHOST_MONTHS[i] }}</span>
                 </div>
               </div>
-              <div :style="{ position: 'absolute', inset: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px' }">
-                <div :style="{ width: '40px', height: '40px', borderRadius: '10px', background: '#f5f5f7', display: 'flex', alignItems: 'center', justifyContent: 'center' }">
+              <div class="wx-ov-empty__chart-overlay">
+                <div class="wx-ov-empty__chart-icon">
                   <IconTrendUp :size="20" :style="{ color: '#c4c4c8' }" />
                 </div>
-                <div :style="{ textAlign: 'center' }">
-                  <div :style="{ fontSize: '14px', fontWeight: 700, color: OV_INK, marginBottom: '8px' }">Performance Charting</div>
-                  <div :style="{ fontSize: '12.5px', color: OV_MUTED, maxWidth: '280px', lineHeight: 1.55 }">This space will evolve into a dynamic snapshot of your monthly team store profit margins as orders roll in.</div>
+                <div class="wx-ov-empty__chart-copy">
+                  <div class="wx-ov-empty__chart-title">Performance Charting</div>
+                  <div class="wx-ov-empty__chart-text">This space will evolve into a dynamic snapshot of your monthly team store profit margins as orders roll in.</div>
                 </div>
               </div>
             </div>
@@ -69,94 +69,94 @@
         </Panel>
         <Panel title="Top Performing Stores" action="All stores →" :onAction="onGoStores">
           <div>
-            <div :style="{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 0.8fr', gap: '12px', padding: '0 0 12px', borderBottom: `1px solid ${OV_LINE}`, fontSize: '11.5px', fontWeight: 700, letterSpacing: '.05em', color: '#c4c4c8', textTransform: 'uppercase' }">
+            <div class="wx-ov-empty__top-head">
               <span>Store</span>
-              <span :style="{ textAlign: 'right' }">Orders</span>
-              <span :style="{ textAlign: 'right' }">Revenue</span>
-              <span :style="{ textAlign: 'right' }">Trend</span>
+              <span class="wx-ov-empty__right">Orders</span>
+              <span class="wx-ov-empty__right">Revenue</span>
+              <span class="wx-ov-empty__right">Trend</span>
             </div>
-            <div v-for="(w, i) in [80,65,55,45,35]" :key="i" :style="{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 0.8fr', gap: '12px', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f4f4f6' }">
-              <div :style="{ display: 'inline-flex', alignItems: 'center', gap: '12px' }">
-                <div :style="{ width: '32px', height: '32px', borderRadius: '50%', background: '#ebebed', flexShrink: 0 }" />
-                <div :style="{ display: 'flex', flexDirection: 'column', gap: '4px' }">
-                  <div :style="{ width: px(w), height: '12px', background: '#ebebed', borderRadius: '4px' }" />
-                  <div :style="{ width: px(Math.round(w * 0.6)), height: '8px', background: '#f1f1f3', borderRadius: '4px' }" />
+            <div v-for="(w, i) in [80,65,55,45,35]" :key="i" class="wx-ov-empty__top-row">
+              <div class="wx-ov-empty__top-store">
+                <div class="wx-ov-empty__avatar" />
+                <div class="wx-ov-empty__lines">
+                  <div class="wx-ov-empty__line" :style="{ width: px(w) }" />
+                  <div class="wx-ov-empty__subline" :style="{ width: px(Math.round(w * 0.6)) }" />
                 </div>
               </div>
-              <div :style="{ display: 'flex', justifyContent: 'flex-end' }">
-                <div :style="{ width: '28px', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
+              <div class="wx-ov-empty__num">
+                <div class="wx-ov-empty__num-bar wx-ov-empty__num-bar--orders" />
               </div>
-              <div :style="{ display: 'flex', justifyContent: 'flex-end' }">
-                <div :style="{ width: '48px', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
+              <div class="wx-ov-empty__num">
+                <div class="wx-ov-empty__num-bar wx-ov-empty__num-bar--revenue" />
               </div>
-              <div :style="{ display: 'flex', justifyContent: 'flex-end' }">
-                <div :style="{ width: '32px', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
+              <div class="wx-ov-empty__num">
+                <div class="wx-ov-empty__num-bar wx-ov-empty__num-bar--trend" />
               </div>
             </div>
-            <div :style="{ padding: '24px 0 8px', textAlign: 'center' }">
-              <div :style="{ fontSize: '13.5px', color: OV_MUTED, marginBottom: '12px' }">Store rankings will appear once sales begin</div>
-              <button @click="onGoStores" :style="{ background: 'transparent', border: `1px solid ${OV_LINE}`, borderRadius: '7px', padding: '8px 16px', fontSize: '13px', fontWeight: 700, color: OV_INK, cursor: 'pointer' }">Create a Store →</button>
+            <div class="wx-ov-empty__top-foot">
+              <div class="wx-ov-empty__top-foot-text">Store rankings will appear once sales begin</div>
+              <button @click="onGoStores" class="wx-ov-empty__top-foot-btn">Create a Store →</button>
             </div>
           </div>
         </Panel>
       </div>
-      <div :style="{ display: 'flex', flexDirection: 'column', gap: '16px' }">
+      <div class="wx-ov-empty__col">
         <Panel title="Active Ordering Windows">
-          <div v-for="i in [0,1,2]" :key="i" :style="{ padding: '16px 0', borderBottom: `1px solid ${OV_LINE}` }">
-            <div :style="{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }">
-              <div :style="{ width: '32px', height: '32px', borderRadius: '50%', background: '#ebebed', flexShrink: 0 }" />
-              <div :style="{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }">
-                <div :style="{ width: '70%', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
-                <div :style="{ width: '45%', height: '8px', background: '#f1f1f3', borderRadius: '4px' }" />
+          <div v-for="i in [0,1,2]" :key="i" class="wx-ov-empty__window">
+            <div class="wx-ov-empty__window-head">
+              <div class="wx-ov-empty__avatar" />
+              <div class="wx-ov-empty__lines wx-ov-empty__lines--fill">
+                <div class="wx-ov-empty__line wx-ov-empty__line--70" />
+                <div class="wx-ov-empty__subline wx-ov-empty__subline--45" />
               </div>
-              <div :style="{ width: '36px', height: '24px', background: '#f1f1f3', borderRadius: '999px' }" />
+              <div class="wx-ov-empty__pill wx-ov-empty__pill--window" />
             </div>
-            <div :style="{ height: '8px', borderRadius: '999px', background: '#f1f1f3' }" />
+            <div class="wx-ov-empty__window-track" />
           </div>
-          <div :style="{ padding: '16px 0 4px', fontSize: '12.5px', color: OV_MUTED, lineHeight: 1.6 }">Active ordering window cutoffs will organize and countdown automatically here once your stores go live.</div>
+          <div class="wx-ov-empty__note">Active ordering window cutoffs will organize and countdown automatically here once your stores go live.</div>
         </Panel>
         <Panel title="Roster Bank">
-          <div v-for="i in [0, 1]" :key="i" :style="{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 0', borderBottom: `1px solid ${OV_LINE}` }">
-            <div :style="{ width: '32px', height: '32px', borderRadius: '50%', background: '#ebebed', flexShrink: 0 }" />
-            <div :style="{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }">
-              <div :style="{ width: '60%', height: '12px', background: '#ebebed', borderRadius: '4px' }" />
-              <div :style="{ width: '40%', height: '8px', background: '#f1f1f3', borderRadius: '4px' }" />
+          <div v-for="i in [0, 1]" :key="i" class="wx-ov-empty__bank">
+            <div class="wx-ov-empty__avatar" />
+            <div class="wx-ov-empty__lines wx-ov-empty__lines--fill">
+              <div class="wx-ov-empty__line wx-ov-empty__line--60" />
+              <div class="wx-ov-empty__subline wx-ov-empty__subline--40" />
             </div>
-            <div :style="{ width: '84px', height: '24px', background: '#f1f1f3', borderRadius: '999px' }" />
+            <div class="wx-ov-empty__pill wx-ov-empty__pill--bank" />
           </div>
-          <div :style="{ padding: '16px 0 4px', fontSize: '12.5px', color: OV_MUTED, lineHeight: 1.6 }">Team-gear checkout captures will queue here as proposed players once buyers opt in — commit them to rosters in one click.</div>
+          <div class="wx-ov-empty__note">Team-gear checkout captures will queue here as proposed players once buyers opt in — commit them to rosters in one click.</div>
         </Panel>
         <Panel title="Payouts">
-          <div :style="{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '16px' }">
+          <div class="wx-ov-empty__pay-head">
             <div>
-              <div :style="{ fontFamily: 'Archivo, sans-serif', fontSize: '26px', fontWeight: 800, color: '#d8d8dc', lineHeight: 1 }">$—</div>
-              <div :style="{ fontSize: '12px', color: '#c4c4c8', marginTop: '4px' }">Available to pay out</div>
+              <div class="wx-ov-empty__pay-amount">$—</div>
+              <div class="wx-ov-empty__pay-label">Available to pay out</div>
             </div>
-            <div :style="{ width: '64px', height: '24px', background: '#f1f1f3', borderRadius: '999px' }" />
+            <div class="wx-ov-empty__pill wx-ov-empty__pill--payout" />
           </div>
-          <div v-for="label in ['Pending clearance', 'Paid this season']" :key="label" :style="{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #f4f4f6', fontSize: '13px' }">
-            <span :style="{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#c4c4c8' }">
-              <span :style="{ width: '8px', height: '8px', borderRadius: '50%', background: '#d8d8dc' }" /> {{ label }}</span>
-            <span :style="{ fontWeight: 700, color: '#d8d8dc' }">$—</span>
+          <div v-for="label in ['Pending clearance', 'Paid this season']" :key="label" class="wx-ov-empty__pay-row">
+            <span class="wx-ov-empty__pay-name">
+              <span class="wx-ov-empty__pay-dot" /> {{ label }}</span>
+            <span class="wx-ov-empty__pay-value">$—</span>
           </div>
-          <div :style="{ marginTop: '8px', paddingTop: '16px', borderTop: `1px solid ${OV_LINE}`, fontSize: '12.5px', color: '#9a9aa1', lineHeight: 1.6 }">Payout status, pending banking clearances, and active ordering window cutoffs will organize themselves automatically right here.</div>
+          <div class="wx-ov-empty__pay-note">Payout status, pending banking clearances, and active ordering window cutoffs will organize themselves automatically right here.</div>
         </Panel>
       </div>
     </div>
   </div>
-  <div v-else :style="{ flex: 1, minWidth: '0', padding: '28px max(32px, calc((100% - 1376px)/2)) 80px', background: '#fbfbfc' }">
+  <div v-else class="wx-ov">
     <!-- Page heading -->
-    <div :style="{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '24px' }">
+    <div class="wx-ov__head">
       <div>
-        <h1 :style="{ fontFamily: 'Archivo, sans-serif', fontSize: '24px', fontWeight: 800, margin: '0 0 8px', color: OV_INK, letterSpacing: '-.3px' }">Overview</h1>
-        <div :style="{ fontSize: '14px', color: OV_MUTED }">Your stores at a glance: activity, performance, and what needs attention.</div>
+        <h1 class="wx-ov__title">Overview</h1>
+        <div class="wx-ov__lead">Your stores at a glance: activity, performance, and what needs attention.</div>
       </div>
-      <div :style="{ display: 'flex', alignItems: 'center', gap: '12px' }">
-        <button @click="onAdd" :style="{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: OV_INK, border: '0', borderRadius: '8px', padding: '12px 16px', cursor: 'pointer', fontSize: '13.5px', fontWeight: 700, color: '#fff' }">
+      <div class="wx-ov__actions">
+        <button @click="onAdd" class="wx-ov__add">
           <IconPlus :size="16" :style="{ strokeWidth: 2.4 }" /> Add Store</button>
         <StoreScopeSelector :stores="stores" :scope="scope" :onChange="setScope" />
-        <div :style="{ position: 'relative', display: 'flex', alignItems: 'center', minWidth: '240px', border: '1px solid #d8d8de', borderRadius: '8px', background: '#fff' }">
-          <input :value="search" v-controlled="search" @input="(e) => setSearch(e.target.value)" placeholder="Search Team Stores" :style="{ width: '100%', border: '0', outline: '0', background: 'transparent', padding: '12px 40px 12px 16px', fontSize: '13.5px' }" />
+        <div class="wx-ov__search">
+          <input :value="search" v-controlled="search" @input="(e) => setSearch(e.target.value)" placeholder="Search Team Stores" class="wx-ov__search-input" />
           <IconSearch :size="16" :style="{ position: 'absolute', right: '12px', color: '#9a9aa1' }" />
         </div>
       </div>
@@ -164,13 +164,13 @@
     <!-- Quick access — frequently visited stores -->
     <FrequentlyVisitedShelf :stores="stores" :onManageStore="onManageStore" :onGoStores="onGoStores" />
     <!-- KPI row -->
-    <div :style="{ paddingTop: '8px', display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '10px' }">
-      <span :style="{ fontSize: '12px', fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', color: OV_MUTED }">Performance summary</span>
-      <span :style="{ fontSize: '11.5px', color: '#9a9aa1' }">{{ scope.size
+    <div class="wx-ov__kpi-head">
+      <span class="wx-ov__eyebrow">Performance summary</span>
+      <span class="wx-ov__caption">{{ scope.size
           ? `Performance across ${scope.size} selected store${scope.size > 1 ? 's' : ''}`
           : `Performance across ${stores.length} stores${leagues.length ? ` and ${leagues.length} league${leagues.length > 1 ? 's' : ''}` : ''}` }}</span>
     </div>
-    <div :style="{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '16px' }">
+    <div class="wx-ov__kpis">
       <StatCard label="Total Revenue" :value="ovFmt(totalRevenue)" delta="12.4%" deltaDir="up" sub="vs last month">
         <template #icon>
           <IconDollar :size="18" />
@@ -193,7 +193,7 @@
       </StatCard>
     </div>
     <!-- Main content — full-width stacked panels -->
-    <div :style="{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '0' }">
+    <div class="wx-ov__panels">
       <!-- Dealer-side money only — team revenue & fundraising live on each store's Reports tab. -->
       <Panel title="Revenue &amp; Dealer Profit" subtitle="Gross revenue across all stores vs. dealer profit — revenue minus manufacturing cost (COGS), platform fee, sales tax, and team fundraising.">
         <template #right>
@@ -204,7 +204,7 @@
       <Panel title="Top Performing Stores" action="All stores →" :onAction="onGoStores">
         <div>
           <!-- head -->
-          <div :style="{ display: 'grid', gridTemplateColumns: 'minmax(190px,1.8fr) repeat(7, 1fr)', gap: '12px', padding: '0 0 12px', borderBottom: `1px solid ${OV_LINE}`, fontSize: '11px', fontWeight: 700, letterSpacing: '.05em', color: OV_MUTED, textTransform: 'uppercase' }">
+          <div class="wx-ov-top__head">
             <TopSortHead label="Store" sortKey="name" :sort="topSort" :onSort="toggleTopSort" />
             <TopSortHead label="Store Created" sortKey="created" :sort="topSort" :onSort="toggleTopSort" />
             <TopSortHead label="Orders" sortKey="orders" :sort="topSort" :onSort="toggleTopSort" align="right" :pad="24" />
@@ -214,52 +214,52 @@
             <TopSortHead label="Completion" sortKey="completion" :sort="topSort" :onSort="toggleTopSort" align="right" />
             <TopSortHead label="Trend" sortKey="trend" :sort="topSort" :onSort="toggleTopSort" align="right" />
           </div>
-          <button v-for="s in sortedTop" :key="s.id" @click="() => onManageStore && onManageStore(s.id)" v-patch-style="{ width: '100%', textAlign: 'left', background: 'transparent', border: '0', cursor: 'pointer', display: 'grid', gridTemplateColumns: 'minmax(190px,1.8fr) repeat(7, 1fr)', gap: '12px', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f4f4f6' }" @mouseenter="(e) => (e.currentTarget.style.background = '#fafafb')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">
-            <span :style="{ display: 'inline-flex', alignItems: 'center', gap: '12px', minWidth: '0' }">
-              <span :style="{ width: '32px', height: '32px', borderRadius: '50%', background: s.color, color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '11px', flexShrink: 0 }">{{ s.mono }}</span>
-              <span :style="{ minWidth: '0' }">
-                <span :style="{ display: 'block', fontSize: '13.5px', fontWeight: 700, color: OV_INK, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }">{{ s.name }}</span>
-                <span :style="{ display: 'block', fontSize: '12px', color: OV_MUTED }">{{ s.sport }}</span>
+          <button v-for="s in sortedTop" :key="s.id" @click="() => onManageStore && onManageStore(s.id)" class="wx-ov-top__row" @mouseenter="(e) => (e.currentTarget.style.background = '#fafafb')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">
+            <span class="wx-ov-top__store">
+              <span class="wx-ov-avatar" :style="{ background: s.color }">{{ s.mono }}</span>
+              <span class="wx-ov-top__name-wrap">
+                <span class="wx-ov-top__name">{{ s.name }}</span>
+                <span class="wx-ov-top__sport">{{ s.sport }}</span>
               </span>
             </span>
-            <span :style="{ fontSize: '13px', color: OV_MUTED, fontFamily: 'JetBrains Mono, monospace' }">{{ s.created }}</span>
-            <span :style="{ textAlign: 'right', paddingRight: '24px', fontSize: '13.5px', color: OV_INK, fontFamily: 'JetBrains Mono, monospace' }">{{ s.orders }}</span>
-            <span :style="{ textAlign: 'right', paddingRight: '24px', fontSize: '13.5px', fontWeight: 700, color: OV_INK, fontFamily: 'JetBrains Mono, monospace' }">{{ ovFmt(s.revenue) }}</span>
-            <span :style="{ textAlign: 'right', paddingRight: '24px', fontSize: '13.5px', color: OV_INK, fontFamily: 'JetBrains Mono, monospace' }">{{ ovFmt(s.aov) }}</span>
-            <span :style="{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }">
-              <span :style="{ fontSize: '13px', color: OV_INK, fontFamily: 'JetBrains Mono, monospace' }">{{ s.pctOfTotal.toFixed(1) }}%</span>
-              <span :style="{ width: '70%', height: '4px', borderRadius: '999px', background: '#f1f1f3', overflow: 'hidden' }">
-                <span :style="{ display: 'block', width: `${Math.min(s.pctOfTotal, 100)}%`, height: '100%', borderRadius: '999px', background: OV_INK }" />
+            <span class="wx-ov-top__created">{{ s.created }}</span>
+            <span class="wx-ov-top__num">{{ s.orders }}</span>
+            <span class="wx-ov-top__num wx-ov-top__num--strong">{{ ovFmt(s.revenue) }}</span>
+            <span class="wx-ov-top__num">{{ ovFmt(s.aov) }}</span>
+            <span class="wx-ov-top__meter">
+              <span class="wx-ov-top__meter-value">{{ s.pctOfTotal.toFixed(1) }}%</span>
+              <span class="wx-ov-top__bar">
+                <span class="wx-ov-top__fill" :style="{ width: `${Math.min(s.pctOfTotal, 100)}%` }" />
               </span>
             </span>
-            <span :style="{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }">
-              <span :style="{ fontSize: '13px', color: OV_INK, fontFamily: 'JetBrains Mono, monospace' }">{{ s.completion }}% <span :style="{ color: OV_MUTED, fontFamily: 'inherit', fontSize: '11.5px' }">· {{ s.rosterOrdered }}/{{ s.rosterSize }}</span>
+            <span class="wx-ov-top__meter">
+              <span class="wx-ov-top__meter-value">{{ s.completion }}% <span class="wx-ov-top__meter-note">· {{ s.rosterOrdered }}/{{ s.rosterSize }}</span>
               </span>
-              <span :style="{ width: '70%', height: '4px', borderRadius: '999px', background: '#f1f1f3', overflow: 'hidden' }">
-                <span :style="{ display: 'block', width: `${Math.min(s.completion, 100)}%`, height: '100%', borderRadius: '999px', background: s.completion >= 80 ? OV_GREEN : '#e0a92b' }" />
+              <span class="wx-ov-top__bar">
+                <span :class="`wx-ov-top__fill ${s.completion >= 80 ? 'wx-ov-top__fill--done' : 'wx-ov-top__fill--short'}`" :style="{ width: `${Math.min(s.completion, 100)}%` }" />
               </span>
             </span>
-            <span :style="{ textAlign: 'right', fontSize: '12.5px', fontWeight: 700, color: s.trend >= 0 ? OV_GREEN : OV_RED, display: 'inline-flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }">
+            <span :class="`wx-ov-top__trend ${s.trend >= 0 ? 'wx-ov-top__trend--up' : 'wx-ov-top__trend--down'}`">
               <IconTrendUp v-if="s.trend >= 0" :size="14" />
               <IconTrendDown v-else :size="14" />{{ Math.abs(s.trend) }}%</span>
           </button>
-          <div v-if="top.length === 0" :style="{ padding: '32px 0', textAlign: 'center', color: OV_MUTED, fontSize: '13px' }">No stores yet.</div>
+          <div v-if="top.length === 0" class="wx-ov-top__none">No stores yet.</div>
         </div>
       </Panel>
       <Panel title="Active Ordering Windows">
         <template v-if="windows.length">
           <OrderingWindowRow v-for="w in windows" :key="w.id" v-bind="w" />
         </template>
-        <div v-else :style="{ padding: '24px 0', textAlign: 'center', color: OV_MUTED, fontSize: '13px' }">No open windows.</div>
-        <div :style="{ paddingTop: '16px', fontSize: '12.5px', color: OV_MUTED, display: 'flex', alignItems: 'center', gap: '8px' }">
+        <div v-else class="wx-ov__none">No open windows.</div>
+        <div class="wx-ov__panel-foot">
           <IconClock :size="14" /> {{ windows.length }} window{{ windows.length === 1 ? '' : 's' }} open now</div>
       </Panel>
       <Panel title="Roster Bank" subtitle="Checkout captures awaiting roster review" :style="{ marginTop: '16px' }">
         <template v-if="bankRows.length">
           <RosterBankRow v-for="b in bankRows" :key="b.id" v-bind="b" :onReview="() => onManageStore && onManageStore(b.id, 'roster')" />
         </template>
-        <div v-else :style="{ padding: '24px 0', textAlign: 'center', color: OV_MUTED, fontSize: '13px' }">No captures waiting — team-gear orders with roster opt-in land here.</div>
-        <div :style="{ paddingTop: '16px', fontSize: '12.5px', color: OV_MUTED, display: 'flex', alignItems: 'center', gap: '8px' }">
+        <div v-else class="wx-ov__none">No captures waiting — team-gear orders with roster opt-in land here.</div>
+        <div class="wx-ov__panel-foot">
           <IconBankInbox :size="14" /> {{ bankTotal }} proposed player{{ bankTotal === 1 ? '' : 's' }} across {{ bankRows.length }} store{{ bankRows.length === 1 ? '' : 's' }} — commit them in My Teams</div>
       </Panel>
     </div>
@@ -270,7 +270,7 @@
 import { INTEGRATION } from '../../integration.js';
 import { bankSeedCounts, ovFmt } from '../../lib/overview.js';
 import { BAYSHORE_BANK_SEED, WASATCH_BANK_SEED } from '../../seed/rosters.js';
-import { OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED } from '../../theme.js';
+import { OV_RED } from '../../theme.js';
 import { px } from '../../lib/style.js';
 import IconBankInbox from '../common/IconBankInbox.vue';
 import { IconChevron, IconClock, IconDollar, IconPlus, IconReceipt, IconSearch, IconStore, IconTrendDown, IconTrendUp, IconWallet } from '../icons.js';
@@ -311,7 +311,7 @@ export default {
   },
   data() {
     return {
-      INT: INTEGRATION.on, OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, GHOST_BARS, GHOST_MONTHS, GHOST_KPI,
+      INT: INTEGRATION.on, OV_RED, GHOST_BARS, GHOST_MONTHS, GHOST_KPI,
       // #9 — multi-select store scope. Empty = all stores (default). Selecting a subset recomputes
       // every KPI / panel below against just those stores.
       search: "",

@@ -74,6 +74,25 @@ The pop-up shows once per browser session. To see it again, run `sessionStorage.
 
 Not converted yet, so empty in Vue: the other store tabs (My Teams, Products, Orders, Reports and Settings show only their title), the Launch Store pop-ups, the Store Close Report, and **Back to Stores** (the store list).
 
+## Module 2: Overview
+
+Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected (prototype: http://localhost:5173/Workspace.dc.html?brand=prolook&auth=native-connected). For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`). The [BRD M-2.0](https://docs.google.com/document/d/1gaYuVvpnUwYPefiVjtV8txcfZazXHL1N/edit) parts:
+
+| BRD | On the Overview |
+|---|---|
+| FR-2.2 All Stores filter | **All Stores** at the top right: tick stores to filter the whole page; **Clear** resets it |
+| FR-2.3 Search | **Search Team Stores** at the top right. Typing doesn't filter anything yet, in the prototype either |
+| FR-2.4 Frequently visited | The row of store cards under the heading; **Manage Store** opens the store |
+| FR-2.5 KPI cards | Total Revenue, Orders, Active Stores, Avg. Order Value. The Orders card opens the cross-store Orders page |
+| FR-2.6 Revenue & Dealer Profit | **Day / Month / Year** at the panel's top right; point at the chart for a read-out |
+| FR-2.7 Top Performing Stores | Click a column heading to sort (again to flip); click a row to open the store |
+| FR-2.8 Active Ordering Windows | Below Top Performing Stores |
+| FR-2.9 Roster Bank | At the bottom; **Review** opens the store's Roster tab |
+
+**Empty Overview:** `__paritySetProps({ overviewEmpty: true })`. Prototype: settings panel, turn on **Overview empty state**.
+
+**Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page), both **All stores →** links and **Create a Store →** on the empty Overview (the Stores list), **Review** (a store's Roster tab), and **Add Store** (the new store flow). The Vue comparison (`workspace-overview.mjs`) reports those 6 clicks as differences until the screens are converted.
+
 ## Other references
 
 - **Compare with `main` side by side:** `npm run preview -- tools/parity/scenarios/<scenario>.mjs` opens the original on port 8001 and your version on port 8000. See [commands.md](commands.md#npm-run-preview).

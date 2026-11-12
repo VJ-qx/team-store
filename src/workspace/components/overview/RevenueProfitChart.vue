@@ -2,23 +2,23 @@
      a hover read-out. The chart is drawn for the measured width of its container. -->
 <template>
   <div>
-    <div :style="{ display: 'flex', flexWrap: 'wrap', gap: '12px' }">
-      <div v-for="k in kpis" :key="k.label" :style="{ minWidth: '200px', boxSizing: 'border-box', border: '1px solid #d4d4d8', borderRadius: '8px', padding: '16px', background: '#fff', display: 'flex', flexDirection: 'column', gap: '3.5px', alignItems: 'flex-start' }">
-        <div :style="{ fontSize: '12px', fontWeight: 700, letterSpacing: '.03em', lineHeight: '16px', color: '#71717a' }">{{ k.label }}</div>
-        <div :style="{ display: 'flex', alignItems: 'baseline', gap: '8px' }">
-          <span :style="{ fontSize: '24px', fontWeight: 700, lineHeight: '32px', letterSpacing: '-.01em', color: OV_INK }">{{ k.value }}</span>
-          <span :style="{ fontSize: '14px', fontWeight: 700, lineHeight: '20px', letterSpacing: '.01em', color: k.up ? OV_GREEN : OV_RED }">{{ k.delta }}</span>
+    <div class="wx-ov-rpc__kpis">
+      <div v-for="k in kpis" :key="k.label" class="wx-ov-rpc__kpi">
+        <div class="wx-ov-rpc__kpi-label">{{ k.label }}</div>
+        <div class="wx-ov-rpc__kpi-row">
+          <span class="wx-ov-rpc__kpi-value">{{ k.value }}</span>
+          <span :class="`wx-ov-rpc__kpi-delta ${k.up ? 'wx-ov-rpc__kpi-delta--up' : 'wx-ov-rpc__kpi-delta--down'}`">{{ k.delta }}</span>
         </div>
       </div>
     </div>
-    <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', padding: '14px 0 10px', fontSize: '12.5px', fontWeight: 600, color: OV_INK }">
-      <span :style="{ display: 'inline-flex', alignItems: 'center', gap: '7px' }">
-        <span :style="{ width: '9px', height: '9px', borderRadius: '999px', background: RPC_REV }" />Revenue <span :style="{ color: OV_MUTED, fontWeight: 400 }">(left axis)</span></span>
-      <span :style="{ display: 'inline-flex', alignItems: 'center', gap: '7px' }">
-        <span :style="{ width: '9px', height: '9px', borderRadius: '999px', background: RPC_PROF }" />Dealer Profit <span :style="{ color: OV_MUTED, fontWeight: 400 }">(right axis)</span></span>
+    <div class="wx-ov-rpc__legend">
+      <span class="wx-ov-rpc__legend-item">
+        <span class="wx-ov-rpc__dot wx-ov-rpc__dot--rev" />Revenue <span class="wx-ov-rpc__legend-note">(left axis)</span></span>
+      <span class="wx-ov-rpc__legend-item">
+        <span class="wx-ov-rpc__dot wx-ov-rpc__dot--profit" />Dealer Profit <span class="wx-ov-rpc__legend-note">(right axis)</span></span>
     </div>
-    <div ref="wrap" :style="{ position: 'relative' }">
-      <svg :viewBox="`0 0 ${w} 380`" :style="{ width: '100%', height: '380px', display: 'block' }">
+    <div ref="wrap" class="wx-ov-rpc__plot">
+      <svg :viewBox="`0 0 ${w} 380`" class="wx-ov-rpc__svg">
         <g stroke="#f1f1f3" stroke-dasharray="3 4">
           <line v-for="t in revTicks.slice(1)" :key="t" :x1="X0" :y1="yR(t)" :x2="X1" :y2="yR(t)" />
         </g>
@@ -44,11 +44,11 @@
           <text v-for="(d, i) in pts" :key="d.label + i" :x="x(i)" :y="364" :font-weight="d.current || i === n - 1 ? 700 : 400" :fill="d.current || i === n - 1 ? OV_INK : '#9a9aa1'">{{ d.label }}</text>
         </g>
       </svg>
-      <div v-for="(d, i) in pts" :key="'h' + i" @mouseenter="() => setHover(i)" @mouseleave="() => setHover(null)" :style="{ position: 'absolute', top: '0', bottom: '44px', left: px(x(i) - stepPx / 2), width: px(stepPx) }" />
-      <div v-if="hover != null" :style="{ position: 'absolute', top: '-6px', left: px(x(hover)), transform: 'translateX(-50%)', background: OV_INK, color: '#fff', borderRadius: '8px', padding: '8px 12px', whiteSpace: 'nowrap', zIndex: 5, boxShadow: '0 6px 18px rgba(20,20,30,.22)', pointerEvents: 'none' }">
-        <div :style="{ fontSize: '11px', color: '#a4a4ab', marginBottom: '3px' }">{{ pts[hover].label }}{{ pts[hover].current ? " · current" : "" }}</div>
-        <div :style="{ fontSize: '12.5px', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: '#c4b5fd' }">{{ dollars(pts[hover].revenue) }} <span :style="{ color: '#a4a4ab', fontWeight: 400 }">rev</span></div>
-        <div :style="{ fontSize: '12.5px', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: '#fcd34d' }">{{ dollars(pts[hover].profit) }} <span :style="{ color: '#a4a4ab', fontWeight: 400 }">profit · {{ Math.round(pts[hover].margin * 100) }}%</span></div>
+      <div v-for="(d, i) in pts" :key="'h' + i" @mouseenter="() => setHover(i)" @mouseleave="() => setHover(null)" class="wx-ov-rpc__hit" :style="{ left: px(x(i) - stepPx / 2), width: px(stepPx) }" />
+      <div v-if="hover != null" class="wx-ov-rpc__tip" :style="{ left: px(x(hover)) }">
+        <div class="wx-ov-rpc__tip-label">{{ pts[hover].label }}{{ pts[hover].current ? " · current" : "" }}</div>
+        <div class="wx-ov-rpc__tip-value wx-ov-rpc__tip-value--rev">{{ dollars(pts[hover].revenue) }} <span class="wx-ov-rpc__tip-unit">rev</span></div>
+        <div class="wx-ov-rpc__tip-value wx-ov-rpc__tip-value--profit">{{ dollars(pts[hover].profit) }} <span class="wx-ov-rpc__tip-unit">profit · {{ Math.round(pts[hover].margin * 100) }}%</span></div>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
 
 <script>
 import { buildRevenueSeries, ovFmt } from '../../lib/overview.js';
-import { OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, RPC_PROF, RPC_REV } from '../../theme.js';
+import { OV_INK, OV_LINE, RPC_PROF, RPC_REV } from '../../theme.js';
 import { px } from '../../lib/style.js';
 
 const tickStep = (v) => { const raw = Math.max(v, 1) / 5; const p = Math.pow(10, Math.floor(Math.log10(raw))); const m = raw / p; const s = m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10; return s * p; };
@@ -69,7 +69,7 @@ export default {
     scale: { type: String, default: 'month' },
   },
   data() {
-    return { OV_GREEN, OV_INK, OV_LINE, OV_MUTED, OV_RED, RPC_PROF, RPC_REV, hover: null, w: 900, X0: 56, Y0: 16, Y1: 336 };
+    return { OV_INK, OV_LINE, RPC_PROF, RPC_REV, hover: null, w: 900, X0: 56, Y0: 16, Y1: 336 };
   },
   computed: {
     rev() { return buildRevenueSeries(this.totalRevenue, this.scale); },

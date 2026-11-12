@@ -2,24 +2,24 @@
      with an actions menu; "condensed" is the smaller tile on the Overview's Frequently Visited shelf.
      The contextIcon slot takes the small icon in front of the condensed tile's context line. -->
 <template>
-  <div v-if="condensed" @click="onManage" :title="'Open ' + (store.storeTitle || store.teamName || 'store')" v-patch-style="{ background: '#fff', border: '1px solid #ececf0', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 1px 2px rgba(20,20,30,.03)', display: 'flex', flexDirection: 'column', height: '100%', cursor: 'pointer', transition: 'box-shadow .15s ease, border-color .15s ease' }" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">
-    <div :style="{ position: 'relative', background: '#fafafb', padding: '12px', minHeight: '78px', display: 'flex', alignItems: 'center', justifyContent: 'center' }">
-      <div :style="{ position: 'absolute', top: '9px', left: '9px', background: tagBg, color: tagColor, padding: '3px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 700 }">{{ tagLabel }}</div>
-      <img v-if="store.teamLogo?.url" :src="store.teamLogo.url" alt="" :style="{ maxWidth: '64px', maxHeight: '54px', objectFit: 'contain' }" />
-      <div v-else :style="{ width: '42px', height: '42px', borderRadius: '50%', background: store.teamLogo?.color || store.teamColors?.[0] || '#1d3a8a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '13.5px', fontFamily: 'Archivo, sans-serif', border: (store.teamColors?.[0] || '').toLowerCase() === '#ffffff' ? '1px solid #d4d4d8' : 'none' }">{{ store.teamLogo?.mono || (store.teamName || store.storeTitle || 'T').slice(0, 2).toUpperCase() }}</div>
+  <div v-if="condensed" @click="onManage" :title="'Open ' + (store.storeTitle || store.teamName || 'store')" class="wx-store-mini" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">
+    <div class="wx-store-mini__media">
+      <div class="wx-store-mini__tag" :style="{ background: tagBg, color: tagColor }">{{ tagLabel }}</div>
+      <img v-if="store.teamLogo?.url" :src="store.teamLogo.url" alt="" class="wx-store-mini__logo" />
+      <div v-else class="wx-store-mini__mono" :style="{ background: store.teamLogo?.color || store.teamColors?.[0] || '#1d3a8a', border: (store.teamColors?.[0] || '').toLowerCase() === '#ffffff' ? '1px solid #d4d4d8' : 'none' }">{{ store.teamLogo?.mono || (store.teamName || store.storeTitle || 'T').slice(0, 2).toUpperCase() }}</div>
     </div>
-    <div :style="{ padding: '10px 12px 9px', textAlign: 'center', flex: 1, minWidth: '0' }">
-      <div :style="{ fontSize: '13px', fontWeight: 800, color: '#0e0e10', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }">{{ store.storeTitle || store.teamName || 'Team Store' }}</div>
-      <div :style="{ fontSize: '11px', color: '#9a9aa1', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }">{{ typeLabel }} · {{ store.sport || 'Sport' }}</div>
-      <div v-if="context" :style="{ marginTop: '7px', display: 'flex', justifyContent: 'center' }">
-        <span :style="{ display: 'inline-flex', alignItems: 'center', gap: '5px', maxWidth: '100%', fontSize: '10.5px', fontWeight: 600, color: '#6b6b72', background: '#f5f5f7', borderRadius: '999px', padding: '3px 9px', whiteSpace: 'nowrap', overflow: 'hidden' }">
+    <div class="wx-store-mini__body">
+      <div class="wx-store-mini__name">{{ store.storeTitle || store.teamName || 'Team Store' }}</div>
+      <div class="wx-store-mini__type">{{ typeLabel }} · {{ store.sport || 'Sport' }}</div>
+      <div v-if="context" class="wx-store-mini__context">
+        <span class="wx-store-mini__context-pill">
           <slot name="contextIcon" />
-          <span :style="{ overflow: 'hidden', textOverflow: 'ellipsis' }">{{ context }}</span>
+          <span class="wx-store-mini__context-text">{{ context }}</span>
         </span>
       </div>
     </div>
-    <div :style="{ borderTop: '1px solid #ececf0', padding: '9px 10px' }">
-      <button @click="(e) => { e.stopPropagation(); onManage && onManage(); }" v-patch-style="{ width: '100%', background: '#fff', border: '1px solid #0e0e10', color: '#0e0e10', padding: '8px 12px', borderRadius: '6px', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer', transition: 'all .12s' }" @mouseenter="(e) => { e.currentTarget.style.background = '#0e0e10'; e.currentTarget.style.color = '#fff'; }" @mouseleave="(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#0e0e10'; }">Manage Store</button>
+    <div class="wx-store-mini__foot">
+      <button @click="(e) => { e.stopPropagation(); onManage && onManage(); }" class="wx-store-mini__manage" @mouseenter="(e) => { e.currentTarget.style.background = '#0e0e10'; e.currentTarget.style.color = '#fff'; }" @mouseleave="(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#0e0e10'; }">Manage Store</button>
     </div>
   </div>
   <div v-else v-patch-style="{ background: '#fff', border: '1px solid #ececf0', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 1px 2px rgba(20,20,30,.03)', display: 'flex', flexDirection: 'column', transition: 'box-shadow .15s ease, border-color .15s ease' }" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">

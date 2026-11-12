@@ -9,6 +9,16 @@
 // Clicks that leave the Overview (a store's page, the store list, the cross-store Orders page, the new
 // store flow) end their state; those screens are listed in `related`.
 // The same states run on the integrated page in marucci-workspace-overview.mjs.
+//
+// Known differences in the Vue step (behavior mode), left for later (2026-11-03). Every checkpoint on the
+// Overview itself matches; 7 of 49 checkpoints differ, on both workspaces, all outside Module 2:
+// - 6 states end on a click into a screen the Vue app doesn't have yet, so Vue shows it empty: the Orders
+//   card (cross-store Orders), both "All stores →" and "Create a Store →" (the Stores list), "Review" (a
+//   store's Roster tab) and "Add Store" (the new store flow). They match once those screens are converted.
+// - "overview chart scale", the Year click: the prototype logs "Cannot read properties of undefined (reading
+//   'revenue')". The click lands while the pointer is still over a day on the chart, and React redraws the
+//   year chart with the day's hover position; the screen is unchanged. Vue redraws after the hover clears,
+//   so it logs nothing. When the pointer reaches Year before the click, as a mouse does, both match.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const button = (name, exact = true) => (exact ? `role=button[name="${name}" s]` : `role=button[name=/${escapeRegex(name)}/i]`);
