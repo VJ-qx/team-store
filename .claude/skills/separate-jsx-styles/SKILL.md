@@ -64,10 +64,12 @@ Create only the folders that are required.
 
 - Remove every `style={{ ... }}` inline style object.
 - Extract repeated values into `_variables.scss` where appropriate.
-- Place reusable component styles in `/styles/components`.
-- Place shared layout styles in `/styles/layouts`.
-- Place page-specific styles in `/styles/pages`.
-- Place responsive rules in `/styles/responsive`.
+- Place reusable component styles in `/styles/components/<page>/`.
+- Place shared layout styles in `/styles/layouts/<page>/`.
+- Place page-specific styles in `/styles/pages/<page>/`.
+- Place responsive rules in `/styles/responsive/<page>/`.
+- Group by type first, then by page: `<page>` is the page's folder name (for example `workspace`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
+- A component that several pages use with exactly the same values goes in `/styles/components/shared/`, with a prefix that belongs to no page (`ts-` in Team Store, where the folder's README has the rules). Keep a component in its page's folder if any value differs.
 - Import all SCSS partials through `app.scss`.
 - Use SCSS features such as nesting and variables only when they improve maintainability without changing specificity or behavior.
 - Preserve selector specificity and rendered output.
@@ -121,7 +123,7 @@ The team ran this refactor on the Team Store MVP. Follow what it learned.
 
 **SCSS**
 
-- Browsers can't load `.scss`. Compile `app.scss` (`npx sass styles/app.scss styles/app.css --no-source-map`), or import it from the entry file if the project has a Vite or webpack build, and load the result from the page. If that page is outside the target folder, don't edit it; tell the user what to add. Never edit compiled CSS by hand.
+- Browsers can't load `.scss`. Compile `app.scss` (`npx sass styles/app.scss styles/css/app.css --no-source-map`; Team Store keeps compiled CSS in `styles/css/` and runs `npm run styles`), or import it from the entry file if the project has a Vite or webpack build, and load the result from the page. If that page is outside the target folder, don't edit it; tell the user what to add. Never edit compiled CSS by hand.
 - Put the `@use` lines first in every partial, before any comment. dart-sass copies a `/* */` comment placed above `@use` into the compiled CSS ahead of other modules.
 - Partials with the same file name in different folders (`pages/_landing.scss`, `responsive/_landing.scss`) collide on the default `@use` namespace. Alias one: `@use "responsive/landing" as responsive-landing;`.
 - Don't invent breakpoints. If the original has no media queries, `responsive/` isn't needed.
