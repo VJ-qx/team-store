@@ -78,6 +78,8 @@ export default defineConfig({
   // Serve files as a plain static host would: an unknown page is a 404, like for the prototype
   // (instead of falling back to index.html).
   appType: 'mpa',
+  // npm run dev opens the landing page in the browser (the root has no page).
+  server: { open: '/landing.html' },
   plugins: [
     prototypeAtRoot,
     staticNotFound,
@@ -96,12 +98,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        landing: resolve(__dirname, 'landing.html'),
         workspace: resolve(__dirname, 'workspace.html'),
         'workspace-integrated': resolve(__dirname, 'workspace-integrated.html'),
       },
     },
   },
   // Scan only the Vue entries for dependencies, not the .dc.html prototypes or the workspace .jsx files.
-  optimizeDeps: { entries: ['index.html', 'workspace.html', 'workspace-integrated.html'] },
+  optimizeDeps: { entries: ['landing.html', 'workspace.html', 'workspace-integrated.html'] },
 });

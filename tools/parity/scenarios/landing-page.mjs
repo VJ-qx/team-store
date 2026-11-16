@@ -96,7 +96,7 @@ export default {
     { name: 'welcome modal multi-brand', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false, welcomeMultiBrand: true }, steps: [{ click: button('Confirm & Enter', false) }] },
   ],
   // Approved changes the prototype doesn't have yet (docs/README.md#approved-changes), checked on the
-  // Vue version only: npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/
+  // Vue version only: npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/landing.html
   approved: [
     // Sign-in lockout (BRD FR-1.11): the fifth wrong password in a row pauses sign-in for 15 minutes.
     { name: 'sign-in paused', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 9000, label: 'Wait 9 seconds: the countdown shows 14:51, as in the design' }] },

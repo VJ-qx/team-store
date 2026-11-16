@@ -49,7 +49,7 @@ styles/                    SCSS: one entry per page, compiled to styles/css/<ent
                            pages/<page>/ (landing, workspace, workspace-mobile);
                            components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
-index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
+landing.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/workspace/             the Vue workspace: main.js, WorkspacePage.vue, components/,
                            data/ (fixtures), seed/ (sample-record factories), storage/ (localStorage),
                            lib/ (pure helpers), theme.js
@@ -65,7 +65,7 @@ tools/parity/scenarios/    user flows per page (one file per page or module)
 
 ```bash
 npm install
-npm run dev     # http://localhost:5173/
+npm run dev     # http://localhost:5173/landing.html (landing page)
 ```
 
 [how-to-access.md](how-to-access.md) gives the address of every converted screen.
@@ -76,9 +76,9 @@ The Vue app needs only these files. Nothing in `src/` imports the prototype file
 |---|---|
 | `src/` | The Vue code: `landing/`, `workspace/`, and `utils/` for code both pages share. |
 | `styles/` | The SCSS sources. The landing page imports `styles/vue.scss` and the workspace imports `styles/workspace.scss`. Vite compiles them itself; the compiled `.css` files are for the prototype pages. |
-| `_ds/` | The Prolook design system. The landing page (`index.html`) loads its fonts, colours, typography and spacing. |
+| `_ds/` | The Prolook design system. The landing page (`landing.html`) loads its fonts, colours, typography and spacing. |
 | `assets/` | The images the pages show, such as logos and brand logos. The code refers to them as `assets/…`, relative to the page. |
-| `index.html`, `workspace.html`, `workspace-integrated.html` | The three pages: landing, workspace, and Marucci workspace. |
+| `landing.html`, `workspace.html`, `workspace-integrated.html` | The three pages: landing, workspace, and Marucci workspace. |
 | `vite.config.js` | Settings the pages depend on: a missing page returns "Not found" as on a static host, image paths stay as written, and the workspace components keep JSX's whitespace rules so text renders as in the prototype. |
 | `package.json`, `package-lock.json` | Dependencies (Vue, Vite, Sass) and the `npm run` commands. |
 

@@ -31,7 +31,7 @@ const name = scenario.name || basename(scenarioPath).replace(/\.m?js$/, '');
 const slug = basename(scenarioPath).replace(/\.m?js$/, '');
 const behavior = opts.mode === 'behavior';
 const aUrl = opts['a-url'] || `http://127.0.0.1:8001/${encodePage(scenario.page)}`;
-const bUrl = opts['b-url'] || (behavior ? 'http://localhost:5173/' : `http://127.0.0.1:8000/${encodePage(scenario.page)}`);
+const bUrl = opts['b-url'] || (behavior ? 'http://localhost:5173/landing.html' : `http://127.0.0.1:8000/${encodePage(scenario.page)}`);
 
 // Turn a Playwright selector into words a reviewer can follow.
 function target(sel) {

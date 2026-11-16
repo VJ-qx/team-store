@@ -6,7 +6,7 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 |---|---|
 | `npm install` | Installs the tools (`sass`, `playwright-core`). Run once, and again after `package.json` changes. |
 | [`npm run styles`](#npm-run-styles) | Compiles each page's SCSS entry (`styles/app.scss`, `styles/workspace.scss`, `styles/workspace-mobile.scss`) to its `.css`. |
-| [`npm run dev`](#npm-run-dev) | Starts the Vue version (Vite dev server on http://localhost:5173/). |
+| [`npm run dev`](#npm-run-dev) | Starts the Vue version (Vite dev server) and opens the landing page, http://localhost:5173/landing.html, in the browser. |
 | [`npm run preview`](#npm-run-preview) | Serves the original and your version side by side for checking by hand. |
 | [`npm run checklist`](#npm-run-checklist) | Writes a manual check list: every state, its settings, and how to reach it. |
 | [`npm run parity`](#npm-run-parity) | Runs the page's user flows on two versions in Chrome and reports every difference. |
@@ -45,7 +45,7 @@ Starts the Vue version. One page per prototype page:
 
 | Vue page | Prototype page | Source |
 |---|---|---|
-| http://localhost:5173/ | `Landing Page.dc.html` | `src/landing/LandingPage.vue` |
+| http://localhost:5173/landing.html | `Landing Page.dc.html` | `src/landing/LandingPage.vue` |
 | http://localhost:5173/workspace.html | `Workspace.dc.html` | `src/workspace/WorkspacePage.vue` |
 | http://localhost:5173/workspace-integrated.html | `Marucci Workspace.dc.html` | the same page, with the integration flag on |
 
@@ -84,7 +84,7 @@ The original is served from a temporary copy of `main`, which Ctrl+C removes.
 | `--port-a <n>` | `8001` | Port for the original |
 | `--port-b <n>` | `8000` | Port for the new version |
 
-For the Vue step, pass the Vue dev server as the new version: `npm run preview -- tools/parity/scenarios/landing-page.mjs --b http://localhost:5173/`.
+For the Vue step, pass the Vue dev server as the new version: `npm run preview -- tools/parity/scenarios/landing-page.mjs --b http://localhost:5173/landing.html`.
 
 ### Reaching other states by hand
 
@@ -151,7 +151,7 @@ It ends with **Outside this page**: where the flows lead next, such as the works
 |---|---|---|
 | `--mode styles \| behavior` | `styles` | Which step the list is for. `behavior` adds the Vue console commands. |
 | `--a-url <url>` | preview's original URL | Link shown for the original |
-| `--b-url <url>` | preview's new URL, or `http://localhost:5173/` in behavior mode | Link shown for the new version |
+| `--b-url <url>` | preview's new URL, or `http://localhost:5173/landing.html` in behavior mode | Link shown for the new version |
 | `--out <file>` | `.parity/checklist-…md` | Where to write the list |
 
 ---
@@ -163,14 +163,14 @@ It ends with **Outside this page**: where the flows lead next, such as the works
 npm run parity -- tools/parity/scenarios/landing-page.mjs --mode styles
 
 # Vue step: does the Vue page behave like the prototype? (start npm run dev first)
-npm run parity -- tools/parity/scenarios/landing-page.mjs --mode behavior --b http://localhost:5173/
+npm run parity -- tools/parity/scenarios/landing-page.mjs --mode behavior --b http://localhost:5173/landing.html
 npm run parity -- tools/parity/scenarios/workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace.html
 npm run parity -- tools/parity/scenarios/marucci-workspace-module-1.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
 npm run parity -- tools/parity/scenarios/workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace.html
 npm run parity -- tools/parity/scenarios/marucci-workspace-store-home.mjs --mode behavior --b http://localhost:5173/workspace-integrated.html
 
 # Approved changes: the states the prototype doesn't have yet, on the Vue version only
-npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/
+npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/landing.html
 ```
 
 Opens both versions in headless Chrome and runs every state in the scenario. It compares them at the start and after every step. A full landing-page run (18 states, 129 checkpoints) takes about 2 minutes.
