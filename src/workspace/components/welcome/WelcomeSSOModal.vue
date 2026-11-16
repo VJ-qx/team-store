@@ -1,10 +1,14 @@
 <!-- Converted from workspace-app.jsx: WelcomeSSOModal — the welcome pop-up after sign-in (native sign-in:
      connect the brands found for the email; customizer sign-in: the primary brand, or a choice of
      brands for multi-brand accounts). The prototype's brandGlyph() helper is expanded in place.
+     The ✕, Escape and a click outside the pop-up do what its button does.
      The integrated workspace defines this component but never shows it. -->
 <template>
-  <Modal :open="open" :onClose="() => {}" :width="isMulti ? 640 : 520">
+  <Modal :open="open" :onClose="() => onConfirm(native ? (anyConnected ? originId : null) : primary)" :width="isMulti ? 640 : 520">
     <div class="wx-welcome">
+      <button aria-label="Close" @click="() => onConfirm(native ? (anyConnected ? originId : null) : primary)" class="wx-welcome__close" @mouseenter="(e) => { e.currentTarget.style.background = '#f4f4f5'; e.currentTarget.style.color = '#09090b'; }" @mouseleave="(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#71717a'; }">
+        <IconX :size="18" />
+      </button>
       <div v-if="!native" class="wx-welcome__badge-row">
         <span class="wx-welcome__badge">
           <IconCircleCheck :size="15" /> Signed in automatically</span>
@@ -75,11 +79,11 @@ import { ACCOUNT_PROFILE } from '../../data/account.js';
 import { ACCESSIBLE_CUSTOMIZERS, CUSTOMIZER_BRANDS } from '../../data/brands.js';
 import { px } from '../../lib/style.js';
 import Modal from '../common/Modal.vue';
-import { IconArrowRight, IconCheck, IconCircleCheck } from '../icons.js';
+import { IconArrowRight, IconCheck, IconCircleCheck, IconX } from '../icons.js';
 
 export default {
   name: 'WelcomeSSOModal',
-  components: { IconArrowRight, IconCheck, IconCircleCheck, Modal },
+  components: { IconArrowRight, IconCheck, IconCircleCheck, IconX, Modal },
   props: {
     open: { type: Boolean, default: undefined },
     originId: { type: String, default: INTEGRATION.on ? "victus" : "prolook" },

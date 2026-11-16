@@ -20,6 +20,24 @@ const staticNotFound = {
   },
 };
 
+// The prototype's files live in prototype/ but are served from the root, as in the handover:
+// /Workspace.dc.html opens prototype/Workspace.dc.html. A page's relative links (assets/, _ds/,
+// styles/css/, support.js, its .jsx) and its redirects then resolve exactly as before. Files at the
+// root win, so the Vue pages are never affected. tools/parity/lib.mjs (serveDir) does the same.
+const prototypeAtRoot = {
+  name: 'prototype-at-root',
+  configureServer(server) {
+    server.middlewares.use((req, res, next) => {
+      const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+      const root = server.config.root;
+      if (path !== '/' && !existsSync(resolve(root, '.' + path)) && existsSync(resolve(root, 'prototype', '.' + path))) {
+        req.url = '/prototype' + req.url;
+      }
+      next();
+    });
+  },
+};
+
 // The workspace components are converted from JSX, which drops the whitespace between elements on
 // separate lines. Vue's "condense" mode does the same, so those files compile with it, plus splitText
 // below. The landing page keeps "preserve": its prototype is HTML, where that whitespace renders.
@@ -60,7 +78,10 @@ export default defineConfig({
   // Serve files as a plain static host would: an unknown page is a 404, like for the prototype
   // (instead of falling back to index.html).
   appType: 'mpa',
+  // npm run dev opens the landing page in the browser (the root has no page).
+  server: { open: '/landing.html' },
   plugins: [
+    prototypeAtRoot,
     staticNotFound,
     vue({
       compiler,
@@ -77,12 +98,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        landing: resolve(__dirname, 'landing.html'),
         workspace: resolve(__dirname, 'workspace.html'),
         'workspace-integrated': resolve(__dirname, 'workspace-integrated.html'),
       },
     },
   },
   // Scan only the Vue entries for dependencies, not the .dc.html prototypes or the workspace .jsx files.
-  optimizeDeps: { entries: ['index.html', 'workspace.html', 'workspace-integrated.html'] },
+  optimizeDeps: { entries: ['landing.html', 'workspace.html', 'workspace-integrated.html'] },
 });

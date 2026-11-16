@@ -1,4 +1,4 @@
-// Entry point for the Vue landing page (index.html), converted from "Landing Page.dc.html".
+// Entry point for the Vue landing page (landing.html), converted from "Landing Page.dc.html".
 import { createApp } from 'vue';
 import '../../styles/vue.scss';
 import LandingPage from './LandingPage.vue';

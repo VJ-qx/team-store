@@ -10,8 +10,8 @@
 //
 // Usage:
 //   node tools/parity/parity.mjs <scenario.mjs> --mode styles   [--a main] [--b .]
-//   node tools/parity/parity.mjs <scenario.mjs> --mode behavior  --a main --b http://localhost:5173/
-//   node tools/parity/parity.mjs <scenario.mjs> --approved       --b http://localhost:5173/
+//   node tools/parity/parity.mjs <scenario.mjs> --mode behavior  --a main --b http://localhost:5173/landing.html
+//   node tools/parity/parity.mjs <scenario.mjs> --approved       --b http://localhost:5173/landing.html
 //   Options: --only <text>            run only states whose name contains <text>
 //            --approved               run the scenario's `approved` states instead: approved changes the
 //                                     prototype doesn't have yet. Both sides are the Vue version (--b), so
@@ -44,7 +44,7 @@ for (let i = 0; i < argv.length; i++) {
 // Approved changes exist only in the Vue version, so both sides are the Vue version.
 if (opts.approved) {
   if (!/^https?:\/\//.test(opts.b)) {
-    console.error('--approved checks the Vue version: add --b <vue-url>, for example --b http://localhost:5173/');
+    console.error('--approved checks the Vue version: add --b <vue-url>, for example --b http://localhost:5173/landing.html');
     process.exit(2);
   }
   opts.mode = 'behavior';
