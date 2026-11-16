@@ -12,6 +12,8 @@ In the project folder, run `npm run dev`. The same server opens the Vue pages an
 | Workspace | http://localhost:5173/workspace.html | http://localhost:5173/Workspace.dc.html |
 | Marucci workspace | http://localhost:5173/workspace-integrated.html | http://localhost:5173/Marucci%20Workspace.dc.html |
 
+The prototype's files are in `prototype/`, but they open at the root as above: the dev server serves that folder from the root.
+
 The prototype's settings panel doesn't exist in the Vue pages. To change a setting, open the browser console and run the command given below for each version. Reload the page to go back to the defaults.
 
 ## Module 1
