@@ -6981,32 +6981,26 @@ function SourcePill({ value = "victus", onChange, style }) {
   const cur = CUSTOMIZER_BRANDS[keys.includes(value) ? value : keys[0]] || CUSTOMIZER_BRANDS.victus;
   const logoOf = (b) => b.logoBlack || b.logoInk || b.logo;
   const mark = (b, size) => logoOf(b)
-    ? <img src={logoOf(b)} alt="" style={{ width: size, height: Math.round(size * 2 / 3), objectFit: "contain", flexShrink: 0 }} />
-    : <span style={{ width: size, height: Math.round(size * 2 / 3), borderRadius: 3, background: "#f4f4f5", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 8, fontWeight: 800, color: "#52525b", flexShrink: 0 }}>{(b.name || "?").slice(0, 2).toUpperCase()}</span>;
+    ? <img src={logoOf(b)} alt="" className="wx-source-pill__logo" style={{ width: size, height: Math.round(size * 2 / 3) }} />
+    : <span className="wx-source-pill__mono" style={{ width: size, height: Math.round(size * 2 / 3) }}>{(b.name || "?").slice(0, 2).toUpperCase()}</span>;
   return (
-    <div ref={ref} style={{ position: "relative", width: "fit-content", ...(style || {}) }}>
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="listbox" aria-expanded={open} style={{
-        display: "inline-flex", alignItems: "center", gap: 12, height: 40, padding: "0 12px", boxSizing: "border-box",
-        background: "#fff", border: "1px solid #E4E4E7", borderRadius: 8, cursor: "pointer", fontFamily: "inherit",
-      }}>
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".02em", textTransform: "uppercase", color: "#A1A1AA" }}>Source</span>
+    <div ref={ref} className="wx-source-pill" style={{ ...(style || {}) }}>
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="listbox" aria-expanded={open} className="wx-source-pill__trigger">
+        <span className="wx-source-pill__label">Source</span>
         {mark(cur, 24)}
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".02em", textTransform: "uppercase", color: "#09090B" }}>{cur.name}</span>
+        <span className="wx-source-pill__name">{cur.name}</span>
         <IconChevron size={14} style={{ color: "#09090B", strokeWidth: 2.2, transition: "transform .16s cubic-bezier(.2,0,0,1)", transform: open ? "rotate(180deg)" : "none" }} />
       </button>
       {open && (
-        <div role="listbox" style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, minWidth: "100%", background: "#fff", border: "1px solid #E4E4E7", borderRadius: 8, boxShadow: "0 8px 24px rgba(9,9,11,.10)", padding: 6, zIndex: 40 }}>
+        <div role="listbox" className="wx-source-pill__menu">
           {keys.map((k) => {
             const b = CUSTOMIZER_BRANDS[k]; const sel = k === value;
             return (
-              <button key={k} type="button" role="option" aria-selected={sel} onClick={() => { onChange && onChange(k); setOpen(false); }} style={{
-                display: "flex", alignItems: "center", gap: 10, width: "100%", height: 36, padding: "0 10px", boxSizing: "border-box",
-                background: sel ? "#f4f4f5" : "transparent", border: 0, borderRadius: 6, cursor: "pointer", fontFamily: "inherit", textAlign: "left", whiteSpace: "nowrap",
-              }}
+              <button key={k} type="button" role="option" aria-selected={sel} onClick={() => { onChange && onChange(k); setOpen(false); }} className="wx-source-pill__option" style={{ background: sel ? "#f4f4f5" : "transparent" }}
                 onMouseEnter={(e) => { if (!sel) e.currentTarget.style.background = "#fafafa"; }}
                 onMouseLeave={(e) => { if (!sel) e.currentTarget.style.background = "transparent"; }}>
                 {mark(b, 21)}
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: "#09090B", flex: 1 }}>{b.name}</span>
+                <span className="wx-source-pill__option-name">{b.name}</span>
                 {sel && <IconCheck size={14} style={{ color: "#09090B", strokeWidth: 2.4 }} />}
               </button>
             );
@@ -8203,7 +8197,7 @@ const WIZARD_CATALOG = [
 function CatalogPhoto({ photo, alt }) {
   return (
     <img src={`assets/products/${photo}.png`} alt={alt}
-      style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+      className="wx-catalog-photo" />
   );
 }
 
@@ -8239,24 +8233,14 @@ function StackedThumbs({ items }) {
   const shown = items.slice(0, 3);
   const extra = items.length - shown.length;
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div className="wx-stacked-thumbs">
       {shown.map((it, i) => (
-        <div key={it.id} style={{
-          position: "absolute", width: 92, height: 116,
-          left: `calc(50% - 48px + ${(i - (shown.length - 1) / 2) * 42}px)`,
-          top: "50%", transform: `translateY(-50%) rotate(${(i - (shown.length - 1) / 2) * 5}deg)`,
-          background: "#fff", border: "1px solid #e5e5e9", borderRadius: 7, padding: 8,
-          boxShadow: "0 4px 12px rgba(20,20,30,.10)", zIndex: i,
-        }}>
+        <div key={it.id} className="wx-stacked-thumbs__item" style={{ left: `calc(50% - 48px + ${(i - (shown.length - 1) / 2) * 42}px)`, transform: `translateY(-50%) rotate(${(i - (shown.length - 1) / 2) * 5}deg)`, zIndex: i }}>
           <CatalogPhoto photo={it.photo} alt={it.title} />
         </div>
       ))}
       {extra > 0 && (
-        <span style={{
-          position: "absolute", right: 16, bottom: 12, zIndex: 9,
-          background: "#0e0e10", color: "#fff", borderRadius: 999, padding: "4px 8px",
-          fontSize: 11, fontWeight: 800, letterSpacing: ".02em",
-        }}>+{extra}</span>
+        <span className="wx-stacked-thumbs__more">+{extra}</span>
       )}
     </div>
   );
@@ -8278,54 +8262,46 @@ function AddProductsBrowser({ groups, accent, right }) {
   const chip = (key, label, count) => {
     const on = src === key;
     return (
-      <button key={key} type="button" onClick={() => { setSrc(key); setSub(null); }} style={{
-        display: "inline-flex", alignItems: "center", gap: 7, height: 32, padding: "0 14px",
-        borderRadius: 999, cursor: "pointer", fontSize: 12.5, fontWeight: 700, letterSpacing: ".01em",
-        background: on ? "#0e0e10" : "#fff", color: on ? "#fff" : "#27272a",
-        border: "1px solid " + (on ? "#0e0e10" : "#d4d4d8"), transition: "all .14s",
-      }}>
-        {label}<span style={{ fontSize: 11.5, fontWeight: 700, color: on ? "rgba(255,255,255,.7)" : "#9a9aa1" }}>{count}</span>
+      <button key={key} type="button" onClick={() => { setSrc(key); setSub(null); }} className={`wx-product-browser__chip${on ? " wx-product-browser__chip--on" : ""}`}>
+        {label}<span className={`wx-product-browser__chip-count${on ? " wx-product-browser__chip-count--on" : ""}`}>{count}</span>
       </button>
     );
   };
   return (
-    <div style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 12, padding: "20px 20px 24px", marginBottom: 24 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-        <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
-          <span style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", color: "#9a9aa1", display: "inline-flex" }}><IconSearch size={15} /></span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search all sources — designs, carts, vault blanks, templates, other stores" style={{
-            width: "100%", height: 40, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 8,
-            padding: "0 12px 0 36px", fontSize: 13, color: "#0e0e10", outline: "none", background: "#fff",
-          }} />
+    <div className="wx-product-browser">
+      <div className="wx-product-browser__search-row">
+        <div className="wx-product-browser__search">
+          <span className="wx-product-browser__search-icon"><IconSearch size={15} /></span>
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search all sources — designs, carts, vault blanks, templates, other stores" className="wx-product-browser__search-input" />
         </div>
         {right}
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", paddingBottom: 16, borderBottom: "1px solid #ececf0", marginBottom: 20 }}>
+      <div className="wx-product-browser__chips">
         {chip("all", "All sources", total)}
         {list.map((g) => chip(g.key, g.label, g.items.length))}
-        <span style={{ marginLeft: "auto", fontSize: 12, color: "#9a9aa1" }}>{rows.length === total ? total + " item" + (total === 1 ? "" : "s") : rows.length + " of " + total + " shown"}</span>
+        <span className="wx-product-browser__shown">{rows.length === total ? total + " item" + (total === 1 ? "" : "s") : rows.length + " of " + total + " shown"}</span>
       </div>
       {src !== "all" && (list.find((x) => x.key === src) || {}).note}
       {src !== "all" && (() => {
         const g = list.find((x) => x.key === src);
         if (!g || !g.subs || g.subs.length === 0) return null;
         return (
-          <div style={{ display: "inline-flex", background: "#f1f1f3", borderRadius: 9, padding: 3, gap: 2, marginBottom: 18 }}>
+          <div className="wx-product-browser__subs">
             {[{ k: null, l: "All" }].concat(g.subs).map((t) => {
               const on = sub === t.k;
               return (
-                <button key={String(t.k)} type="button" onClick={() => setSub(t.k)} style={{ border: 0, cursor: "pointer", fontFamily: "inherit", borderRadius: 6, padding: "8px 16px", fontSize: 12.5, fontWeight: 700, background: on ? "#fff" : "transparent", color: on ? "#09090b" : "#71717a", boxShadow: on ? "0 1px 3px rgba(9,9,11,.12)" : "none", transition: "background .14s, color .14s" }}>{t.l}</button>
+                <button key={String(t.k)} type="button" onClick={() => setSub(t.k)} className={`wx-product-browser__sub${on ? " wx-product-browser__sub--on" : ""}`}>{t.l}</button>
               );
             })}
           </div>
         );
       })()}
       {rows.length === 0 ? (
-        <div style={{ padding: "44px 0", textAlign: "center", color: "#9a9aa1", fontSize: 13 }}>
+        <div className="wx-product-browser__empty">
           {needle ? "Nothing matches \u201c" + q.trim() + "\u201d in this source." : (src !== "all" && (list.find((x) => x.key === src) || {}).emptyHint) || (total === 0 ? "No products available yet." : "No products in this source yet.")}
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
+        <div className="wx-product-browser__grid">
           {rows.map((it) => <SavedAssetCard key={it._key} accent={accent} {...it} />)}
         </div>
       )}
@@ -8342,80 +8318,67 @@ function SavedAssetCard({ kind, title, subtitle, photo, letter, badge, disabledR
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{
-        border: `1px ${autoRemoved ? "dashed" : "solid"} ${committed ? "#1f9d55" : hover ? "#c7c7cd" : autoRemoved ? "#d4d4d8" : "#ececf0"}`, borderRadius: 10,
-        overflow: "visible", background: "#fff", display: "flex", flexDirection: "column",
-        transition: "border-color .14s, box-shadow .14s",
-        boxShadow: hover ? "0 6px 18px rgba(20,20,30,.08)" : "none",
-      }}>
-      <div style={{ position: "relative", background: "#f1f2f4", height: 168, padding: 16, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+      className={`wx-asset-card-marucci${hover ? " wx-asset-card-marucci--hover" : ""}`} style={{ border: `1px ${autoRemoved ? "dashed" : "solid"} ${committed ? "#1f9d55" : hover ? "#c7c7cd" : autoRemoved ? "#d4d4d8" : "#ececf0"}` }}>
+      <div className="wx-asset-card__media">
         {kind === "cart"
           ? <StackedThumbs items={items} />
-          : photo ? <div style={{ width: 100, height: 132, opacity: autoRemoved ? .35 : 1, filter: autoRemoved ? "grayscale(1)" : "none" }}><CatalogPhoto photo={photo} alt={title} /></div>
-          : <div style={{ width: 76, height: 96, borderRadius: 8, background: "#e7e7ec", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, color: "#b3b3bb" }}>{letter || (title || "P").slice(0, 1)}</div>}
+          : photo ? <div className={`wx-asset-card__photo-auto${autoRemoved ? " wx-asset-card__photo-auto--removed" : ""}`}><CatalogPhoto photo={photo} alt={title} /></div>
+          : <div className="wx-asset-card__letter">{letter || (title || "P").slice(0, 1)}</div>}
         {kind === "cart" && (
-          <span style={{
-            position: "absolute", top: 12, left: 12, background: "#fff", border: "1px solid #e5e5e9",
-            borderRadius: 999, padding: "4px 12px", fontSize: 11, fontWeight: 800, color: "#0e0e10",
-            display: "inline-flex", alignItems: "center", gap: 8,
-          }}><IconLayers size={12} /> {items.length} items</span>
+          <span className="wx-asset-card__items-tag"><IconLayers size={12} /> {items.length} items</span>
         )}
         {committed && (
-          <span style={{
-            position: "absolute", top: 12, right: 12, background: "#1a5c3a", color: "#fff",
-            borderRadius: 999, padding: "4px 12px", fontSize: 12, fontWeight: 700,
-            display: "inline-flex", alignItems: "center", gap: 8,
-          }}><IconCheck size={13} style={{ strokeWidth: 2.8 }} /> In Store</span>
+          <span className="wx-asset-card__in-store"><IconCheck size={13} style={{ strokeWidth: 2.8 }} /> In Store</span>
         )}
       </div>
-      <div style={{ padding: "16px 16px 16px", display: "flex", flexDirection: "column", flex: 1 }}>
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+      <div className="wx-asset-card__body">
+        <div className="wx-asset-card__title-row">
           {renaming != null ? (
             <input autoFocus value={renaming} onChange={(e) => setRenaming(e.target.value)}
               onBlur={() => { const v = (renaming || "").trim(); setRenaming(null); if (v && v !== title && onRenameCommit) onRenameCommit(v); }}
               onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); if (e.key === "Escape") setRenaming(null); }}
-              style={{ flex: 1, minWidth: 0, boxSizing: "border-box", fontSize: 14, fontWeight: 800, color: "#0e0e10", fontFamily: "inherit", border: "1px solid #0e0e10", borderRadius: 6, padding: "2px 6px", outline: "none", marginBottom: 4 }} />
+              className="wx-asset-card__rename" />
           ) : (
-            <div style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 800, color: "#0e0e10", marginBottom: 4, letterSpacing: ".01em" }}>{title}</div>
+            <div className="wx-asset-card__title">{title}</div>
           )}
           {menu && menu.length > 0 && (
-            <span style={{ position: "relative", flexShrink: 0 }}>
-              <button type="button" onClick={() => setMenuOpen((v) => !v)} aria-label="Template actions" style={{ width: 26, height: 26, border: 0, borderRadius: 6, background: menuOpen ? "#f4f4f5" : "none", cursor: "pointer", color: "#71717a", fontSize: 15, fontFamily: "inherit", lineHeight: 1 }}>⋯</button>
-              {menuOpen && <span onClick={() => setMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 40 }} />}
+            <span className="wx-asset-card__menu-wrap">
+              <button type="button" onClick={() => setMenuOpen((v) => !v)} aria-label="Template actions" className={`wx-asset-card__menu-btn${menuOpen ? " wx-asset-card__menu-btn--open" : ""}`}>⋯</button>
+              {menuOpen && <span onClick={() => setMenuOpen(false)} className="wx-asset-card__menu-backdrop" />}
               {menuOpen && (
-                <div style={{ position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 50, background: "#fff", border: "1px solid #e4e4e7", borderRadius: 8, boxShadow: "0 8px 24px rgba(20,20,30,.14)", padding: 6, minWidth: 180, textAlign: "left" }}>
+                <div className="wx-asset-card__menu">
                   {menu.map((mi, i) => (
-                    <button key={i} type="button" onClick={() => { setMenuOpen(false); if (mi.rename) setRenaming(title || ""); else mi.act && mi.act(); }} style={{ display: "block", width: "100%", textAlign: "left", background: "none", border: 0, borderRadius: 6, padding: "8px 10px", fontFamily: "inherit", fontSize: 12.5, fontWeight: 600, color: mi.danger ? "#b81d14" : "#27272a", cursor: "pointer" }}>{mi.label}</button>
+                    <button key={i} type="button" onClick={() => { setMenuOpen(false); if (mi.rename) setRenaming(title || ""); else mi.act && mi.act(); }} className={`wx-asset-card__menu-item${mi.danger ? " wx-asset-card__menu-item--danger" : ""}`}>{mi.label}</button>
                   ))}
                 </div>
               )}
             </span>
           )}
         </div>
-        <div style={{ fontSize: 12, color: "#9a9aa1", marginBottom: 16 }}>{subtitle}</div>
+        <div className="wx-asset-card__subtitle">{subtitle}</div>
         {assignEnabled && !committed && (
           <RosterAssignField variant={assignVariant} direction="down" value={assigned || []} onChange={onAssign} accent={accent} />
         )}
-        <div style={{ marginTop: "auto" }}>
+        <div className="wx-asset-card__foot">
         {committed && assignEnabled && (() => {
           const ids = assigned || [];
           const allTeams = assignAllRosterIds();
           const isLeagueWide = ids.length === 0 || ids.length >= allTeams.length;
           const names = ids.map((id) => (assignRosterLabel(id) || {}).name).filter(Boolean);
           return (
-            <div style={{ border: "1px solid #ececf0", borderRadius: 8, background: "#fafafb", padding: "12px 12px", marginBottom: 12 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <div className="wx-asset-card__assigned">
+              <div className="wx-asset-card__assigned-row">
                   <IconUsers size={13} style={{ flexShrink: 0, marginTop: 2, color: "#9a9aa1" }} />
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".06em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 4 }}>Assigned to</div>
+                  <div className="wx-asset-card__assigned-text">
+                    <div className="wx-asset-card__assigned-label">Assigned to</div>
                     {isLeagueWide ? (
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "#0e0e10" }}>Entire league · all teams</span>
+                      <span className="wx-asset-card__assigned-all">Entire league · all teams</span>
                     ) : (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                      <div className="wx-asset-card__assigned-names">
                         {names.slice(0, 3).map((n, i) => (
-                          <span key={i} style={{ fontSize: 11, fontWeight: 700, color: "#0e0e10", background: "#fff", border: "1px solid #e5e5e9", borderRadius: 999, padding: "2px 8px" }}>{n}</span>
+                          <span key={i} className="wx-asset-card__assigned-name">{n}</span>
                         ))}
-                        {names.length > 3 && <span style={{ fontSize: 11, fontWeight: 800, color: "#6b6b72", alignSelf: "center" }}>+{names.length - 3}</span>}
+                        {names.length > 3 && <span className="wx-asset-card__assigned-more">+{names.length - 3}</span>}
                       </div>
                     )}
                   </div>
@@ -8424,41 +8387,29 @@ function SavedAssetCard({ kind, title, subtitle, photo, letter, badge, disabledR
           );
         })()}
         {autoAdded && !autoRemoved ? (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, paddingTop: 12, borderTop: "1px solid #ececf0" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 700, color: "#1f9d55" }}>
-              <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#1f9d55", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><IconCheck size={10} style={{ strokeWidth: 4 }} /></span>
-              In store <span style={{ color: "#9a9aa1", fontWeight: 500 }}>· auto-added</span>
+          <div className="wx-asset-card__auto-row">
+            <span className="wx-asset-card__auto-status">
+              <span className="wx-asset-card__auto-check"><IconCheck size={10} style={{ strokeWidth: 4 }} /></span>
+              In store <span className="wx-asset-card__auto-note">· auto-added</span>
             </span>
-            <button type="button" onClick={onAutoRemove} style={{ background: "none", border: 0, padding: "4px 0", fontFamily: "inherit", fontSize: 12.5, fontWeight: 700, color: "#6b6b72", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}
+            <button type="button" onClick={onAutoRemove} className="wx-asset-card__auto-remove" style={{ color: "#6b6b72" }}
               onMouseEnter={(e) => e.currentTarget.style.color = "#e1251b"} onMouseLeave={(e) => e.currentTarget.style.color = "#6b6b72"}>Remove</button>
           </div>
         ) : autoAdded && autoRemoved ? (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, paddingTop: 12, borderTop: "1px solid #ececf0" }}>
-            <span style={{ fontSize: 12.5, fontWeight: 700, color: "#9a9aa1" }}>Removed from store</span>
-            <button type="button" onClick={onAutoRestore} style={{ background: "none", border: 0, padding: "4px 0", fontFamily: "inherit", fontSize: 12.5, fontWeight: 700, color: "#0e0e10", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>Add back</button>
+          <div className="wx-asset-card__auto-row">
+            <span className="wx-asset-card__auto-removed">Removed from store</span>
+            <button type="button" onClick={onAutoRestore} className="wx-asset-card__auto-add-back">Add back</button>
           </div>
         ) : committed ? (
-          <button type="button" onClick={onEdit} style={{
-            width: "100%", padding: "12px", borderRadius: 6, cursor: "pointer", marginTop: assignEnabled ? 12 : 0,
-            fontSize: 13, fontWeight: 700, letterSpacing: ".01em",
-            background: "#fff", color: "#0e0e10", border: "1px solid #d4d4d8",
-            display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-            transition: "border-color .14s, background .14s",
-          }}
+          <button type="button" onClick={onEdit} className={`wx-asset-card__edit${assignEnabled ? " wx-asset-card__edit--spaced" : ""}`} style={{ background: "#fff", border: "1px solid #d4d4d8" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0e0e10"; e.currentTarget.style.background = "#f7f7f8"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4d4d8"; e.currentTarget.style.background = "#fff"; }}>
             <IconEdit size={15} style={{ strokeWidth: 2.2 }} /> Edit Product
           </button>
         ) : disabledReason ? (
-          <button type="button" disabled title={disabledReason} style={{ width: "100%", padding: "12px", borderRadius: 6, marginTop: assignEnabled ? 12 : 0, fontSize: 13, fontWeight: 700, border: "1px solid #ececf0", background: "#f7f7f8", color: "#a1a1aa", cursor: "not-allowed" }}>{disabledReason}</button>
+          <button type="button" disabled title={disabledReason} className={`wx-asset-card__disabled${assignEnabled ? " wx-asset-card__disabled--spaced" : ""}`}>{disabledReason}</button>
         ) : (
-          <button type="button" onClick={onAdd} style={{
-            width: "100%", padding: "12px", borderRadius: 6, cursor: "pointer", marginTop: assignEnabled ? 12 : 0,
-            fontSize: 13, fontWeight: 800, letterSpacing: ".02em", border: 0,
-            background: "#0e0e10", color: "#fff",
-            display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-            transition: "background .14s",
-          }}
+          <button type="button" onClick={onAdd} className={`wx-asset-card__add${assignEnabled ? " wx-asset-card__add--spaced" : ""}`} style={{ background: "#0e0e10" }}
             onMouseEnter={(e) => e.currentTarget.style.background = accent}
             onMouseLeave={(e) => e.currentTarget.style.background = "#0e0e10"}>
             <IconPlus size={15} style={{ strokeWidth: 2.6 }} /> Add to Store
@@ -8653,7 +8604,7 @@ function storeScopedTeams(store) {
   return window.__storeTeams[store.id] || [];
 }
 function ScopedTeamRows({ teams, value = [], onChange, minOne = false }) {
-  if (!teams.length) return <div style={{ padding: "22px 16px", fontSize: 12.5, color: "#9a9aa1", textAlign: "center" }}>No Teams in this store yet.</div>;
+  if (!teams.length) return <div className="wx-scoped-teams__empty">No Teams in this store yet.</div>;
   return (
     <div>
       {teams.map((t) => {
@@ -8662,10 +8613,10 @@ function ScopedTeamRows({ teams, value = [], onChange, minOne = false }) {
         return (
           <button key={t.id} type="button" disabled={lockLast} title={lockLast ? "Team Required / Team Supplied items must stay assigned to at least one Team" : undefined}
             onClick={() => onChange(on ? value.filter((x) => x !== t.id) : [...value, t.id])}
-            style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", background: on ? "#fafafb" : "#fff", border: 0, borderBottom: "1px solid #f3f3f4", padding: "12px 16px", cursor: lockLast ? "default" : "pointer", fontFamily: "inherit" }}>
-            <span style={{ width: 18, height: 18, borderRadius: 5, flexShrink: 0, border: on ? 0 : "1.5px solid #c7c7cd", background: on ? "#0e0e10" : "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 11, fontWeight: 800 }}>{on ? "✓" : ""}</span>
-            <span style={{ flex: 1, fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{t.name}</span>
-            <span style={{ fontSize: 11.5, color: "#9a9aa1" }}>{t.code}</span>
+            className={`wx-scoped-teams__row${on ? " wx-scoped-teams__row--on" : ""}${lockLast ? " wx-scoped-teams__row--locked" : ""}`}>
+            <span className={`wx-scoped-teams__check${on ? " wx-scoped-teams__check--on" : ""}`}>{on ? "✓" : ""}</span>
+            <span className="wx-scoped-teams__name">{t.name}</span>
+            <span className="wx-scoped-teams__code">{t.code}</span>
           </button>
         );
       })}
@@ -8690,13 +8641,9 @@ function RosterTreePanel({ value, onChange, accent, minOne = false }) {
     const n = new Set(sel); n.has(id) ? n.delete(id) : n.add(id); onChange([...n]);
   };
   const Box = ({ on, mixed, color }) => (
-    <span style={{
-      width: 16, height: 16, borderRadius: 5, flexShrink: 0, border: `1.6px solid ${on || mixed ? (color || accent) : "#c7c7cd"}`,
-      background: on ? (color || accent) : mixed ? hexA(color || accent, 0.16) : "#fff",
-      display: "inline-flex", alignItems: "center", justifyContent: "center", transition: "all .12s",
-    }}>
+    <span className="wx-roster-tree__box" style={{ border: `1.6px solid ${on || mixed ? (color || accent) : "#c7c7cd"}`, background: on ? (color || accent) : mixed ? hexA(color || accent, 0.16) : "#fff" }}>
       {on && <IconCheck size={12} style={{ color: "#fff", strokeWidth: 3.2 }} />}
-      {!on && mixed && <span style={{ width: 8, height: 2.5, borderRadius: 2, background: color || accent }} />}
+      {!on && mixed && <span className="wx-roster-tree__box-mark" style={{ background: color || accent }} />}
     </span>
   );
   // Flattened parent → Team structure (no roster-group tier) — the multi-select
@@ -8705,26 +8652,23 @@ function RosterTreePanel({ value, onChange, accent, minOne = false }) {
   ROSTER_GROUP_SEED.forEach((g) => g.rosters.forEach((r) => flatTeams.push({ ...r, group: g.name, color: g.color })));
   STANDALONE_ROSTER_SEED.forEach((r) => flatTeams.push({ ...r, group: "Standalone", color: "#6b6b72" }));
   return (
-    <div style={{ maxHeight: 320, overflowY: "auto", padding: "8px 0" }}>
+    <div className="wx-roster-tree__list">
       {flatTeams.map((r) => {
         const on = sel.has(r.id);
         const lockLast = minOne && on && sel.size === 1;
         return (
           <button key={r.id} type="button" disabled={lockLast} title={lockLast ? "Team Required / Team Supplied items must stay assigned to at least one Team" : undefined}
-            onClick={() => toggle(r.id)} style={{
-              display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left",
-              background: "transparent", border: 0, padding: "9px 16px", cursor: lockLast ? "not-allowed" : "pointer", opacity: lockLast ? 0.55 : 1,
-            }}
+            onClick={() => toggle(r.id)} className={`wx-roster-tree__row${lockLast ? " wx-roster-tree__row--locked" : ""}`} style={{ background: "transparent" }}
             onMouseEnter={(e) => e.currentTarget.style.background = "#fafafb"}
             onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}>
             <Box on={on} color={r.color} />
-            <span style={{ width: 22, height: 22, borderRadius: 6, flexShrink: 0, background: r.color, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800 }}>{rInitials(r.name)}</span>
-            <span style={{ flex: 1, minWidth: 0, fontSize: 13, color: on ? "#0e0e10" : "#4b4b52", fontWeight: on ? 700 : 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.name}</span>
-            <span style={{ fontSize: 11, color: "#c0c0c6", whiteSpace: "nowrap" }}>{r.group}</span>
+            <span className="wx-roster-tree__avatar" style={{ background: r.color }}>{rInitials(r.name)}</span>
+            <span className={`wx-roster-tree__name${on ? " wx-roster-tree__name--on" : ""}`}>{r.name}</span>
+            <span className="wx-roster-tree__group">{r.group}</span>
           </button>
         );
       })}
-      {flatTeams.length === 0 && <div style={{ padding: "22px 16px", fontSize: 12.5, color: "#9a9aa1", textAlign: "center" }}>No Teams yet.</div>}
+      {flatTeams.length === 0 && <div className="wx-roster-tree__empty">No Teams yet.</div>}
     </div>
   );
 }
@@ -8753,31 +8697,31 @@ function TeamAssignPrompt({ open, initial = [], settingLabel = "Required", store
     setNewName(""); setCreating(false);
   };
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(9,9,11,.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 420, padding: 24 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ width: 520, maxWidth: "100%", background: "#fff", borderRadius: 12, boxShadow: "0 24px 48px rgba(9,9,11,.2)", overflow: "hidden" }}>
-        <div style={{ padding: "22px 26px 0" }}>
-          <div style={{ fontSize: 17, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif", marginBottom: 6 }}>Assign to Teams</div>
-          <div style={{ fontSize: 13, color: "#6b6b72", lineHeight: 1.55 }}>{settingLabel} items must be assigned to at least one Team before the setting can save.</div>
+    <div onClick={onClose} className="wx-team-prompt">
+      <div onClick={(e) => e.stopPropagation()} className="wx-team-prompt__dialog">
+        <div className="wx-team-prompt__head">
+          <div className="wx-team-prompt__title">Assign to Teams</div>
+          <div className="wx-team-prompt__desc">{settingLabel} items must be assigned to at least one Team before the setting can save.</div>
         </div>
-        <div style={{ padding: "14px 26px 0" }}>
+        <div className="wx-team-prompt__body">
           {hasTeams
-            ? <div style={{ border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden" }}>{scoped ? <ScopedTeamRows teams={scoped} value={ids} onChange={setIds} /> : <RosterTreePanel value={ids} onChange={setIds} accent="#e1251b" />}</div>
-            : <div style={{ border: "1px dashed #d4d4d8", borderRadius: 10, padding: "22px 18px", textAlign: "center", fontSize: 13, color: "#6b6b72" }}>This store has no Teams yet — create one below to continue.</div>}
+            ? <div className="wx-team-prompt__list">{scoped ? <ScopedTeamRows teams={scoped} value={ids} onChange={setIds} /> : <RosterTreePanel value={ids} onChange={setIds} accent="#e1251b" />}</div>
+            : <div className="wx-team-prompt__empty">This store has no Teams yet — create one below to continue.</div>}
           {creating ? (
-            <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 12 }}>
+            <div className="wx-team-prompt__create">
               <input autoFocus value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") createTeam(); }} placeholder="Team name"
-                style={{ flex: 1, height: 40, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 6, padding: "0 12px", fontSize: 13, fontFamily: "inherit", outline: "none" }} />
-              <span style={{ fontSize: 11.5, color: "#9a9aa1", whiteSpace: "nowrap" }}>Team code auto-generates</span>
-              <button type="button" onClick={createTeam} disabled={!newName.trim()} style={{ background: newName.trim() ? "#0e0e10" : "#ececf0", color: newName.trim() ? "#fff" : "#9a9aa1", border: 0, borderRadius: 6, padding: "11px 16px", fontSize: 12.5, fontWeight: 700, cursor: newName.trim() ? "pointer" : "default", fontFamily: "inherit", whiteSpace: "nowrap" }}>Create Team</button>
+                className="wx-team-prompt__input" />
+              <span className="wx-team-prompt__code-note">Team code auto-generates</span>
+              <button type="button" onClick={createTeam} disabled={!newName.trim()} className={`wx-team-prompt__create-btn${(newName.trim()) ? " wx-team-prompt__create-btn--ready" : ""}`}>Create Team</button>
             </div>
           ) : (
-            <button type="button" onClick={() => setCreating(true)} style={{ background: "none", border: 0, padding: 0, marginTop: 12, fontSize: 12.5, fontWeight: 700, color: "#e1251b", cursor: "pointer", fontFamily: "inherit" }}>+ New Team</button>
+            <button type="button" onClick={() => setCreating(true)} className="wx-team-prompt__new-team">+ New Team</button>
           )}
-          <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 8 }}>Manage Teams, codes and rosters in <span style={{ fontWeight: 700, color: "#52525b" }}>My Team(s)</span>.</div>
+          <div className="wx-team-prompt__manage">Manage Teams, codes and rosters in <span className="wx-team-prompt__manage-link">My Team(s)</span>.</div>
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, padding: "18px 26px 22px" }}>
-          <button type="button" onClick={onClose} style={{ background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "11px 18px", fontSize: 13, fontWeight: 600, color: "#0e0e10", cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
-          <button type="button" onClick={() => ids.length && onConfirm(ids)} disabled={!ids.length} style={{ background: ids.length ? "#0e0e10" : "#ececf0", color: ids.length ? "#fff" : "#9a9aa1", border: 0, borderRadius: 6, padding: "11px 22px", fontSize: 13, fontWeight: 700, cursor: ids.length ? "pointer" : "default", fontFamily: "inherit" }}>Assign & Save</button>
+        <div className="wx-team-prompt__actions">
+          <button type="button" onClick={onClose} className="wx-team-prompt__cancel">Cancel</button>
+          <button type="button" onClick={() => ids.length && onConfirm(ids)} disabled={!ids.length} className={`wx-team-prompt__save${ids.length ? " wx-team-prompt__save--ready" : ""}`}>Assign & Save</button>
         </div>
       </div>
     </div>
@@ -8801,24 +8745,20 @@ function RosterAssignField({ variant = "dropdown", value = [], onChange, accent 
   const selectAll = () => onChange(allOn ? (minOne ? value.slice(0, 1) : []) : (scoped ? scoped.map((t) => t.id) : assignAllRosterIds()));
 
   const label = (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 10.5, fontWeight: 800, letterSpacing: ".08em", color: "#9a9aa1", textTransform: "uppercase" }}>
+    <span className="wx-roster-assign__eyebrow">
       <IconUsers size={13} /> Assign to Teams
     </span>
   );
 
   const popover = open && (
-    <div style={{
-      position: "absolute", ...(direction === "down" ? { top: "calc(100% + 8px)" } : { bottom: "calc(100% + 8px)" }), left: 0, right: 0, zIndex: 50,
-      background: "#fff", border: "1px solid #e5e5e9", borderRadius: 12, overflow: "hidden",
-      boxShadow: "0 18px 44px rgba(20,20,30,.2)",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #f1f1f3" }}>
-        <span style={{ fontSize: 12, fontWeight: 800, color: "#0e0e10" }}>{count} team{count === 1 ? "" : "s"} selected</span>
-        <button type="button" onClick={selectAll} style={{ background: "transparent", border: 0, cursor: "pointer", fontSize: 12, fontWeight: 700, color: accent }}>{allOn ? "Clear all" : "Select all"}</button>
+    <div className="wx-roster-assign__panel" style={{ ...(direction === "down" ? { top: "calc(100% + 8px)" } : { bottom: "calc(100% + 8px)" }), left: 0, right: 0, zIndex: 50, background: "#fff", border: "1px solid #e5e5e9", borderRadius: 12, overflow: "hidden", boxShadow: "0 18px 44px rgba(20,20,30,.2)" }}>
+      <div className="wx-roster-assign__panel-head">
+        <span className="wx-roster-assign__panel-count">{count} team{count === 1 ? "" : "s"} selected</span>
+        <button type="button" onClick={selectAll} className="wx-roster-assign__toggle-all" style={{ color: accent }}>{allOn ? "Clear all" : "Select all"}</button>
       </div>
       {scoped ? <ScopedTeamRows teams={scoped} value={value} onChange={onChange} minOne={minOne} /> : <RosterTreePanel value={value} onChange={onChange} accent={accent} minOne={minOne} />}
-      <div style={{ padding: "12px 16px", borderTop: "1px solid #f1f1f3", display: "flex", justifyContent: "flex-end" }}>
-        <button type="button" onClick={() => setOpen(false)} style={{ background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6, padding: "8px 16px", fontSize: 12.5, fontWeight: 800, cursor: "pointer" }}>Done</button>
+      <div className="wx-roster-assign__panel-foot">
+        <button type="button" onClick={() => setOpen(false)} className="wx-roster-assign__done">Done</button>
       </div>
     </div>
   );
@@ -8827,29 +8767,26 @@ function RosterAssignField({ variant = "dropdown", value = [], onChange, accent 
   if (variant === "chips") {
     const remove = (id) => onChange(value.filter((x) => x !== id));
     return (
-      <div ref={ref} style={{ position: "relative", marginTop: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+      <div ref={ref} className="wx-roster-assign__chips-field">
+        <div className="wx-roster-assign__chips-head">
           {label}
-          <button type="button" onClick={() => setOpen((o) => !o)} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "transparent", border: 0, cursor: "pointer", fontSize: 12, fontWeight: 800, color: accent }}>
+          <button type="button" onClick={() => setOpen((o) => !o)} className="wx-roster-assign__edit" style={{ color: accent }}>
             <IconPlus size={13} style={{ strokeWidth: 2.6 }} /> {count ? "Edit" : "Assign teams"}
           </button>
         </div>
-        <div onClick={() => setOpen(true)} style={{
-          display: "flex", flexWrap: "wrap", gap: 8, minHeight: 40, alignItems: "center", cursor: "pointer",
-          border: `1px dashed ${count ? "#d4d4d8" : "#cfcfd5"}`, borderRadius: 8, padding: "8px 12px", background: "#fafafb",
-        }}>
-          {count === 0 && <span style={{ fontSize: 12.5, color: "#9a9aa1" }}>No teams assigned — tap to choose which teams wear this.</span>}
+        <div onClick={() => setOpen(true)} className={`wx-roster-assign__chips${count ? " wx-roster-assign__chips--filled" : ""}`}>
+          {count === 0 && <span className="wx-roster-assign__chips-empty">No teams assigned — tap to choose which teams wear this.</span>}
           {value.slice(0, 6).map((id) => {
             const l = assignRosterLabel(id); if (!l) return null;
             return (
-              <span key={id} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 700, color: "#0e0e10", background: "#fff", border: "1px solid #e5e5e9", borderRadius: 999, padding: "4px 8px 4px 12px" }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: l.color }} />
+              <span key={id} className="wx-roster-assign__chip">
+                <span className="wx-roster-assign__chip-dot" style={{ background: l.color }} />
                 {l.name}
-                <span onClick={(e) => { e.stopPropagation(); remove(id); }} style={{ display: "inline-flex", cursor: "pointer", color: "#9a9aa1" }}><IconX size={12} /></span>
+                <span onClick={(e) => { e.stopPropagation(); remove(id); }} className="wx-roster-assign__chip-remove"><IconX size={12} /></span>
               </span>
             );
           })}
-          {count > 6 && <span style={{ fontSize: 11.5, fontWeight: 800, color: "#6b6b72" }}>+{count - 6} more</span>}
+          {count > 6 && <span className="wx-roster-assign__chips-more">+{count - 6} more</span>}
         </div>
         {popover}
       </div>
@@ -8862,15 +8799,11 @@ function RosterAssignField({ variant = "dropdown", value = [], onChange, accent 
   else if (count === 1) { const st = scoped && scoped.find((t) => t.id === value[0]); const l = st || assignRosterLabel(value[0]); summary = l ? l.name : "1 team"; }
   else if (count > 1) summary = `${count} teams selected`;
   return (
-    <div ref={ref} style={{ position: "relative", marginTop: 12, zIndex: open ? 60 : "auto" }}>
-      <div style={{ marginBottom: 8 }}>{label}</div>
-      <button type="button" onClick={() => setOpen((o) => !o)} style={{
-        display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", cursor: "pointer",
-        background: "#fff", border: `1.5px solid ${open ? accent : count ? "#c7c7cd" : "#d4d4d8"}`, borderRadius: 8,
-        padding: "12px 12px", boxShadow: open ? `0 0 0 3px ${hexA(accent, 0.12)}` : "none", transition: "border-color .14s, box-shadow .14s",
-      }}>
-        <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: count ? 700 : 500, color: count ? "#0e0e10" : "#9a9aa1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{summary}</span>
-        {count > 0 && <span style={{ flexShrink: 0, fontSize: 10.5, fontWeight: 800, color: accent, background: hexA(accent, 0.1), borderRadius: 999, padding: "2px 8px" }}>{count}</span>}
+    <div ref={ref} className={`wx-roster-assign__dropdown${open ? " wx-roster-assign__dropdown--open" : ""}`}>
+      <div className="wx-roster-assign__dropdown-label">{label}</div>
+      <button type="button" onClick={() => setOpen((o) => !o)} className="wx-roster-assign__trigger" style={{ border: `1.5px solid ${open ? accent : count ? "#c7c7cd" : "#d4d4d8"}`, boxShadow: open ? `0 0 0 3px ${hexA(accent, 0.12)}` : "none" }}>
+        <span className={`wx-roster-assign__summary${count ? " wx-roster-assign__summary--filled" : ""}`}>{summary}</span>
+        {count > 0 && <span className="wx-roster-assign__count" style={{ color: accent, background: hexA(accent, 0.1) }}>{count}</span>}
         <IconChevron size={18} style={{ flexShrink: 0, color: "#6b6b72", transform: open ? "rotate(180deg)" : "none", transition: "transform .16s" }} />
       </button>
       {popover}
@@ -9028,16 +8961,16 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
   const vaultInStore = vaultAll.length - vaultAll.filter((i) => vaultRemoved.has(i.id)).length;
   const vaultCard = (item) => ({ autoAdded: true, autoRemoved: vaultRemoved.has(item.id), onAutoRemove: () => vaultRemove(item.id), onAutoRestore: () => vaultRestore(item.id) });
   const vaultNote = (
-    <div style={{ display: "flex", alignItems: "center", gap: 12, background: "#e7f5ed", border: "1px solid #bfe3cd", borderRadius: 10, padding: "14px 18px", marginBottom: 18 }}>
-      <span style={{ width: 34, height: 34, borderRadius: "50%", background: "#1f9d55", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><IconCheck size={16} style={{ strokeWidth: 3 }} /></span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13.5, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>{vaultInStore === vaultAll.length ? `All ${vaultAll.length} Stock Vault items are already in this store` : `${vaultInStore} of ${vaultAll.length} Stock Vault items are in this store`}</div>
-        <div style={{ fontSize: 12.5, color: "#3f7a55", marginTop: 2, lineHeight: 1.5 }}>Vault items are auto-added to every new store and sorted into their respective categories. Remove any you don't want to sell — pricing and sizes are still confirmed before deploy.</div>
+    <div className="wx-products__vault-banner">
+      <span className="wx-products__vault-banner-icon"><IconCheck size={16} style={{ strokeWidth: 3 }} /></span>
+      <div className="wx-products__vault-banner-text">
+        <div className="wx-products__vault-banner-title">{vaultInStore === vaultAll.length ? `All ${vaultAll.length} Stock Vault items are already in this store` : `${vaultInStore} of ${vaultAll.length} Stock Vault items are in this store`}</div>
+        <div className="wx-products__vault-banner-desc">Vault items are auto-added to every new store and sorted into their respective categories. Remove any you don't want to sell — pricing and sizes are still confirmed before deploy.</div>
       </div>
       {vaultInStore > 0 ? (
-        <button type="button" onClick={() => set({ vaultRemoved: vaultAll.map((i) => i.id) })} style={{ flexShrink: 0, height: 36, padding: "0 14px", background: "#fff", border: "1px solid #bfe3cd", borderRadius: 6, fontFamily: "inherit", fontSize: 12.5, fontWeight: 700, color: "#1f7a44", cursor: "pointer" }}>Remove all</button>
+        <button type="button" onClick={() => set({ vaultRemoved: vaultAll.map((i) => i.id) })} className="wx-products__vault-banner-btn">Remove all</button>
       ) : (
-        <button type="button" onClick={() => set({ vaultRemoved: [] })} style={{ flexShrink: 0, height: 36, padding: "0 14px", background: "#fff", border: "1px solid #bfe3cd", borderRadius: 6, fontFamily: "inherit", fontSize: 12.5, fontWeight: 700, color: "#1f7a44", cursor: "pointer" }}>Add all back</button>
+        <button type="button" onClick={() => set({ vaultRemoved: [] })} className="wx-products__vault-banner-btn">Add all back</button>
       )}
     </div>
   );
@@ -9052,12 +8985,7 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
       <StepHeader num={String(stepNum || 2)} accent={accent} title="Add Products"
         desc="Pull products from the Customizer, the Stock Vault, a saved Catalog Template, or items already used in your other stores. Each item confirms its application sizes before it's added to the store."
         action={
-          <button type="button" onClick={() => { setCustomizerOpen(true); setCustWizStep(0); setCustSport(null); setCustProduct(null); }} style={{
-            display: "inline-flex", alignItems: "center", gap: 8, flexShrink: 0,
-            background: "#fff", color: "#0e0e10", border: "1px solid #0e0e10", borderRadius: 6,
-            padding: "12px 16px", fontSize: 13, fontWeight: 700, letterSpacing: ".01em", cursor: "pointer",
-            transition: "background .14s, color .14s",
-          }}
+          <button type="button" onClick={() => { setCustomizerOpen(true); setCustWizStep(0); setCustSport(null); setCustProduct(null); }} className="wx-products__customize-btn" style={{ background: "#fff", color: "#0e0e10" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "#0e0e10"; e.currentTarget.style.color = "#fff"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.color = "#0e0e10"; }}>
             <IconPlus size={15} style={{ strokeWidth: 2.6 }} /> Customize New Product
@@ -9066,11 +8994,11 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
       <SourcePill value={srcBrand} onChange={setSrcBrand} style={{ marginBottom: 20 }} />
 
       {data._fromVault && curated.length > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: 12, background: "#e7f5ed", border: "1px solid #bfe3cd", borderRadius: 10, padding: "14px 18px", marginBottom: 24 }}>
-          <span style={{ width: 34, height: 34, borderRadius: "50%", background: "#1f9d55", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><IconCheck size={16} style={{ strokeWidth: 3 }} /></span>
+        <div className="wx-products__preloaded-banner">
+          <span className="wx-products__vault-banner-icon"><IconCheck size={16} style={{ strokeWidth: 3 }} /></span>
           <div>
-            <div style={{ fontSize: 13.5, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>This step is already complete — {curated.length} Vault item{curated.length === 1 ? "" : "s"} staged as drafts</div>
-            <div style={{ fontSize: 12.5, color: "#3f7a55", marginTop: 2 }}>Review is optional. Each item still confirms pricing, team setting, sizes and roster assignment before deploy, and entitlement is checked against this store's seller.</div>
+            <div className="wx-products__vault-banner-title">This step is already complete — {curated.length} Vault item{curated.length === 1 ? "" : "s"} staged as drafts</div>
+            <div className="wx-products__preloaded-desc">Review is optional. Each item still confirms pricing, team setting, sizes and roster assignment before deploy, and entitlement is checked against this store's seller.</div>
           </div>
         </div>
       )}
@@ -9133,16 +9061,16 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
 
       {/* Interaction B — Customize New Product — XL 4-step workflow modal */}
       <Modal open={customizerOpen} onClose={() => setCustomizerOpen(false)} width="min(1280px, 92vw)">
-        <div style={{ display: "flex", flexDirection: "column", height: "88vh", borderRadius: 8, overflow: "hidden" }}>
+        <div className="wx-products__cust-modal">
           {/* Persistent header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 28px", borderBottom: "1px solid #ececf0", flexShrink: 0, background: "#fff" }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, margin: 0, letterSpacing: ".01em", color: "#0e0e10" }}>Customize New Product</h3>
-            <button onClick={() => setCustomizerOpen(false)} style={{ background: "transparent", border: 0, cursor: "pointer", padding: 4, color: "#6b6b72" }}>
+          <div className="wx-products__cust-header">
+            <h3 className="wx-products__cust-title">Customize New Product</h3>
+            <button onClick={() => setCustomizerOpen(false)} className="wx-products__cust-close">
               <IconX size={20} />
             </button>
           </div>
           {/* Step content */}
-          <div style={{ flex: 1, overflow: "hidden", minHeight: 0, background: "#fff" }}>
+          <div className="wx-products__cust-body">
             {custWizStep === 0 && (
               <CustSportPickerStep
                 storeSport={(data.sports && data.sports[0]) || "Basketball"}
@@ -9184,27 +9112,17 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
 
       {/* Remove-from-store confirmation */}
       <Modal open={!!removeTarget} onClose={() => setRemoveTarget(null)} width={460}>
-        <div style={{ padding: "28px 28px 24px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-            <span style={{
-              width: 44, height: 44, borderRadius: 9, background: "#fff3f2", color: "#b81d14",
-              display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-            }}><IconTrash size={20} /></span>
-            <h3 style={{ fontSize: 18, fontWeight: 800, margin: 0, letterSpacing: ".01em", color: "#0e0e10" }}>Remove from store?</h3>
+        <div className="wx-products__remove">
+          <div className="wx-products__remove-head">
+            <span className="wx-products__remove-icon"><IconTrash size={20} /></span>
+            <h3 className="wx-products__remove-title">Remove from store?</h3>
           </div>
-          <p style={{ fontSize: 13.5, color: "#6b6b72", lineHeight: 1.55, margin: "0 0 24px" }}>
-            Are you sure you want to remove <strong style={{ color: "#0e0e10", fontWeight: 700 }}>{removeTarget?.title}</strong> from this store? Its confirmed application sizes will be discarded — you can add it again later.
+          <p className="wx-products__remove-text">
+            Are you sure you want to remove <strong className="wx-products__remove-name">{removeTarget?.title}</strong> from this store? Its confirmed application sizes will be discarded — you can add it again later.
           </p>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}>
-            <button onClick={() => setRemoveTarget(null)} style={{
-              background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6,
-              padding: "12px 24px", fontSize: 13, fontWeight: 700, color: "#0e0e10", cursor: "pointer",
-            }}>Cancel</button>
-            <button onClick={confirmRemove} style={{
-              background: "#b81d14", color: "#fff", border: 0, borderRadius: 6,
-              padding: "12px 24px", fontSize: 13, fontWeight: 800, cursor: "pointer",
-              display: "inline-flex", alignItems: "center", gap: 8,
-            }}>
+          <div className="wx-products__remove-actions">
+            <button onClick={() => setRemoveTarget(null)} className="wx-products__remove-cancel">Cancel</button>
+            <button onClick={confirmRemove} className="wx-products__remove-confirm">
               <IconTrash size={15} style={{ strokeWidth: 2.2 }} /> Remove from Store
             </button>
           </div>
@@ -18891,7 +18809,6 @@ function ModalConfigSections({ config, onChange, store, allowRosterAssign, produ
     if (!(c.subs || []).some((s) => s.toLowerCase() === name.toLowerCase())) c.subs = [...(c.subs || []), name];
     onChange({ ...config, storeSubcategory: name });
   };
-  const addInputStyle = { width: "100%", height: 40, boxSizing: "border-box", border: "1px solid #0e0e10", borderRadius: 6, padding: "0 10px", fontSize: 13, fontFamily: "inherit", outline: "none", background: "#fff", color: "#0e0e10" };
   const mGridCols = fundOn ? "70px 90px 1fr 1fr 1fr 90px" : "70px 90px 1fr 1fr 90px";
   const updatePricing = (size, field, value) => {
     const next = { ...pricing, [size]: { ...pricing[size], [field]: value } };
@@ -18918,54 +18835,54 @@ function ModalConfigSections({ config, onChange, store, allowRosterAssign, produ
     { key: "optSupplied", label: "Paid by the team", desc: "Already covered by fees or fundraising — players pay $0. Pricing shows Covered.", on: !!config.optSupplied, set: (v) => setFlag("optSupplied", v) },
   ].filter(Boolean);
   return (
-    <div style={{ marginTop: 24, display: "grid", gap: 16 }}>
+    <div className="wx-config-sections">
       {/* Made-to-order notice — restricted sources only (Vault / catalog items show none) */}
       {(!product || pteRestricted(product)) && (
-      <div style={{ display: "flex", gap: 10, alignItems: "flex-start", background: "#fff8ef", border: "1px solid #f2e2c9", borderRadius: 10, padding: "12px 16px" }}>
-        <span style={{ color: "#b06f1e", display: "inline-flex", marginTop: 1 }}><IconAlert size={15} /></span>
-        <span style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}><strong style={{ color: "#0e0e10" }}>This item is made to order.</strong> Its design cannot be changed after it is added to the store, and no changes can be made after its first order.</span>
+      <div className="wx-config-sections__notice">
+        <span className="wx-config-sections__notice-icon"><IconAlert size={15} /></span>
+        <span className="wx-config-sections__notice-text"><strong className="wx-config-sections__notice-strong">This item is made to order.</strong> Its design cannot be changed after it is added to the store, and no changes can be made after its first order.</span>
       </div>
       )}
       {/* Category — a shelf only; team flags live in the Storefront card below */}
-      <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#a1a1aa", textTransform: "uppercase", marginBottom: 14 }}>Category</div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 10 }}>
+      <div className="wx-config-sections__card">
+        <div className="wx-config-sections__card-title">Category</div>
+        <div className="wx-config-sections__fields">
           <div>
-            <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a9aa1", marginBottom: 6 }}>Category<span style={{ color: "#e1251b" }}> *</span></label>
+            <label className="wx-config-sections__field-label">Category<span className="wx-config-sections__required"> *</span></label>
             {addingCat ?
             <input autoFocus value={newCatName} onChange={(e) => setNewCatName(e.target.value)} placeholder="New category name" onBlur={commitNewCat}
-              onKeyDown={(e) => { if (e.key === "Enter") commitNewCat(); if (e.key === "Escape") { setAddingCat(false); setNewCatName(""); } }} style={addInputStyle} /> :
-            <select value={config.storeCategory || ""} onChange={(e) => { if (e.target.value === "__add_new__") { setAddingCat(true); return; } onChange({ ...config, storeCategory: e.target.value, storeSubcategory: "", catError: false }); }} style={{ width: "100%", height: 40, boxSizing: "border-box", border: "1px solid " + (config.catError ? "#e1251b" : "#d4d4d8"), borderRadius: 6, padding: "0 10px", fontSize: 13, fontFamily: "inherit", outline: "none", background: "#fff", color: "#0e0e10" }}>
+              onKeyDown={(e) => { if (e.key === "Enter") commitNewCat(); if (e.key === "Escape") { setAddingCat(false); setNewCatName(""); } }} className="wx-config-sections__add-input" /> :
+            <select value={config.storeCategory || ""} onChange={(e) => { if (e.target.value === "__add_new__") { setAddingCat(true); return; } onChange({ ...config, storeCategory: e.target.value, storeSubcategory: "", catError: false }); }} className={`wx-config-sections__category-select${config.catError ? " wx-config-sections__category-select--error" : ""}`}>
               <option value="">Select a category</option>
               {(window.__prodCats || []).map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
               <option value="__add_new__">+ Add new category…</option>
             </select>}
           </div>
           <div>
-            <label style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a9aa1", marginBottom: 6 }}>Subcategory</label>
+            <label className="wx-config-sections__field-label">Subcategory</label>
             {addingSub ?
             <input autoFocus value={newSubName} onChange={(e) => setNewSubName(e.target.value)} placeholder="New subcategory name" onBlur={commitNewSub}
-              onKeyDown={(e) => { if (e.key === "Enter") commitNewSub(); if (e.key === "Escape") { setAddingSub(false); setNewSubName(""); } }} style={addInputStyle} /> :
-            <select value={config.storeSubcategory || ""} onChange={(e) => { if (e.target.value === "__add_new__") { setAddingSub(true); return; } onChange({ ...config, storeSubcategory: e.target.value }); }} disabled={!config.storeCategory} style={{ width: "100%", height: 40, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 6, padding: "0 10px", fontSize: 13, fontFamily: "inherit", outline: "none", background: "#fff", color: "#0e0e10" }}>
+              onKeyDown={(e) => { if (e.key === "Enter") commitNewSub(); if (e.key === "Escape") { setAddingSub(false); setNewSubName(""); } }} className="wx-config-sections__add-input" /> :
+            <select value={config.storeSubcategory || ""} onChange={(e) => { if (e.target.value === "__add_new__") { setAddingSub(true); return; } onChange({ ...config, storeSubcategory: e.target.value }); }} disabled={!config.storeCategory} className="wx-config-sections__subcategory-select">
               <option value="">{mSubs.length === 0 ? (!config.storeCategory ? "No subcategories" : "No subcategories yet") : "No subcategory"}</option>
               {mSubs.map((s) => <option key={s} value={s}>{s}</option>)}
               {config.storeCategory && <option value="__add_new__">+ Add new subcategory…</option>}
             </select>}
           </div>
         </div>
-        {config.catError && <div style={{ fontSize: 12, color: "#e1251b", marginTop: 8, fontWeight: 600 }}>Select a category before adding to the store — items no longer default to Fan Gear.</div>}
+        {config.catError && <div className="wx-config-sections__error">Select a category before adding to the store — items no longer default to Fan Gear.</div>}
       </div>
       {/* Storefront — same per-item flag rows as the product detail page */}
-      <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#a1a1aa", textTransform: "uppercase", marginBottom: 14 }}>Storefront</div>
+      <div className="wx-config-sections__card">
+        <div className="wx-config-sections__card-title">Storefront</div>
         {flagRows.map((r, i) => (
-          <div key={r.key} style={{ display: "flex", alignItems: "center", gap: 16, paddingTop: i === 0 ? 0 : 10, paddingBottom: i === flagRows.length - 1 ? 0 : 10, paddingLeft: r.nested ? 24 : 0, borderTop: i > 0 ? "1px solid #f4f4f6" : 0 }}>
-            <span style={{ width: r.nested ? 126 : 150, flexShrink: 0, fontSize: 12.5, fontWeight: 700, letterSpacing: ".02em", color: "#09090b" }}>{r.label}</span>
-            <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, color: "#71717a" }}>{r.desc}</span>
-            <button type="button" onClick={() => r.set(!r.on)} style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "none", border: 0, padding: 0, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: r.on ? "#1f9d55" : "#71717a" }}>{r.on ? "On" : "Off"}</span>
-              <span style={{ width: 32, height: 18, borderRadius: 999, position: "relative", background: r.on ? "#1f9d55" : "#d4d4d8", transition: "background .14s", display: "inline-block" }}>
-                <span style={{ position: "absolute", top: 2, left: r.on ? 16 : 2, width: 14, height: 14, borderRadius: 999, background: "#fff", transition: "left .14s" }} />
+          <div key={r.key} className={`wx-config-sections__flag${(i === 0) ? " wx-config-sections__flag--first" : ""}${(i === flagRows.length - 1) ? " wx-config-sections__flag--last" : ""}${r.nested ? " wx-config-sections__flag--nested" : ""}${(i > 0) ? " wx-config-sections__flag--divided" : ""}`}>
+            <span className={`wx-config-sections__flag-label${r.nested ? " wx-config-sections__flag-label--nested" : ""}`}>{r.label}</span>
+            <span className="wx-config-sections__flag-desc">{r.desc}</span>
+            <button type="button" onClick={() => r.set(!r.on)} className="wx-config-sections__switch">
+              <span className={`wx-config-sections__switch-text${r.on ? " wx-config-sections__switch-text--on" : ""}`}>{r.on ? "On" : "Off"}</span>
+              <span className={`wx-config-sections__switch-track${r.on ? " wx-config-sections__switch-track--on" : ""}`}>
+                <span className={`wx-config-sections__switch-knob${r.on ? " wx-config-sections__switch-knob--on" : ""}`} />
               </span>
             </button>
           </div>
@@ -18981,12 +18898,12 @@ function ModalConfigSections({ config, onChange, store, allowRosterAssign, produ
 
       {/* Assign to Teams — existing league stores only (new stores have no Teams yet) */}
       {allowRosterAssign && store?.storeType === "league" && (
-        <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px" }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#a1a1aa", textTransform: "uppercase", marginBottom: 8 }}>Assign to Teams</div>
-          <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}>
+        <div className="wx-config-sections__card">
+          <div className="wx-config-sections__assign-title">Assign to Teams</div>
+          <div className="wx-config-sections__assign-note">
             {tOn
               ? <span>Required or team-paid items must stay assigned to at least one Team.</span>
-              : <span>Choose which Teams wear this product. Leave empty to make it <strong style={{ color: "#0e0e10", fontWeight: 700 }}>available league-wide</strong>.</span>}
+              : <span>Choose which Teams wear this product. Leave empty to make it <strong className="wx-config-sections__assign-strong">available league-wide</strong>.</span>}
           </div>
           <RosterAssignField variant="dropdown" direction="down" value={config.rosters || []} onChange={(ids) => onChange({ ...config, rosters: ids })} accent="#e1251b" minOne={tOn} store={store} />
         </div>
@@ -19012,59 +18929,43 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
 
   return (
     <Modal open={open} onClose={onClose} width={1080}>
-      <div style={{ padding: "24px 28px 24px" }}>
+      <div className="wx-configure">
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 40, height: 48, background: "#f1f2f4", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: 2 }}>
+        <div className="wx-configure__header">
+          <div className="wx-configure__product">
+            <div className="wx-configure__thumb">
               {product.photo
                 ? <CatalogPhoto photo={product.photo} alt={product.title} />
-                : <div style={{ width: 28, height: 36 }}><DefaultProductThumb store={store} product={product} /></div>}
+                : <div className="wx-configure__thumb-default"><DefaultProductThumb store={store} product={product} /></div>}
             </div>
-            <div style={{ fontSize: 16, fontWeight: 700 }}>{product.title || "[Product name]"}</div>
+            <div className="wx-configure__product-name">{product.title || "[Product name]"}</div>
           </div>
-          <button onClick={onClose} style={{ background: "transparent", border: 0, cursor: "pointer", padding: 4, color: "#6b6b72" }}>
+          <button onClick={onClose} className="wx-configure__close">
             <IconX size={20} />
           </button>
         </div>
 
-        <h3 style={{ fontSize: 18, fontWeight: 700, margin: "16px 0 16px" }}>Configure &amp; Add to Store</h3>
+        <h3 className="wx-configure__title">Configure &amp; Add to Store</h3>
 
         {multi && (
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
-            background: "#f7f7f8", border: "1px solid #ececf0", borderRadius: 8, padding: "12px 16px", marginBottom: 16,
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-              <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".10em", color: "#9a9aa1", flexShrink: 0 }}>ITEM {activeIndex + 1} OF {items.length}</span>
-              <span style={{ fontSize: 13.5, fontWeight: 700, color: "#0e0e10", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{items[activeIndex]?.title}</span>
+          <div className="wx-configure__items">
+            <div className="wx-configure__items-current">
+              <span className="wx-configure__items-label">ITEM {activeIndex + 1} OF {items.length}</span>
+              <span className="wx-configure__items-title">{items[activeIndex]?.title}</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-              <button onClick={() => onActiveIndexChange(Math.max(0, activeIndex - 1))} disabled={activeIndex === 0} style={{
-                width: 32, height: 32, borderRadius: 6, border: "1px solid #d4d4d8", background: "#fff",
-                cursor: activeIndex === 0 ? "default" : "pointer", color: activeIndex === 0 ? "#cfcfd5" : "#0e0e10",
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-              }}><IconChevronLeft size={16} /></button>
-              <button onClick={() => onActiveIndexChange(Math.min(items.length - 1, activeIndex + 1))} disabled={activeIndex === items.length - 1} style={{
-                width: 32, height: 32, borderRadius: 6, border: "1px solid #d4d4d8", background: "#fff",
-                cursor: activeIndex === items.length - 1 ? "default" : "pointer", color: activeIndex === items.length - 1 ? "#cfcfd5" : "#0e0e10",
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-              }}><IconChevronRight size={16} /></button>
+            <div className="wx-configure__items-nav">
+              <button onClick={() => onActiveIndexChange(Math.max(0, activeIndex - 1))} disabled={activeIndex === 0} className={`wx-configure__nav-btn${(activeIndex === 0) ? " wx-configure__nav-btn--disabled" : ""}`}><IconChevronLeft size={16} /></button>
+              <button onClick={() => onActiveIndexChange(Math.min(items.length - 1, activeIndex + 1))} disabled={activeIndex === items.length - 1} className={`wx-configure__nav-btn${(activeIndex === items.length - 1) ? " wx-configure__nav-btn--disabled" : ""}`}><IconChevronRight size={16} /></button>
             </div>
           </div>
         )}
 
-        <div style={{ maxHeight: rich ? "64vh" : "none", overflowY: rich ? "auto" : "visible", margin: rich ? "0 -2px" : 0, paddingRight: rich ? 4 : 0 }}>
+        <div className={`wx-configure__scroll${rich ? " wx-configure__scroll--rich" : ""}`}>
         {rich && <ModalConfigSections config={productConfig} onChange={onConfigChange} store={store} allowRosterAssign={allowRosterAssign} product={product} />}
-        {showSizes && <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px", marginTop: rich ? 16 : 0 }}>
-        <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10", marginBottom: 4 }}>Confirm Application Sizes</div>
+        {showSizes && <div className={`wx-configure__sizes${rich ? " wx-configure__sizes--rich" : ""}`}>
+        <div className="wx-configure__sizes-title">Confirm Application Sizes</div>
         {/* Column headers */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "160px 1fr 120px 1.2fr 1fr",
-          gap: 16, fontSize: 11, fontWeight: 700, letterSpacing: ".10em",
-          color: "#9a9aa1", padding: "12px 0", borderBottom: "1px solid #ececf0"
-        }}>
+        <div className="wx-configure__sizes-head">
           <div>TYPE</div>
           <div>DETAILS</div>
           <div>COLORS</div>
@@ -19073,34 +18974,25 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
         </div>
 
         {/* Rows */}
-        <div style={{ maxHeight: rich ? "none" : "55vh", overflowY: rich ? "visible" : "auto" }}>
+        <div className={`wx-configure__sizes-rows${rich ? " wx-configure__sizes-rows--rich" : ""}`}>
           {rows.map((row) =>
-          <div key={row.id} style={{
-            display: "grid",
-            gridTemplateColumns: "160px 1fr 120px 1.2fr 1fr",
-            gap: 16, padding: "20px 0", borderBottom: "1px solid #ececf0", alignItems: "flex-start"
-          }}>
+          <div key={row.id} className="wx-configure__sizes-row">
               {/* Type */}
               <div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10", letterSpacing: ".06em" }}>{row.type}</div>
-                <div style={{ fontSize: 11, color: "#6b6b72", marginTop: 4 }}>( {row.placement} )</div>
+                <div className="wx-configure__type">{row.type}</div>
+                <div className="wx-configure__placement">( {row.placement} )</div>
               </div>
 
               {/* Details */}
-              <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{
-                width: 56, height: 56, border: "1px solid #ececf0", borderRadius: 4,
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: 26, fontWeight: 700, color: "#0e0e10", flexShrink: 0,
-                fontFamily: "Inter, sans-serif"
-              }}>
+              <div className="wx-configure__details">
+                <div className="wx-configure__details-icon">
                   {row.iconKind === "hash" ? "#" : "T"}
                 </div>
-                <div style={{ fontSize: 11, color: "#0e0e10", lineHeight: 1.6, fontWeight: 500, letterSpacing: ".04em" }}>
+                <div className="wx-configure__details-list">
                   {Object.entries(row.details).map(([k, v]) =>
                 <div key={k}>
-                      <span style={{ color: "#9a9aa1", fontWeight: 600 }}>{k}</span>
-                      <span style={{ color: "#9a9aa1" }}> : </span>
+                      <span className="wx-configure__details-key">{k}</span>
+                      <span className="wx-configure__details-sep"> : </span>
                       <span>{v}</span>
                     </div>
                 )}
@@ -19108,19 +19000,14 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
               </div>
 
               {/* Colors */}
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="wx-configure__colors">
                 {row.colors.map((c, i) =>
-              <div key={i} style={{
-                width: 40, height: 40, borderRadius: 4, background: c,
-                border: c?.toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none",
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                color: "#fff", fontSize: 11, fontWeight: 700
-              }}>B</div>
+              <div key={i} className={`wx-configure__color${(c?.toLowerCase() === "#ffffff") ? " wx-configure__color--white" : ""}`} style={{ background: c }}>B</div>
               )}
               </div>
 
               {/* Select sizes */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div className="wx-configure__size-rows">
                 <SizeRow label="ADULT" value={row.adultSize} options={sizeOptions} onChange={(v) => updateRow(row.id, { adultSize: v })} />
                 <SizeRow label="YOUTH" value={row.youthSize} options={sizeOptions} onChange={(v) => updateRow(row.id, { youthSize: v })} />
               </div>
@@ -19131,12 +19018,7 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
                 placeholder="Notes Here"
                 value={row.notes}
                 onChange={(e) => updateRow(row.id, { notes: e.target.value })}
-                style={{
-                  width: "100%", minHeight: 80, resize: "vertical",
-                  border: "1px solid #d4d4d8", borderRadius: 4,
-                  padding: "8px 12px", fontSize: 12, fontFamily: "inherit",
-                  color: "#0e0e10", outline: 0
-                }} />
+                className="wx-configure__notes" />
               
               </div>
             </div>
@@ -19146,29 +19028,19 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
         </div>
 
         {/* Footer actions */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: multi ? "space-between" : "flex-end", gap: 12, marginTop: 20 }}>
+        <div className={`wx-configure__footer${multi ? " wx-configure__footer--multi" : ""}`}>
           {multi && (
-            <span style={{ fontSize: 12.5, fontWeight: 700, color: "#6b6b72" }}>
+            <span className="wx-configure__footer-count">
               Product {activeIndex + 1} of {items.length}
             </span>
           )}
-          <div style={{ display: "flex", gap: 12 }}>
+          <div className="wx-configure__actions">
             {multi && activeIndex > 0 && (
-              <button onClick={() => onActiveIndexChange(activeIndex - 1)} style={{
-                background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6,
-                padding: "12px 24px", fontSize: 13, fontWeight: 600, color: "#0e0e10", cursor: "pointer"
-              }}>Back</button>
+              <button onClick={() => onActiveIndexChange(activeIndex - 1)} className="wx-configure__secondary">Back</button>
             )}
-            <button onClick={onClose} style={{
-              background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6,
-              padding: "12px 24px", fontSize: 13, fontWeight: 600, color: "#0e0e10", cursor: "pointer"
-            }}>Cancel</button>
+            <button onClick={onClose} className="wx-configure__secondary">Cancel</button>
             {multi && activeIndex < items.length - 1 ? (
-              <button onClick={() => onActiveIndexChange(activeIndex + 1)} style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6,
-                padding: "12px 28px", fontSize: 13, fontWeight: 600, cursor: "pointer"
-              }}>Confirm &amp; Next Product <IconChevronRight size={16} /></button>
+              <button onClick={() => onActiveIndexChange(activeIndex + 1)} className="wx-configure__next">Confirm &amp; Next Product <IconChevronRight size={16} /></button>
             ) : (
               <button data-tour="sizes-modal-confirm" onClick={() => {
                 // 2.4 / 3.1 — category (or TR/TS) required before the item commits.
@@ -19179,10 +19051,7 @@ function ConfirmSizesModal({ open, product, store, rows, onChange, onClose, onCo
                   if (tOn2 && allowRosterAssign && store?.storeType === "league" && !(productConfig.rosters || []).length) { onConfigChange && onConfigChange({ ...productConfig, teamError: true }); return; }
                 }
                 onConfirm();
-              }} style={{
-                background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6,
-                padding: "12px 28px", fontSize: 13, fontWeight: 600, cursor: "pointer"
-              }}>{confirmLabel || "Confirm"}</button>
+              }} className="wx-configure__confirm">{confirmLabel || "Confirm"}</button>
             )}
           </div>
         </div>
@@ -19200,28 +19069,17 @@ function SizeRow({ label, value, options, onChange }) {
     return () => document.removeEventListener("mousedown", h);
   }, []);
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".08em", color: "#9a9aa1", minWidth: 52 }}>{label} :</span>
-      <div ref={ref} style={{ position: "relative" }}>
-        <button onClick={() => setOpen((v) => !v)} style={{
-          background: "transparent", border: 0, cursor: "pointer",
-          display: "inline-flex", alignItems: "center", gap: 4,
-          fontSize: 12, fontWeight: 700, color: "#0e0e10", padding: "4px 0"
-        }}>
+    <div className="wx-size-row">
+      <span className="wx-size-row__label">{label} :</span>
+      <div ref={ref} className="wx-size-row__picker">
+        <button onClick={() => setOpen((v) => !v)} className="wx-size-row__value">
           {value}
           <IconChevron size={12} />
         </button>
         {open &&
-        <div style={{
-          position: "absolute", top: "100%", left: 0, zIndex: 30, marginTop: 4,
-          background: "#fff", border: "1px solid #ececf0", borderRadius: 6,
-          boxShadow: "0 8px 24px rgba(20,20,30,.10)", padding: 4, minWidth: 112
-        }}>
+        <div className="wx-size-row__menu">
             {options.map((o) =>
-          <div key={o} onClick={() => {onChange(o);setOpen(false);}} style={{
-            padding: "8px 12px", fontSize: 12, cursor: "pointer", borderRadius: 4,
-            background: value === o ? "#fafafb" : "transparent"
-          }}
+          <div key={o} onClick={() => {onChange(o);setOpen(false);}} className="wx-size-row__option" style={{ background: value === o ? "#fafafb" : "transparent" }}
           onMouseEnter={(e) => e.currentTarget.style.background = "#fafafb"}
           onMouseLeave={(e) => e.currentTarget.style.background = value === o ? "#fafafb" : "transparent"}>{o}</div>
           )}
@@ -19272,17 +19130,14 @@ Object.assign(window, { itemFundOn, itemFundAmount, itemFundLabel, fundCollectin
 
 function ProfitInput({ unit, value, onUnit, onValue, fill }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, ...(fill ? { width: "100%" } : {}) }}>
-      <div style={{ display: "flex", alignItems: "center", border: "1px solid #d4d4d8", borderRadius: fill ? 6 : 4, overflow: "hidden", background: "#fff", ...(fill ? { width: "100%", height: 44, boxSizing: "border-box" } : {}) }}>
-        <span style={{ padding: "8px 12px", fontSize: 13, fontWeight: 700, color: "#6b6b72", background: "#f5f5f7", borderRight: "1px solid #d4d4d8", ...(fill ? { alignSelf: "stretch", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 40, padding: 0, boxSizing: "border-box" } : {}) }}>{unit === "%" ? "%" : "$"}</span>
+    <div className="wx-profit-input" style={{ ...(fill ? { width: "100%" } : {}) }}>
+      <div className={`wx-profit-input__box${fill ? " wx-profit-input__box--fill" : ""}`} style={{ ...(fill ? { width: "100%", height: 44, boxSizing: "border-box" } : {}) }}>
+        <span className="wx-profit-input__unit" style={{ ...(fill ? { alignSelf: "stretch", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 40, padding: 0, boxSizing: "border-box" } : {}) }}>{unit === "%" ? "%" : "$"}</span>
         <input
           type="text"
           value={value}
           onChange={(e) => onValue(e.target.value)}
-          style={{
-            width: fill ? "100%" : 72, minWidth: 0, border: 0, borderRadius: 0, background: "transparent", fontFamily: "inherit",
-            padding: "8px 12px", fontSize: fill ? 14 : 13, color: "#0e0e10", outline: 0
-          }} />
+          className={`wx-profit-input__input${fill ? " wx-profit-input__input--fill" : ""}`} />
       </div>
     </div>);
 
@@ -19316,14 +19171,9 @@ function switchPricingMode(pricing, mode, fundOn) {
 }
 function PSModeControl({ mode, onChange, locked }) {
   return (
-    <span title="One mode for the whole section — switching clears the entered values" style={{ display: "inline-flex", border: "1px solid #d4d4d8", borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "#fff", ...(locked ? { pointerEvents: "none", opacity: 0.55 } : {}) }}>
+    <span title="One mode for the whole section — switching clears the entered values" className="wx-ps-mode" style={{ ...(locked ? { pointerEvents: "none", opacity: 0.55 } : {}) }}>
       {["$", "%"].map((m2, i) => (
-        <button key={m2} type="button" onClick={() => onChange(m2)} style={{
-          width: 36, height: 28, border: 0, cursor: "pointer", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit",
-          borderLeft: i > 0 ? "1px solid #d4d4d8" : 0,
-          background: mode === m2 ? "#0e0e10" : "#fff", color: mode === m2 ? "#fff" : "#6b6b72",
-          transition: "background .12s, color .12s"
-        }}>{m2}</button>
+        <button key={m2} type="button" onClick={() => onChange(m2)} className={`wx-ps-mode__btn${(i > 0) ? " wx-ps-mode__btn--divided" : ""}${(mode === m2) ? " wx-ps-mode__btn--on" : ""}`}>{m2}</button>
       ))}
     </span>
   );
@@ -19354,10 +19204,10 @@ function PriceSettingsCard({ pricing, onChange, fundOn, locked, noYouth, bare, c
     .map((s) => ({ s, amt: psAmt(pricing[s].fundUnit || "$", pricing[s].fund, parseFloat(pricing[s].base) || 0) }))
     .filter((x) => x.amt > 0);
   const fundToggleRow = (
-    <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16, paddingTop: 14, borderTop: "1px solid #ececf0", ...(locked ? { opacity: 0.55, pointerEvents: "none" } : {}) }}>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>Fundraising on this item</div>
-        <div style={{ fontSize: 12, color: "#9a9aa1", lineHeight: 1.45, marginTop: 2 }}>
+    <div className="wx-price-settings__fund-row" style={{ ...(locked ? { opacity: 0.55, pointerEvents: "none" } : {}) }}>
+      <div className="wx-price-settings__fund-text">
+        <div className="wx-price-settings__fund-title">Fundraising on this item</div>
+        <div className="wx-price-settings__fund-desc">
           {fundActive
             ? "Added on top of retail for this item. Defaults to the store's Team Fundraising setting."
             : savedFund.length > 0
@@ -19365,57 +19215,56 @@ function PriceSettingsCard({ pricing, onChange, fundOn, locked, noYouth, bare, c
               : "Off — this item doesn't collect fundraising."}
         </div>
       </div>
-      <button type="button" onClick={() => setFund(!fundActive)} style={{ background: "none", border: 0, padding: 0, cursor: "pointer", flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "inherit" }}>
-        <span style={{ width: 34, height: 19, borderRadius: 999, position: "relative", background: fundActive ? "#1f8a55" : "#d4d4d8", transition: "background .14s", display: "inline-block" }}>
-          <span style={{ position: "absolute", top: 2, left: fundActive ? 17 : 2, width: 15, height: 15, borderRadius: 999, background: "#fff", transition: "left .14s" }} />
+      <button type="button" onClick={() => setFund(!fundActive)} className="wx-price-settings__fund-switch">
+        <span className={`wx-price-settings__switch-track${fundActive ? " wx-price-settings__switch-track--fund-active" : ""}`}>
+          <span className={`wx-price-settings__switch-knob${fundActive ? " wx-price-settings__switch-knob--fund-active" : ""}`} />
         </span>
-        <span style={{ fontSize: 11.5, fontWeight: 700, width: 24, textAlign: "left", color: fundActive ? "#1f8a55" : "#71717a" }}>{fundActive ? "On" : "Off"}</span>
+        <span className={`wx-price-settings__switch-text${fundActive ? " wx-price-settings__switch-text--fund-active" : ""}`}>{fundActive ? "On" : "Off"}</span>
       </button>
     </div>
   );
   // Team Supplied — the whole component is replaced by Covered (Governing rule 3).
   if (covered) {
     const note = (
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span style={{ fontSize: 13, fontWeight: 800, color: "#1f7a44", background: "#e7f5ed", borderRadius: 6, padding: "6px 12px", flexShrink: 0 }}>Covered</span>
-        <span style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}>Team Supplied — the team has already paid for this gear, so shoppers pay $0 at checkout. No pricing applies.</span>
+      <div className="wx-price-settings__covered-row">
+        <span className="wx-price-settings__covered">Covered</span>
+        <span className="wx-price-settings__covered-note">Team Supplied — the team has already paid for this gear, so shoppers pay $0 at checkout. No pricing applies.</span>
       </div>
     );
     if (bare) return note;
     return (
-      <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#a1a1aa", textTransform: "uppercase", marginBottom: 14 }}>Price settings</div>
+      <div className="wx-price-settings">
+        <div className="wx-price-settings__title">Price settings</div>
         {note}
       </div>
     );
   }
   const body = (
     <React.Fragment>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(" + sizes.length + ", minmax(0, 1fr))", gap: 20, ...(locked ? { pointerEvents: "none" } : {}) }}>
+      <div className="wx-price-settings__sizes" style={{ gridTemplateColumns: "repeat(" + sizes.length + ", minmax(0, 1fr))", ...(locked ? { pointerEvents: "none" } : {}) }}>
         {sizes.map((size) => {
-          const bulkNote = (on) => on ? <div style={{ fontSize: 10.5, color: "#9a9aa1", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}><span style={{ width: 5, height: 5, borderRadius: "50%", background: "#c4c4cb", flexShrink: 0 }} />Set by bulk pricing</div> : null;
-          const lbl = { fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a9aa1", marginBottom: 6 };
+          const bulkNote = (on) => on ? <div className="wx-price-settings__bulk-note"><span className="wx-price-settings__bulk-dot" />Set by bulk pricing</div> : null;
           return (
-            <div key={size} style={{ border: "1px solid #ececf0", borderRadius: 8, padding: "18px 20px", minWidth: 0 }}>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 14 }}>
-                <span style={{ fontSize: 14, fontWeight: 800, color: "#0e0e10" }}>{size.charAt(0).toUpperCase() + size.slice(1)}</span>
-                <span style={{ fontSize: 12, color: "#6b6b72" }}>Base cost <strong style={{ color: "#0e0e10", fontWeight: 700 }}>{"$" + pricing[size].base}</strong></span>
+            <div key={size} className="wx-price-settings__size">
+              <div className="wx-price-settings__size-head">
+                <span className="wx-price-settings__size-name">{size.charAt(0).toUpperCase() + size.slice(1)}</span>
+                <span className="wx-price-settings__base-cost">Base cost <strong className="wx-price-settings__base">{"$" + pricing[size].base}</strong></span>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: fundActive ? "repeat(2, minmax(0, 1fr))" : "minmax(0, 1fr)", gap: 14 }}>
-                <div style={{ minWidth: 0 }}>
-                  <div style={lbl}>Dealer profit</div>
+              <div className={`wx-price-settings__fields${fundActive ? " wx-price-settings__fields--fund-active" : ""}`}>
+                <div className="wx-price-settings__field">
+                  <div className="wx-price-settings__field-label">Dealer profit</div>
                   <ProfitInput fill unit={mode} value={pricing[size].dealer} onValue={(v) => update(size, "dealer", v)} />
                   {bulkNote(pricing[size].dealerBulk)}
                 </div>
-                {fundActive && <div style={{ minWidth: 0 }}>
-                  <div style={lbl}>Fundraising</div>
+                {fundActive && <div className="wx-price-settings__field">
+                  <div className="wx-price-settings__field-label">Fundraising</div>
                   <ProfitInput fill unit={mode} value={pricing[size].fund ?? ""} onValue={(v) => update(size, "fund", v)} />
                   {bulkNote(pricing[size].fundBulk)}
                 </div>}
               </div>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, borderTop: "1px solid #ececf0", marginTop: 16, paddingTop: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "#9a9aa1" }}>Retail</span>
-                <span style={{ fontSize: 18, fontWeight: 800, color: "#0e0e10" }}>{"$" + pricing[size].retail}</span>
+              <div className="wx-price-settings__retail-row">
+                <span className="wx-price-settings__retail-label">Retail</span>
+                <span className="wx-price-settings__retail">{"$" + pricing[size].retail}</span>
               </div>
             </div>
           );
@@ -19423,7 +19272,7 @@ function PriceSettingsCard({ pricing, onChange, fundOn, locked, noYouth, bare, c
       </div>
       {fundToggleRow}
       {!locked && (
-        <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 12 }}>
+        <div className="wx-price-settings__retail-note">
           Retail is what customers pay. {mode === "%" ? "Percentages apply to each size's own base cost. " : ""}Switching $ / % clears the entered values.
         </div>
       )}
@@ -19431,9 +19280,9 @@ function PriceSettingsCard({ pricing, onChange, fundOn, locked, noYouth, bare, c
   );
   if (bare) return <div style={locked ? { opacity: 0.55 } : undefined}>{body}</div>;
   return (
-    <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "20px 24px", ...(locked ? { opacity: 0.55 } : {}) }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".03em", color: "#a1a1aa", textTransform: "uppercase" }}>Price settings</span>
+    <div className="wx-price-settings" style={{ ...(locked ? { opacity: 0.55 } : {}) }}>
+      <div className="wx-price-settings__head">
+        <span className="wx-price-settings__title-inline">Price settings</span>
         <PSModeControl mode={mode} onChange={setMode} locked={locked} />
       </div>
       {body}
@@ -19465,45 +19314,15 @@ function InfoTooltip({ title, body }) {
       onFocus={() => setOpen(true)}
       onBlur={() => setOpen(false)}
       tabIndex={0}
-      style={{ position: "relative", display: "inline-flex", outline: "none" }}>
-      <span style={{
-        width: 16, height: 16, borderRadius: "50%",
-        border: "1.5px solid #9a9aa1",
-        color: open ? "#0e0e10" : "#9a9aa1",
-        borderColor: open ? "#0e0e10" : "#9a9aa1",
-        background: "#fff",
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        fontSize: 10, fontWeight: 700, cursor: "help",
-        fontFamily: "Georgia, serif", fontStyle: "italic",
-        transition: "color .12s, border-color .12s"
-      }}>i</span>
+      className="wx-info-tooltip">
+      <span className={`wx-info-tooltip__icon${open ? " wx-info-tooltip__icon--open" : ""}`}>i</span>
       {open &&
       <span
         role="tooltip"
-        style={{
-          position: "absolute",
-          left: "50%",
-          bottom: "calc(100% + 12px)",
-          transform: "translateX(-50%)",
-          background: "#1A1A1A",
-          color: "#fff",
-          padding: "12px 16px",
-          borderRadius: 8,
-          width: 260,
-          boxShadow: "0 8px 24px rgba(20,20,30,.18)",
-          zIndex: 50,
-          pointerEvents: "none",
-          animation: "tipIn .12s ease-out"
-        }}>
-          <span style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4, letterSpacing: ".01em" }}>{title}</span>
-          <span style={{ display: "block", fontSize: 12, lineHeight: 1.5, color: "#d6d6d8" }}>{body}</span>
-          <span style={{
-          position: "absolute", left: "50%", top: "100%", transform: "translateX(-50%)",
-          width: 0, height: 0,
-          borderLeft: "6px solid transparent",
-          borderRight: "6px solid transparent",
-          borderTop: "6px solid #1A1A1A"
-        }} />
+        className="wx-info-tooltip__bubble">
+          <span className="wx-info-tooltip__title">{title}</span>
+          <span className="wx-info-tooltip__body">{body}</span>
+          <span className="wx-info-tooltip__arrow" />
         </span>
       }
       <style>{`@keyframes tipIn { from { opacity: 0; transform: translate(-50%, 4px) } to { opacity: 1; transform: translate(-50%, 0) } }`}</style>
@@ -20495,7 +20314,7 @@ function DefaultProductThumb({ store, product }) {
     <img
       src={photoForKey(key)}
       alt={product?.title || "Product"}
-      style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />);
+      className="wx-default-thumb" />);
 
 }
 
@@ -21695,19 +21514,8 @@ function BundleToggle({ on, onChange }) {
       onClick={() => onChange(!on)}
       role="switch"
       aria-checked={on}
-      style={{
-        width: 44, height: 24, borderRadius: 999,
-        background: on ? "#0e0e10" : "#d4d4d8",
-        position: "relative", cursor: "pointer",
-        transition: "background .15s", flexShrink: 0,
-        display: "inline-block"
-      }}>
-      <span style={{
-        position: "absolute", top: 2, left: on ? 22 : 2,
-        width: 20, height: 20, borderRadius: "50%", background: "#fff",
-        transition: "left .15s",
-        boxShadow: "0 1px 3px rgba(0,0,0,.18)"
-      }} />
+      className={`wx-bundle-toggle${on ? " wx-bundle-toggle--on" : ""}`}>
+      <span className={`wx-bundle-toggle__knob${on ? " wx-bundle-toggle__knob--on" : ""}`} />
     </span>);
 
 }
@@ -24551,21 +24359,14 @@ function GenderTabs({ gender, onChange }) {
       <button
         type="button"
         onClick={() => onChange(value)}
-        style={{
-          height: 44, padding: "0 32px", border: 0, cursor: "pointer",
-          display: "inline-flex", alignItems: "center",
-          background: active ? "#0e0e10" : "#fff",
-          color: active ? "#fff" : "#0e0e10",
-          fontSize: 14, fontWeight: 700, letterSpacing: ".005em",
-          transition: "background .15s, color .15s",
-        }}
+        className={`wx-gender-tabs__tab${active ? " wx-gender-tabs__tab--active" : ""}`}
       >
         {children}
       </button>
     );
   };
   return (
-    <div style={{ display: "inline-flex", border: "1px solid #d4d4d8", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
+    <div className="wx-gender-tabs">
       <Tab value="men">Men</Tab>
       <Tab value="women">Women</Tab>
     </div>
@@ -24583,18 +24384,11 @@ function SportCard({ item, onPick }) {
       onFocus={() => setHover(true)}
       onBlur={() => setHover(false)}
       aria-label={item.label}
-      style={{
-        position: "relative", overflow: "hidden", textAlign: "left", width: "100%",
-        background: "#fff", border: hover ? "1px solid #0e0e10" : "1px solid #e4e4e7",
-        borderRadius: 12, padding: 18, height: 140, boxSizing: "border-box",
-        display: "flex", flexDirection: "column", justifyContent: "flex-end",
-        cursor: "pointer", boxShadow: hover ? "0 8px 20px rgba(9,9,11,.08)" : "none",
-        transition: "border-color .14s ease, box-shadow .14s ease", fontFamily: "inherit",
-      }}
+      className={`wx-sport-card${hover ? " wx-sport-card--hover" : ""}`}
     >
-      <span aria-hidden="true" style={{ position: "absolute", top: -18, right: 4, fontSize: 96, fontWeight: 800, fontFamily: "Archivo, sans-serif", color: "#f1f1f3", letterSpacing: "-.04em", lineHeight: 1, pointerEvents: "none", whiteSpace: "nowrap" }}>{item.label.charAt(0)}</span>
-      <span style={{ position: "relative", fontSize: 17, fontWeight: 800, fontFamily: "Archivo, sans-serif", color: "#0e0e10" }}>{item.label}</span>
-      <span style={{ position: "relative", fontSize: 12, color: "#9a9aa1", marginTop: 3 }}>{(SPORT_STYLE_COUNTS[item.id] || 12) + " styles"}</span>
+      <span aria-hidden="true" className="wx-sport-card__letter">{item.label.charAt(0)}</span>
+      <span className="wx-sport-card__label">{item.label}</span>
+      <span className="wx-sport-card__count">{(SPORT_STYLE_COUNTS[item.id] || 12) + " styles"}</span>
     </button>
   );
 }
@@ -24608,13 +24402,13 @@ function CustSportPickerStep({ storeSport, onPick }) {
   );
   const items = gender === "women" ? CUST_WOMEN_CATEGORIES : CUST_MEN_CATEGORIES;
   return (
-    <div style={{ height: "100%", overflowY: "auto", padding: "22px 28px 28px" }}>
-      <div style={{ maxWidth: 980, margin: "0 auto" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 20, flexWrap: "wrap" }}>
+    <div className="wx-cust-sport">
+      <div className="wx-cust-sport__inner">
+        <div className="wx-cust-sport__head">
           <GenderTabs gender={gender} onChange={setGender} />
-          <span style={{ fontSize: 13, color: "#9a9aa1" }}>{items.length + " categories · pick one to start customizing"}</span>
+          <span className="wx-cust-sport__count">{items.length + " categories · pick one to start customizing"}</span>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+        <div className="wx-cust-sport__grid">
           {items.map((it) => (
             <SportCard key={gender + "-" + it.id} item={it} onPick={() => onPick({ ...it, gender })} />
           ))}
@@ -24644,85 +24438,85 @@ function CustProductPickerStep({ sport, onBack, onPick }) {
     p.name.toLowerCase().includes(search.toLowerCase())
   );
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="wx-cust-product">
       {/* Toolbar */}
-      <div style={{ padding: "16px 28px 16px", borderBottom: "1px solid #ececf0", flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+      <div className="wx-cust-product__header">
+        <div className="wx-cust-product__header-row">
           <div>
-            <h2 style={{ fontSize: 22, fontWeight: 800, margin: 0, letterSpacing: "-.01em" }}>{sportLabel}</h2>
-            <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 2 }}>{genderLabel}</div>
+            <h2 className="wx-cust-product__title">{sportLabel}</h2>
+            <div className="wx-cust-product__subtitle">{genderLabel}</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "8px 12px", fontSize: 12.5, fontWeight: 600, cursor: "pointer", color: "#0e0e10" }}>
+          <div className="wx-cust-product__tools">
+            <button className="wx-cust-product__tool">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
               Customize Your Look
             </button>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "8px 12px", fontSize: 12.5, fontWeight: 600, cursor: "pointer", color: "#0e0e10" }}>
+            <button className="wx-cust-product__tool">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
               Show Filters
             </button>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "8px 12px", fontSize: 12.5, fontWeight: 600, cursor: "pointer", color: "#0e0e10" }}>
+            <button className="wx-cust-product__tool">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"/></svg>
               Sort By: Default
             </button>
-            <div style={{ position: "relative" }}>
+            <div className="wx-cust-product__search">
               <input value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder={"Search " + sportLabel}
-                style={{ border: "1px solid #d4d4d8", borderRadius: 6, padding: "8px 12px 8px 32px", fontSize: 12.5, width: 200, outline: 0 }} />
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9a9aa1" strokeWidth="2" strokeLinecap="round" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                className="wx-cust-product__search-input" />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9a9aa1" strokeWidth="2" strokeLinecap="round" className="wx-cust-product__search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </div>
           </div>
         </div>
       </div>
 
       {/* Product list */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 28px 32px" }}>
+      <div className="wx-cust-product__body">
         {/* Group header */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
+        <div className="wx-cust-product__line">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#0e0e10" }}>SFN Lite Round Neck Jerseys</span>
-              <span style={{ background: "#0e0e10", color: "#fff", fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em", padding: "2px 8px", borderRadius: 3 }}>PRO SIZING</span>
+            <div className="wx-cust-product__line-title-row">
+              <span className="wx-cust-product__line-title">SFN Lite Round Neck Jerseys</span>
+              <span className="wx-cust-product__pro-sizing">PRO SIZING</span>
             </div>
-            <div style={{ fontSize: 12, color: "#6b6b72" }}>
+            <div className="wx-cust-product__line-sub">
               SFN Lite &nbsp;·&nbsp; {genderLabel} &nbsp;·&nbsp; QXSFNLJ &nbsp;·&nbsp;
-              <span style={{ textDecoration: "underline", cursor: "pointer" }}>Size Guide</span>
+              <span className="wx-cust-product__link">Size Guide</span>
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-            <div style={{ display: "flex", gap: 8 }}>
-              <span style={{ background: "#e7f0ff", color: "#2563eb", fontSize: 11, fontWeight: 600, padding: "4px 8px", borderRadius: 4 }}>Sublimation</span>
-              <span style={{ background: "#fef3e2", color: "#b45309", fontSize: 11, fontWeight: 600, padding: "4px 8px", borderRadius: 4 }}>QXX</span>
-              <span style={{ background: "#edfbf3", color: "#1f9d55", fontSize: 11, fontWeight: 600, padding: "4px 8px", borderRadius: 4 }}>Estimated ship date 3/25/2026</span>
+          <div className="wx-cust-product__line-meta">
+            <div className="wx-cust-product__tags">
+              <span className="wx-cust-product__tag-sublimation">Sublimation</span>
+              <span className="wx-cust-product__tag-qxx">QXX</span>
+              <span className="wx-cust-product__tag-ship">Estimated ship date 3/25/2026</span>
             </div>
-            <div style={{ fontSize: 12, color: "#0e0e10" }}>
-              <span style={{ fontWeight: 500 }}>MSRP Pricing:</span>
+            <div className="wx-cust-product__msrp">
+              <span className="wx-cust-product__msrp-label">MSRP Pricing:</span>
               <span>  Adult </span><strong>$89.45</strong>
               <span>  Youth </span><strong>$89.45</strong>
             </div>
-            <div style={{ fontSize: 11.5, color: "#6b6b72" }}>Team pricing available</div>
+            <div className="wx-cust-product__team-pricing">Team pricing available</div>
           </div>
         </div>
 
         {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+        <div className="wx-cust-product__grid">
           {products.map((p) => (
             <button key={p.id} onClick={() => onPick(p)}
-              style={{ background: "#fff", border: "1px solid #ececf0", borderRadius: 8, padding: "16px 16px 16px", cursor: "pointer", textAlign: "center", transition: "box-shadow .14s, border-color .14s" }}
+              className="wx-cust-product__card" style={{ border: "1px solid #ececf0" }}
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(20,20,30,.10)"; e.currentTarget.style.borderColor = "#c7c7cd"; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "#ececf0"; }}>
-              <div style={{ height: 160, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                <img src={p.photo} alt={p.name} style={{ maxHeight: 148, maxWidth: "100%", objectFit: "contain" }} />
+              <div className="wx-cust-product__card-media">
+                <img src={p.photo} alt={p.name} className="wx-cust-product__card-img" />
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{p.name}</div>
+              <div className="wx-cust-product__card-name">{p.name}</div>
             </button>
           ))}
         </div>
       </div>
 
       {/* Footer back */}
-      <div style={{ padding: "12px 28px", borderTop: "1px solid #ececf0", flexShrink: 0 }}>
-        <button onClick={onBack} style={{ background: "transparent", border: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#6b6b72", padding: 0 }}>
+      <div className="wx-cust-product__footer">
+        <button onClick={onBack} className="wx-cust-product__back">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           Back to Sport Picker
         </button>
@@ -24748,99 +24542,93 @@ function CustBuilderStep({ sport, product, onBack, onAddToStore }) {
   ];
 
   return (
-    <div style={{ height: "100%", display: "flex", overflow: "hidden" }}>
+    <div className="wx-cust-builder">
       {/* Sidebar */}
-      <div style={{ width: 80, flexShrink: 0, borderRight: "1px solid #ececf0", display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 12, gap: 2, overflowY: "auto" }}>
+      <div className="wx-cust-builder__rail">
         {sidebarItems.map((item) => {
           const active = tab === item.key;
           return (
-            <button key={item.key} onClick={() => setTab(item.key)} style={{
-              width: 64, padding: "12px 4px", border: 0, borderRadius: 8,
-              background: active ? "#f1f1f3" : "transparent",
-              color: active ? "#0e0e10" : "#9a9aa1",
-              cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-              transition: "background .12s, color .12s",
-            }}
+            <button key={item.key} onClick={() => setTab(item.key)} className="wx-cust-builder__rail-btn" style={{ background: active ? "#f1f1f3" : "transparent", color: active ? "#0e0e10" : "#9a9aa1" }}
               onMouseEnter={(e) => { e.currentTarget.style.background = active ? "#f1f1f3" : "#fafafa"; e.currentTarget.style.color = "#0e0e10"; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = active ? "#f1f1f3" : "transparent"; e.currentTarget.style.color = active ? "#0e0e10" : "#9a9aa1"; }}
             >
               {item.icon}
-              <span style={{ fontSize: 10.5, fontWeight: active ? 700 : 500, letterSpacing: ".01em" }}>{item.label}</span>
+              <span className={`wx-cust-builder__rail-label${active ? " wx-cust-builder__rail-label--active" : ""}`}>{item.label}</span>
             </button>
           );
         })}
       </div>
 
       {/* Main */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div className="wx-cust-builder__main">
         {/* Builder toolbar */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 20px", borderBottom: "1px solid #ececf0", flexShrink: 0 }}>
-          <button onClick={onBack} style={{ background: "transparent", border: 0, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#6b6b72", padding: 0 }}>
+        <div className="wx-cust-builder__topbar">
+          <button onClick={onBack} className="wx-cust-builder__back">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M15 18l-6-6 6-6"/></svg>
             Back to {sportLabel}
           </button>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <div className="wx-cust-builder__tools">
             {[{ label: "Undo", d: "M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" }, { label: "Redo", d: "M15 14l5-5-5-5M19 9H8.5a5.5 5.5 0 0 0 0 11H13" }].map(({ label, d }) => (
-              <button key={label} style={{ background: "transparent", border: 0, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, color: "#6b6b72", padding: 0 }}>
+              <button key={label} className="wx-cust-builder__tool">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d={d}/></svg>
-                <span style={{ fontSize: 10, fontWeight: 500 }}>{label}</span>
+                <span className="wx-cust-builder__tool-label">{label}</span>
               </button>
             ))}
-            <button style={{ background: "transparent", border: 0, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, color: "#6b6b72", padding: 0 }}>
+            <button className="wx-cust-builder__tool">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-              <span style={{ fontSize: 10, fontWeight: 500 }}>Help</span>
+              <span className="wx-cust-builder__tool-label">Help</span>
             </button>
           </div>
-          <div style={{ display: "flex", gap: 12 }}>
-            <button onClick={() => onAddToStore()} style={{ background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6, padding: "8px 20px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Add to Store</button>
+          <div className="wx-cust-builder__actions">
+            <button onClick={() => onAddToStore()} className="wx-cust-builder__add">Add to Store</button>
           </div>
         </div>
 
         {/* Builder body */}
-        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <div className="wx-cust-builder__content">
           {/* Details panel */}
-          <div style={{ width: 312, flexShrink: 0, borderRight: "1px solid #ececf0", overflowY: "auto", padding: "16px 20px" }}>
+          <div className="wx-cust-builder__panel">
             {tab === "details" && (
               <div>
-                <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 16, color: "#0e0e10" }}>BLB, Set-In, Full Button Jersey</div>
+                <div className="wx-cust-builder__panel-title">BLB, Set-In, Full Button Jersey</div>
                 {[["Price Item","BSBQT2BJ"],["Product Line","Sublimated"],["Block","Set-In Full Button Jersey"],["Style","Astros"],["Gender", sport && sport.gender === "women" ? "Women/Girls" : "Men/Boys"],["Youth","$76.67"],["XS","$76.67"],["S \u2013 3XL","$79.00"],["4XL \u2013 5XL","$80.34"]].map(([k, v]) => (
-                  <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f1f1f3", fontSize: 13 }}>
-                    <span style={{ color: "#6b6b72", fontWeight: 500 }}>{k}</span>
-                    <span style={{ color: "#0e0e10", fontWeight: 500, textAlign: "right" }}>{v}</span>
+                  <div key={k} className="wx-cust-builder__spec">
+                    <span className="wx-cust-builder__spec-key">{k}</span>
+                    <span className="wx-cust-builder__spec-value">{v}</span>
                   </div>
                 ))}
-                <div style={{ display: "flex", gap: 16, margin: "16px 0 16px" }}>
-                  <span style={{ fontSize: 12.5, color: "#0e0e10", textDecoration: "underline", cursor: "pointer" }}>Sizing Chart</span>
-                  <span style={{ fontSize: 12.5, color: "#0e0e10", textDecoration: "underline", cursor: "pointer" }}>How to Measure</span>
+                <div className="wx-cust-builder__links">
+                  <span className="wx-cust-builder__link">Sizing Chart</span>
+                  <span className="wx-cust-builder__link">How to Measure</span>
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12, color: "#0e0e10" }}>Materials</div>
+                <div className="wx-cust-builder__section-title">Materials</div>
                 {[{ label: "Fabric Option 1 (Suggested)", extra: "", desc: "100% Polyester \u00b7 7.96 oz\nCircular knitted, midweight fabric with high stretch in all directions." }, { label: "Fabric Option 2", extra: "+$2.00/item", desc: "100% Polyester \u00b7 7.96 oz\nCircular knitted, midweight fabric with advanced moisture management." }].map((f, i) => (
-                  <div key={i} style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-                    <div style={{ width: 48, height: 48, borderRadius: 4, flexShrink: 0, overflow: "hidden", background: "repeating-linear-gradient(45deg,#d4d4d8 0px,#d4d4d8 2px,#e8e8ec 2px,#e8e8ec 8px)" }} />
+                  <div key={i} className="wx-cust-builder__fabric">
+                    <div className="wx-cust-builder__fabric-swatch" />
                     <div>
-                      <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0e0e10" }}>{f.label} {f.extra && <span style={{ color: "#6b6b72", fontWeight: 500 }}>{f.extra}</span>}</div>
-                      <div style={{ fontSize: 11.5, color: "#6b6b72", marginTop: 4, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.desc}</div>
+                      <div className="wx-cust-builder__fabric-label">{f.label} {f.extra && <span className="wx-cust-builder__fabric-extra">{f.extra}</span>}</div>
+                      <div className="wx-cust-builder__fabric-desc">{f.desc}</div>
                     </div>
                   </div>
                 ))}
               </div>
             )}
             {tab !== "details" && (
-              <div style={{ padding: "60px 0", textAlign: "center", color: "#9a9aa1", fontSize: 13 }}>
+              <div className="wx-cust-builder__empty">
                 {(sidebarItems.find((s) => s.key === tab) || {}).label} options
               </div>
             )}
           </div>
 
           {/* Preview panel */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#fafafa", overflow: "hidden" }}>
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 32px" }}>
-              <img src={thumbs[activeThumb]} alt={product ? product.name : "Jersey"} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+          <div className="wx-cust-builder__stage">
+            <div className="wx-cust-builder__preview">
+              <img src={thumbs[activeThumb]} alt={product ? product.name : "Jersey"} className="wx-cust-builder__preview-img" />
             </div>
-            <div style={{ display: "flex", gap: 12, padding: "12px 20px", borderTop: "1px solid #ececf0", justifyContent: "center", flexShrink: 0 }}>
+            <div className="wx-cust-builder__thumbs">
               {thumbs.map((src, i) => (
-                <button key={i} onClick={() => setActiveThumb(i)} style={{ width: 64, height: 64, borderRadius: 4, border: activeThumb === i ? "2px solid #0e0e10" : "1px solid #e5e5e9", background: "#fff", cursor: "pointer", overflow: "hidden", padding: 4, flexShrink: 0 }}>
-                  <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                <button key={i} onClick={() => setActiveThumb(i)} className={`wx-cust-builder__thumb${(activeThumb === i) ? " wx-cust-builder__thumb--active" : ""}`}>
+                  <img src={src} alt="" className="wx-cust-builder__thumb-img" />
                 </button>
               ))}
             </div>
@@ -24891,18 +24679,18 @@ function CustReviewStep({ sport, product, onBack, onCancel, onAddToStore }) {
   };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+    <div className="wx-cust-review">
+      <div className="wx-cust-review__body">
         {/* Left: product card */}
-        <div style={{ width: 268, flexShrink: 0, borderRight: "1px solid #ececf0", padding: "24px 20px", display: "flex", flexDirection: "column" }}>
-          <div style={{ border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden" }}>
-            <div style={{ height: 188, display: "flex", alignItems: "center", justifyContent: "center", background: "#f7f7f8", padding: 16 }}>
-              <img src={photo} alt={product ? product.name : "Product"} style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "contain" }} />
+        <div className="wx-cust-review__side">
+          <div className="wx-cust-review__product">
+            <div className="wx-cust-review__product-media">
+              <img src={photo} alt={product ? product.name : "Product"} className="wx-cust-review__product-img" />
             </div>
-            <div style={{ padding: "12px 16px 16px" }}>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#0e0e10", letterSpacing: ".04em" }}>{product ? product.name.toUpperCase() : "CUSTOM"}</div>
-              <div style={{ fontSize: 12, color: "#6b6b72", marginTop: 2 }}>{sport ? sport.label : "Sport"} \u00b7 Uniform Jersey</div>
-              <button onClick={onBack} style={{ marginTop: 12, width: "100%", background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "8px 0", fontSize: 12.5, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, color: "#0e0e10" }}>
+            <div className="wx-cust-review__product-text">
+              <div className="wx-cust-review__product-name">{product ? product.name.toUpperCase() : "CUSTOM"}</div>
+              <div className="wx-cust-review__product-sport">{sport ? sport.label : "Sport"} \u00b7 Uniform Jersey</div>
+              <button onClick={onBack} className="wx-cust-review__back">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                 Customize
               </button>
@@ -24911,14 +24699,14 @@ function CustReviewStep({ sport, product, onBack, onCancel, onAddToStore }) {
         </div>
 
         {/* Right: settings */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}>
+        <div className="wx-cust-review__main">
           {/* Product Settings */}
-          <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "16px 24px", marginBottom: 16 }}>
-            <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 12, color: "#0e0e10" }}>Product Settings</div>
+          <div className="wx-cust-review__card">
+            <div className="wx-cust-review__card-title">Product Settings</div>
             {[{ key: "team-required", label: "Team Required", tip: "Mandatory gear rostered players must purchase to participate." }, { key: "team-supplied", label: "Team Supplied", tip: "Mandatory gear already paid for collectively — players pick sizes but pay $0." }].map((opt) => (
-              <div key={opt.key} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0" }}>
+              <div key={opt.key} className="wx-cust-review__option">
                 <BundleToggle on={teamSetting === opt.key} onChange={(v) => setTeamSetting(v ? opt.key : "fan-gear")} />
-                <span style={{ fontSize: 14, color: "#0e0e10" }}>{opt.label}</span>
+                <span className="wx-cust-review__option-label">{opt.label}</span>
                 <InfoTooltip title={opt.label} body={opt.tip} />
               </div>
             ))}
@@ -24928,39 +24716,39 @@ function CustReviewStep({ sport, product, onBack, onCancel, onAddToStore }) {
           <PriceSettingsCard pricing={pricing} onChange={setPricing} fundOn={false} covered={teamSetting === "team-supplied"} />
 
           {/* Confirm Application Sizes */}
-          <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: "16px 24px" }}>
-            <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 12, color: "#0e0e10" }}>Confirm Application Sizes</div>
-            <div style={{ display: "grid", gridTemplateColumns: "140px 1fr 100px 1.3fr 1fr", gap: 12, fontSize: 11, fontWeight: 700, letterSpacing: ".10em", color: "#9a9aa1", paddingBottom: 12, borderBottom: "1px solid #ececf0" }}>
+          <div className="wx-cust-review__sizes">
+            <div className="wx-cust-review__card-title">Confirm Application Sizes</div>
+            <div className="wx-cust-review__sizes-head">
               <div>TYPE</div><div>DETAILS</div><div>COLORS</div><div>SELECT SIZES</div><div>NOTES</div>
             </div>
             {sizes.map((row) => (
-              <div key={row.id} style={{ display: "grid", gridTemplateColumns: "140px 1fr 100px 1.3fr 1fr", gap: 12, padding: "16px 0", borderBottom: "1px solid #ececf0", alignItems: "flex-start" }}>
+              <div key={row.id} className="wx-cust-review__sizes-row">
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10", letterSpacing: ".05em" }}>{row.type}</div>
-                  <div style={{ fontSize: 11, color: "#6b6b72", marginTop: 4 }}>( {row.placement} )</div>
+                  <div className="wx-cust-review__type">{row.type}</div>
+                  <div className="wx-cust-review__placement">( {row.placement} )</div>
                 </div>
-                <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 48, height: 48, border: "1px solid #ececf0", borderRadius: 4, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 700, color: "#0e0e10", flexShrink: 0 }}>
+                <div className="wx-cust-review__details">
+                  <div className="wx-cust-review__details-icon">
                     {row.iconKind === "hash" ? "#" : "T"}
                   </div>
-                  <div style={{ fontSize: 11, color: "#0e0e10", lineHeight: 1.6, fontWeight: 500, letterSpacing: ".04em" }}>
+                  <div className="wx-cust-review__details-list">
                     {Object.entries(row.details).map(([k, v]) => (
-                      <div key={k}><span style={{ color: "#9a9aa1", fontWeight: 600 }}>{k}</span><span style={{ color: "#9a9aa1" }}> : </span><span>{v}</span></div>
+                      <div key={k}><span className="wx-cust-review__details-key">{k}</span><span className="wx-cust-review__details-sep"> : </span><span>{v}</span></div>
                     ))}
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                <div className="wx-cust-review__colors">
                   {row.colors.map((c, i) => (
-                    <div key={i} style={{ width: 32, height: 32, borderRadius: 4, background: c, border: c && c.toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "none" }} />
+                    <div key={i} className={`wx-cust-review__color${(c && c.toLowerCase() === "#ffffff") ? " wx-cust-review__color--white" : ""}`} style={{ background: c }} />
                   ))}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div className="wx-cust-review__size-rows">
                   <SizeRow label="ADULT" value={row.adultSize} options={sizeOptions} onChange={(v) => updateRow(row.id, { adultSize: v })} />
                   <SizeRow label="YOUTH" value={row.youthSize} options={sizeOptions} onChange={(v) => updateRow(row.id, { youthSize: v })} />
                 </div>
                 <div>
                   <textarea placeholder="Notes Here" value={row.notes} onChange={(e) => updateRow(row.id, { notes: e.target.value })}
-                    style={{ width: "100%", minHeight: 64, resize: "vertical", border: "1px solid #d4d4d8", borderRadius: 4, padding: "8px 8px", fontSize: 12, fontFamily: "inherit", color: "#0e0e10", outline: 0 }} />
+                    className="wx-cust-review__notes" />
                 </div>
               </div>
             ))}
@@ -24969,9 +24757,9 @@ function CustReviewStep({ sport, product, onBack, onCancel, onAddToStore }) {
       </div>
 
       {/* Footer */}
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, padding: "16px 28px", borderTop: "1px solid #ececf0", background: "#fff", flexShrink: 0 }}>
-        <button onClick={onCancel} style={{ background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "12px 24px", fontSize: 13, fontWeight: 700, color: "#0e0e10", cursor: "pointer" }}>Cancel</button>
-        <button onClick={handleAddToStore} style={{ background: "#0e0e10", color: "#fff", border: 0, borderRadius: 6, padding: "12px 28px", fontSize: 13, fontWeight: 800, cursor: "pointer" }}>Add to Store</button>
+      <div className="wx-cust-review__footer">
+        <button onClick={onCancel} className="wx-cust-review__cancel">Cancel</button>
+        <button onClick={handleAddToStore} className="wx-cust-review__add">Add to Store</button>
       </div>
     </div>
   );
@@ -33400,54 +33188,54 @@ function VaultOfferModal({ item, onClose, onConfirm }) {
   const allSizes = sizeList.length === sizes.length;
   const ready = sizeList.length > 0 && cwListSel.length > 0;
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(9,9,11,.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 700, padding: 24 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ width: 640, maxWidth: "100%", maxHeight: "calc(100vh - 48px)", display: "flex", flexDirection: "column", background: "#fff", borderRadius: 12, boxShadow: "0 24px 48px rgba(9,9,11,.18)", overflow: "hidden" }}>
-        <div style={{ padding: "16px 20px", borderBottom: "1px solid #e4e4e7", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexShrink: 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 700, fontFamily: "Archivo, sans-serif", color: "#09090b" }}>{item.title} — sizes & color ways</span>
-          <button type="button" onClick={onClose} aria-label="Close" style={{ border: 0, background: "none", color: "#71717a", fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>✕</button>
+    <div onClick={onClose} className="wx-vault-offer">
+      <div onClick={(e) => e.stopPropagation()} className="wx-vault-offer__dialog">
+        <div className="wx-vault-offer__header">
+          <span className="wx-vault-offer__title">{item.title} — sizes & color ways</span>
+          <button type="button" onClick={onClose} aria-label="Close" className="wx-vault-offer__close">✕</button>
         </div>
-        <div style={{ padding: 20, overflowY: "auto", minHeight: 0, flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".08em", color: "#9a9aa1" }}>SIZES OFFERED</span>
-            <span style={{ fontSize: 11.5, color: "#71717a" }}>
+        <div className="wx-vault-offer__body">
+          <div className="wx-vault-offer__section-head">
+            <span className="wx-vault-offer__section-label">SIZES OFFERED</span>
+            <span className="wx-vault-offer__section-count">
               {sizeList.length} of {sizes.length} sizes
-              <button type="button" onClick={() => setSelSizes(() => { const o = {}; if (!allSizes) sizes.forEach((s) => { o[s] = true; }); return o; })} style={{ background: "none", border: 0, padding: 0, marginLeft: 10, fontSize: 11.5, fontWeight: 700, color: "#0e0e10", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}>{allSizes ? "Deselect all" : "Select all"}</button>
+              <button type="button" onClick={() => setSelSizes(() => { const o = {}; if (!allSizes) sizes.forEach((s) => { o[s] = true; }); return o; })} className="wx-vault-offer__toggle-all">{allSizes ? "Deselect all" : "Select all"}</button>
             </span>
           </div>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
+          <div className="wx-vault-offer__sizes">
             {sizes.map((s) => {
               const on = !!selSizes[s];
               return (
-                <button key={s} type="button" aria-pressed={on} onClick={() => setSelSizes((m) => ({ ...m, [s]: !m[s] }))} style={{ minWidth: 56, padding: "12px 12px", borderRadius: 10, cursor: "pointer", fontFamily: "inherit", fontSize: 13.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, background: on ? "#0e0e10" : "#fff", color: on ? "#fff" : "#09090b", border: "1.5px solid " + (on ? "#0e0e10" : "#d4d4d8"), boxShadow: on ? "0 0 0 3px rgba(14,14,16,.14)" : "none", transition: "all .12s" }}>{on && <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 15, height: 15, borderRadius: 999, background: "#fff", color: "#0e0e10", fontSize: 9.5, fontWeight: 800 }}>✓</span>}{s}</button>
+                <button key={s} type="button" aria-pressed={on} onClick={() => setSelSizes((m) => ({ ...m, [s]: !m[s] }))} className={`wx-vault-offer__size${on ? " wx-vault-offer__size--on" : ""}`}>{on && <span aria-hidden="true" className="wx-vault-offer__size-check">✓</span>}{s}</button>
               );
             })}
           </div>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".08em", color: "#9a9aa1" }}>COLOR WAYS OFFERED</span>
-            <span style={{ fontSize: 11.5, color: "#71717a" }}>
+          <div className="wx-vault-offer__section-head">
+            <span className="wx-vault-offer__section-label">COLOR WAYS OFFERED</span>
+            <span className="wx-vault-offer__section-count">
               {cwListSel.length} of {item.colorways.length} selected
-              <button type="button" onClick={() => setSelCws(() => { const o = {}; if (!allCw) item.colorways.forEach((c) => { o[c.slug] = true; }); return o; })} style={{ background: "none", border: 0, padding: 0, marginLeft: 10, fontSize: 11.5, fontWeight: 700, color: "#0e0e10", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}>{allCw ? "Deselect all" : "Select all"}</button>
+              <button type="button" onClick={() => setSelCws(() => { const o = {}; if (!allCw) item.colorways.forEach((c) => { o[c.slug] = true; }); return o; })} className="wx-vault-offer__toggle-all">{allCw ? "Deselect all" : "Select all"}</button>
             </span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+          <div className="wx-vault-offer__colorways">
             {item.colorways.map((c) => {
               const on = !!selCws[c.slug];
               return (
-                <button key={c.slug} type="button" title={c.name} onClick={() => setSelCws((m) => ({ ...m, [c.slug]: !m[c.slug] }))} style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", background: on ? "#fafafa" : "#fff", border: "1px solid " + (on ? "#09090b" : "#e4e4e7"), borderRadius: 8, padding: "10px 6px 8px", fontFamily: "inherit" }}>
-                  <span aria-hidden="true" style={{ position: "absolute", top: 6, right: 6, width: 16, height: 16, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, border: "1px solid " + (on ? "#09090b" : "#d4d4d8"), background: on ? "#09090b" : "#fff", color: on ? "#fff" : "transparent" }}>✓</span>
-                  <span style={{ width: 56, height: 62, display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}><CatalogPhoto photo={c.front} alt={c.name} /></span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 5, maxWidth: "100%" }}>
-                    <span style={{ width: 10, height: 10, borderRadius: "50%", background: c.hex, flexShrink: 0, border: c.slug === "white" ? "1px solid #d4d4d8" : "1px solid rgba(9,9,11,.12)" }} />
-                    <span style={{ fontSize: 10.5, fontWeight: 700, color: "#09090b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}</span>
+                <button key={c.slug} type="button" title={c.name} onClick={() => setSelCws((m) => ({ ...m, [c.slug]: !m[c.slug] }))} className={`wx-vault-offer__colorway${on ? " wx-vault-offer__colorway--on" : ""}`}>
+                  <span aria-hidden="true" className={`wx-vault-offer__colorway-check${on ? " wx-vault-offer__colorway-check--on" : ""}`}>✓</span>
+                  <span className="wx-vault-offer__colorway-photo"><CatalogPhoto photo={c.front} alt={c.name} /></span>
+                  <span className="wx-vault-offer__colorway-label">
+                    <span className={`wx-vault-offer__colorway-dot${(c.slug === "white") ? " wx-vault-offer__colorway-dot--white" : ""}`} style={{ background: c.hex }} />
+                    <span className="wx-vault-offer__colorway-name">{c.name}</span>
                   </span>
                 </button>
               );
             })}
           </div>
         </div>
-        <div style={{ padding: "14px 20px", borderTop: "1px solid #e4e4e7", background: "#fafafa", display: "flex", justifyContent: "flex-end", gap: 10, flexShrink: 0 }}>
-          <button type="button" onClick={onClose} style={{ background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "9px 16px", fontSize: 12.5, fontWeight: 700, color: "#3f3f46", cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
-          <button type="button" disabled={!ready} onClick={() => { if (ready) onConfirm(sizeList, cwListSel); }} style={{ background: ready ? "#0e0e10" : "#e4e4e7", color: ready ? "#fff" : "#a1a1aa", border: 0, borderRadius: 6, padding: "9px 18px", fontSize: 12.5, fontWeight: 700, cursor: ready ? "pointer" : "default", fontFamily: "inherit" }}>Continue</button>
+        <div className="wx-vault-offer__footer">
+          <button type="button" onClick={onClose} className="wx-vault-offer__cancel">Cancel</button>
+          <button type="button" disabled={!ready} onClick={() => { if (ready) onConfirm(sizeList, cwListSel); }} className={`wx-vault-offer__continue${ready ? " wx-vault-offer__continue--ready" : ""}`}>Continue</button>
         </div>
       </div>
     </div>

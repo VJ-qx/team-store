@@ -38,6 +38,11 @@
 @use "components/workspace/team-database-modal";
 @use "components/workspace/logo-drop-zone";
 @use "components/workspace/color-swatches";
+@use "components/workspace/wizard-products";
+@use "components/workspace/configure-product";
+@use "components/workspace/price-settings";
+@use "components/workspace/team-assign";
+@use "components/workspace/customize-product";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";

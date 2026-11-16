@@ -223,6 +223,11 @@ export default {
       how: 'Use the same product browser, Configure & Add pop-up, price settings and Customize flow. Not converted yet.',
     },
     {
+      name: 'Other screens that share these components',
+      where: 'ProductDetailPage, EditProductModal, BundleEditBody, BundlePriceSettings, BulkPricingModal, Customizer, TemplateWorkspace, and the product photos and thumbnails (CatalogPhoto, DefaultProductThumb) in workspace-app.jsx',
+      how: 'They render the same price settings, team assignment, bundle toggle, size pop-up, sport cards and product photos, so they use the new classes too. Not covered by this scenario; the store-home scenario\'s "preview store" state shows the product photos.',
+    },
+    {
       name: 'Remove from store?',
       where: 'Step3Products (removeTarget) in workspace-app.jsx',
       how: 'Not reachable: the product card takes onRemove but shows no remove button.',
