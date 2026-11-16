@@ -17,7 +17,7 @@ Prove that the Vue version of a page behaves and looks exactly like the original
 The tool is `tools/parity/parity.mjs` in `--mode behavior`. It compares two versions of the page:
 
 - **A**: the original prototype. Defaults to `main`, served from a temporary git worktree.
-- **B**: the Vue version, given as a URL. For example, the Vite dev server at `http://localhost:5173/`.
+- **B**: the Vue version, given as a URL. For example, the Vite dev server's landing page at `http://localhost:5173/landing.html`.
 
 ---
 
@@ -70,7 +70,7 @@ Timers are frozen after the page loads. Only `wait` steps advance them. CSS anim
 ### 1. Run
 
 ```bash
-npm run parity -- tools/parity/scenarios/<scenario>.mjs --mode behavior --b http://localhost:5173/
+npm run parity -- tools/parity/scenarios/<scenario>.mjs --mode behavior --b http://localhost:5173/landing.html
 ```
 
 Useful options:

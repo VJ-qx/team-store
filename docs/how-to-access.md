@@ -4,13 +4,15 @@ Where every converted screen is, and how to reach the states the BRD describes, 
 
 ## How to run
 
-In the project folder, run `npm run dev`. The same server opens the Vue pages and the original prototype pages:
+In the project folder, run `npm run dev`. It opens the landing page in your browser. The same server opens the Vue pages and the original prototype pages:
 
 | Page | Vue | Prototype |
 |---|---|---|
-| Landing page | http://localhost:5173/ | http://localhost:5173/Landing%20Page.dc.html |
+| Landing page | http://localhost:5173/landing.html | http://localhost:5173/Landing%20Page.dc.html |
 | Workspace | http://localhost:5173/workspace.html | http://localhost:5173/Workspace.dc.html |
 | Marucci workspace | http://localhost:5173/workspace-integrated.html | http://localhost:5173/Marucci%20Workspace.dc.html |
+
+The prototype's files are in `prototype/`, but they open at the root as above: the dev server serves that folder from the root.
 
 The prototype's settings panel doesn't exist in the Vue pages. To change a setting, open the browser console and run the command given below for each version. Reload the page to go back to the defaults.
 
@@ -18,7 +20,7 @@ The prototype's settings panel doesn't exist in the Vue pages. To change a setti
 
 ### Landing page
 
-Open http://localhost:5173/ (prototype: http://localhost:5173/Landing%20Page.dc.html). Sign-in, Forgot password, Sign in with Customizer and Create an account all start from the **SIGN IN** button at the top right.
+Open http://localhost:5173/landing.html (prototype: http://localhost:5173/Landing%20Page.dc.html). Sign-in, Forgot password, Sign in with Customizer and Create an account all start from the **SIGN IN** button at the top right.
 
 Other states are settings. In Vue run `__paritySetProps({ … })`; in the prototype run `__dcSetProps(__dcRootName(), { … })` with the same settings:
 
@@ -56,6 +58,8 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 - **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**.
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
+
+The ✕ at its top right, Escape, and a click outside the pop-up close it the same way as its button (**Continue to Workspace** / **Confirm & Enter**): the primary brand shown is kept.
 
 #### My Account (FR-1.7.3, FR-1.12)
 

@@ -27,8 +27,12 @@ export function serveDir(root, port = 0) {
     const server = createServer((req, res) => {
       let path;
       try { path = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { res.writeHead(400).end(); return; }
-      const file = resolve(root, '.' + path);
+      let file = resolve(root, '.' + path);
       if (file !== root && !file.startsWith(root + sep)) { res.writeHead(403).end(); return; }
+      // The prototype's files live in prototype/ but are served from the root, as in the handover
+      // (vite.config.js does the same). Files at the root win; older refs have everything there.
+      const fromPrototype = resolve(root, 'prototype', '.' + path);
+      if (!existsSync(file) && fromPrototype.startsWith(root + sep) && existsSync(fromPrototype)) file = fromPrototype;
       if (!existsSync(file) || !statSync(file).isFile()) { res.writeHead(404, { 'content-type': 'text/plain' }).end('Not found'); return; }
       res.writeHead(200, { 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'cache-control': 'no-store' });
       createReadStream(file).pipe(res);

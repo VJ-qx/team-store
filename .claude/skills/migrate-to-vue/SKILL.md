@@ -101,7 +101,7 @@ Follow `.claude/skills/convert-to-vue/SKILL.md` and `.claude/skills/convert-to-v
 
 1. Start the Vue dev server in the background (for example `npm run dev`).
 2. Wait until the page responds.
-3. Note its URL, for example `http://localhost:5173/`.
+3. Note its URL, for example `http://localhost:5173/landing.html`.
 
 If it doesn't start or the page shows errors, fix them before continuing.
 
