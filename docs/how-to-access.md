@@ -95,7 +95,29 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected (p
 
 **Empty Overview:** `__paritySetProps({ overviewEmpty: true })`. Prototype: settings panel, turn on **Overview empty state**.
 
-**Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page), both **All stores →** links and **Create a Store →** on the empty Overview (the Stores list), **Review** (a store's Roster tab), and **Add Store** (the new store flow). The Vue comparison (`workspace-overview.mjs`) reports those 6 clicks as differences until the screens are converted.
+**Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page), **Review** (a store's Roster tab), and **Add Store** (the new store flow). The Vue comparison (`workspace-overview.mjs`) reports those 3 clicks as differences until the screens are converted. Both **All stores →** links and **Create a Store →** on the empty Overview open the Stores page, converted in Module 3.
+
+## Module 3: Stores page
+
+Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected and click **STORES** in the header (prototype: http://localhost:5173/Workspace.dc.html?brand=prolook&auth=native-connected). For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`). The [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) parts on this page:
+
+| BRD | On the Stores page |
+|---|---|
+| FR-3.2 Filters | **Show Filters** at the top right: Status, Sport and Location lists, built from the stores shown. The button reads the chosen filter ("Filter: Lacrosse"); **All** clears it |
+| FR-3.3 Sort | **Sort By: Name (A-Z)**: Name A-Z / Z-A, Revenue high to low / low to high |
+| FR-3.4 Search | **Search Team Stores**: matches the store name, team name, sport and city as you type |
+| FR-3.5–3.7 Tabs | **All Stores / My Stores / Joined Stores**, with counts. A tab with nothing to show says so |
+| FR-3.8 Store card | Status tag (Open / Draft / On Hold), store type, logo, sport, "Created by" |
+| FR-3.9 Manage Store | Opens the store's page |
+| FR-3.10 Edit | In the card's ⋮ menu; also opens the store's page |
+| FR-3.11 ⋮ menu | Edit, Visit Store (does nothing in the prototype either), Use as Template, Archive |
+| FR-3.11.1 Archive | **Archive** opens the "Archive <store>?" confirmation; **Archive Store** moves the store to My Account's archived list |
+
+**Zero state** (no stores yet): `__paritySetProps({ zeroState: true })`, then click **STORES**. Prototype: settings panel, turn on **Zero state usability test**.
+
+**Not converted yet, so empty in Vue** (the next step of Module 3): the Add Store wizard (FR-3.1), opened by **Add Store** and by **Create Your First Store** in the zero state. The Vue comparison (`workspace-stores.mjs`) reports those 2 clicks as differences until the wizard is converted. Also not converted: the **Use as Template** pop-up (nothing happens in Vue), and the page's league view, which the prototype can't show either (leagues are out of the MVP).
+
+**Prototype differences from the BRD, for the frontend dev:** the ⋮ menu still has **Use as Template**, which FR-3.11 says was removed; the Status filter offers Active / On Hold where FR-3.2 lists Open / Draft / Closed.
 
 ## Other references
 

@@ -1,6 +1,7 @@
 <!-- Converted from workspace-app.jsx: StoreCard — a store tile (status tag, type, logo, Manage Store),
-     with an actions menu; "condensed" is the smaller tile on the Overview's Frequently Visited shelf.
-     The contextIcon slot takes the small icon in front of the condensed tile's context line. -->
+     with an actions menu (Module 3, FR-3.8 to FR-3.11); "condensed" is the smaller tile on the Overview's
+     Frequently Visited shelf. The contextIcon slot takes the small icon in front of the condensed tile's
+     context line. -->
 <template>
   <div v-if="condensed" @click="onManage" :title="'Open ' + (store.storeTitle || store.teamName || 'store')" class="wx-store-mini" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">
     <div class="wx-store-mini__media">
@@ -22,41 +23,41 @@
       <button @click="(e) => { e.stopPropagation(); onManage && onManage(); }" class="wx-store-mini__manage" @mouseenter="(e) => { e.currentTarget.style.background = '#0e0e10'; e.currentTarget.style.color = '#fff'; }" @mouseleave="(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#0e0e10'; }">Manage Store</button>
     </div>
   </div>
-  <div v-else v-patch-style="{ background: '#fff', border: '1px solid #ececf0', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 1px 2px rgba(20,20,30,.03)', display: 'flex', flexDirection: 'column', transition: 'box-shadow .15s ease, border-color .15s ease' }" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">
-    <div :style="{ position: 'relative', background: '#fafafb', padding: '20px', minHeight: '172px', display: 'flex', alignItems: 'center', justifyContent: 'center' }">
-      <div :style="{ position: 'absolute', top: '16px', left: '16px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }">
-        <div :style="{ background: tagBg, color: tagColor, padding: '4px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '5px' }">
+  <div v-else class="wx-store-card" @mouseenter="(e) => { e.currentTarget.style.boxShadow = '0 8px 22px rgba(20,20,30,.09)'; e.currentTarget.style.borderColor = '#d4d4d8'; }" @mouseleave="(e) => { e.currentTarget.style.boxShadow = '0 1px 2px rgba(20,20,30,.03)'; e.currentTarget.style.borderColor = '#ececf0'; }">
+    <div class="wx-store-card__media">
+      <div class="wx-store-card__tags">
+        <div class="wx-store-card__status" :style="{ background: tagBg, color: tagColor }">
           <svg v-if="archived" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="4" width="18" height="4" rx="1" />
             <path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" />
             <path d="M10 12h4" />
           </svg>{{ tagLabel }}</div>
-        <div :style="{ background: isLeague ? '#0e0e10' : '#fff', color: isLeague ? '#fff' : '#0e0e10', border: isLeague ? '1px solid #0e0e10' : '1px solid #d4d4d8', padding: '4px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }">
+        <div :class="`wx-store-card__type${isLeague ? ' wx-store-card__type--league' : ''}`">
           <IconLayers v-if="isLeague" :size="12" :style="{ strokeWidth: 2.2 }" />
           <IconUsers v-else :size="12" :style="{ strokeWidth: 2.2 }" />{{ typeLabel }}</div>
       </div>
-      <div ref="menu" :style="{ position: 'absolute', top: '12px', right: '12px' }">
-        <button @click="() => setMenuOpen((v) => !v)" v-patch-style="{ background: 'transparent', border: '0', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: '8px', borderRadius: '6px' }" title="Store actions" @mouseenter="(e) => (e.currentTarget.style.background = '#ececf0')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">
-          <span :style="{ display: 'inline-flex', gap: '4px' }">
-            <span :style="{ width: '4px', height: '4px', borderRadius: '50%', background: '#1a1a1d' }" />
-            <span :style="{ width: '4px', height: '4px', borderRadius: '50%', background: '#1a1a1d' }" />
-            <span :style="{ width: '4px', height: '4px', borderRadius: '50%', background: '#1a1a1d' }" />
+      <div ref="menu" class="wx-store-card__actions">
+        <button @click="() => setMenuOpen((v) => !v)" class="wx-store-card__menu-btn" title="Store actions" @mouseenter="(e) => (e.currentTarget.style.background = '#ececf0')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">
+          <span class="wx-store-card__dots">
+            <span class="wx-store-card__dot" />
+            <span class="wx-store-card__dot" />
+            <span class="wx-store-card__dot" />
           </span>
         </button>
-        <div v-if="menuOpen" :style="{ position: 'absolute', top: '36px', right: '0', zIndex: 5, background: '#fff', border: '1px solid #ececf0', borderRadius: '6px', boxShadow: '0 8px 24px rgba(20,20,30,.10)', padding: '4px', minWidth: '140px' }">
-          <div v-for="label in menuLabels" :key="label" @click="() => menuClick(label)" v-patch-style="{ padding: '8px 12px', fontSize: '13px', cursor: 'pointer', borderRadius: '4px' }" @mouseenter="(e) => (e.currentTarget.style.background = '#fafafb')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">{{ label }}</div>
+        <div v-if="menuOpen" class="wx-store-card__menu">
+          <div v-for="label in menuLabels" :key="label" @click="() => menuClick(label)" class="wx-store-card__menu-item" @mouseenter="(e) => (e.currentTarget.style.background = '#fafafb')" @mouseleave="(e) => (e.currentTarget.style.background = 'transparent')">{{ label }}</div>
         </div>
       </div>
-      <img v-if="store.teamLogo?.url" :src="store.teamLogo.url" alt="" :style="{ maxWidth: '120px', maxHeight: '104px', objectFit: 'contain', filter: archived ? 'grayscale(1)' : 'none', opacity: archived ? 0.5 : 1 }" />
-      <div v-else :style="{ width: '92px', height: '92px', borderRadius: '50%', background: store.teamLogo?.color || store.teamColors?.[0] || '#1d3a8a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '28px', fontFamily: 'Archivo, sans-serif', border: (store.teamColors?.[0] || '').toLowerCase() === '#ffffff' ? '1px solid #d4d4d8' : 'none', filter: archived ? 'grayscale(1)' : 'none', opacity: archived ? 0.5 : 1 }">{{ store.teamLogo?.mono || (store.teamName || store.storeTitle || 'T').slice(0, 2).toUpperCase() }}</div>
+      <img v-if="store.teamLogo?.url" :src="store.teamLogo.url" alt="" :class="`wx-store-card__logo${archived ? ' wx-store-card__logo--archived' : ''}`" />
+      <div v-else :class="`wx-store-card__mono${archived ? ' wx-store-card__mono--archived' : ''}`" :style="{ background: store.teamLogo?.color || store.teamColors?.[0] || '#1d3a8a', border: (store.teamColors?.[0] || '').toLowerCase() === '#ffffff' ? '1px solid #d4d4d8' : 'none' }">{{ store.teamLogo?.mono || (store.teamName || store.storeTitle || 'T').slice(0, 2).toUpperCase() }}</div>
     </div>
-    <div :style="{ padding: '16px 16px 16px', textAlign: 'center', flex: 1 }">
-      <div :style="{ fontSize: '15px', fontWeight: 800, marginBottom: '4px', color: '#0e0e10' }">{{ store.storeTitle || store.teamName || 'Team Store' }}</div>
-      <div :style="{ fontSize: '12.5px', color: '#9a9aa1', marginBottom: '4px' }">{{ store.sport || 'Sport' }}</div>
-      <div :style="{ fontSize: '12.5px', color: '#6b6b72' }">Created by {{ store.createdByName || store.managerName || store.contactName || '—' }}</div>
+    <div class="wx-store-card__body">
+      <div class="wx-store-card__name">{{ store.storeTitle || store.teamName || 'Team Store' }}</div>
+      <div class="wx-store-card__sport">{{ store.sport || 'Sport' }}</div>
+      <div class="wx-store-card__by">Created by {{ store.createdByName || store.managerName || store.contactName || '—' }}</div>
     </div>
-    <div :style="{ borderTop: '1px solid #ececf0', padding: '16px' }">
-      <button @click="onManage" v-patch-style="{ width: '100%', background: '#fff', border: '1px solid #0e0e10', color: '#0e0e10', padding: '12px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 700, cursor: 'pointer', transition: 'all .12s' }" @mouseenter="(e) => { e.currentTarget.style.background = '#0e0e10'; e.currentTarget.style.color = '#fff'; }" @mouseleave="(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#0e0e10'; }">Manage Store</button>
+    <div class="wx-store-card__foot">
+      <button @click="onManage" class="wx-store-card__manage" @mouseenter="(e) => { e.currentTarget.style.background = '#0e0e10'; e.currentTarget.style.color = '#fff'; }" @mouseleave="(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#0e0e10'; }">Manage Store</button>
     </div>
   </div>
 </template>

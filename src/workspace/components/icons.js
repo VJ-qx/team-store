@@ -43,3 +43,10 @@ export const IconChevronLeft = icon("IconChevronLeft", "M15 18l-6-6 6-6");
 export const IconInfo = icon("IconInfo", ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z","M12 11v5","M12 8h.01"]);
 export const IconBarGraphBox = icon("IconBarGraphBox", ["M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z","M7.5 16.5v-2.25","M10.5 16.5V12","M13.5 16.5V9.75","M16.5 16.5v-9"]);
 export const IconShirt = icon("IconShirt", ["M8 3l4 3 4-3 4.5 3.2-2.3 4-2.2-1.1V21H8V9.1L5.8 10.2 3.5 6.2 8 3z"]);
+// The Stores page (Module 3): its toolbar, the ⋮ menu's archive confirmation and the league view.
+export const IconFilter = icon("IconFilter", ["M3 5h18l-7 8v6l-4-2v-4L3 5z"]);
+export const IconSort = icon("IconSort", ["M7 4v16","M4 8l3-4 3 4","M17 20V4","M14 16l3 4 3-4"]);
+export const IconAlert = icon("IconAlert", ["M12 2L1 22h22L12 2z","M12 9v5","M12 18h.01"]);
+export const IconTrash = icon("IconTrash", ["M3 6h18","M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2","M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"]);
+export const IconGrid = icon("IconGrid", ["M4 4h7v7H4z","M13 4h7v7h-7z","M4 13h7v7H4z","M13 13h7v7h-7z"]);
+export const IconGroupAdd = icon("IconGroupAdd", ["M3.5 3.5h6v6h-6z","M14.5 3.5h6v6h-6z","M3.5 14.5h6v6h-6z","M17.5 14.5v6","M14.5 17.5h6"]);
