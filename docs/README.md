@@ -38,15 +38,18 @@ Each step ends with a manual check list. Use it to review the result by hand bef
 ## Where things live
 
 ```text
-Landing Page.dc.html, Workspace.dc.html, …   prototype pages (Claude Design format)
-workspace-app.jsx, workspace-app-integrated.jsx   workspace code (React)
+prototype/                 the Claude Design prototype the conversion follows (not part of the app):
+                           Landing Page.dc.html, Workspace.dc.html, … (pages), workspace-app.jsx,
+                           workspace-app-integrated.jsx (workspace code, React), support.js, ios-frame.jsx.
+                           Served from the root: /Workspace.dc.html opens prototype/Workspace.dc.html
+reference/                 handover files nothing uses, kept for reference
 styles/                    SCSS: one entry per page, compiled to styles/css/<entry>.css:
                            app.scss (landing page), workspace.scss, workspace-mobile.scss
                            partials by type, then page: components/<page>/, layouts/<page>/,
                            pages/<page>/ (landing, workspace, workspace-mobile);
                            components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
-index.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
+landing.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
 src/workspace/             the Vue workspace: main.js, WorkspacePage.vue, components/,
                            data/ (fixtures), seed/ (sample-record factories), storage/ (localStorage),
                            lib/ (pure helpers), theme.js
@@ -62,7 +65,7 @@ tools/parity/scenarios/    user flows per page (one file per page or module)
 
 ```bash
 npm install
-npm run dev     # http://localhost:5173/
+npm run dev     # http://localhost:5173/landing.html (landing page)
 ```
 
 [how-to-access.md](how-to-access.md) gives the address of every converted screen.
@@ -73,22 +76,22 @@ The Vue app needs only these files. Nothing in `src/` imports the prototype file
 |---|---|
 | `src/` | The Vue code: `landing/`, `workspace/`, and `utils/` for code both pages share. |
 | `styles/` | The SCSS sources. The landing page imports `styles/vue.scss` and the workspace imports `styles/workspace.scss`. Vite compiles them itself; the compiled `.css` files are for the prototype pages. |
-| `_ds/` | The Prolook design system. The landing page (`index.html`) loads its fonts, colours, typography and spacing. |
+| `_ds/` | The Prolook design system. The landing page (`landing.html`) loads its fonts, colours, typography and spacing. |
 | `assets/` | The images the pages show, such as logos and brand logos. The code refers to them as `assets/…`, relative to the page. |
-| `index.html`, `workspace.html`, `workspace-integrated.html` | The three pages: landing, workspace, and Marucci workspace. |
+| `landing.html`, `workspace.html`, `workspace-integrated.html` | The three pages: landing, workspace, and Marucci workspace. |
 | `vite.config.js` | Settings the pages depend on: a missing page returns "Not found" as on a static host, image paths stay as written, and the workspace components keep JSX's whitespace rules so text renders as in the prototype. |
 | `package.json`, `package-lock.json` | Dependencies (Vue, Vite, Sass) and the `npm run` commands. |
 
 Not needed to run the app:
 
-- **Reference for the conversion:** the prototype pages (`*.dc.html`), `workspace-app.jsx`, `workspace-app-integrated.jsx` and `support.js`. The screens not converted yet exist only here, and `tools/parity/` compares the Vue version against them.
+- **Prototype for the conversion:** everything in [`prototype/`](../prototype/README.md): the prototype pages (`Landing Page.dc.html`, `Workspace.dc.html`, `Marucci Workspace.dc.html`, `Workspace Mobile.dc.html`), `workspace-app.jsx`, `workspace-app-integrated.jsx`, `support.js` and `ios-frame.jsx`. The screens not converted yet exist only here, and `tools/parity/` compares the Vue version against them. The dev server and the parity tools serve `prototype/` from the root (`/Workspace.dc.html` opens `prototype/Workspace.dc.html`), so the pages find `_ds/`, `assets/` and `styles/css/` as before.
 - **Requirements:** the US team's feature specs, as `.md` files in `uploads/Team Store Workspace/` and `uploads/Consumer Storefront/`, and the [BRD M-1.0](https://docs.google.com/document/d/18UFKmsIhbKLlOutMd4mL5-GqYE1kxBQN/edit).
-- **Not used by anything:** `handoff/`, `export-assets/`, `scratch/`, `screenshots/` and `Design Exploration.dc.html`.
+- **Not used by anything:** the handover files in [`reference/`](../reference/README.md): `Design Exploration.dc.html`, `Workspace Mobile Mapping.dc.html`, `Storefront.html` with `storefront-assets/`, `handoff/`, `export-assets/`, `scratch/`, `screenshots/` and `.thumbnail`.
 
 ## Known issues in the handover
 
 - **Broken sign-in redirect:** successful sign-in and registration redirect to `Team Stores Workspace.dc.html`, which doesn't exist (the page is now `Workspace.dc.html`). The conversion steps keep this behaviour on purpose; it needs a separate fix. To reach the workspace, open `Workspace.dc.html?brand=prolook&auth=native` directly.
-- **Broken "Preview Store" link:** on a store's page, "Preview Store" redirects to `Team Store Storefront.dc.html`, which doesn't exist (the storefront prototype is `Storefront.html`). Kept on purpose, like the sign-in redirect.
+- **Broken "Preview Store" link:** on a store's page, "Preview Store" redirects to `Team Store Storefront.dc.html`, which doesn't exist (the storefront prototype is `reference/Storefront.html`). Kept on purpose, like the sign-in redirect.
 - **Out-of-date `CLAUDE.md`:** it refers to `Team Stores Workspace.dc.html` and `Team Stores Workspace - Third Party Integration.dc.html`, which have since been renamed.
 
 ## Approved changes
