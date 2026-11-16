@@ -27362,10 +27362,7 @@ function WelcomeSSOModal({ open, originId = "prolook", accessibleIds = ACCESSIBL
   return (
     <Modal open={open} onClose={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} width={isMulti ? 640 : 520}>
       <div className="wx-welcome">
-        <button aria-label="Close" onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} style={{
-          position: "absolute", top: 14, right: 14, width: 36, height: 36, borderRadius: 8, border: 0, background: "transparent",
-          color: "#71717a", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
-        }}
+        <button aria-label="Close" onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} className="wx-welcome__close"
           onMouseEnter={(e) => { e.currentTarget.style.background = "#f4f4f5"; e.currentTarget.style.color = "#09090b"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#71717a"; }}>
           <IconX size={18} />
@@ -27445,7 +27442,7 @@ function WelcomeSSOModal({ open, originId = "prolook", accessibleIds = ACCESSIBL
           </div>
         )}
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
+        <div className="wx-welcome__footer">
           <button onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} className="wx-welcome__confirm"
             onMouseEnter={(e) => e.currentTarget.style.background = "#dc2626"}
             onMouseLeave={(e) => e.currentTarget.style.background = "#09090b"}>
