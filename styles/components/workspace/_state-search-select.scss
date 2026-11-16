@@ -1,0 +1,81 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the type-ahead State picker (StateSearchSelect) under Compliance & Taxation (Module 3, FR-3.1).
+
+.wx-state-select {
+  position: relative;
+}
+
+.wx-state-select__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #3f3f46;
+  margin-bottom: 7px;
+}
+
+.wx-state-select__input {
+  width: 100%;
+  height: 44px;
+  box-sizing: border-box;
+  border: 1px solid $zinc-300;
+  border-radius: 5px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  outline: none;
+  background: $white;
+  color: $ink;
+}
+
+.wx-state-select__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 60;
+  background: $white;
+  border: 1px solid $zinc-200;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(20,20,30,.14);
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.wx-state-select__empty {
+  padding: 12px 12px;
+  font-size: 12.5px;
+  color: $muted-2;
+}
+
+.wx-state-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: $white;
+  border: 0;
+  border-radius: 6px;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $ink;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-state-select__option--highlighted {
+  background: $zinc-100;
+}
+
+.wx-state-select__option--selected {
+  font-weight: 700;
+}
+
+.wx-state-select__abbr {
+  font-size: 11px;
+  font-weight: 700;
+  color: $muted-2;
+}

@@ -1,0 +1,106 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the Ship-To destination picker (ShipToDestinationPicker: saved pick-up location or manual address)
+// and its address fields (ShipToAddressFields), in the wizard's Basics and a store's Settings (Module 3, FR-3.1).
+// A selected location's accent border, ring and dot stay inline.
+
+.wx-ship-address {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wx-ship-address__row {
+  display: flex;
+  gap: 16px;
+}
+
+.wx-ship-to__tip {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  color: $muted;
+  line-height: 1.5;
+  background: $bg-soft;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.wx-ship-to__seg {
+  flex: 1;
+  height: 36px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: transparent;
+  color: $muted;
+}
+
+.wx-ship-to__seg--on {
+  background: $ink;
+  color: $white;
+}
+
+.wx-ship-to__segs {
+  display: flex;
+  gap: 4px;
+  background: $divider;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 16px;
+  max-width: 440px;
+}
+
+.wx-ship-to__locations {
+  display: grid;
+  gap: 10px;
+}
+
+.wx-ship-to__location {
+  text-align: left;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  background: $white;
+}
+
+.wx-ship-to__location-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 1px;
+  box-sizing: border-box;
+}
+
+.wx-ship-to__location-text {
+  min-width: 0;
+}
+
+.wx-ship-to__location-name {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wx-ship-to__location-address {
+  display: block;
+  font-size: 12.5px;
+  color: $muted;
+  margin-top: 2px;
+}
+
+.wx-ship-to__hint {
+  font-size: 12.5px;
+  color: $muted-2;
+}

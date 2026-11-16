@@ -1,0 +1,132 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of Store Point of Contact (StorePointOfContact) and its email and phone columns (ContactChannel), in the
+// wizard's Basics and a store's Settings (Module 3, FR-3.1).
+
+.wx-contact-channel__row {
+  text-align: left;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.wx-contact-channel__row-inner {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.wx-contact-channel__row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-contact-channel__row-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: $ink;
+  line-height: 1.3;
+}
+
+.wx-contact-channel {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-contact-channel__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.wx-contact-channel__title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: $ink;
+  text-transform: uppercase;
+}
+
+.wx-contact-channel__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wx-contact-channel__inherited {
+  margin-top: 2px;
+}
+
+.wx-contact-channel__value {
+  font-size: 13px;
+  color: #b06f1e;
+  font-weight: 600;
+  font-family: $font-mono;
+}
+
+.wx-contact-channel__value--inherited {
+  color: $ink;
+}
+
+.wx-contact-channel__value--plain {
+  font-family: inherit;
+}
+
+.wx-contact-channel__follows {
+  font-size: 11.5px;
+  color: $muted-2;
+  margin-top: 3px;
+}
+
+.wx-contact-channel__edit-link {
+  color: $ink;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.wx-contact-channel__select {
+  margin-top: 8px;
+}
+
+.wx-contact-channel__input {
+  width: 100%;
+  border: 1px solid $zinc-300;
+  border-radius: 5px;
+  padding: 12px 12px;
+  font-size: 13.5px;
+  color: $ink;
+  outline: none;
+  margin-top: 8px;
+  font-family: inherit;
+}
+
+.wx-poc {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 28px;
+}
+
+.wx-poc__intro {
+  font-size: 13.5px;
+  color: $muted;
+  line-height: 1.6;
+}
+
+.wx-poc__channels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.wx-poc__error {
+  color: $red-ink;
+  font-size: 12px;
+  margin-top: 12px;
+}

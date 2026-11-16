@@ -13,8 +13,8 @@
 // them), so "Duplicate the whole store" opens on Basics instead of Review & Deploy, and the "Duplicated
 // from …" / "Products from …" line under the title never shows.
 // The League → Individual warning needs divisions or teams: the state adds a team in Step 2 first.
-// After a step change the wizard scrolls up smoothly; states jump the scroll to the top so both sides are
-// captured at rest.
+// After a step change the wizard scrolls up smoothly; states that change step make scrolling instant first,
+// so both sides are captured at rest.
 // The same states run on the integrated page in marucci-workspace-create-store.mjs.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
@@ -37,7 +37,12 @@ const savedLogo = (name) => `xpath=//div[normalize-space(text())="${name}"]/prec
 const cardMenu = (name) => `xpath=//*[normalize-space(text())="${name}"]/ancestor::div[.//button[@title="Store actions"]][1]//button[@title="Store actions"]`;
 const cardMenuItem = (label) => `xpath=//button[@title="Store actions"]/following-sibling::div/div[normalize-space(text())="${label}"]`;
 const openStores = { click: 'role=link[name="STORES" s]', label: 'Click the STORES tab in the header' };
-const toTop = { eval: `document.getElementById('wizard-scroll')?.scrollTo({ top: 0, behavior: 'instant' }); window.scrollTo({ top: 0, behavior: 'instant' })`, label: 'Scroll to the top (the wizard scrolls up smoothly after changing step)' };
+// The wizard scrolls up smoothly after a step change; a capture could land mid-scroll. This makes the
+// page's scrollTo calls instant (same end position), so every capture is at rest.
+const instantScroll = {
+  eval: `(() => { for (const t of [window, Element.prototype]) { const o = t.scrollTo; t.scrollTo = function (a, b) { return o.call(this, a && typeof a === 'object' ? { ...a, behavior: 'instant' } : a, b); }; } })()`,
+  label: 'In the browser console, make scrolling instant (the wizard scrolls up smoothly after a step change)',
+};
 const savedLocations = [
   { click: button('Saved pick-up location') },
   { click: 'xpath=//button[normalize-space(.)="Saved pick-up location"]/../following-sibling::div[1]/button[1]', label: 'Click the first saved pick-up location' },
@@ -203,19 +208,19 @@ export const buildStates = ({ stores }) => [
   // ── Clicks that leave Basics ──
   {
     name: 'wizard continue league', query: SIGNED_IN, steps: [
-      openWizard, ...fillRequired('League Store'),
-      { ...cont, label: 'Click CONTINUE: Step 2, Divisions & Teams' }, toTop,
-      { click: 'role=button[name=/BACK/]', label: 'Click BACK: Basics again, with step 2 reachable in the stepper' }, toTop,
-      stepperStep('Divisions & Teams'), toTop,
+      openWizard, instantScroll, ...fillRequired('League Store'),
+      { ...cont, label: 'Click CONTINUE: Step 2, Divisions & Teams' },
+      { click: 'role=button[name=/BACK/]', label: 'Click BACK: Basics again, with step 2 reachable in the stepper' },
+      stepperStep('Divisions & Teams'),
     ],
   },
-  { name: 'wizard continue individual', query: SIGNED_IN, steps: [openWizard, ...fillRequired('Individual Team Store'), { ...cont, label: 'Click CONTINUE: Step 2, Add Products' }, toTop] },
+  { name: 'wizard continue individual', query: SIGNED_IN, steps: [openWizard, instantScroll, ...fillRequired('Individual Team Store'), { ...cont, label: 'Click CONTINUE: Step 2, Add Products' }] },
   {
     name: 'wizard league to individual', query: SIGNED_IN, steps: [
-      openWizard, ...fillRequired('League Store'),
-      { ...cont, label: 'Click CONTINUE: Step 2, Divisions & Teams' }, toTop,
+      openWizard, instantScroll, ...fillRequired('League Store'),
+      { ...cont, label: 'Click CONTINUE: Step 2, Divisions & Teams' },
       { click: `${button('New Team')} >> nth=0`, label: 'Click "New Team": the league has a team' },
-      { click: 'role=button[name=/BACK/]', label: 'Click BACK' }, toTop,
+      { click: 'role=button[name=/BACK/]', label: 'Click BACK' },
       { click: startsWith('Individual Team Store'), label: 'Click "Individual Team Store": the warning about discarding divisions and teams opens' },
       { click: button('Keep League Store') },
       { wait: 200, label: 'Wait 0.2 s for the pop-up to close' },

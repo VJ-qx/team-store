@@ -5199,49 +5199,33 @@ function SelectTeamColorModal({ open, initial, onClose, onSave }) {
   );
 
   return (
-    <div onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 130, background: "rgba(20,20,30,.55)",
-      display: "flex", alignItems: "center", justifyContent: "center", padding: 24
-    }}>
-      <div onClick={(e) => e.stopPropagation()} style={{
-        width: "min(820px, 100%)", maxHeight: "calc(100vh - 48px)", background: "#fff",
-        borderRadius: 10, boxShadow: "0 32px 64px rgba(20,20,30,.34)", overflow: "hidden",
-        display: "flex", flexDirection: "column"
-      }}>
+    <div onClick={onClose} className="wx-team-color">
+      <div onClick={(e) => e.stopPropagation()} className="wx-team-color__dialog">
         {/* Header */}
-        <div style={{ padding: "28px 36px 0", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
-            <h2 style={{ fontSize: 30, fontWeight: 800, letterSpacing: ".01em", margin: 0, color: "#0e0e10" }}>SELECT TEAM COLOR</h2>
-            <button onClick={onClose} title="Close" style={{
-              width: 36, height: 36, borderRadius: "50%", border: "none", background: "transparent",
-              color: "#6b6b72", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0
-            }}
+        <div className="wx-team-color__header">
+          <div className="wx-team-color__title-row">
+            <h2 className="wx-team-color__title">SELECT TEAM COLOR</h2>
+            <button onClick={onClose} title="Close" className="wx-team-color__close"
             onMouseEnter={(e) => {e.currentTarget.style.background = "#f1f1f3";}}
             onMouseLeave={(e) => {e.currentTarget.style.background = "transparent";}}>
               <IconX size={22} />
             </button>
           </div>
-          <div style={{ borderTop: "1px solid #ececf0", marginTop: 20 }} />
-          <p style={{ textAlign: "center", color: "#e1251b", fontSize: 14, fontWeight: 500, margin: "24px 0 4px" }}>
+          <div className="wx-team-color__rule" />
+          <p className="wx-team-color__note">
             *If a color isn't available, black or white will be used instead.
           </p>
         </div>
 
         {/* Swatch grid */}
-        <div style={{ padding: "16px 36px 8px", overflowY: "auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(11, 1fr)", gap: 12, maxWidth: 700, margin: "0 auto" }}>
+        <div className="wx-team-color__grid-wrap">
+          <div className="wx-team-color__grid">
             {PROLOOK_COLORS.map((c) => {
               const on = isOn(c.hex);
               const ink = readableInk(c.hex);
               return (
                 <button key={c.code} onClick={() => toggle(c.hex)} title={c.name}
-                style={{
-                  aspectRatio: "1 / 1", borderRadius: 6, background: c.hex,
-                  border: c.hex.toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "1px solid rgba(0,0,0,.06)",
-                  color: ink, display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 13, fontWeight: 800, letterSpacing: ".02em",
-                  outline: on ? "2.5px solid #0e0e10" : "none", outlineOffset: 2
-                }}>
+                className={`wx-team-color__swatch${(c.hex.toLowerCase() === "#ffffff") ? " wx-team-color__swatch--white" : ""}${on ? " wx-team-color__swatch--on" : ""}`} style={{ background: c.hex, color: ink }}>
                   {on ? <IconCheck size={18} style={{ strokeWidth: 3 }} /> : c.code}
                 </button>);
 
@@ -5250,11 +5234,8 @@ function SelectTeamColorModal({ open, initial, onClose, onSave }) {
         </div>
 
         {/* Save */}
-        <div style={{ padding: "20px 36px 28px", flexShrink: 0 }}>
-          <button onClick={() => onSave(picked)} style={{
-            width: "100%", height: 56, border: "none", borderRadius: 6, background: "#e1251b",
-            color: "#fff", fontSize: 16, fontWeight: 800, letterSpacing: ".01em", cursor: "pointer"
-          }}
+        <div className="wx-team-color__footer">
+          <button onClick={() => onSave(picked)} className="wx-team-color__save"
           onMouseEnter={(e) => {e.currentTarget.style.background = "#c41d14";}}
           onMouseLeave={(e) => {e.currentTarget.style.background = "#e1251b";}}>
             Save Colors
@@ -5313,41 +5294,27 @@ function ColorSwatches({ colors, onChange }) {
     return () => document.removeEventListener("mousedown", h);
   }, []);
   return (
-    <div style={{ position: "relative" }} ref={ref}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+    <div className="wx-swatches" ref={ref}>
+      <div className="wx-swatches__list">
         {colors.map((c, i) =>
-        <div key={i} style={{ position: "relative" }} onMouseEnter={(e) => {
+        <div key={i} className="wx-swatches__item" onMouseEnter={(e) => {
           const x = e.currentTarget.querySelector(".rm");
           if (x) x.style.opacity = "1";
         }} onMouseLeave={(e) => {
           const x = e.currentTarget.querySelector(".rm");
           if (x) x.style.opacity = "0";
         }}>
-            <div style={{
-            width: 40, height: 40, borderRadius: 4,
-            border: c.toLowerCase() === "#ffffff" ? "1px solid #d4d4d8" : "1px solid transparent",
-            background: c
-          }} />
+            <div className={`wx-swatches__swatch${(c.toLowerCase() === "#ffffff") ? " wx-swatches__swatch--white" : ""}`} style={{ background: c }} />
             <button
-            className="rm"
+           
             onClick={() => onChange(colors.filter((_, j) => j !== i))}
             title="Remove"
-            style={{
-              position: "absolute", top: -8, right: -8, width: 16, height: 16,
-              borderRadius: "50%", background: "#0e0e10", color: "#fff",
-              border: "1.5px solid #fff", padding: 0,
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", opacity: 0, transition: "opacity .12s"
-            }}>
+            className="rm wx-swatches__remove">
               <IconX size={10} />
             </button>
           </div>
         )}
-        <button onClick={() => setAdding(true)} style={{
-          width: 40, height: 40, borderRadius: 4, border: "1px dashed #9a9aa1",
-          background: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center",
-          cursor: "pointer", color: "#6b6b72"
-        }}>
+        <button onClick={() => setAdding(true)} className="wx-swatches__add">
           <IconPlus size={18} />
         </button>
       </div>
@@ -5374,14 +5341,10 @@ const SAVED_LOGOS_SEED = [
 // Renders a saved logo: real artwork if uploaded, otherwise a monogram disc.
 function LogoArt({ logo, size = 92 }) {
   if (logo.url) {
-    return <img src={logo.url} alt="" style={{ maxWidth: "82%", maxHeight: "82%", objectFit: "contain" }} />;
+    return <img src={logo.url} alt="" className="wx-logo-art__img" />;
   }
   return (
-    <div style={{
-      width: size, height: size, borderRadius: "50%", background: logo.color,
-      color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center",
-      fontSize: size * 0.36, fontWeight: 800, letterSpacing: ".02em"
-    }}>{logo.mono}</div>);
+    <div className="wx-logo-art__mono" style={{ width: size, height: size, background: logo.color, fontSize: size * 0.36 }}>{logo.mono}</div>);
 
 }
 
@@ -5436,33 +5399,19 @@ function MyLogosModal({ open, onClose, onSelect }) {
 
 
   return (
-    <div onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 130, background: "rgba(20,20,30,.55)",
-      display: "flex", alignItems: "center", justifyContent: "center", padding: 24
-    }}>
-    <div onClick={(e) => e.stopPropagation()} style={{
-        width: "min(1480px, 100%)", height: "min(940px, 100%)", background: "#fff",
-        borderRadius: 10, boxShadow: "0 32px 64px rgba(20,20,30,.34)", overflow: "hidden",
-        display: "flex", flexDirection: "column"
-      }}>
+    <div onClick={onClose} className="wx-my-logos">
+    <div onClick={(e) => e.stopPropagation()} className="wx-my-logos__dialog">
       {/* Header */}
-      <div style={{
-          display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center",
-          padding: "24px 40px 16px", borderBottom: "1px solid #ececf0"
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <img src="assets/prolook-logo.png" alt="PROLOOK" style={{ height: 40, width: "auto", display: "block" }} />
-          <div style={{ lineHeight: 1.05 }}>
-            <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: ".02em", color: "#0e0e10" }}>PROLOOK</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "#0e0e10" }}>Design Studio</div>
+      <div className="wx-my-logos__header">
+        <div className="wx-my-logos__brand">
+          <img src="assets/prolook-logo.png" alt="PROLOOK" className="wx-my-logos__brand-logo" />
+          <div className="wx-my-logos__brand-text">
+            <div className="wx-my-logos__brand-name">PROLOOK</div>
+            <div className="wx-my-logos__brand-sub">Design Studio</div>
           </div>
         </div>
-        <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: ".06em", color: "#0e0e10", textAlign: "center" }}>MY LOGOS</div>
-        <button onClick={onClose} title="Close" style={{
-            justifySelf: "end", width: 36, height: 36, borderRadius: "50%", border: "none",
-            background: "transparent", color: "#6b6b72", display: "inline-flex",
-            alignItems: "center", justifyContent: "center"
-          }}
+        <div className="wx-my-logos__title">MY LOGOS</div>
+        <button onClick={onClose} title="Close" className="wx-my-logos__close"
           onMouseEnter={(e) => {e.currentTarget.style.background = "#f1f1f3";}}
           onMouseLeave={(e) => {e.currentTarget.style.background = "transparent";}}>
           <IconX size={22} />
@@ -5470,41 +5419,30 @@ function MyLogosModal({ open, onClose, onSelect }) {
       </div>
 
       {/* Body */}
-      <div style={{ flex: 1, minHeight: 0, display: "flex", overflow: "hidden" }}>
+      <div className="wx-my-logos__body">
         {/* Sidebar */}
-        <aside style={{ width: 320, flexShrink: 0, padding: "28px 24px" }}>
-          <div style={{
-              background: "#f1f1f3", borderRadius: 8, padding: "20px 20px 24px"
-            }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-              <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: ".04em", color: "#0e0e10" }}>MY LOGOS</span>
+        <aside className="wx-my-logos__sidebar">
+          <div className="wx-my-logos__panel">
+            <div className="wx-my-logos__panel-head">
+              <span className="wx-my-logos__panel-title">MY LOGOS</span>
               <IconChevron size={18} style={{ color: "#6b6b72" }} />
             </div>
-            <div style={{ position: "relative", marginBottom: 16 }}>
+            <div className="wx-my-logos__search">
               <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="SEARCH BY KEYWORD"
-                  style={{
-                    width: "100%", height: 44, borderRadius: 6, border: "1px solid #d4d4d8",
-                    background: "#fff", padding: "0 40px 0 16px", fontSize: 12, letterSpacing: ".04em",
-                    color: "#0e0e10", outline: "none"
-                  }} />
+                  className="wx-my-logos__search-input" />
               <IconSearch size={18} style={{ position: "absolute", right: 12, top: 12, color: "#9a9aa1" }} />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div className="wx-my-logos__filters">
               {FILTERS.map((f) =>
-                <label key={f.id} style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
-                  <span style={{
-                    width: 16, height: 16, borderRadius: 3, flexShrink: 0,
-                    border: `1.5px solid ${filter === f.id ? "#0e0e10" : "#9a9aa1"}`,
-                    background: filter === f.id ? "#0e0e10" : "#fff",
-                    display: "inline-flex", alignItems: "center", justifyContent: "center"
-                  }}>
+                <label key={f.id} className="wx-my-logos__filter">
+                  <span className={`wx-my-logos__filter-box${(filter === f.id) ? " wx-my-logos__filter-box--on" : ""}`}>
                     {filter === f.id && <IconCheck size={13} style={{ color: "#fff", strokeWidth: 3 }} />}
                   </span>
-                  <input type="checkbox" checked={filter === f.id} onChange={() => setFilter(f.id)} style={{ display: "none" }} />
-                  <span style={{ fontSize: 15, color: "#0e0e10" }}>{f.label}</span>
+                  <input type="checkbox" checked={filter === f.id} onChange={() => setFilter(f.id)} className="wx-my-logos__filter-input" />
+                  <span className="wx-my-logos__filter-label">{f.label}</span>
                 </label>
                 )}
             </div>
@@ -5512,32 +5450,21 @@ function MyLogosModal({ open, onClose, onSelect }) {
         </aside>
 
         {/* Logo grid */}
-        <div style={{ flex: 1, minWidth: 0, overflowY: "auto", padding: "28px 40px 40px" }}>
+        <div className="wx-my-logos__main">
           <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/svg+xml,application/pdf,.ai,.eps"
-            onChange={(e) => handleFile(e.target.files[0])} style={{ display: "none" }} />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 24 }}>
+            onChange={(e) => handleFile(e.target.files[0])} className="wx-my-logos__file-input" />
+          <div className="wx-my-logos__grid">
             {/* Add logo card */}
             <div>
-              <button onClick={() => fileRef.current?.click()} style={{
-                  width: "100%", aspectRatio: "1 / 1.08", borderRadius: 10, border: "1.5px solid #d4d4d8",
-                  background: "#fff", display: "flex", flexDirection: "column", alignItems: "center",
-                  justifyContent: "center", gap: 16, color: "#0e0e10", transition: "border-color .12s, background .12s"
-                }}
+              <button onClick={() => fileRef.current?.click()} className="wx-my-logos__add"
                 onMouseEnter={(e) => {e.currentTarget.style.borderColor = "#0e0e10";e.currentTarget.style.background = "#fafafb";}}
                 onMouseLeave={(e) => {e.currentTarget.style.borderColor = "#d4d4d8";e.currentTarget.style.background = "#fff";}}>
                 <IconPlus size={40} style={{ color: "#0e0e10", strokeWidth: 1.4 }} />
-                <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: ".04em" }}>ADD LOGO</span>
+                <span className="wx-my-logos__add-label">ADD LOGO</span>
               </button>
-              <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
-                <span style={{
-                    display: "inline-flex", alignItems: "center", gap: 8, background: "#fbf0c9",
-                    color: "#8a6d12", padding: "8px 16px", borderRadius: 999, fontSize: 13, fontWeight: 600
-                  }}>
-                  <span style={{
-                      width: 16, height: 16, borderRadius: "50%", background: "#8a6d12", color: "#fbf0c9",
-                      fontSize: 11, fontWeight: 800, fontStyle: "italic", display: "inline-flex",
-                      alignItems: "center", justifyContent: "center"
-                    }}>i</span>
+              <div className="wx-my-logos__types">
+                <span className="wx-my-logos__types-pill">
+                  <span className="wx-my-logos__types-icon">i</span>
                   Supported File types
                 </span>
               </div>
@@ -5547,37 +5474,25 @@ function MyLogosModal({ open, onClose, onSelect }) {
             {visible.map((l) =>
               <div key={l.id}>
                 <button onClick={() => onSelect({ name: l.name, url: l.url || null, mono: l.mono, color: l.color })}
-                style={{
-                  width: "100%", aspectRatio: "1 / 1.08", borderRadius: 10, border: "1px solid #ececf0",
-                  background: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
-                  position: "relative", overflow: "hidden", transition: "box-shadow .12s, border-color .12s"
-                }}
+                className="wx-my-logos__logo"
                 onMouseEnter={(e) => {e.currentTarget.style.boxShadow = "0 8px 22px rgba(20,20,30,.10)";e.currentTarget.style.borderColor = "#d4d4d8";}}
                 onMouseLeave={(e) => {e.currentTarget.style.boxShadow = "none";e.currentTarget.style.borderColor = "#ececf0";}}>
                   <LogoArt logo={l} />
-                  <span onClick={(e) => {e.stopPropagation();toggleFav(l.id);}} title="Favorite" style={{
-                    position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%",
-                    background: "#fff", boxShadow: "0 1px 4px rgba(20,20,30,.12)", display: "inline-flex",
-                    alignItems: "center", justifyContent: "center"
-                  }}>
+                  <span onClick={(e) => {e.stopPropagation();toggleFav(l.id);}} title="Favorite" className="wx-my-logos__favorite">
                     <HeartIcon filled={l.favorite} />
                   </span>
                 </button>
-                <div style={{
-                  marginTop: 12, textAlign: "center", fontSize: 15, fontWeight: 800, letterSpacing: ".02em",
-                  color: "#0e0e10", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                  textTransform: "uppercase"
-                }}>{l.name}</div>
+                <div className="wx-my-logos__logo-name">{l.name}</div>
               </div>
               )}
           </div>
 
           {visible.length === 0 ?
-            <div style={{ textAlign: "center", color: "#9a9aa1", fontSize: 15, fontWeight: 600, marginTop: 60 }}>
+            <div className="wx-my-logos__empty">
               No logos match your search
             </div> :
 
-            <div style={{ textAlign: "center", color: "#9a9aa1", fontSize: 15, fontWeight: 600, marginTop: 56 }}>
+            <div className="wx-my-logos__end">
               All logos are loaded
             </div>
             }
@@ -5603,31 +5518,15 @@ function LogoDropZone({ logo, onChange }) {
         onDragOver={(e) => {e.preventDefault();setDrag(true);}}
         onDragLeave={() => setDrag(false)}
         onDrop={(e) => {e.preventDefault();setDrag(false);handleFile(e.dataTransfer.files[0]);}}
-        style={{
-          width: 56, height: 56, borderRadius: 4,
-          border: `1px ${logo ? "solid" : "dashed"} ${drag ? "#0e0e10" : logo ? "#d4d4d8" : "#9a9aa1"}`,
-          background: drag ? "#fafafb" : logo ? "#fff" : "#fff",
-          display: "inline-flex", alignItems: "center", justifyContent: "center",
-          cursor: "pointer", position: "relative", overflow: "hidden"
-        }}>
+        className={`wx-logo-drop${logo ? " wx-logo-drop--filled" : ""}${drag ? " wx-logo-drop--drag" : ""}`} style={{ border: `1px ${logo ? "solid" : "dashed"} ${drag ? "#0e0e10" : logo ? "#d4d4d8" : "#9a9aa1"}` }}>
       {logo ?
         <>
           {logo.url ?
-          <img src={logo.url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> :
+          <img src={logo.url} alt="" className="wx-logo-drop__img" /> :
 
-          <div style={{
-            width: "100%", height: "100%", background: logo.color || "#0e0e10", color: "#fff",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            fontSize: 18, fontWeight: 800
-          }}>{logo.mono || "?"}</div>
+          <div className="wx-logo-drop__mono" style={{ background: logo.color || "#0e0e10" }}>{logo.mono || "?"}</div>
           }
-          <button onClick={(e) => {e.stopPropagation();onChange(null);}} title="Remove logo" style={{
-            position: "absolute", top: -8, right: -8, width: 16, height: 16,
-            borderRadius: "50%", background: "#0e0e10", color: "#fff",
-            border: "1.5px solid #fff", padding: 0,
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer"
-          }}>
+          <button onClick={(e) => {e.stopPropagation();onChange(null);}} title="Remove logo" className="wx-logo-drop__remove">
             <IconX size={10} />
           </button>
         </> :
@@ -5842,40 +5741,33 @@ function CreateForm({ onCancel, onSubmit, presetData, accent = "#e1251b", athlet
   const stepProps = { data, set, errors, accent, liveStores, stepNum: step + 1 };
 
   return (
-    <div id="wizard-scroll" style={{ flex: 1, background: "#fbfbfc" }}>
+    <div id="wizard-scroll" className="wx-wizard">
       {/* Full-width header band — title, step badge, and the cross-viewport stepper */}
-      <div style={{ background: "#fff", borderBottom: "1px solid #ececf0", padding: "28px 48px 4px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, marginBottom: 24 }}>
+      <div className="wx-wizard__header">
+        <div className="wx-wizard__header-row">
           <div>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".12em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 8 }}>
+            <div className="wx-wizard__eyebrow">
               Team Store Setup
             </div>
-            <h1 style={{ fontSize: 30, fontWeight: 800, margin: 0, letterSpacing: ".005em", color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>
+            <h1 className="wx-wizard__title">
               {templateMode ? "Finish Your Template Store" : "Create a Team Store"}
             </h1>
             {data._dupSource && (
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12, fontSize: 12.5, color: "#52525b", background: "#f6f6f8", borderRadius: 999, padding: "6px 12px" }}>
+              <div className="wx-wizard__source">
                 <IconLayers size={13} style={{ strokeWidth: 2 }} />
-                <span>{data._dupSource.mode === "full" ? "Duplicated from " : "Products from "}<strong style={{ color: "#0e0e10" }}>{data._dupSource.sourceName}</strong> · {(data.curatedProducts || []).length} product{(data.curatedProducts || []).length === 1 ? "" : "s"}{!data._dupSource.mine && data._dupSource.owner ? " · " + data._dupSource.owner + "’s store" : ""}</span>
+                <span>{data._dupSource.mode === "full" ? "Duplicated from " : "Products from "}<strong className="wx-wizard__source-name">{data._dupSource.sourceName}</strong> · {(data.curatedProducts || []).length} product{(data.curatedProducts || []).length === 1 ? "" : "s"}{!data._dupSource.mine && data._dupSource.owner ? " · " + data._dupSource.owner + "’s store" : ""}</span>
               </div>
             )}
           </div>
-          <span style={{
-            flexShrink: 0, marginTop: 8, border: `1.5px solid ${accent}`, color: accent,
-            borderRadius: 999, padding: "8px 16px", fontSize: 12, fontWeight: 800, letterSpacing: ".06em",
-            textTransform: "uppercase", background: "#fff"
-          }}>Step {step + 1} of {STEPS.length}</span>
+          <span className="wx-wizard__step-badge" style={{ border: `1.5px solid ${accent}`, color: accent }}>Step {step + 1} of {STEPS.length}</span>
         </div>
 
         <WizardStepper current={step} maxReached={maxReached} onJump={goTo} accent={accent} steps={STEPS} />
       </div>
 
       {/* Centered, shadowed workspace container */}
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "32px 40px 152px" }}>
-        <div style={{
-          background: "#fff", border: "1px solid #ececf0", borderRadius: 14,
-          boxShadow: "0 16px 44px rgba(20,20,30,.09)", padding: "36px 36px",
-        }}>
+      <div className="wx-wizard__body">
+        <div className="wx-wizard__card">
           {STEPS[step].key === "basics" && <Step1Basics {...stepProps} />}
           {STEPS[step].key === "structure" && <Step2Structure data={data} setStructure={setStructure} accent={accent} stepNum={step + 1} />}
           {STEPS[step].key === "products" && <Step3Products {...stepProps} />}
@@ -5884,16 +5776,11 @@ function CreateForm({ onCancel, onSubmit, presetData, accent = "#e1251b", athlet
       </div>
 
       {/* Footer actions */}
-      <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0,
-        background: "#fff", borderTop: "1px solid #ececf0",
-        padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between",
-        boxShadow: "0 -2px 8px rgba(20,20,30,.04)", zIndex: 60
-      }}>
+      <div className="wx-wizard__footer">
         <Button variant="ghost" onClick={onCancel}>CANCEL</Button>
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <div className="wx-wizard__actions">
           {!isLast && Object.keys(errors).length > 0 && (
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "#b81d14" }}>
+            <span className="wx-wizard__error-note">
               <IconAlert size={15} style={{ strokeWidth: 2.2, flexShrink: 0 }} /> Please complete the required fields above
             </span>
           )}
@@ -5903,11 +5790,7 @@ function CreateForm({ onCancel, onSubmit, presetData, accent = "#e1251b", athlet
             </Button>
           }
           {isLast ?
-          <button onClick={deploy} style={{
-            display: "inline-flex", alignItems: "center", gap: 8, border: 0, borderRadius: 4,
-            padding: "12px 28px", fontSize: 13, fontWeight: 800, letterSpacing: ".02em",
-            color: "#fff", background: "#0e0e10", cursor: "pointer"
-          }}
+          <button onClick={deploy} className="wx-wizard__save"
           onMouseEnter={(e) => e.currentTarget.style.background = "#1f1f22"}
           onMouseLeave={(e) => e.currentTarget.style.background = "#0e0e10"}>
               <IconCheck size={16} style={{ strokeWidth: 3 }} /> SAVE AND CONTINUE
@@ -7137,22 +7020,15 @@ function SourcePill({ value = "prolook", onChange, style }) {
 // Numbered step heading: accent square + title + description.
 function StepHeader({ num, title, desc, accent = "#e1251b", action }) {
   return (
-    <div style={{ marginBottom: 28 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 8 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{
-            width: 32, height: 32, borderRadius: 7, background: accent, color: "#fff",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            fontSize: 15, fontWeight: 800, fontFamily: "Archivo, sans-serif", flexShrink: 0,
-          }}>{num}</span>
-          <h2 style={{
-            fontSize: 22, fontWeight: 800, letterSpacing: ".01em", margin: 0, color: "#0e0e10",
-            fontFamily: "Archivo, sans-serif",
-          }}>{title}</h2>
+    <div className="wx-step-header">
+      <div className="wx-step-header__row">
+        <div className="wx-step-header__title-group">
+          <span className="wx-step-header__num" style={{ background: accent }}>{num}</span>
+          <h2 className="wx-step-header__title">{title}</h2>
         </div>
         {action}
       </div>
-      {desc && <p style={{ fontSize: 13.5, color: "#6b6b72", margin: 0, lineHeight: 1.55, maxWidth: 760 }}>{desc}</p>}
+      {desc && <p className="wx-step-header__desc">{desc}</p>}
     </div>
   );
 }
@@ -7160,14 +7036,11 @@ function StepHeader({ num, title, desc, accent = "#e1251b", action }) {
 // White card panel with a small uppercase eyebrow label.
 function WizardPanel({ label, hint, children, style }) {
   return (
-    <div style={{
-      background: "#fff", border: "1px solid #ececf0", borderRadius: 10,
-      padding: 28, marginBottom: 16, boxShadow: "0 1px 2px rgba(20,20,30,.03)", ...style,
-    }}>
+    <div className="wx-wizard-panel" style={{ ...style }}>
       {label && (
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 16 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".10em", color: "#0e0e10", textTransform: "uppercase" }}>{label}</div>
-          {hint && <div style={{ fontSize: 12, color: "#9a9aa1" }}>{hint}</div>}
+        <div className="wx-wizard-panel__head">
+          <div className="wx-wizard-panel__label">{label}</div>
+          {hint && <div className="wx-wizard-panel__hint">{hint}</div>}
         </div>
       )}
       {children}
@@ -7184,48 +7057,26 @@ function ChoiceCard({ active, onSelect, icon, title, desc, badge, points, accent
       onClick={onSelect}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{
-        position: "relative", textAlign: "left", width: "100%", minHeight,
-        background: active ? "#fdf2f1" : "#fff",
-        border: `1.5px solid ${active ? accent : hover ? "#c7c7cd" : "#e5e5e9"}`,
-        borderRadius: 10, padding: "20px 20px 16px", cursor: "pointer",
-        transition: "border-color .14s, background .14s, box-shadow .14s",
-        boxShadow: active ? `0 0 0 3px ${hexA(accent, 0.12)}` : "none",
-        display: "flex", flexDirection: "column", gap: 0,
-      }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
+      className={`wx-choice-card${active ? " wx-choice-card--active" : ""}`} style={{ minHeight, border: `1.5px solid ${active ? accent : hover ? "#c7c7cd" : "#e5e5e9"}`, boxShadow: active ? `0 0 0 3px ${hexA(accent, 0.12)}` : "none" }}>
+      <div className="wx-choice-card__top">
         {icon && (
-          <span style={{
-            width: 44, height: 44, borderRadius: 9, flexShrink: 0,
-            background: active ? accent : "#f1f1f3",
-            color: active ? "#fff" : "#0e0e10",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            transition: "background .14s, color .14s",
-          }}>{icon}</span>
+          <span className={`wx-choice-card__icon${active ? " wx-choice-card__icon--active" : ""}`} style={{ background: active ? accent : "#f1f1f3" }}>{icon}</span>
         )}
-        <span style={{
-          width: 24, height: 24, borderRadius: "50%", flexShrink: 0, marginTop: 2,
-          border: `1.5px solid ${active ? accent : "#cfcfd5"}`,
-          background: active ? accent : "#fff",
-          display: "inline-flex", alignItems: "center", justifyContent: "center",
-        }}>
+        <span className="wx-choice-card__check" style={{ border: `1.5px solid ${active ? accent : "#cfcfd5"}`, background: active ? accent : "#fff" }}>
           {active && <IconCheck size={13} style={{ color: "#fff", strokeWidth: 3.4 }} />}
         </span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-        <span style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10", letterSpacing: ".01em" }}>{title}</span>
+      <div className="wx-choice-card__title-row">
+        <span className="wx-choice-card__title">{title}</span>
         {badge && (
-          <span style={{
-            fontSize: 10, fontWeight: 800, letterSpacing: ".06em", color: "#1f8a55",
-            background: "#e7f5ed", padding: "4px 8px", borderRadius: 999,
-          }}>{badge}</span>
+          <span className="wx-choice-card__badge">{badge}</span>
         )}
       </div>
-      <span style={{ fontSize: 13, color: "#6b6b72", lineHeight: 1.5 }}>{desc}</span>
+      <span className="wx-choice-card__desc">{desc}</span>
       {points && points.length > 0 && (
-        <span style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 }}>
+        <span className="wx-choice-card__points">
           {points.map((pt) => (
-            <span key={pt} style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 11.5, fontWeight: 600, color: "#4b4b52", background: active ? "#fff" : "#f4f4f6", borderRadius: 999, padding: "4px 12px" }}>
+            <span key={pt} className={`wx-choice-card__point${active ? " wx-choice-card__point--active" : ""}`}>
               <IconCheck size={12} style={{ strokeWidth: 3, color: accent }} /> {pt}
             </span>
           ))}
@@ -7270,14 +7121,8 @@ function ToggleSwitch({ on, onChange, accent = "#e1251b" }) {
     <button
       type="button"
       onClick={() => onChange(!on)}
-      style={{
-        width: 52, height: 28, borderRadius: 999, border: 0, cursor: "pointer", flexShrink: 0,
-        background: on ? "#0e0e10" : "#d4d4d8", position: "relative", transition: "background .18s", padding: 0,
-      }}>
-      <span style={{
-        position: "absolute", top: 3, left: on ? 27 : 3, width: 22, height: 22, borderRadius: "50%",
-        background: "#fff", boxShadow: "0 1px 3px rgba(20,20,30,.25)", transition: "left .18s",
-      }} />
+      className={`wx-toggle${on ? " wx-toggle--on" : ""}`}>
+      <span className={`wx-toggle__knob${on ? " wx-toggle__knob--on" : ""}`} />
     </button>
   );
 }
@@ -7286,25 +7131,15 @@ function ToggleSwitch({ on, onChange, accent = "#e1251b" }) {
 function WizardDate({ label, value, onChange, error }) {
   const [focus, setFocus] = useStateW(false);
   return (
-    <div style={{ position: "relative", flex: 1 }}>
-      <div style={{
-        position: "relative", border: `1px solid ${error ? "#b81d14" : focus ? "#0e0e10" : "#d4d4d8"}`,
-        borderRadius: 4, background: "#fff", transition: "border-color .15s",
-      }}>
-        <label style={{
-          position: "absolute", left: 12, top: -8, fontSize: 11, padding: "0 4px",
-          color: error ? "#b81d14" : focus ? "#0e0e10" : "#6b6b72", background: "#fff",
-          pointerEvents: "none", fontWeight: 500, zIndex: 1,
-        }}>{label}</label>
+    <div className="wx-wizard-date">
+      <div className={`wx-wizard-date__box${focus ? " wx-wizard-date__box--focus" : ""}${error ? " wx-wizard-date__box--error" : ""}`}>
+        <label className={`wx-wizard-date__label${focus ? " wx-wizard-date__label--focus" : ""}${error ? " wx-wizard-date__label--error" : ""}`}>{label}</label>
         <input
           type="date" value={value || ""} onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
-          style={{
-            width: "100%", border: 0, outline: 0, background: "transparent",
-            padding: "16px 12px", fontSize: 14, color: value ? "#0e0e10" : "#9a9aa1", fontFamily: "inherit",
-          }} />
+          className={`wx-wizard-date__input${value ? " wx-wizard-date__input--filled" : ""}`} />
       </div>
-      {error && <div style={{ color: "#b81d14", fontSize: 11, marginTop: 4, marginLeft: 2 }}>{error}</div>}
+      {error && <div className="wx-wizard-date__error">{error}</div>}
     </div>
   );
 }
@@ -7340,16 +7175,13 @@ function wizardStepsFor(storeType) {
 function WizardStepper({ current, maxReached, onJump, accent = "#e1251b", steps = WIZARD_STEPS }) {
   const pct = (current / (steps.length - 1)) * 100;
   return (
-    <div style={{ marginBottom: 32 }}>
+    <div className="wx-wizard-stepper">
       {/* progress track */}
-      <div style={{ position: "relative", height: 4, background: "#ececf0", borderRadius: 999, marginBottom: 20 }}>
-        <div style={{
-          position: "absolute", left: 0, top: 0, height: "100%", width: `${pct}%`,
-          background: accent, borderRadius: 999, transition: "width .3s ease",
-        }} />
+      <div className="wx-wizard-stepper__track">
+        <div className="wx-wizard-stepper__fill" style={{ width: `${pct}%`, background: accent }} />
       </div>
       {/* step labels */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="wx-wizard-stepper__steps">
         {steps.map((s, i) => {
           const done = i < current;
           const active = i === current;
@@ -7360,27 +7192,11 @@ function WizardStepper({ current, maxReached, onJump, accent = "#e1251b", steps 
               type="button"
               disabled={!reachable}
               onClick={() => reachable && onJump(i)}
-              style={{
-                background: "transparent", border: 0, padding: 0,
-                cursor: reachable ? "pointer" : "default",
-                display: "flex", alignItems: "center", gap: 8, flex: "0 0 auto",
-              }}>
-              <span style={{
-                width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: 12, fontWeight: 800, fontFamily: "Archivo, sans-serif",
-                background: done ? accent : active ? "#fff" : "#f1f1f3",
-                color: done ? "#fff" : active ? accent : "#9a9aa1",
-                border: active ? `2px solid ${accent}` : done ? "none" : "1.5px solid #e5e5e9",
-                transition: "all .18s",
-              }}>
+              className={`wx-wizard-stepper__step${reachable ? " wx-wizard-stepper__step--reachable" : ""}`}>
+              <span className="wx-wizard-stepper__dot" style={{ background: done ? accent : active ? "#fff" : "#f1f1f3", color: done ? "#fff" : active ? accent : "#9a9aa1", border: active ? `2px solid ${accent}` : done ? "none" : "1.5px solid #e5e5e9" }}>
                 {done ? <IconCheck size={13} style={{ strokeWidth: 3.4 }} /> : i + 1}
               </span>
-              <span style={{
-                fontSize: 12.5, fontWeight: active || done ? 800 : 600, letterSpacing: ".02em",
-                color: active ? "#0e0e10" : done ? "#0e0e10" : "#9a9aa1",
-                textTransform: "uppercase", whiteSpace: "nowrap",
-              }}>{s.label}</span>
+              <span className={`wx-wizard-stepper__label${(active || done) ? " wx-wizard-stepper__label--strong" : ""}${done ? " wx-wizard-stepper__label--done" : ""}${active ? " wx-wizard-stepper__label--active" : ""}`}>{s.label}</span>
             </button>
           );
         })}
@@ -7427,13 +7243,8 @@ const SERVICE_CONTACT = { email: "service@prolookstores.com", phone: "888-776-56
 // Small radio dot.
 function RadioDot({ on, accent = "#e1251b" }) {
   return (
-    <span style={{
-      width: 20, height: 20, borderRadius: "50%", flexShrink: 0, marginTop: 1,
-      border: `1.5px solid ${on ? accent : "#cfcfd5"}`,
-      background: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center",
-      transition: "border-color .14s",
-    }}>
-      {on && <span style={{ width: 12, height: 12, borderRadius: "50%", background: accent }} />}
+    <span className="wx-radio-dot" style={{ border: `1.5px solid ${on ? accent : "#cfcfd5"}` }}>
+      {on && <span className="wx-radio-dot__inner" style={{ background: accent }} />}
     </span>
   );
 }
@@ -7443,17 +7254,11 @@ function MultiSelectChips({ options, value, onChange, accent = "#e1251b" }) {
   const sel = value || [];
   const toggle = (o) => onChange(sel.includes(o) ? sel.filter((x) => x !== o) : [...sel, o]);
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+    <div className="wx-chips">
       {options.map((o) => {
         const on = sel.includes(o);
         return (
-          <button key={o} type="button" onClick={() => toggle(o)} style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-            padding: "12px 16px", borderRadius: 999, cursor: "pointer", fontSize: 13.5, fontWeight: 600,
-            border: `1.5px solid ${on ? accent : "#e5e5e9"}`,
-            background: on ? hexA(accent, 0.08) : "#fff",
-            color: on ? accent : "#4b4b52", transition: "all .13s",
-          }}>
+          <button key={o} type="button" onClick={() => toggle(o)} className="wx-chips__chip" style={{ border: `1.5px solid ${on ? accent : "#e5e5e9"}`, background: on ? hexA(accent, 0.08) : "#fff", color: on ? accent : "#4b4b52" }}>
             {on && <IconCheck size={13} style={{ strokeWidth: 3 }} />}
             {o}
           </button>
@@ -7477,51 +7282,43 @@ function ContactChannel({ kind, mode, onMode, sp, onSp, custom, onCustom, accent
   const spField = isEmail ? "email" : "phone";
 
   const Row = ({ val, label, children }) => (
-    <button type="button" onClick={() => onMode(val)} style={{
-      textAlign: "left", width: "100%", background: "transparent", border: 0, padding: 0,
-      cursor: "pointer", display: "block",
-    }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+    <button type="button" onClick={() => onMode(val)} className="wx-contact-channel__row">
+      <div className="wx-contact-channel__row-inner">
         <RadioDot on={m === val} accent={accent} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#0e0e10", lineHeight: 1.3 }}>{label}</div>
+        <div className="wx-contact-channel__row-body">
+          <div className="wx-contact-channel__row-label">{label}</div>
           {children}
         </div>
       </div>
     </button>
   );
 
-  const inputStyle = {
-    width: "100%", border: "1px solid #d4d4d8", borderRadius: 5, padding: "12px 12px",
-    fontSize: 13.5, color: "#0e0e10", outline: "none", marginTop: 8, fontFamily: "inherit",
-  };
-
   return (
-    <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+    <div className="wx-contact-channel">
+      <div className="wx-contact-channel__head">
         <Icon size={16} style={{ color: accent }} />
-        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".08em", color: "#0e0e10", textTransform: "uppercase" }}>
+        <span className="wx-contact-channel__title">
           {isEmail ? "Email" : "Phone"}
         </span>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="wx-contact-channel__rows">
         <Row val="teammanager" label={labels.tm}>
           {/* Inherits — read-only here; edited on the Team Manager record itself */}
-          {(inherited || m === "teammanager") && <div style={{ marginTop: 2 }}>
-            <div style={{ fontSize: 13, color: inherited ? "#0e0e10" : "#b06f1e", fontWeight: 600, fontFamily: (isEmail || !inherited) ? "inherit" : "JetBrains Mono, monospace" }}>
+          {(inherited || m === "teammanager") && <div className="wx-contact-channel__inherited">
+            <div className={`wx-contact-channel__value${inherited ? " wx-contact-channel__value--inherited" : ""}${(isEmail || !inherited) ? " wx-contact-channel__value--plain" : ""}`}>
               {inherited || ("No " + (isEmail ? "email" : "phone number") + " on the Team Manager record yet")}
             </div>
             {m === "teammanager" && (
-              <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 3 }}>
+              <div className="wx-contact-channel__follows">
                 Follows the Team Manager record.{" "}
-                {onEditManager && <span role="button" onClick={(e) => { e.stopPropagation(); onEditManager(); }} style={{ color: "#0e0e10", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 2, cursor: "pointer" }}>Edit it there</span>}
+                {onEditManager && <span role="button" onClick={(e) => { e.stopPropagation(); onEditManager(); }} className="wx-contact-channel__edit-link">Edit it there</span>}
               </div>
             )}
           </div>}
         </Row>
         <Row val="salesperson" label={labels.sp}>
           {m === "salesperson" && (
-            <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 8 }}>
+            <div onClick={(e) => e.stopPropagation()} className="wx-contact-channel__select">
               <SelectField label="Select a Salesperson" value={sp}
                 onChange={onSp}
                 options={SALESPEOPLE.map((s) => ({ value: s.value, label: s.label + " · " + s[spField] }))} />
@@ -7532,7 +7329,7 @@ function ContactChannel({ kind, mode, onMode, sp, onSp, custom, onCustom, accent
           {m === "custom" && (
             <input onClick={(e) => e.stopPropagation()} value={custom || ""} placeholder={placeholder}
               type={isEmail ? "email" : "tel"}
-              onChange={(e) => onCustom(isEmail ? e.target.value : formatPhone(e.target.value))} style={inputStyle} />
+              onChange={(e) => onCustom(isEmail ? e.target.value : formatPhone(e.target.value))} className="wx-contact-channel__input" />
           )}
         </Row>
       </div>
@@ -7547,18 +7344,18 @@ function StorePointOfContact({ data, set, accent, errors = {} }) {
     if (el) window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 100, behavior: "smooth" });
   };
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 28 }}>
-      <div style={{ fontSize: 13.5, color: "#6b6b72", lineHeight: 1.6 }}>
+    <div className="wx-poc">
+      <div className="wx-poc__intro">
         Displayed on the store's footer. Select the primary point of contact buyers will reach out to for this store.
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "start" }}>
+      <div className="wx-poc__channels">
         <div>
           <ContactChannel kind="email" accent={accent}
             inherited={data.email} onEditManager={jumpToManagerPanel}
             mode={data.contactEmailMode} onMode={(v) => set({ contactEmailMode: v })}
             sp={data.contactEmailSalesperson} onSp={(v) => set({ contactEmailSalesperson: v })}
             custom={data.contactEmailCustom} onCustom={(v) => set({ contactEmailCustom: v })} />
-          {errors.contactEmailMode && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 12 }}>{errors.contactEmailMode}</div>}
+          {errors.contactEmailMode && <div className="wx-poc__error">{errors.contactEmailMode}</div>}
         </div>
         <div>
           <ContactChannel kind="phone" accent={accent}
@@ -7566,7 +7363,7 @@ function StorePointOfContact({ data, set, accent, errors = {} }) {
             mode={data.contactPhoneMode} onMode={(v) => set({ contactPhoneMode: v })}
             sp={data.contactPhoneSalesperson} onSp={(v) => set({ contactPhoneSalesperson: v })}
             custom={data.contactPhoneCustom} onCustom={(v) => set({ contactPhoneCustom: v })} />
-          {errors.contactPhoneMode && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 12 }}>{errors.contactPhoneMode}</div>}
+          {errors.contactPhoneMode && <div className="wx-poc__error">{errors.contactPhoneMode}</div>}
         </div>
       </div>
     </div>
@@ -7593,11 +7390,11 @@ function TeamMetricBar({ label, value, max, color }) {
   const pct = Math.max(value > 0 ? 6 : 0, Math.min(100, (value / max) * 100));
   return (
     <div>
-      <div style={{ fontSize: 12, color: "#6b6b72", marginBottom: 4 }}>
-        {label}: <span style={{ color: "#0e0e10", fontWeight: 700 }}>{value}</span>
+      <div className="wx-team-metric__label">
+        {label}: <span className="wx-team-metric__value">{value}</span>
       </div>
-      <div style={{ height: 8, borderRadius: 999, background: "#ececed", overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: color }} />
+      <div className="wx-team-metric__track">
+        <div className="wx-team-metric__fill" style={{ width: `${pct}%`, background: color }} />
       </div>
     </div>
   );
@@ -7622,45 +7419,24 @@ function TeamDatabaseModal({ open, onClose, onSelect, accent, hasTeam, onClearTe
     (!q.name || t.name.toLowerCase().includes(q.name.toLowerCase())) &&
     (!q.zip || t.address.includes(q.zip))
   );
-
-  const searchInput = {
-    height: 40, borderRadius: 6, border: "1px solid #d4d4d8", background: "#fff",
-    padding: "0 12px", fontSize: 13, color: "#0e0e10", outline: "none", fontFamily: "inherit",
-  };
   const runSearch = () => setQ({ name, zip });
   const clearSearch = () => { setName(""); setZip(""); setQ({ name: "", zip: "" }); };
 
   return (
-    <div onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 140, background: "rgba(20,20,30,.55)",
-      display: "flex", alignItems: "center", justifyContent: "center", padding: 24,
-    }}>
-      <div onClick={(e) => e.stopPropagation()} style={{
-        width: "min(1080px, 100%)", height: "min(760px, 100%)", background: "#fff",
-        borderRadius: 12, boxShadow: "0 32px 64px rgba(20,20,30,.34)", overflow: "hidden",
-        display: "flex", flexDirection: "column",
-      }}>
+    <div onClick={onClose} className="wx-team-db">
+      <div onClick={(e) => e.stopPropagation()} className="wx-team-db__dialog">
         {/* Search header */}
-        <div style={{ padding: "16px 28px", borderBottom: "1px solid #ececf0", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginRight: "auto" }}>
-            <span style={{ fontSize: 18, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>Team Database</span>
-            <span style={{ fontSize: 12.5, color: "#9a9aa1" }}>{rows.length.toLocaleString()} organizations</span>
+        <div className="wx-team-db__search-bar">
+          <div className="wx-team-db__heading">
+            <span className="wx-team-db__title">Team Database</span>
+            <span className="wx-team-db__count">{rows.length.toLocaleString()} organizations</span>
           </div>
-          <input value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && runSearch()} placeholder="Organization name" style={{ ...searchInput, width: 220 }} />
-          <input value={zip} onChange={(e) => setZip(e.target.value)} onKeyDown={(e) => e.key === "Enter" && runSearch()} placeholder="ZIP code" style={{ ...searchInput, width: 112 }} />
-          <button onClick={runSearch} style={{
-            height: 40, padding: "0 16px", border: 0, borderRadius: 6, background: accent, color: "#fff",
-            fontSize: 13, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8,
-          }}><IconSearch size={15} /> Search</button>
+          <input value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && runSearch()} placeholder="Organization name" className="wx-team-db__search-name" />
+          <input value={zip} onChange={(e) => setZip(e.target.value)} onKeyDown={(e) => e.key === "Enter" && runSearch()} placeholder="ZIP code" className="wx-team-db__search-zip" />
+          <button onClick={runSearch} className="wx-team-db__search-btn" style={{ background: accent }}><IconSearch size={15} /> Search</button>
           <button onClick={() => { clearSearch(); if (onClearTeam && hasTeam) onClearTeam(); }} disabled={onClearTeam ? !hasTeam : false}
-            title={onClearTeam ? (hasTeam ? "Clear the connected team \u2014 removes its logo, colors, and sports" : "No team selected to clear") : undefined} style={{
-            height: 40, padding: "0 16px", border: "1px solid #d4d4d8", borderRadius: 6, background: "#fff",
-            color: onClearTeam && !hasTeam ? "#b0b0b6" : "#0e0e10", fontSize: 13, fontWeight: 700, cursor: onClearTeam && !hasTeam ? "default" : "pointer",
-          }}>Clear</button>
-          <button onClick={onClose} title="Close" style={{
-            width: 40, height: 40, borderRadius: "50%", border: "none", background: "transparent",
-            color: "#6b6b72", display: "inline-flex", alignItems: "center", justifyContent: "center",
-          }}
+            title={onClearTeam ? (hasTeam ? "Clear the connected team \u2014 removes its logo, colors, and sports" : "No team selected to clear") : undefined} className={`wx-team-db__clear${(onClearTeam && !hasTeam) ? " wx-team-db__clear--disabled" : ""}`}>Clear</button>
+          <button onClick={onClose} title="Close" className="wx-team-db__close"
             onMouseEnter={(e) => { e.currentTarget.style.background = "#f1f1f3"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}>
             <IconX size={20} />
@@ -7668,39 +7444,27 @@ function TeamDatabaseModal({ open, onClose, onSelect, accent, hasTeam, onClearTe
         </div>
 
         {/* Status chips */}
-        <div style={{ padding: "12px 28px", borderBottom: "1px solid #f1f1f3", display: "flex", gap: 12, alignItems: "center", fontSize: 12 }}>
-          <span style={{ background: "#fdf3d3", color: "#8a6d12", fontWeight: 700, padding: "4px 12px", borderRadius: 5 }}>WIP Schools: 16,359</span>
-          <span style={{ background: "#e7f5ed", color: "#1f7a44", fontWeight: 700, padding: "4px 12px", borderRadius: 5 }}>Completed Schools: 835</span>
-          <span style={{ color: "#9a9aa1" }}>Total Vectored Logos: 6,016 / 19,843</span>
+        <div className="wx-team-db__chips">
+          <span className="wx-team-db__chip-wip">WIP Schools: 16,359</span>
+          <span className="wx-team-db__chip-done">Completed Schools: 835</span>
+          <span className="wx-team-db__total">Total Vectored Logos: 6,016 / 19,843</span>
         </div>
 
         {/* Rows */}
-        <div style={{ flex: 1, overflowY: "auto" }}>
+        <div className="wx-team-db__rows">
           {rows.map((t) => (
-            <div key={t.id} style={{
-              display: "grid", gridTemplateColumns: "60px 1fr 280px 116px", gap: 24, alignItems: "center",
-              padding: "16px 28px", borderBottom: "1px solid #f4f4f6",
-            }}>
-              <div style={{
-                width: 56, height: 56, borderRadius: 10, background: t.logoColor, color: "#fff",
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: 20, fontWeight: 800, fontFamily: "Archivo, sans-serif",
-              }}>{t.mono}</div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#0e0e10", marginBottom: 4 }}>{t.name}</div>
-                <div style={{ fontSize: 12.5, color: "#6b6b72", marginBottom: 8 }}>{t.address}</div>
-                <div style={{ fontSize: 11.5, color: "#9a9aa1", fontWeight: 600, letterSpacing: ".02em", textTransform: "uppercase" }}>{t.sports.join(" · ")}</div>
+            <div key={t.id} className="wx-team-db__row">
+              <div className="wx-team-db__logo" style={{ background: t.logoColor }}>{t.mono}</div>
+              <div className="wx-team-db__info">
+                <div className="wx-team-db__name">{t.name}</div>
+                <div className="wx-team-db__address">{t.address}</div>
+                <div className="wx-team-db__sports">{t.sports.join(" · ")}</div>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div className="wx-team-db__metrics">
                 <TeamMetricBar label="Mascot Traced" value={t.mascot} max={12} color={accent} />
                 <TeamMetricBar label="Master Reference" value={t.master} max={5} color="#0e0e10" />
               </div>
-              <button onClick={() => onSelect(t)} style={{
-                height: 40, border: 0, borderRadius: 6, background: "#0e0e10", color: "#fff",
-                fontSize: 13, fontWeight: 800, letterSpacing: ".02em", cursor: "pointer",
-                display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-                transition: "background .14s",
-              }}
+              <button onClick={() => onSelect(t)} className="wx-team-db__select"
                 onMouseEnter={(e) => e.currentTarget.style.background = accent}
                 onMouseLeave={(e) => e.currentTarget.style.background = "#0e0e10"}>
                 Select <IconChevronRight size={14} style={{ strokeWidth: 2.6 }} />
@@ -7708,23 +7472,18 @@ function TeamDatabaseModal({ open, onClose, onSelect, accent, hasTeam, onClearTe
             </div>
           ))}
           {rows.length === 0 && (
-            <div style={{ textAlign: "center", color: "#9a9aa1", fontSize: 14, fontWeight: 600, padding: "60px 0" }}>
+            <div className="wx-team-db__empty">
               No organizations match your search
             </div>
           )}
         </div>
 
         {/* Pagination footer */}
-        <div style={{ padding: "12px 28px", borderTop: "1px solid #ececf0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 12.5, color: "#9a9aa1" }}>Showing {rows.length} of 17,194</span>
-          <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        <div className="wx-team-db__footer">
+          <span className="wx-team-db__showing">Showing {rows.length} of 17,194</span>
+          <div className="wx-team-db__pages">
             {["1", "2", "3", "4", "5", "…", "860"].map((p, i) => (
-              <span key={i} style={{
-                minWidth: 32, height: 32, padding: "0 8px", borderRadius: 6, display: "inline-flex",
-                alignItems: "center", justifyContent: "center", fontSize: 12.5, fontWeight: 700,
-                background: p === "1" ? accent : "transparent", color: p === "1" ? "#fff" : "#6b6b72",
-                cursor: p === "…" ? "default" : "pointer",
-              }}>{p}</span>
+              <span key={i} className={`wx-team-db__page${(p === "1") ? " wx-team-db__page--current" : ""}${(p === "…") ? " wx-team-db__page--gap" : ""}`} style={{ background: p === "1" ? accent : "transparent" }}>{p}</span>
             ))}
           </div>
         </div>
@@ -7844,12 +7603,12 @@ function StoreTypeSelect({ value, onChange, accent = "#e1251b" }) {
 function ShipToAddressFields({ value, onChange }) {
   const v = value || {};
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div style={{ display: "flex", gap: 16 }}>
+    <div className="wx-ship-address">
+      <div className="wx-ship-address__row">
         <TextField label="Street Address" value={v.shipStreet} onChange={(x) => onChange({ shipStreet: x })} />
         <TextField label="Apt, Suite, etc" value={v.shipApt} onChange={(x) => onChange({ shipApt: x })} style={{ flex: ".6" }} />
       </div>
-      <div style={{ display: "flex", gap: 16 }}>
+      <div className="wx-ship-address__row">
         <TextField label="City" value={v.shipCity} onChange={(x) => onChange({ shipCity: x })} />
         <SelectField label="State" value={v.shipState} options={EG_STATES} onChange={(x) => onChange({ shipState: x })} />
         <TextField label="ZIP Code" value={v.shipZip} onChange={(x) => onChange({ shipZip: x })} style={{ flex: ".6" }} />
@@ -7882,7 +7641,7 @@ function ShipToDestinationPicker({ value, onChange, accent = "#e1251b" }) {
     return (
       <div>
         <ShipToAddressFields value={v} onChange={onChange} />
-        <div style={{ marginTop: 14, display: "flex", gap: 10, alignItems: "flex-start", fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5, background: "#f7f7f8", borderRadius: 8, padding: "10px 12px" }}>
+        <div className="wx-ship-to__tip">
           <IconInfo size={15} style={{ flexShrink: 0, marginTop: 1 }} />
           <span>Ship somewhere often? Save a destination once in Workspace Settings → Pick-up Locations and reuse it across stores.</span>
         </div>
@@ -7891,24 +7650,24 @@ function ShipToDestinationPicker({ value, onChange, accent = "#e1251b" }) {
   }
   const seg = (k, label) => (
     <button type="button" key={k} onClick={() => { setModeState(k); if (k === "manual" && v.shipLocationId) onChange({ shipLocationId: null }); }}
-      style={{ flex: 1, height: 36, border: 0, borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 12.5, fontWeight: 700, background: mode === k ? "#0e0e10" : "transparent", color: mode === k ? "#fff" : "#6b6b72" }}>{label}</button>
+      className={`wx-ship-to__seg${(mode === k) ? " wx-ship-to__seg--on" : ""}`}>{label}</button>
   );
   return (
     <div>
-      <div style={{ display: "flex", gap: 4, background: "#f1f1f3", borderRadius: 8, padding: 4, marginBottom: 16, maxWidth: 440 }}>{[seg("saved", "Saved pick-up location"), seg("manual", "Enter address manually")]}</div>
+      <div className="wx-ship-to__segs">{[seg("saved", "Saved pick-up location"), seg("manual", "Enter address manually")]}</div>
       {mode === "saved" ? (
-        <div style={{ display: "grid", gap: 10 }}>
+        <div className="wx-ship-to__locations">
           {locs.map((l) => { const on = v.shipLocationId === l.id; return (
             <button type="button" key={l.id} onClick={() => onChange({ shipLocationId: l.id, ...SHIP_MANUAL_CLEAR })}
-              style={{ textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 14px", borderRadius: 8, cursor: "pointer", fontFamily: "inherit", background: "#fff", border: on ? "2px solid " + accent : "1px solid #e4e4e7", boxShadow: on ? "0 0 0 3px " + accent + "22" : "none" }}>
-              <span style={{ width: 18, height: 18, borderRadius: "50%", flexShrink: 0, marginTop: 1, border: on ? "6px solid " + accent : "2px solid #c9c9cf", boxSizing: "border-box" }} />
-              <span style={{ minWidth: 0 }}>
-                <span style={{ display: "block", fontSize: 13.5, fontWeight: 700, color: "#0e0e10" }}>{l.name}</span>
-                <span style={{ display: "block", fontSize: 12.5, color: "#6b6b72", marginTop: 2 }}>{l.addr1}, {l.city}, {l.state} {l.zip}</span>
+              className="wx-ship-to__location" style={{ border: on ? "2px solid " + accent : "1px solid #e4e4e7", boxShadow: on ? "0 0 0 3px " + accent + "22" : "none" }}>
+              <span className="wx-ship-to__location-dot" style={{ border: on ? "6px solid " + accent : "2px solid #c9c9cf" }} />
+              <span className="wx-ship-to__location-text">
+                <span className="wx-ship-to__location-name">{l.name}</span>
+                <span className="wx-ship-to__location-address">{l.addr1}, {l.city}, {l.state} {l.zip}</span>
               </span>
             </button>
           ); })}
-          {!v.shipLocationId && <div style={{ fontSize: 12.5, color: "#9a9aa1" }}>Select a location, or switch to manual entry.</div>}
+          {!v.shipLocationId && <div className="wx-ship-to__hint">Select a location, or switch to manual entry.</div>}
         </div>
       ) : (
         <ShipToAddressFields value={v} onChange={(p) => onChange({ shipLocationId: null, ...p })} />
@@ -7986,11 +7745,6 @@ function Step1Basics({ data, set, errors, accent }) {
     setTeamModalOpen(false);
     setTeamToast("Team cleared — logo, colors, and sports removed");
   };
-
-  const managerInput = {
-    width: "100%", border: "1px solid #d4d4d8", borderRadius: 5, padding: "12px 12px",
-    fontSize: 14, color: "#0e0e10", outline: "none", fontFamily: "inherit",
-  };
   const patchAddedManager = (id, patch) => set({ additionalManagers: (data.additionalManagers || []).map((x) => x.id === id ? { ...x, ...patch } : x) });
 
   return (
@@ -7999,22 +7753,22 @@ function Step1Basics({ data, set, errors, accent }) {
         desc="Set up the store, choose how it distributes orders, connect it to a team, assign a point of contact, and configure sales tax." />
 
       {data._fromUserTemplate && (
-        <div style={{ border: `1.5px solid ${accent}`, background: `${accent}0a`, borderRadius: 12, padding: "16px 20px", marginBottom: 28 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-            <span style={{ width: 40, height: 40, borderRadius: 9, flexShrink: 0, background: accent, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><IconTemplateGrid size={18} /></span>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 14.5, fontWeight: 800, color: "#0e0e10", fontFamily: "Archivo, sans-serif" }}>Started from {data._templateName || "a saved template"}</div>
-              <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 1 }}>Structure, distribution, and {(data.curatedProducts || []).length} product{(data.curatedProducts || []).length === 1 ? "" : "s"} are pre-loaded. Just add your team's branding below.</div>
+        <div className="wx-basics__template" style={{ border: `1.5px solid ${accent}`, background: `${accent}0a` }}>
+          <div className="wx-basics__template-head">
+            <span className="wx-basics__template-icon" style={{ background: accent }}><IconTemplateGrid size={18} /></span>
+            <div className="wx-basics__template-text">
+              <div className="wx-basics__template-title">Started from {data._templateName || "a saved template"}</div>
+              <div className="wx-basics__template-desc">Structure, distribution, and {(data.curatedProducts || []).length} product{(data.curatedProducts || []).length === 1 ? "" : "s"} are pre-loaded. Just add your team's branding below.</div>
             </div>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #ececf0", borderRadius: 999, padding: "8px 12px", fontSize: 12, fontWeight: 700, color: "#0e0e10" }}>
+          <div className="wx-basics__template-chips">
+            <span className="wx-basics__template-chip">
               {data.storeType === "single" ? <IconUsers size={13} /> : <IconLayers size={13} />} {tplTypeLabel(data.storeType)}
             </span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #ececf0", borderRadius: 999, padding: "8px 12px", fontSize: 12, fontWeight: 700, color: "#0e0e10" }}>
+            <span className="wx-basics__template-chip">
               {data.distributionModel === "home" ? <IconBag size={13} /> : <IconUsers size={13} />} {tplDistLabel(data.distributionModel)}
             </span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #ececf0", borderRadius: 999, padding: "8px 12px", fontSize: 12, fontWeight: 700, color: "#0e0e10" }}>
+            <span className="wx-basics__template-chip">
               <IconShirt size={13} /> {(data.curatedProducts || []).length} products pre-loaded
             </span>
           </div>
@@ -8022,7 +7776,7 @@ function Step1Basics({ data, set, errors, accent }) {
       )}
 
       <WizardPanel label="Store Type" hint="Determines the structural workflow across the whole store">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="wx-basics__two-col">
           {STORE_TYPES.map((t) => (
             <ChoiceCard key={t.key} accent={accent} minHeight={172}
               active={data.storeType === t.key}
@@ -8030,9 +7784,9 @@ function Step1Basics({ data, set, errors, accent }) {
               icon={t.icon({ size: 22 })} title={t.name} desc={t.desc} points={t.points} />
           ))}
         </div>
-        {errors.storeType && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 12 }}>{errors.storeType}</div>}
+        {errors.storeType && <div className="wx-basics__error">{errors.storeType}</div>}
         {data.storeType && (
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 16, fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}>
+          <div className="wx-basics__type-note">
             <IconInfo size={15} style={{ flexShrink: 0, marginTop: 1, color: accent }} />
             <span>
               {data.storeType === "single"
@@ -8048,41 +7802,27 @@ function Step1Basics({ data, set, errors, accent }) {
           onChange={(v) => set({ storeTitle: v, ...(data._slugTouched ? {} : { storeSlug: slugify(v) }) })}
           error={errors.storeTitle} />
 
-        <div style={{ marginTop: 24 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: "#0e0e10", marginBottom: 8 }}>Web Address</div>
-          <div style={{
-            display: "flex", border: `1px solid ${errors.storeSlug ? "#b81d14" : "#d4d4d8"}`,
-            borderRadius: 4, background: "#fff", overflow: "hidden",
-          }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", padding: "0 16px", background: "#f7f7f8",
-              borderRight: "1px solid #e5e5e9", color: "#6b6b72", fontSize: 13.5,
-              fontFamily: "JetBrains Mono, monospace", whiteSpace: "nowrap",
-            }}>prolookstores.com/</span>
+        <div className="wx-basics__web-address">
+          <div className="wx-basics__label">Web Address</div>
+          <div className={`wx-basics__slug-box${errors.storeSlug ? " wx-basics__slug-box--error" : ""}`}>
+            <span className="wx-basics__slug-prefix">prolookstores.com/</span>
             <input
               value={data.storeSlug || ""}
               onChange={(e) => set({ storeSlug: slugify(e.target.value), _slugTouched: true })}
               placeholder="store-slug"
-              style={{
-                flex: 1, minWidth: 0, border: 0, outline: 0, background: "transparent", padding: "12px 12px",
-                fontSize: 13.5, color: "#0e0e10", fontFamily: "JetBrains Mono, monospace",
-              }} />
+              className="wx-basics__slug-input" />
           </div>
-          {errors.storeSlug && <div style={{ color: "#b81d14", fontSize: 11, marginTop: 4 }}>{errors.storeSlug}</div>}
+          {errors.storeSlug && <div className="wx-basics__slug-error">{errors.storeSlug}</div>}
         </div>
 
         {/* Team Fundraising */}
-        <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid #f1f1f3" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".08em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 16 }}>Team Fundraising</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{
-              width: 40, height: 40, borderRadius: 9, flexShrink: 0,
-              background: (data.fundraisingEnabled ?? false) ? "#fdecea" : "#f1f1f3", color: (data.fundraisingEnabled ?? false) ? accent : "#6b6b72",
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-            }}><IconDollar size={20} /></span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0e0e10", marginBottom: 2 }}>Enable Team Fundraising</div>
-              <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.45 }}>
+        <div className="wx-basics__section">
+          <div className="wx-basics__eyebrow">Team Fundraising</div>
+          <div className="wx-basics__toggle-row">
+            <span className={`wx-basics__toggle-icon${(data.fundraisingEnabled ?? false) ? " wx-basics__toggle-icon--on" : ""}`} style={{ color: (data.fundraisingEnabled ?? false) ? accent : "#6b6b72" }}><IconDollar size={20} /></span>
+            <div className="wx-basics__toggle-text">
+              <div className="wx-basics__toggle-title">Enable Team Fundraising</div>
+              <div className="wx-basics__toggle-desc">
                 {(data.fundraisingEnabled ?? false)
                   ? "Items can collect a per-item fundraising amount, and a Fundraising Report is available under Reports."
                   : "New items stop collecting fundraising. Items with orders keep collecting, and entered amounts are kept."}
@@ -8094,7 +7834,7 @@ function Step1Basics({ data, set, errors, accent }) {
       </WizardPanel>
 
       <WizardPanel label="Store Schedule">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="wx-basics__two-col">
           {STORE_SCHEDULES.map((f) => (
             <ChoiceCard key={f.key} accent={accent} minHeight={172}
               active={data.distributionFormat === f.key}
@@ -8102,25 +7842,22 @@ function Step1Basics({ data, set, errors, accent }) {
               icon={f.icon({ size: 22 })} title={f.title} desc={f.desc} />
           ))}
         </div>
-        {errors.distributionFormat && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 12 }}>{errors.distributionFormat}</div>}
+        {errors.distributionFormat && <div className="wx-basics__error">{errors.distributionFormat}</div>}
       </WizardPanel>
 
       {/* Store Timeline — revealed only for the Temporary Pop-Up format. Always-On
           Locker stores have no batch deadline, so the schedule card is hidden. */}
       {isPopup && (
         <WizardPanel label="Store Timeline">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="wx-basics__two-col">
             <WizardDate label="Store Launch Date" value={data.storeOpenStart} onChange={(v) => set({ storeOpenStart: v })} error={errors.storeOpenStart} />
             <WizardDate label="Store Closing Deadline" value={data.storeOpenEnd} onChange={(v) => set({ storeOpenEnd: v })} error={errors.storeOpenEnd} />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 24, paddingTop: 20, borderTop: "1px solid #f1f1f3" }}>
-            <span style={{
-              width: 40, height: 40, borderRadius: 9, background: "#fff4e0", color: "#b5760a",
-              display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-            }}><IconClock size={20} /></span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0e0e10", marginBottom: 2 }}>Enable Urgency Timers</div>
-              <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.45 }}>Show a real-time closing countdown on the storefront.</div>
+          <div className="wx-basics__urgency">
+            <span className="wx-basics__urgency-icon"><IconClock size={20} /></span>
+            <div className="wx-basics__toggle-text">
+              <div className="wx-basics__toggle-title">Enable Urgency Timers</div>
+              <div className="wx-basics__toggle-desc">Show a real-time closing countdown on the storefront.</div>
             </div>
             <ToggleSwitch on={data.urgencyTimers} onChange={(v) => set({ urgencyTimers: v })} accent={accent} />
           </div>
@@ -8135,13 +7872,13 @@ function Step1Basics({ data, set, errors, accent }) {
           here: team colors are imported in Team Branding below. */}
       <WizardPanel label="Announcement Message" hint="Optional — buyers see it at the top of your storefront">
         <AnnouncementEditor value={data.announcement || ""} onChange={(v) => set({ announcement: v })} accent={accent} />
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 14 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}>
+        <div className="wx-basics__notes">
+          <div className="wx-basics__note">
             <IconInfo size={14} style={{ flexShrink: 0, marginTop: 1 }} />
             <span>Leave it blank and the storefront shows <b>no banner at all</b> — skipping this is a clean outcome, not an unfinished step.</span>
           </div>
           {data.storeType === "league" && (
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5 }}>
+            <div className="wx-basics__note">
               <IconInfo size={14} style={{ flexShrink: 0, marginTop: 1 }} />
               <span>This is the <b>store-level</b> message. Divisions and standalone teams can carry their own later from Settings — they're built in the next step.</span>
             </div>
@@ -8151,169 +7888,148 @@ function Step1Basics({ data, set, errors, accent }) {
 
       <WizardPanel label="Team Branding &amp; Sport">
         {/* Import Team Profile — opens the team database modal */}
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20,
-          border: `1.5px solid ${data.connectedTeam ? accent : "#e5e5e9"}`, borderRadius: 10,
-          background: data.connectedTeam ? "#fdf2f1" : "#fafafb", padding: "16px 20px", marginBottom: 24,
-        }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 16, minWidth: 0 }}>
-            <span style={{
-              width: 44, height: 44, borderRadius: 9, flexShrink: 0,
-              background: data.connectedTeam ? accent : "#0e0e10", color: "#fff",
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-            }}><IconGroupAdd size={20} /></span>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10", marginBottom: 4 }}>
+        <div className={`wx-basics__team-card${data.connectedTeam ? " wx-basics__team-card--connected" : ""}`} style={{ border: `1.5px solid ${data.connectedTeam ? accent : "#e5e5e9"}` }}>
+          <div className="wx-basics__team-main">
+            <span className="wx-basics__team-icon" style={{ background: data.connectedTeam ? accent : "#0e0e10" }}><IconGroupAdd size={20} /></span>
+            <div className="wx-basics__team-text">
+              <div className="wx-basics__team-title">
                 {data.connectedTeam ? `Connected — ${connectedLabel}` : "Import Team Profile"}
               </div>
-              <div style={{ fontSize: 13, color: "#6b6b72", lineHeight: 1.5, maxWidth: 560 }}>
+              <div className="wx-basics__team-desc">
                 {data.connectedTeam
                   ? "Official logo, colors, and sports were imported below. Reconnect to switch teams."
                   : "Connect directly to our team database to automatically import the official school colors and logos used on your physical player uniforms."}
               </div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+          <div className="wx-basics__team-actions">
             {data.connectedTeam && <button type="button" onClick={clearTeam}
-              title={data.connectedTeam ? "Remove the connected team\u2019s logo, colors, and sports" : "No team selected to clear"} style={{
-                height: 44, padding: "0 18px", borderRadius: 6, border: "1px solid #d4d4d8",
-                background: "#fff", color: data.connectedTeam ? "#0e0e10" : "#b0b0b6",
-                fontSize: 13, fontWeight: 700, letterSpacing: ".01em",
-                cursor: data.connectedTeam ? "pointer" : "default", transition: "border-color .14s",
-              }}
+              title={data.connectedTeam ? "Remove the connected team\u2019s logo, colors, and sports" : "No team selected to clear"} className={`wx-basics__team-clear${data.connectedTeam ? " wx-basics__team-clear--active" : ""}`}
               onMouseEnter={(e) => { if (data.connectedTeam) e.currentTarget.style.borderColor = "#0e0e10"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#d4d4d8"; }}>
               Clear
             </button>}
-            <button type="button" onClick={() => setTeamModalOpen(true)} style={{
-              flexShrink: 0, height: 44, padding: "0 20px", border: 0, borderRadius: 6,
-              background: "#0e0e10", color: "#fff", fontSize: 13, fontWeight: 700, letterSpacing: ".01em",
-              cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, transition: "background .14s",
-            }}
+            <button type="button" onClick={() => setTeamModalOpen(true)} className="wx-basics__team-connect"
               onMouseEnter={(e) => e.currentTarget.style.background = accent}
               onMouseLeave={(e) => e.currentTarget.style.background = "#0e0e10"}>
               {data.connectedTeam ? "Change Team" : "Connect to Team"}
             </button>
           </div>
         </div>
-        {errors.connectedTeam && <div style={{ color: "#b81d14", fontSize: 12, marginTop: -12, marginBottom: 16 }}>{errors.connectedTeam}</div>}
+        {errors.connectedTeam && <div className="wx-basics__team-error">{errors.connectedTeam}</div>}
 
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Team Name</div>
+        <div className="wx-basics__team-name">
+          <div className="wx-basics__field-label">Team Name</div>
           <input type="text" value={data.teamName || ""} onChange={(e) => set({ teamName: e.target.value })}
-            placeholder="e.g. Carlsbad Padres" style={managerInput} />
-          <div style={{ fontSize: 12, color: "#9a9aa1", marginTop: 8, lineHeight: 1.5 }}>
+            placeholder="e.g. Carlsbad Padres" className="wx-basics__input" />
+          <div className="wx-basics__team-name-hint">
             {data.connectedTeam
               ? "Pulled from the connected team profile — edit if needed."
               : "Auto-fills when you connect to a team in the database."}
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
-          <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: 20 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".08em", color: "#0e0e10", textTransform: "uppercase", marginBottom: 16 }}>Team Logo</div>
+        <div className="wx-basics__branding">
+          <div className="wx-basics__brand-card">
+            <div className="wx-basics__brand-title">Team Logo</div>
             <LogoDropZone logo={data.teamLogo} onChange={(v) => set({ teamLogo: v })} />
-            <div style={{ fontSize: 12, color: "#9a9aa1", marginTop: 12, lineHeight: 1.5 }}>Used to brand the storefront header and pre-set product customization.</div>
+            <div className="wx-basics__brand-hint">Used to brand the storefront header and pre-set product customization.</div>
           </div>
-          <div style={{ border: "1px solid #ececf0", borderRadius: 10, padding: 20 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".08em", color: "#0e0e10", textTransform: "uppercase", marginBottom: 16 }}>Team Colors</div>
+          <div className="wx-basics__brand-card">
+            <div className="wx-basics__brand-title">Team Colors</div>
             <ColorSwatches colors={data.teamColors || []} onChange={(v) => set({ teamColors: v })} />
           </div>
         </div>
 
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#0e0e10", marginBottom: 16 }}>Sports <span style={{ color: "#9a9aa1", fontWeight: 500 }}>· select all that apply</span></div>
+        <div className="wx-basics__sports-label">Sports <span className="wx-basics__sports-hint">· select all that apply</span></div>
         <MultiSelectChips options={WIZARD_SPORTS} value={data.sports} onChange={(v) => set({ sports: v })} accent={accent} />
       </WizardPanel>
 
       {/* Team & Roster — same controls as Settings → Team & Roster. Bulk defaults, not locks; neither blocks Next. */}
       <WizardPanel label="Team &amp; Roster" hint="Defaults for every roster in this store — override per team later in My Team(s)">
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{
-            width: 40, height: 40, borderRadius: 9, flexShrink: 0,
-            background: (data.allowDuplicateNumbers ?? false) ? "#fdecea" : "#f1f1f3", color: (data.allowDuplicateNumbers ?? false) ? accent : "#6b6b72",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-          }}><IconUsers size={20} /></span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#0e0e10", marginBottom: 2 }}>Allow Duplicate Numbers</div>
-            <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.45 }}>
+        <div className="wx-basics__toggle-row">
+          <span className={`wx-basics__toggle-icon${(data.allowDuplicateNumbers ?? false) ? " wx-basics__toggle-icon--on" : ""}`} style={{ color: (data.allowDuplicateNumbers ?? false) ? accent : "#6b6b72" }}><IconUsers size={20} /></span>
+          <div className="wx-basics__toggle-text">
+            <div className="wx-basics__toggle-title">Allow Duplicate Numbers</div>
+            <div className="wx-basics__toggle-desc">
               Sets the default for every team's roster in this store. Any individual roster can override it later from the My Team(s) tab — a bulk default, not a lock.
             </div>
           </div>
           <ToggleSwitch on={data.allowDuplicateNumbers ?? false} onChange={(v) => set({ allowDuplicateNumbers: v })} accent={accent} />
         </div>
-        <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid #f1f1f3" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: "#0e0e10", marginBottom: 4 }}>Jersey Number Selection</div>
-          <div style={{ fontSize: 12.5, color: "#6b6b72", marginBottom: 12 }}>Decide who chooses jersey numbers for numbered team gear.</div>
+        <div className="wx-basics__section">
+          <div className="wx-basics__jersey-label">Jersey Number Selection</div>
+          <div className="wx-basics__jersey-desc">Decide who chooses jersey numbers for numbered team gear.</div>
           <NumberSelectionOptions value={data.numberSelection || "manager"} onChange={(v) => set({ numberSelection: v })} />
-          <div style={{ fontSize: 12, color: "#9a9aa1", marginTop: 4, lineHeight: 1.5 }}>{numberSelectionHelper(data.numberSelection || "manager")}</div>
+          <div className="wx-basics__jersey-hint">{numberSelectionHelper(data.numberSelection || "manager")}</div>
         </div>
       </WizardPanel>
 
       <WizardPanel label={data.storeType === "league" ? "League Manager" : "Team Manager"} hint={data.storeType === "league" ? "League director" : "Team coach"}>
-        <span id="tm-panel" style={{ display: "block", height: 0 }}></span>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+        <span id="tm-panel" className="wx-basics__anchor"></span>
+        <div className="wx-basics__name-row">
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>First Name</div>
-            <input type="text" value={data.firstName || ""} onChange={(e) => set({ firstName: e.target.value })} placeholder="Jordan" style={managerInput} />
+            <div className="wx-basics__field-label">First Name</div>
+            <input type="text" value={data.firstName || ""} onChange={(e) => set({ firstName: e.target.value })} placeholder="Jordan" className="wx-basics__input" />
           </div>
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Last Name</div>
-            <input type="text" value={data.lastName || ""} onChange={(e) => set({ lastName: e.target.value })} placeholder="Rivera" style={managerInput} />
+            <div className="wx-basics__field-label">Last Name</div>
+            <input type="text" value={data.lastName || ""} onChange={(e) => set({ lastName: e.target.value })} placeholder="Rivera" className="wx-basics__input" />
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="wx-basics__two-col">
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Email</div>
-            <input type="email" value={data.email || ""} onChange={(e) => set({ email: e.target.value })} placeholder="name@example.com" style={{ ...managerInput, ...(errors.email ? { borderColor: "#b81d14" } : {}) }} />
-            {errors.email && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 6 }}>{errors.email}</div>}
+            <div className="wx-basics__field-label">Email</div>
+            <input type="email" value={data.email || ""} onChange={(e) => set({ email: e.target.value })} placeholder="name@example.com" className="wx-basics__input" style={{ ...(errors.email ? { borderColor: "#b81d14" } : {}) }} />
+            {errors.email && <div className="wx-basics__field-error">{errors.email}</div>}
           </div>
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Phone Number</div>
-            <input type="tel" value={data.phone || ""} onChange={(e) => set({ phone: formatPhone(e.target.value) })} placeholder="111-000-3243" style={{ ...managerInput, fontFamily: "JetBrains Mono, monospace", ...(errors.phone ? { borderColor: "#b81d14" } : {}) }} />
-            {errors.phone && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 6 }}>{errors.phone}</div>}
+            <div className="wx-basics__field-label">Phone Number</div>
+            <input type="tel" value={data.phone || ""} onChange={(e) => set({ phone: formatPhone(e.target.value) })} placeholder="111-000-3243" className="wx-basics__phone-input" style={{ ...(errors.phone ? { borderColor: "#b81d14" } : {}) }} />
+            {errors.phone && <div className="wx-basics__field-error">{errors.phone}</div>}
           </div>
         </div>
 
         {/* Additional managers — optional contact records, not portal invitations. Only the primary feeds the point of contact. */}
         {(data.additionalManagers || []).map((m) => (
-          <div key={m.id} style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid #f1f1f3" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".06em", color: "#6b6b72", background: "#f1f1f3", borderRadius: 999, padding: "4px 10px", textTransform: "uppercase" }}>Additional Manager</span>
-              <span style={{ fontSize: 12, color: "#9a9aa1" }}>Contact record only — doesn't feed the point of contact</span>
-              <span style={{ flex: 1 }} />
+          <div key={m.id} className="wx-basics__section">
+            <div className="wx-basics__manager-head">
+              <span className="wx-basics__manager-tag">Additional Manager</span>
+              <span className="wx-basics__manager-note">Contact record only — doesn't feed the point of contact</span>
+              <span className="wx-basics__spacer" />
               <button type="button" onClick={() => set({ additionalManagers: (data.additionalManagers || []).filter((x) => x.id !== m.id) })}
-                style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: 0, color: "#b81d14", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", padding: 4 }}>
+                className="wx-basics__manager-remove">
                 <IconTrash size={13} style={{ strokeWidth: 2 }} /> Remove
               </button>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+            <div className="wx-basics__name-row">
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>First Name</div>
-                <input type="text" value={m.firstName || ""} onChange={(e) => patchAddedManager(m.id, { firstName: e.target.value })} placeholder="Alex" style={managerInput} />
+                <div className="wx-basics__field-label">First Name</div>
+                <input type="text" value={m.firstName || ""} onChange={(e) => patchAddedManager(m.id, { firstName: e.target.value })} placeholder="Alex" className="wx-basics__input" />
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Last Name</div>
-                <input type="text" value={m.lastName || ""} onChange={(e) => patchAddedManager(m.id, { lastName: e.target.value })} placeholder="Nguyen" style={managerInput} />
+                <div className="wx-basics__field-label">Last Name</div>
+                <input type="text" value={m.lastName || ""} onChange={(e) => patchAddedManager(m.id, { lastName: e.target.value })} placeholder="Nguyen" className="wx-basics__input" />
               </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div className="wx-basics__two-col">
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Email</div>
-                <input type="email" value={m.email || ""} onChange={(e) => patchAddedManager(m.id, { email: e.target.value })} placeholder="name@example.com" style={managerInput} />
+                <div className="wx-basics__field-label">Email</div>
+                <input type="email" value={m.email || ""} onChange={(e) => patchAddedManager(m.id, { email: e.target.value })} placeholder="name@example.com" className="wx-basics__input" />
               </div>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#6b6b72", marginBottom: 8 }}>Phone Number</div>
-                <input type="tel" value={m.phone || ""} onChange={(e) => patchAddedManager(m.id, { phone: formatPhone(e.target.value) })} placeholder="111-000-3243" style={{ ...managerInput, fontFamily: "JetBrains Mono, monospace" }} />
+                <div className="wx-basics__field-label">Phone Number</div>
+                <input type="tel" value={m.phone || ""} onChange={(e) => patchAddedManager(m.id, { phone: formatPhone(e.target.value) })} placeholder="111-000-3243" className="wx-basics__phone-input" />
               </div>
             </div>
           </div>
         ))}
-        <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid #f1f1f3", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+        <div className="wx-basics__add-manager">
           <button type="button" onClick={() => set({ additionalManagers: [...(data.additionalManagers || []), { id: "mgr-" + Date.now(), firstName: "", lastName: "", email: "", phone: "" }] })}
-            style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", color: "#0e0e10", borderRadius: 6, padding: "10px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+            className="wx-basics__add-manager-btn">
             <IconPlus size={14} style={{ strokeWidth: 2.4 }} /> Add another manager
           </button>
-          <span style={{ fontSize: 12, color: "#9a9aa1", lineHeight: 1.5 }}>Optional. These are contact records, not portal invitations — Team Manager Portal invites live in Settings → People &amp; Access.</span>
+          <span className="wx-basics__add-manager-note">Optional. These are contact records, not portal invitations — Team Manager Portal invites live in Settings → People &amp; Access.</span>
         </div>
       </WizardPanel>
 
@@ -8322,7 +8038,7 @@ function Step1Basics({ data, set, errors, accent }) {
       </WizardPanel>
 
       <WizardPanel label="Fulfillment Method">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="wx-basics__two-col">
           {FULFILLMENT_METHODS.map((m) => (
             <ChoiceCard key={m.key} accent={accent} minHeight={172}
               active={data.distributionModel === m.key}
@@ -8330,13 +8046,13 @@ function Step1Basics({ data, set, errors, accent }) {
               icon={m.icon({ size: 22 })} title={m.title} desc={m.desc} badge={m.badge} />
           ))}
         </div>
-        {errors.distributionModel && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 12 }}>{errors.distributionModel}</div>}
+        {errors.distributionModel && <div className="wx-basics__error">{errors.distributionModel}</div>}
         {/* Ship to Team Manager reveals the bulk-shipment destination inline. Same store
             ship* fields the manager record / Settings edit — one address, not two. */}
         {data.distributionModel === "coach" && (
-          <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid #f1f1f3" }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".08em", color: "#0e0e10", textTransform: "uppercase", marginBottom: 4 }}>Ship-To Destination</div>
-            <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.5, marginBottom: 16 }}>
+          <div className="wx-basics__ship-section">
+            <div className="wx-basics__ship-title">Ship-To Destination</div>
+            <div className="wx-basics__ship-desc">
               Where the bulk shipment goes — a saved pick-up location or the {data.storeType === "league" ? "league" : "team"} manager's address. Optional for now, but orders can't be submitted for fulfillment until a destination exists. Editable later in Settings → Distribution &amp; Fulfillment.
             </div>
             <ShipToDestinationPicker value={data} onChange={(patch) => set(patch)} accent={accent} />
@@ -8346,15 +8062,11 @@ function Step1Basics({ data, set, errors, accent }) {
 
       <WizardPanel label="Compliance &amp; Taxation" hint="Turn this toggle off to mark the store as tax exempt — no sales tax is collected from storefront buyers">
         {/* Epic G — primary binary toggle is the single entry point for tax config */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{
-            width: 40, height: 40, borderRadius: 9, flexShrink: 0,
-            background: data.collectTax ? "#fdecea" : "#f1f1f3", color: data.collectTax ? accent : "#6b6b72",
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-          }}><IconDollar size={20} /></span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#0e0e10", marginBottom: 2 }}>Collect Sales Tax</div>
-            <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.45 }}>
+        <div className="wx-basics__toggle-row">
+          <span className={`wx-basics__toggle-icon${data.collectTax ? " wx-basics__toggle-icon--on" : ""}`} style={{ color: data.collectTax ? accent : "#6b6b72" }}><IconDollar size={20} /></span>
+          <div className="wx-basics__toggle-text">
+            <div className="wx-basics__toggle-title">Collect Sales Tax</div>
+            <div className="wx-basics__toggle-desc">
               {data.collectTax
                 ? "Tax is applied to buyers in your designated state at checkout."
                 : "Tax-exempt checkout — no tax is applied and no extra inputs are required."}
@@ -8365,25 +8077,22 @@ function Step1Basics({ data, set, errors, accent }) {
 
         {/* Conditional reveal — only while the toggle is on */}
         {data.collectTax && (
-          <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid #f1f1f3", display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="wx-basics__tax-details">
+            <div className="wx-basics__two-col">
               <StateSearchSelect label="State" value={data.taxState}
                 onChange={(v) => set({ taxState: v, taxRate: STATE_TAX_RATES[v] != null ? String(STATE_TAX_RATES[v]) : data.taxRate })} />
               <TextField label="Tax Rate %" value={data.taxState ? data.taxRate : ""} readOnly
                 placeholder="Select a state"
-                suffix={<span style={{ color: "#9a9aa1", fontSize: 13 }}>%</span>}
+                suffix={<span className="wx-basics__tax-suffix">%</span>}
                 error={errors.taxRate} />
             </div>
-            <div style={{ fontSize: 12, color: "#9a9aa1", lineHeight: 1.5, marginTop: -4 }}>
+            <div className="wx-basics__tax-hint">
               The tax rate is set automatically from the selected state. Tax is output exclusively to buyers in the selected state.
             </div>
-            <div style={{
-              background: errors.taxLiability ? "#fdecea" : "#fafafb",
-              border: `1px solid ${errors.taxLiability ? "#f3c9c5" : "#ececf0"}`, borderRadius: 8, padding: "16px 16px",
-            }}>
+            <div className={`wx-basics__tax-agree${errors.taxLiability ? " wx-basics__tax-agree--error" : ""}`}>
               <Checkbox checked={data.taxLiabilityAgreed} onChange={(v) => set({ taxLiabilityAgreed: v })}
                 label="I acknowledge I am the taxing entity responsible for collecting and remitting sales tax, and that PROLOOK provides the collection tools only." />
-              {errors.taxLiability && <div style={{ color: "#b81d14", fontSize: 12, marginTop: 8, marginLeft: 28 }}>{errors.taxLiability}</div>}
+              {errors.taxLiability && <div className="wx-basics__tax-error">{errors.taxLiability}</div>}
             </div>
           </div>
         )}
@@ -8394,17 +8103,17 @@ function Step1Basics({ data, set, errors, accent }) {
 
       {/* League → Individual — confirm before discarding Divisions & Teams data */}
       <Modal open={!!typeSwitch} onClose={() => setTypeSwitch(null)} width={470}>
-        <div style={{ padding: "28px 28px 24px" }}>
-          <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#fff3f2", color: "#b81d14", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+        <div className="wx-basics__modal">
+          <div className="wx-basics__modal-icon">
             <IconAlert size={20} />
           </div>
-          <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#0e0e10", fontFamily: "Archivo, sans-serif", letterSpacing: ".005em" }}>
+          <h3 className="wx-basics__modal-title">
             Switching removes your divisions &amp; teams
           </h3>
-          <p style={{ fontSize: 13.5, color: "#6b6b72", margin: "0 0 20px", lineHeight: 1.6 }}>
+          <p className="wx-basics__modal-text">
             An Individual Team Store has no Divisions &amp; Teams step. Switching discards the {structCounts.divisions} {structCounts.divisions === 1 ? "division" : "divisions"} and {structCounts.teams} {structCounts.teams === 1 ? "team" : "teams"} you set up — this can't be undone.
           </p>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}>
+          <div className="wx-basics__modal-actions">
             <Button variant="ghost" onClick={() => setTypeSwitch(null)}>Keep League Store</Button>
             <Button variant="danger" onClick={confirmTypeSwitch}>Switch &amp; Discard</Button>
           </div>
@@ -8420,24 +8129,24 @@ function Step1Basics({ data, set, errors, accent }) {
           : String(val);
         return (
           <Modal open={!!breakModal} onClose={() => setBreakModal(null)} width={460}>
-            <div style={{ padding: "28px 28px 24px" }}>
-              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#fff3f2", color: "#b81d14", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+            <div className="wx-basics__modal">
+              <div className="wx-basics__modal-icon">
                 <IconAlert size={20} />
               </div>
-              <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#0e0e10", fontFamily: "Archivo, sans-serif", letterSpacing: ".005em" }}>
+              <h3 className="wx-basics__modal-title">
                 Change breaks the template
               </h3>
-              <p style={{ fontSize: 13.5, color: "#6b6b72", margin: "0 0 16px", lineHeight: 1.6 }}>
-                <strong style={{ color: "#0e0e10" }}>{breakModal.label}</strong> was pre-selected by <strong style={{ color: "#0e0e10" }}>{data._templateName || "the saved template"}</strong>. Changing it unlinks this store from the template. Everything else the template pre-loaded stays exactly as it is.
+              <p className="wx-basics__break-text">
+                <strong className="wx-basics__strong">{breakModal.label}</strong> was pre-selected by <strong className="wx-basics__strong">{data._templateName || "the saved template"}</strong>. Changing it unlinks this store from the template. Everything else the template pre-loaded stays exactly as it is.
               </p>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 12, background: "#fafafb", border: "1px solid #ececf0", borderRadius: 9, padding: "12px 16px", marginBottom: 20 }}>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: "#9a9aa1", textDecoration: "line-through" }}>{readableVal(breakModal.label, breakModal.current)}</span>
+              <div className="wx-basics__break-values">
+                <span className="wx-basics__break-from">{readableVal(breakModal.label, breakModal.current)}</span>
                 <IconChevronRight size={15} style={{ color: "#c7c7cd", flexShrink: 0 }} />
-                <span style={{ fontSize: 12.5, fontWeight: 800, color: "#0e0e10" }}>{readableVal(breakModal.label, breakModal.next)}</span>
+                <span className="wx-basics__break-to">{readableVal(breakModal.label, breakModal.next)}</span>
               </div>
 
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}>
+              <div className="wx-basics__modal-actions">
                 <Button variant="ghost" onClick={() => setBreakModal(null)}>Keep Template</Button>
                 <Button variant="danger" onClick={confirmBreak}>Change &amp; Unlink</Button>
               </div>
@@ -10289,8 +9998,8 @@ function StateSearchSelect({ label = "State", value, onChange }) {
   const list = EG_STATES.filter((s) => !ql || s.toLowerCase().includes(ql) || (TAX_STATE_ABBR[s] || "").toLowerCase().startsWith(ql));
   const pick = (s) => { onChange(s); setQ(""); setOpen(false); };
   return (
-    <div ref={wrapRef} style={{ position: "relative" }}>
-      <div style={{ fontSize: 12.5, fontWeight: 600, color: "#3f3f46", marginBottom: 7 }}>{label}</div>
+    <div ref={wrapRef} className="wx-state-select">
+      <div className="wx-state-select__label">{label}</div>
       <input
         value={open ? q : (value || "")}
         placeholder={value || "Search by state or abbreviation"}
@@ -10302,14 +10011,14 @@ function StateSearchSelect({ label = "State", value, onChange }) {
           else if (e.key === "Enter") { e.preventDefault(); if (list[hi]) pick(list[hi]); }
           else if (e.key === "Escape") setOpen(false);
         }}
-        style={{ width: "100%", height: 44, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 5, padding: "0 12px", fontSize: 13.5, fontFamily: "inherit", outline: "none", background: "#fff", color: "#0e0e10" }} />
+        className="wx-state-select__input" />
       {open && (
-        <div style={{ position: "absolute", left: 0, right: 0, top: "calc(100% + 4px)", zIndex: 60, background: "#fff", border: "1px solid #e4e4e7", borderRadius: 8, boxShadow: "0 12px 28px rgba(20,20,30,.14)", maxHeight: 240, overflowY: "auto", padding: 4 }}>
-          {list.length === 0 && <div style={{ padding: "12px 12px", fontSize: 12.5, color: "#9a9aa1" }}>No state matches "{q}"</div>}
+        <div className="wx-state-select__menu">
+          {list.length === 0 && <div className="wx-state-select__empty">No state matches "{q}"</div>}
           {list.map((s, i) => (
-            <button key={s} type="button" onMouseEnter={() => setHi(i)} onClick={() => pick(s)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, width: "100%", textAlign: "left", background: i === hi ? "#f4f4f5" : "#fff", border: 0, borderRadius: 6, padding: "9px 10px", fontSize: 13, fontWeight: value === s ? 700 : 500, color: "#0e0e10", cursor: "pointer", fontFamily: "inherit" }}>
+            <button key={s} type="button" onMouseEnter={() => setHi(i)} onClick={() => pick(s)} className={`wx-state-select__option${(i === hi) ? " wx-state-select__option--highlighted" : ""}${(value === s) ? " wx-state-select__option--selected" : ""}`}>
               <span>{s}</span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#9a9aa1" }}>{TAX_STATE_ABBR[s] || ""}</span>
+              <span className="wx-state-select__abbr">{TAX_STATE_ABBR[s] || ""}</span>
             </button>
           ))}
         </div>
@@ -30895,15 +30604,14 @@ function numberSelectionHelper(mode) {
   return mode === "manager" ? "Number entry lives on the roster (My Team tab). Duplicate-number rules from Roster Rules still apply." : "Number entry appears on the buyer product page. Duplicate-number rules from Roster Rules still apply.";
 }
 function NumberSelectionOptions({ value, onChange }) {
-  const radio = (on) => ({ width: 16, height: 16, borderRadius: 999, border: "2px solid " + (on ? "#e1251b" : "#d4d4d8"), background: on ? "#e1251b" : "#fff", boxShadow: "inset 0 0 0 3px #fff", flexShrink: 0, marginTop: 2 });
   return (
     <React.Fragment>
       {NUMBER_SELECTION_OPTS.map((o) => {
         const on = value === o.key;
         return (
-          <button key={o.key} type="button" onClick={() => onChange(o.key)} style={{ display: "flex", gap: 12, alignItems: "flex-start", width: "100%", textAlign: "left", background: "none", border: "1px solid " + (on ? "#0e0e10" : "#ececf0"), borderRadius: 8, padding: "12px 14px", cursor: "pointer", fontFamily: "inherit", marginBottom: 8, boxSizing: "border-box" }}>
-            <span style={radio(on)} />
-            <span><strong style={{ fontSize: 13, color: "#0e0e10" }}>{o.title}</strong><span style={{ display: "block", fontSize: 11.5, color: "#6b6b72", marginTop: 2, lineHeight: 1.5 }}>{o.desc}</span></span>
+          <button key={o.key} type="button" onClick={() => onChange(o.key)} className={`wx-number-select__option${on ? " wx-number-select__option--on" : ""}`}>
+            <span className={`wx-number-select__radio${on ? " wx-number-select__radio--on" : ""}`} />
+            <span><strong className="wx-number-select__title">{o.title}</strong><span className="wx-number-select__desc">{o.desc}</span></span>
           </button>
         );
       })}
@@ -35195,41 +34903,37 @@ function AnnouncementEditor({ value, onChange, accent = "#e1251b", minHeight = 1
   const empty = annIsEmpty(value);
   const chars = annPlain(value).length;
   const tbtn = (label, cmd, title, extra) => (
-    <button type="button" title={title} onMouseDown={(e) => { e.preventDefault(); exec(cmd); }} style={{
-      minWidth: 30, height: 28, padding: "0 8px", border: 0, borderRadius: 5, background: "transparent",
-      color: "#3f3f46", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
-      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 5, ...extra,
-    }}
+    <button type="button" title={title} onMouseDown={(e) => { e.preventDefault(); exec(cmd); }} className="wx-announce-editor__tool" style={{ ...extra }}
       onMouseEnter={(e) => e.currentTarget.style.background = "#ececf0"}
       onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}>{label}</button>
   );
   return (
     <div>
-      <div style={{ border: `1.5px solid ${focus ? "#0e0e10" : "#d4d4d8"}`, borderRadius: 8, overflow: "hidden", transition: "border-color .14s", background: "#fff" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "5px 8px", background: "#fafafb", borderBottom: "1px solid #ececf0" }}>
-          {tbtn(<span style={{ fontWeight: 800 }}>B</span>, "bold", "Bold")}
-          {tbtn(<span style={{ fontStyle: "italic", fontFamily: "Georgia, serif", fontWeight: 600 }}>I</span>, "italic", "Italic")}
-          <span style={{ width: 1, height: 18, background: "#e5e5e9", margin: "0 4px" }} />
+      <div className={`wx-announce-editor__box${focus ? " wx-announce-editor__box--focus" : ""}`}>
+        <div className="wx-announce-editor__toolbar">
+          {tbtn(<span className="wx-announce-editor__bold">B</span>, "bold", "Bold")}
+          {tbtn(<span className="wx-announce-editor__italic">I</span>, "italic", "Italic")}
+          <span className="wx-announce-editor__divider" />
           {tbtn("• List", "insertUnorderedList", "Bulleted list")}
           {tbtn("1. List", "insertOrderedList", "Numbered list")}
-          <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <button type="button" title="Links are an open spec decision — not enabled yet" style={{ height: 28, padding: "0 8px", border: 0, borderRadius: 5, background: "transparent", color: "#b0b0b6", cursor: "not-allowed", display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>
+          <span className="wx-announce-editor__toolbar-end">
+            <button type="button" title="Links are an open spec decision — not enabled yet" className="wx-announce-editor__link">
               <CzIconLink /> Link
             </button>
           </span>
         </div>
-        <div style={{ position: "relative" }}>
+        <div className="wx-announce-editor__area">
           {empty && !focus && (
-            <div style={{ position: "absolute", inset: 0, padding: "13px 16px", fontSize: 13.5, lineHeight: 1.6, color: "#b0b0b6", pointerEvents: "none" }}>{ANN_PLACEHOLDER}</div>
+            <div className="wx-announce-editor__placeholder">{ANN_PLACEHOLDER}</div>
           )}
           <style>{".cz-edit p{margin:0 0 8px}.cz-edit ul,.cz-edit ol{margin:6px 0 8px;padding-left:22px}.cz-edit li{margin:3px 0}.cz-edit:focus{outline:none}"}</style>
-          <div ref={ref} className="cz-edit" contentEditable suppressContentEditableWarning
+          <div ref={ref} contentEditable suppressContentEditableWarning
             onInput={input} onFocus={() => setFocus(true)} onBlur={() => { setFocus(false); input(); }}
-            style={{ minHeight, padding: "13px 16px", fontSize: 13.5, lineHeight: 1.6, color: "#26262b", fontFamily: "inherit" }} />
+            className="cz-edit wx-announce-editor__input" style={{ minHeight }} />
         </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>{chars} characters</span>
+      <div className="wx-announce-editor__meta">
+        <span className="wx-announce-editor__count">{chars} characters</span>
       </div>
     </div>
   );

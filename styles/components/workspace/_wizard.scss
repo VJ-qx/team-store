@@ -1,0 +1,300 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the Add Store wizard's frame (CreateForm: header, "Step N of M" badge, card, footer), its stepper
+// (WizardStepper), the step heading (StepHeader) and the white panels the steps are built from (WizardPanel)
+// (Module 3, FR-3.1).
+// The accent color (red, or navy in the prototype's settings) stays inline wherever it is used: the step badge,
+// the stepper's fill and dots, the step number. The step dots' colors mix the accent with fixed colors, so they
+// stay inline too.
+// .wx-wizard-stepper__preloaded is used only in workspace-app-integrated.jsx: its Stock Vault starts a store with
+// Add Products pre-loaded, and the stepper marks that step "PRE-LOADED · REVIEW OPTIONAL".
+
+.wx-wizard {
+  flex: 1;
+  background: $bg-app;
+}
+
+.wx-wizard__header {
+  background: $white;
+  border-bottom: 1px solid $line-2;
+  padding: 28px 48px 4px;
+}
+
+.wx-wizard__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.wx-wizard__eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.wx-wizard__title {
+  font-size: 30px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: .005em;
+  color: $ink;
+  font-family: $font-display;
+}
+
+.wx-wizard__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: $zinc-600;
+  background: $bg-soft-3;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+.wx-wizard__source-name {
+  color: $ink;
+}
+
+.wx-wizard__step-badge {
+  flex-shrink: 0;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: $white;
+}
+
+.wx-wizard__body {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 40px 152px;
+}
+
+.wx-wizard__card {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 14px;
+  box-shadow: 0 16px 44px rgba(20,20,30,.09);
+  padding: 36px 36px;
+}
+
+.wx-wizard__footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $white;
+  border-top: 1px solid $line-2;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2px 8px rgba(20,20,30,.04);
+  z-index: 60;
+}
+
+.wx-wizard__actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.wx-wizard__error-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: $red-ink;
+}
+
+.wx-wizard__save {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: $white;
+  background: $ink;
+  cursor: pointer;
+}
+
+.wx-step-header {
+  margin-bottom: 28px;
+}
+
+.wx-step-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.wx-step-header__title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wx-step-header__num {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: $font-display;
+  flex-shrink: 0;
+}
+
+.wx-step-header__title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .01em;
+  margin: 0;
+  color: $ink;
+  font-family: $font-display;
+}
+
+.wx-step-header__desc {
+  font-size: 13.5px;
+  color: $muted;
+  margin: 0;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.wx-wizard-panel {
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 28px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(20,20,30,.03);
+}
+
+.wx-wizard-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.wx-wizard-panel__label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .10em;
+  color: $ink;
+  text-transform: uppercase;
+}
+
+.wx-wizard-panel__hint {
+  font-size: 12px;
+  color: $muted-2;
+}
+
+.wx-wizard-stepper {
+  margin-bottom: 32px;
+}
+
+.wx-wizard-stepper__track {
+  position: relative;
+  height: 4px;
+  background: $line-2;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.wx-wizard-stepper__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+
+.wx-wizard-stepper__steps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wx-wizard-stepper__step {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.wx-wizard-stepper__step--reachable {
+  cursor: pointer;
+}
+
+.wx-wizard-stepper__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: $font-display;
+  transition: all .18s;
+}
+
+.wx-wizard-stepper__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: $muted-2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.wx-wizard-stepper__label--strong {
+  font-weight: 800;
+}
+
+.wx-wizard-stepper__label--done {
+  color: $ink;
+}
+
+.wx-wizard-stepper__label--active {
+  color: $ink;
+}
+
+.wx-wizard-stepper__preloaded {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  background: $ok-soft;
+  color: $ok;
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}

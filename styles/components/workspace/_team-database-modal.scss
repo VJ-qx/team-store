@@ -1,0 +1,300 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the Team Database pop-up ("Connect to Team": TeamDatabaseModal) and its progress bars (TeamMetricBar)
+// (Module 3, FR-3.1). The Search button, the current page and the Mascot Traced bar use the accent, and a team's
+// logo color comes from the data: they stay inline.
+
+.wx-team-metric__label {
+  font-size: 12px;
+  color: $muted;
+  margin-bottom: 4px;
+}
+
+.wx-team-metric__value {
+  color: $ink;
+  font-weight: 700;
+}
+
+.wx-team-metric__track {
+  height: 8px;
+  border-radius: 999px;
+  background: #ececed;
+  overflow: hidden;
+}
+
+.wx-team-metric__fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.wx-team-db {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  background: rgba(20,20,30,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.wx-team-db__dialog {
+  width: min(1080px, 100%);
+  height: min(760px, 100%);
+  background: $white;
+  border-radius: 12px;
+  box-shadow: 0 32px 64px rgba(20,20,30,.34);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wx-team-db__search-bar {
+  padding: 16px 28px;
+  border-bottom: 1px solid $line-2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wx-team-db__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-right: auto;
+}
+
+.wx-team-db__title {
+  font-size: 18px;
+  font-weight: 800;
+  color: $ink;
+  font-family: $font-display;
+}
+
+.wx-team-db__count {
+  font-size: 12.5px;
+  color: $muted-2;
+}
+
+.wx-team-db__search-name {
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid $zinc-300;
+  background: $white;
+  padding: 0 12px;
+  font-size: 13px;
+  color: $ink;
+  outline: none;
+  font-family: inherit;
+  width: 220px;
+}
+
+.wx-team-db__search-zip {
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid $zinc-300;
+  background: $white;
+  padding: 0 12px;
+  font-size: 13px;
+  color: $ink;
+  outline: none;
+  font-family: inherit;
+  width: 112px;
+}
+
+.wx-team-db__search-btn {
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  color: $white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wx-team-db__clear {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid $zinc-300;
+  border-radius: 6px;
+  background: $white;
+  color: $ink;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wx-team-db__clear--disabled {
+  color: #b0b0b6;
+  cursor: default;
+}
+
+.wx-team-db__close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-team-db__chips {
+  padding: 12px 28px;
+  border-bottom: 1px solid $divider;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.wx-team-db__chip-wip {
+  background: #fdf3d3;
+  color: #8a6d12;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 5px;
+}
+
+.wx-team-db__chip-done {
+  background: $ok-soft;
+  color: $ok-ink;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 5px;
+}
+
+.wx-team-db__total {
+  color: $muted-2;
+}
+
+.wx-team-db__rows {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.wx-team-db__row {
+  display: grid;
+  grid-template-columns: 60px 1fr 280px 116px;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 28px;
+  border-bottom: 1px solid #f4f4f6;
+}
+
+.wx-team-db__logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: $font-display;
+}
+
+.wx-team-db__info {
+  min-width: 0;
+}
+
+.wx-team-db__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: $ink;
+  margin-bottom: 4px;
+}
+
+.wx-team-db__address {
+  font-size: 12.5px;
+  color: $muted;
+  margin-bottom: 8px;
+}
+
+.wx-team-db__sports {
+  font-size: 11.5px;
+  color: $muted-2;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.wx-team-db__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wx-team-db__select {
+  height: 40px;
+  border: 0;
+  border-radius: 6px;
+  background: $ink;
+  color: $white;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background .14s;
+}
+
+.wx-team-db__empty {
+  text-align: center;
+  color: $muted-2;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 60px 0;
+}
+
+.wx-team-db__footer {
+  padding: 12px 28px;
+  border-top: 1px solid $line-2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wx-team-db__showing {
+  font-size: 12.5px;
+  color: $muted-2;
+}
+
+.wx-team-db__pages {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.wx-team-db__page {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $muted;
+  cursor: pointer;
+}
+
+.wx-team-db__page--current {
+  color: $white;
+}
+
+.wx-team-db__page--gap {
+  cursor: default;
+}
