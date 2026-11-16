@@ -38,6 +38,13 @@ const openMyAccount = (account) => [
   { hover: button(account), label: `Hover the account button (${account.split(' ').map((w) => w[0]).join('')}) at the top right` },
   { click: 'role=menuitem[name="My Account" s]', label: 'Click "My Account" in the menu' },
 ];
+// The welcome pop-up's ✕ (top right), and a click on the dark area around the pop-up. A plain click
+// would land on the pop-up itself (the middle of the dark area), so the click is sent to the dark area.
+const welcomeClose = '.wx-welcome >> role=button[name="Close" s]';
+const clickOutsideWelcome = {
+  eval: `document.querySelector('.wx-welcome').parentElement.parentElement.click()`,
+  label: 'Click the dark area outside the pop-up: it closes, as "Continue to Workspace" does',
+};
 
 // account: the signed-in rep shown in the header. welcome: whether the page renders the welcome pop-up
 // (the integrated workspace defines it but never renders it). customizerOnly: whether the settings panel
@@ -98,9 +105,20 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
         { click: multiBrandSwitch, on: 'prototype', label: 'In the settings panel, turn on "Multi-brand account"' },
         closeSettings,
         vueSettings({ ssoMultiBrand: true }),
+        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
         { click: button('Continue to Workspace', false) },
       ],
     },
+    // Closing the pop-up without its button: the ✕, Escape, or a click outside it.
+    {
+      name: 'welcome close', query: '?brand=prolook', steps: [
+        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
+        { click: welcomeClose, label: 'Click the ✕: the pop-up closes, as "Continue to Workspace" does' },
+      ],
+    },
+    { name: 'welcome native close', query: '?brand=prolook&auth=native', steps: [{ click: welcomeClose, label: 'Click the ✕ without connecting a Customizer' }] },
+    { name: 'welcome escape', query: '?brand=prolook', steps: [{ press: 'Escape', label: 'Press Escape: the pop-up closes' }] },
+    { name: 'welcome click outside', query: '?brand=prolook', steps: [clickOutsideWelcome] },
   ]),
 
   // ── My Account ──
