@@ -81,14 +81,14 @@ The Vue app needs only these files. Nothing in `src/` imports the prototype file
 
 Not needed to run the app:
 
-- **Reference for the conversion:** the prototype pages (`*.dc.html`), `workspace-app.jsx`, `workspace-app-integrated.jsx` and `support.js`. The screens not converted yet exist only here, and `tools/parity/` compares the Vue version against them.
+- **Prototype for the conversion:** the prototype pages at the root (`Landing Page.dc.html`, `Workspace.dc.html`, `Marucci Workspace.dc.html`, `Workspace Mobile.dc.html`), `workspace-app.jsx`, `workspace-app-integrated.jsx`, `support.js` and `ios-frame.jsx`. The screens not converted yet exist only here, and `tools/parity/` compares the Vue version against them. The pages load `support.js`, `_ds/`, `assets/` and `ios-frame.jsx` from beside them, so they stay at the root.
 - **Requirements:** the US team's feature specs, as `.md` files in `uploads/Team Store Workspace/` and `uploads/Consumer Storefront/`, and the [BRD M-1.0](https://docs.google.com/document/d/18UFKmsIhbKLlOutMd4mL5-GqYE1kxBQN/edit).
-- **Not used by anything:** `handoff/`, `export-assets/`, `scratch/`, `screenshots/` and `Design Exploration.dc.html`.
+- **Not used by anything:** the handover files in [`reference/`](../reference/README.md): `Design Exploration.dc.html`, `Workspace Mobile Mapping.dc.html`, `Storefront.html` with `storefront-assets/`, `handoff/`, `export-assets/`, `scratch/`, `screenshots/` and `.thumbnail`.
 
 ## Known issues in the handover
 
 - **Broken sign-in redirect:** successful sign-in and registration redirect to `Team Stores Workspace.dc.html`, which doesn't exist (the page is now `Workspace.dc.html`). The conversion steps keep this behaviour on purpose; it needs a separate fix. To reach the workspace, open `Workspace.dc.html?brand=prolook&auth=native` directly.
-- **Broken "Preview Store" link:** on a store's page, "Preview Store" redirects to `Team Store Storefront.dc.html`, which doesn't exist (the storefront prototype is `Storefront.html`). Kept on purpose, like the sign-in redirect.
+- **Broken "Preview Store" link:** on a store's page, "Preview Store" redirects to `Team Store Storefront.dc.html`, which doesn't exist (the storefront prototype is `reference/Storefront.html`). Kept on purpose, like the sign-in redirect.
 - **Out-of-date `CLAUDE.md`:** it refers to `Team Stores Workspace.dc.html` and `Team Stores Workspace - Third Party Integration.dc.html`, which have since been renamed.
 
 ## Approved changes
