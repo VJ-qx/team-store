@@ -36,7 +36,7 @@ export default {
     },
     {
       name: 'Mobile design notes',
-      where: 'Workspace Mobile Mapping.dc.html',
+      where: 'reference/Workspace Mobile Mapping.dc.html',
       how: 'The design document behind this prototype (navigation models, page patterns, foundations spec). Open it directly.',
     },
   ],

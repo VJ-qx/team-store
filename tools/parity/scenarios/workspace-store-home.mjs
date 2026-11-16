@@ -145,7 +145,7 @@ export default {
     {
       name: 'Storefront preview',
       where: 'Team Store Storefront.dc.html',
-      how: '"Preview Store" redirects to "Team Store Storefront.dc.html", which does not exist in the handover (404). The storefront prototype is Storefront.html.',
+      how: '"Preview Store" redirects to "Team Store Storefront.dc.html", which does not exist in the handover (404). The storefront prototype is reference/Storefront.html.',
     },
   ],
   states: buildStates({
