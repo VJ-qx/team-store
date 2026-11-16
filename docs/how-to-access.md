@@ -4,7 +4,7 @@ Where every converted screen is, and how to reach the states the BRD describes, 
 
 ## How to run
 
-In the project folder, run `npm run dev`. The same server opens the Vue pages and the original prototype pages:
+In the project folder, run `npm run dev`. It opens the landing page in your browser. The same server opens the Vue pages and the original prototype pages:
 
 | Page | Vue | Prototype |
 |---|---|---|

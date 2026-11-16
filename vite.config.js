@@ -78,6 +78,8 @@ export default defineConfig({
   // Serve files as a plain static host would: an unknown page is a 404, like for the prototype
   // (instead of falling back to index.html).
   appType: 'mpa',
+  // npm run dev opens the landing page in the browser (the root has no page).
+  server: { open: '/landing.html' },
   plugins: [
     prototypeAtRoot,
     staticNotFound,
