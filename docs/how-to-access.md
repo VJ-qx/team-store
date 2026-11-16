@@ -95,7 +95,7 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected (p
 
 **Empty Overview:** `__paritySetProps({ overviewEmpty: true })`. Prototype: settings panel, turn on **Overview empty state**.
 
-**Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page), **Review** (a store's Roster tab), and **Add Store** (the new store flow). The Vue comparison (`workspace-overview.mjs`) reports those 3 clicks as differences until the screens are converted. Both **All stores →** links and **Create a Store →** on the empty Overview open the Stores page, converted in Module 3.
+**Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page) and **Review** (a store's Roster tab). The Vue comparison (`workspace-overview.mjs`) reports those 2 clicks as differences until the screens are converted. Both **All stores →** links and **Create a Store →** on the empty Overview open the Stores page, and **Add Store** opens the Add Store wizard, both converted in Module 3.
 
 ## Module 3: Stores page
 
@@ -115,9 +115,33 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected an
 
 **Zero state** (no stores yet): `__paritySetProps({ zeroState: true })`, then click **STORES**. Prototype: settings panel, turn on **Zero state usability test**.
 
-**Not converted yet, so empty in Vue** (the next step of Module 3): the Add Store wizard (FR-3.1), opened by **Add Store** and by **Create Your First Store** in the zero state. The Vue comparison (`workspace-stores.mjs`) reports those 2 clicks as differences until the wizard is converted. Also not converted: the **Use as Template** pop-up (nothing happens in Vue), and the page's league view, which the prototype can't show either (leagues are out of the MVP).
+**Add Store** and **Create Your First Store** (zero state) open the Add Store wizard, below. **Not converted yet:** the **Use as Template** pop-up (nothing happens in Vue), and the page's league view, which the prototype can't show either (leagues are out of the MVP).
 
 **Prototype differences from the BRD, for the frontend dev:** the ⋮ menu still has **Use as Template**, which FR-3.11 says was removed; the Status filter offers Active / On Hold where FR-3.2 lists Open / Draft / Closed.
+
+## Module 3: Add Store wizard
+
+Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame and **Step 1, Basics** (part 2a).
+
+| On Basics | How to see it |
+|---|---|
+| Required fields | Click **CONTINUE** with nothing filled in: every required field shows its error, and the footer says "Please complete the required fields above" |
+| Store type | **League Store** (4 steps) or **Individual Team Store** (3 steps); the stepper and the "Step N of M" badge follow |
+| Store Timeline | Pick **Temporary Pop-Up**: launch and closing dates, and the urgency timers toggle |
+| Team Database | **Connect to Team**: search, **Select** a team (its logo, colors and sports come in), then **Clear** |
+| Logo and colors | Click the empty Team Logo box (My Logos), and **+** under Team Colors (Select Team Color) |
+| Point of contact | Team Manager, Salesperson (pick one) or Custom, for email and phone |
+| Ship-to | Pick **Ship to Team Manager**: a saved pick-up location or an address |
+| Tax | Collect Sales Tax: pick a state (the rate fills in) and tick the agreement's box |
+| Cancel | **CANCEL** opens "Discard this store?": **Keep Editing** or **Discard** |
+
+**Navy accent:** `__paritySetProps({ wizardAccent: 'navy' })`. Prototype: settings panel, under Accent, **Navy**.
+
+**Not converted yet, so empty in Vue** (the next parts of Module 3): the steps after Basics (Divisions & Teams, Add Products, Review & Deploy) and **SAVE AND CONTINUE**'s store creation. So the League → Individual warning ("Switching removes your divisions & teams"), which needs a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault, which starts the wizard with Add Products pre-loaded.
+
+**Prototype bugs kept, for the frontend dev:**
+- In Store Point of Contact, the Custom email or phone field loses focus after each keystroke, so typing keeps only one character at a time (the prototype remounts those rows on every render).
+- "Use as Template" → "Duplicate the whole store" opens on Basics instead of Review & Deploy, and the "Duplicated from …" line under the title never shows (the wizard drops the preset's _startAt and _dupSource).
 
 ## Other references
 

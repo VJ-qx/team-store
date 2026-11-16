@@ -11,11 +11,11 @@
 // The same states run on the integrated page in marucci-workspace-overview.mjs.
 //
 // Known differences in the Vue step (behavior mode), left for later (2026-11-03). Every checkpoint on the
-// Overview itself matches; 4 of 49 checkpoints differ, on both workspaces, all outside Module 2:
-// - 3 states end on a click into a screen the Vue app doesn't have yet, so Vue shows it empty: the Orders
-//   card (cross-store Orders), "Review" (a store's Roster tab) and "Add Store" (the new store flow). They
-//   match once those screens are converted. (Both "All stores →" and "Create a Store →" open the Stores
-//   page, converted in Module 3 on 2026-11-12, and match since.)
+// Overview itself matches; 3 of 49 checkpoints differ, on both workspaces, all outside Module 2:
+// - 2 states end on a click into a screen the Vue app doesn't have yet, so Vue shows it empty: the Orders
+//   card (cross-store Orders) and "Review" (a store's Roster tab). They match once those screens are
+//   converted. (Both "All stores →" and "Create a Store →" open the Stores page, converted in Module 3 on
+//   2026-11-12, and "Add Store" opens the Add Store wizard, converted on 2026-11-16; they match since.)
 // - "overview chart scale", the Year click: the prototype logs "Cannot read properties of undefined (reading
 //   'revenue')". The click lands while the pointer is still over a day on the chart, and React redraws the
 //   year chart with the day's hover position; the screen is unchanged. Vue redraws after the hover clears,
