@@ -57,6 +57,8 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
 
+The ✕ at its top right, Escape, and a click outside the pop-up close it the same way as its button (**Continue to Workspace** / **Confirm & Enter**): the primary brand shown is kept.
+
 #### My Account (FR-1.7.3, FR-1.12)
 
 - Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected, hover the **HM** button at the top right, and click **My Account**.
