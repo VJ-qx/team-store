@@ -1,0 +1,373 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the Team Logo box (LogoDropZone), the My Logos pop-up it opens (MyLogosModal) and a saved logo's art
+// (LogoArt), in the wizard's Basics and a store's Settings (Module 3, FR-3.1). The logo box's border (solid or
+// dashed, by state) and a logo's color and size stay inline.
+
+.wx-logo-art__img {
+  max-width: 82%;
+  max-height: 82%;
+  object-fit: contain;
+}
+
+.wx-logo-art__mono {
+  border-radius: 50%;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.wx-my-logos {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  background: rgba(20,20,30,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.wx-my-logos__dialog {
+  width: min(1480px, 100%);
+  height: min(940px, 100%);
+  background: $white;
+  border-radius: 10px;
+  box-shadow: 0 32px 64px rgba(20,20,30,.34);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wx-my-logos__header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 24px 40px 16px;
+  border-bottom: 1px solid $line-2;
+}
+
+.wx-my-logos__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wx-my-logos__brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.wx-my-logos__brand-text {
+  line-height: 1.05;
+}
+
+.wx-my-logos__brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: $ink;
+}
+
+.wx-my-logos__brand-sub {
+  font-size: 15px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wx-my-logos__title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $ink;
+  text-align: center;
+}
+
+.wx-my-logos__close {
+  justify-self: end;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-my-logos__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.wx-my-logos__sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  padding: 28px 24px;
+}
+
+.wx-my-logos__panel {
+  background: $divider;
+  border-radius: 8px;
+  padding: 20px 20px 24px;
+}
+
+.wx-my-logos__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.wx-my-logos__panel-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: $ink;
+}
+
+.wx-my-logos__search {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.wx-my-logos__search-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid $zinc-300;
+  background: $white;
+  padding: 0 40px 0 16px;
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: $ink;
+  outline: none;
+}
+
+.wx-my-logos__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wx-my-logos__filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.wx-my-logos__filter-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  border: 1.5px solid $muted-2;
+  background: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-my-logos__filter-box--on {
+  border: 1.5px solid $ink;
+  background: $ink;
+}
+
+.wx-my-logos__filter-input {
+  display: none;
+}
+
+.wx-my-logos__filter-label {
+  font-size: 15px;
+  color: $ink;
+}
+
+.wx-my-logos__main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 28px 40px 40px;
+}
+
+.wx-my-logos__file-input {
+  display: none;
+}
+
+.wx-my-logos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.wx-my-logos__add {
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  border-radius: 10px;
+  border: 1.5px solid $zinc-300;
+  background: $white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: $ink;
+  transition: border-color .12s, background .12s;
+}
+
+.wx-my-logos__add-label {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.wx-my-logos__types {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.wx-my-logos__types-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fbf0c9;
+  color: #8a6d12;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wx-my-logos__types-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #8a6d12;
+  color: #fbf0c9;
+  font-size: 11px;
+  font-weight: 800;
+  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-my-logos__logo {
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  border-radius: 10px;
+  border: 1px solid $line-2;
+  background: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .12s, border-color .12s;
+}
+
+.wx-my-logos__favorite {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $white;
+  box-shadow: 0 1px 4px rgba(20,20,30,.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-my-logos__logo-name {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: $ink;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.wx-my-logos__empty {
+  text-align: center;
+  color: $muted-2;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 60px;
+}
+
+.wx-my-logos__end {
+  text-align: center;
+  color: $muted-2;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 56px;
+}
+
+.wx-logo-drop {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  background: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.wx-logo-drop--filled {
+  background: $white;
+}
+
+.wx-logo-drop--drag {
+  background: #fafafb;
+}
+
+.wx-logo-drop__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wx-logo-drop__mono {
+  width: 100%;
+  height: 100%;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.wx-logo-drop__remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: $ink;
+  color: $white;
+  border: 1.5px solid $white;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

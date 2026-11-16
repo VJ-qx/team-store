@@ -28,6 +28,16 @@
 @use "components/workspace/list-toolbar";
 @use "components/workspace/segmented-pills";
 @use "components/workspace/archive-store-modal";
+@use "components/workspace/wizard";
+@use "components/workspace/wizard-controls";
+@use "components/workspace/wizard-basics";
+@use "components/workspace/contact-channel";
+@use "components/workspace/ship-to";
+@use "components/workspace/state-search-select";
+@use "components/workspace/announcement-editor";
+@use "components/workspace/team-database-modal";
+@use "components/workspace/logo-drop-zone";
+@use "components/workspace/color-swatches";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";
