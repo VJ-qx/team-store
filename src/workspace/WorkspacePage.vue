@@ -26,8 +26,11 @@
       <OverviewDashboard v-if="screen === 'overview'" :key="overviewKey" :isEmpty="tweaks.overviewEmpty || tweaks.zeroState" :stores="activeStores" :leagues="leagues" :onManageStore="(id, tab) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab(tab || 'home'); setScreen('dashboard'); }" :onGoStores="goStores" :onViewOrders="() => { setOrdersOrigin('overview'); setNavTab('overview'); setScreen('orders'); }" :onAdd="goCreate" />
       <AccountProfile v-if="screen === 'account'" :authMode="INT ? 'native' : tweaks.authMode" :onEditProfile="onEditProfile" :onToast="setToast" :archivedStores="archivedStores" :onManageStore="(id) => { setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onUnarchive="(id) => setRestoreTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
       <StoreList v-if="screen === 'list'" :stores="activeStores" :zeroState="tweaks.zeroState" :onAdd="goCreate" :onAddLeague="() => setShowLeagueModal(true)" :onAddGroup="() => setShowGroupModal(true)" :onManage="(id) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onArchive="(id) => setArchiveTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" :leagues="leagues" :activeLeagueId="activeLeagueId" :onSelectLeague="(id) => { setActiveLeagueId(id); setActiveGroupId(null); }" :activeGroupId="activeGroupId" :onOpenGroup="(gid) => setActiveGroupId(gid)" :onCloseGroup="() => setActiveGroupId(null)" :onOpenSettings="() => setScreen('league-settings')" :onBackToLeagues="goLeagues" />
+      <!-- Add Store wizard (Module 3, FR-3.1). Step 1 Basics is converted; SAVE AND CONTINUE's store creation (handleFormSubmit) comes with Review & Deploy. -->
+      <CreateForm v-if="screen === 'form'" :onCancel="handleCancel" :presetData="presetData" :accent="tweaks.wizardAccent === 'navy' ? '#1d3a8a' : '#e1251b'" :athletes="tweaks.wizardAthletes || 30" :templateMode="templateMode" :liveStores="activeStores" />
       <ManageStoreWorkspace v-if="screen === 'dashboard' && activeStore" :store="activeStore" :readOnly="!!activeStore.archived" :onBack="goStores" :onCustomize="() => setScreen('customizer')" :initialTab="dashboardTab" :liveStores="stores.filter((s) => s.live)" :onLaunch="handleLaunch" :onSetStatus="handleSetStatus" :onViewStore="handleViewStore" :onSwitchStore="(id) => { setActiveStoreId(id); setScreen('dashboard'); }" :onProductsChange="(changes) => updateStore(activeStore.id, changes)" :onUpdateStore="(patch) => updateStore(activeStore.id, patch)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
     </div>
+    <CancelConfirmModal :open="showCancelModal" :onClose="() => { showCancelModal = false; pendingNav = null; }" :onConfirm="confirmCancel" />
     <ArchiveStoreModal :open="!!archiveTargetStore" :store="archiveTargetStore" :onClose="() => setArchiveTargetId(null)" :onConfirm="confirmArchive" />
     <RestoreStoreModal :open="!!restoreTargetStore" :store="restoreTargetStore" :onClose="() => setRestoreTargetId(null)" :onConfirm="confirmRestore" />
     <!-- Logout confirmation — confirm lands on the Team Stores landing page -->
@@ -71,6 +74,8 @@ import ArchiveStoreModal from './components/stores/ArchiveStoreModal.vue';
 import RestoreStoreModal from './components/stores/RestoreStoreModal.vue';
 import StoreList from './components/stores/StoreList.vue';
 import StoreGuideModal from './components/guide/StoreGuideModal.vue';
+import CancelConfirmModal from './components/wizard/CancelConfirmModal.vue';
+import CreateForm from './components/wizard/CreateForm.vue';
 import WelcomeSSOModal from './components/welcome/WelcomeSSOModal.vue';
 
 // The page the access screens, the account menu and logout send the rep to. It doesn't exist in the
@@ -79,7 +84,7 @@ const LANDING_FILE = "Team Stores Landing.dc.html";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, CancelConfirmModal, CreateForm, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -268,6 +273,14 @@ export default {
       this.presetData = makePrefill();
       this.templateMode = false;
       this.screen = "form";
+    },
+    // CANCEL in the wizard asks first (CancelConfirmModal).
+    handleCancel() { this.showCancelModal = true; },
+    confirmCancel() {
+      this.showCancelModal = false;
+      this.templateMode = false;
+      if (this.pendingNav) { const fn = this.pendingNav; this.pendingNav = null; fn(); return; }
+      this.screen = this.stores.length > 0 ? "list" : "empty";
     },
     // ─── Team Stores section sub-tabs (Overview / Stores / Leagues) ───
     goOverviewHome() {

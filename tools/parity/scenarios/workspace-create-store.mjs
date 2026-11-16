@@ -16,6 +16,17 @@
 // After a step change the wizard scrolls up smoothly; states that change step make scrolling instant first,
 // so both sides are captured at rest.
 // The same states run on the integrated page in marucci-workspace-create-store.mjs.
+//
+// Known differences in the Vue step (behavior mode), left for the later parts (2026-11-16). Every
+// checkpoint on Basics and the frame matches; 7 of 168 checkpoints differ on both workspaces (and 2 more on
+// the integrated one), all in screens the Vue app doesn't have yet:
+// - CONTINUE to Step 2 (Divisions & Teams for League, Add Products for Individual), and the stepper's jump
+//   to it: Vue shows an empty card until those parts are converted (FR-3.1 parts 2b and 2d).
+// - "wizard league to individual" stops at "New Team" (Step 2), so the League → Individual warning can't
+//   be compared yet; it can once Divisions & Teams is converted.
+// - "Use as Template" opens a Stores page pop-up that isn't converted yet.
+// - Integrated workspace: the Stock Vault isn't converted, so the wizard's start from it (and the
+//   stepper's PRE-LOADED pill) can't be compared yet.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const button = (name, exact = true) => (exact ? `role=button[name="${name}" s]` : `role=button[name=/${escapeRegex(name)}/i]`);
@@ -200,7 +211,7 @@ export const buildStates = ({ stores }) => [
       { type: [field('Search by state or abbreviation'), 'cal'], label: 'Type "cal"' },
       { hover: startsWith('California'), label: 'Hover California' },
       { click: startsWith('California'), label: 'Click California: the tax rate fills in' },
-      { click: 'text=/I acknowledge I am the taxing entity/', label: 'Tick the tax liability agreement' },
+      { click: 'xpath=//span[starts-with(normalize-space(.), "I acknowledge I am the taxing entity")]/preceding-sibling::span', label: 'Tick the box of the tax liability agreement (only the box toggles it)' },
       toggle('Collect Sales Tax'),
     ],
   },
@@ -229,7 +240,16 @@ export const buildStates = ({ stores }) => [
       { wait: 200, label: 'Wait 0.2 s for the pop-up to close' },
     ],
   },
-  { name: 'wizard cancel', query: SIGNED_IN, steps: [openWizard, { click: button('CANCEL'), label: 'Click CANCEL: the wizard closes' }] },
+  {
+    name: 'wizard cancel', query: SIGNED_IN, steps: [
+      openWizard,
+      { click: button('CANCEL'), label: 'Click CANCEL: "Discard this store?" opens' },
+      { click: button('Keep Editing') },
+      { wait: 200, label: 'Wait 0.2 s for the pop-up to close' },
+      { click: button('CANCEL'), label: 'Click CANCEL again' },
+      { click: button('Discard'), label: 'Click "Discard": the wizard closes, back to the Stores page' },
+    ],
+  },
 
   // ── Use as Template (a Stores page card's ⋮ menu) ──
   {

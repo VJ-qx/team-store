@@ -11,10 +11,8 @@
 // out of the MVP: makeSampleLeagues returns [] and the Leagues tab is hidden, so no state can reach it.
 // The same states run on the integrated page in marucci-workspace-stores.mjs.
 //
-// Known differences in the Vue step (behavior mode), left for the next step (2026-11-12). Every checkpoint
-// on the Stores page itself matches; 2 of 85 checkpoints differ, on both workspaces: "Add Store" and the
-// zero state's "Create Your First Store" open the Add Store wizard (FR-3.1), which the Vue app doesn't
-// have yet, so Vue shows it empty. They match once the wizard is converted.
+// Vue step (behavior mode): IDENTICAL, 85/85 on both workspaces since the Add Store wizard's frame and
+// Basics were converted (2026-11-16): "Add Store" and the zero state's "Create Your First Store" open it.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const button = (name, exact = true) => (exact ? `role=button[name="${name}" s]` : `role=button[name=/${escapeRegex(name)}/i]`);
