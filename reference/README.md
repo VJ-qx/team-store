@@ -13,6 +13,6 @@ Files from the Claude Design handover that nothing in the project uses: not the 
 | `screenshots/` | Screenshots from Claude Design. |
 | `.thumbnail` | The Claude Design project's thumbnail. |
 
-**Opening the pages:** open `Storefront.html` straight from this folder in the browser (double-click it). `npm run dev` can't serve it, here or at the root: Vite can't parse its HTML. `Design Exploration.dc.html` and `Workspace Mobile Mapping.dc.html` load `support.js`, `_ds/`, `assets/` and `ios-frame.jsx` from beside them, which stay at the project root, so they don't display properly from this folder. View them in the Claude Design project, or copy one back to the root for a moment.
+**Opening the pages:** open `Storefront.html` straight from this folder in the browser (double-click it). `npm run dev` can't serve it, here or at the root: Vite can't parse its HTML. `Design Exploration.dc.html` and `Workspace Mobile Mapping.dc.html` load `support.js`, `_ds/`, `assets/` and `ios-frame.jsx` from beside them, so they don't display properly from this folder. View them in the Claude Design project, or copy one into `prototype/` for a moment and open it at `http://localhost:5173/<name>` with `npm run dev`.
 
-The prototype pages the conversion follows stay at the root: `Landing Page.dc.html`, `Workspace.dc.html`, `Marucci Workspace.dc.html`, `Workspace Mobile.dc.html`, with `workspace-app.jsx`, `workspace-app-integrated.jsx`, `support.js`, `ios-frame.jsx`, `_ds/`, `assets/` and `uploads/`.
+The prototype the conversion follows is in [`prototype/`](../prototype/README.md).
