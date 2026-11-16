@@ -9011,6 +9011,8 @@ function assignAllRosterIds() {
 // structure yet (unstructured profile, e.g. Bayshore) exposes ONLY teams created
 // for it — never another store's seed tree. Returns null → use the global tree.
 function storeScopedTeams(store) {
+  // Store-creation wizard: teams drafted in Step 2 (Divisions & Teams), plus any created inline.
+  if (store && Array.isArray(store.wizardTeams)) { window.__storeTeams = window.__storeTeams || {}; return [...store.wizardTeams, ...(window.__storeTeams[store.id] || [])]; }
   if (!store || store.rosterProfile !== "unstructured") return null;
   window.__storeTeams = window.__storeTeams || {};
   return window.__storeTeams[store.id] || [];
@@ -9222,7 +9224,7 @@ function RosterAssignField({ variant = "dropdown", value = [], onChange, accent 
   // Variant A — dropdown: a select-style field summarizing the selection.
   let summary = "Select teams…";
   if (allOn) summary = "All teams";
-  else if (count === 1) { const l = assignRosterLabel(value[0]); summary = l ? l.name : "1 team"; }
+  else if (count === 1) { const st = scoped && scoped.find((t) => t.id === value[0]); const l = st || assignRosterLabel(value[0]); summary = l ? l.name : "1 team"; }
   else if (count > 1) summary = `${count} teams selected`;
   return (
     <div ref={ref} style={{ position: "relative", marginTop: 12, zIndex: open ? 60 : "auto" }}>
@@ -9261,7 +9263,12 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
 
   const curated = data.curatedProducts || [];
   const committedIds = new Set(curated.map((c) => c.srcId).filter(Boolean));
-  const storeProxy = { id: "wizard-store", teamName: data.storeTitle || "Team Store", teamColors: data.teamColors, storeType: data.storeType, fundraisingEnabled: data.fundraisingEnabled ?? false };
+  // Teams drafted in Step 2 — only when a league store actually has some does the modal show Assign to Teams.
+  const wizardTeams = isLeague ? (() => { const s = data.leagueStructure || { groups: [], loose: [] }; return [
+    ...(s.groups || []).flatMap((g) => (g.rosters || []).map((r) => ({ id: r.id, name: r.name, code: g.name }))),
+    ...(s.loose || []).map((r) => ({ id: r.id, name: r.name, code: "" })) ]; })() : [];
+  const hasWizardTeams = wizardTeams.length > 0;
+  const storeProxy = { id: "wizard-store", teamName: data.storeTitle || "Team Store", teamColors: data.teamColors, storeType: data.storeType, fundraisingEnabled: data.fundraisingEnabled ?? false, ...(hasWizardTeams ? { wizardTeams } : {}) };
 
   // Open the per-item config modal (application sizes + product settings + price
   // settings) before anything is committed to the store.
@@ -9484,6 +9491,7 @@ function Step3Products({ data, set, accent, liveStores, stepNum }) {
           activeIndex={cfgActive}
           onActiveIndexChange={setCfgActive}
           confirmLabel={cfgEdit ? "Save Changes" : cfgItems.length > 1 ? `Add ${cfgItems.length} Products to Store` : "Add to Store"}
+          allowRosterAssign={hasWizardTeams}
           onClose={() => { setCfgItems(null); setCfgEdit(false); }}
           onConfirm={confirmConfig} />
       )}
@@ -27424,8 +27432,16 @@ function WelcomeSSOModal({ open, originId = "victus", accessibleIds = ACCESSIBLE
   );
 
   return (
-    <Modal open={open} onClose={() => {}} width={isMulti ? 640 : 520}>
+    <Modal open={open} onClose={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} width={isMulti ? 640 : 520}>
       <div className="wx-welcome">
+        <button aria-label="Close" onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} style={{
+          position: "absolute", top: 14, right: 14, width: 36, height: 36, borderRadius: 8, border: 0, background: "transparent",
+          color: "#71717a", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+        }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#f4f4f5"; e.currentTarget.style.color = "#09090b"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#71717a"; }}>
+          <IconX size={18} />
+        </button>
         {!native && (
           <div className="wx-welcome__badge-row">
             <span className="wx-welcome__badge">
@@ -27501,7 +27517,7 @@ function WelcomeSSOModal({ open, originId = "victus", accessibleIds = ACCESSIBLE
           </div>
         )}
 
-        <div className="wx-welcome__footer">
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
           <button onClick={() => onConfirm(native ? (anyConnected ? originId : null) : primary)} className="wx-welcome__confirm"
             onMouseEnter={(e) => e.currentTarget.style.background = "#dc2626"}
             onMouseLeave={(e) => e.currentTarget.style.background = "#09090b"}>
@@ -32101,7 +32117,7 @@ function CategoriesSection({ stores }) {
 
 // ── Workspace Settings screen (workspace-level, one step above stores) ──
 function WorkspaceSettings({ stores, onUpdateStore }) {
-  const [section, setSection] = React.useState(() => { const s = window.__wsSettingsInitial || "emails"; delete window.__wsSettingsInitial; return s; });
+  const [section, setSection] = React.useState(() => { const s = window.__wsSettingsInitial || "users"; delete window.__wsSettingsInitial; return s; });
   const items = [
     { id: "users", label: "User Management", desc: "Roles & commission split" },
     { id: "emails", label: "Emails", desc: "Transactional email templates" },
@@ -36518,7 +36534,7 @@ function CommissionReport({ stores, month, setMonth, viewer, scopeLabel, onToast
         <div style={{ display: "grid", gridTemplateColumns: "minmax(260px, 1.3fr) minmax(300px, 1fr)", gap: 28, alignItems: "stretch" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 15.5, fontWeight: 800, color: RPT.ink, letterSpacing: ".01em" }}>Commission earned</span>
+              <span style={{ fontSize: 16, fontWeight: 800, color: RPT.ink, letterSpacing: "-.01em" }}>Commission earned</span>
               <span style={{ fontSize: 12, color: RPT.muted }}>{m.label}{m.current ? " · in progress" : ""}{scopeLabel ? " · " + scopeLabel : ""}</span>
             </div>
             <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 52, fontWeight: 800, color: RPT.ink, lineHeight: 1.05, letterSpacing: "-.02em", marginTop: 10, ...RPT_NUM }}>{rptMoney(s.grossComm)}</div>
@@ -36781,7 +36797,7 @@ function NeedToOrderCard({ stores, month, onOpen, compact }) {
     <RptCard style={compact ? { padding: "18px 20px" } : { display: "flex", flexDirection: "column" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", color: RPT.muted, textTransform: "uppercase" }}>Team gear sold</div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: RPT.ink, letterSpacing: "-.01em" }}>Team gear sold</div>
           <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 32, fontWeight: 800, color: RPT.ink, lineHeight: 1, marginTop: 10, ...RPT_NUM }}>{units.toLocaleString()} <span style={{ fontSize: 14, fontWeight: 600, color: RPT.muted }}>units</span></div>
           <div style={{ fontSize: 12.5, color: RPT.muted, marginTop: 8 }}>Team-required and team-supplied items{viaBundle > 0 ? ", " + viaBundle + " of them inside bundles" : ""} · {m.label}</div>
         </div>
@@ -36946,7 +36962,7 @@ function StoreCommissionStrip({ store, viewer }) {
       <div style={{ display: "grid", gridTemplateColumns: "minmax(240px, 1fr) minmax(280px, 1.2fr)", gap: 28, alignItems: "end" }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", color: RPT.muted, textTransform: "uppercase" }}>Commission earned</span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: RPT.ink, letterSpacing: "-.01em" }}>Commission earned</span>
             <RptSelect value={month} onChange={setMonth} width={190} style={{ height: 30, fontSize: 12 }} options={rptMonths(13).map((x) => ({ value: x.key, label: x.label + (x.current ? " · in progress" : "") }))} />
           </div>
           <div style={{ fontFamily: "Archivo, sans-serif", fontSize: 40, fontWeight: 800, color: RPT.ink, lineHeight: 1.05, letterSpacing: "-.02em", marginTop: 10, ...RPT_NUM }}>{rptMoney(s.grossComm)}</div>
@@ -37017,7 +37033,7 @@ function BundleReportCard({ store, month, rostered, onOpen, onAddPlayers, onOpen
     <RptCard style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".07em", color: RPT.muted, textTransform: "uppercase" }}>Bundles sold</div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: RPT.ink, letterSpacing: "-.01em" }}>Bundles sold</div>
           <div style={{ fontSize: 12.5, color: RPT.muted, marginTop: 6 }}>{m.label}{stats.length > top.length ? " · top " + top.length + " of " + stats.length : ""}</div>
         </div>
         <RptBtn small onClick={() => onOpen(null)}>{stats.length > top.length ? "All " + stats.length + " bundles" : "Details"} <IconChevronRight size={13} /></RptBtn>
@@ -37226,10 +37242,14 @@ const RPT_ROLE_DESC = { admin: "Full workspace control", rep: "Builds and runs s
 function UserManagementSection({ stores }) {
   const [tick, setTick] = React.useState(0);
   const [toast, setToast] = useRptToast();
+  const [addOpen, setAddOpen] = React.useState(false);
   const viewer = rptViewer(stores);
   const reps = rptReps(stores).filter((r) => r.name !== "Unassigned");
-  const users = reps.map((r, i) => ({ name: r.name, email: r.name.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "") + "@prolook.com", role: r.name === viewer ? "admin" : "rep", stores: r.stores.length }));
+  window.__wsAddedUsers = window.__wsAddedUsers || [];
+  const users = reps.map((r, i) => ({ name: r.name, email: r.name.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "") + "@prolook.com", role: r.name === viewer ? "admin" : "rep", stores: r.stores.length }))
+    .concat(window.__wsAddedUsers.map((u) => ({ ...u, name: u.email.split("@")[0], invited: true, stores: u.role === "admin" ? (stores || []).length : u.teams.length })));
   const setShare = (name, v) => { const n = Math.max(0, Math.min(100, Math.round(+v || 0))); window.__wsRepSplit = { ...(window.__wsRepSplit || {}), [name]: n }; setTick((t) => t + 1); };
+  const addUser = (u) => { window.__wsAddedUsers = [...window.__wsAddedUsers, u]; setAddOpen(false); setTick((t) => t + 1); setToast("Invite sent to " + u.email + " as " + (u.role === "admin" ? "Admin" : "Rep")); };
   const grid = "minmax(200px,1.4fr) 110px 90px minmax(220px,1fr)";
   return (
     <div>
@@ -37238,24 +37258,101 @@ function UserManagementSection({ stores }) {
           <h3 style={{ margin: "0 0 4px", fontSize: 17, fontWeight: 800, fontFamily: "Archivo, sans-serif", color: "#09090b" }}>User Management</h3>
           <p style={{ fontSize: 13, color: "#71717a", margin: 0, maxWidth: 640, lineHeight: 1.55 }}>Who's on the workspace, their role, and how each rep's commission divides between the Organization and the rep. Commission is the tier spread on every sale; the split sets who keeps what.</p>
         </div>
+        <RptBtn primary onClick={() => setAddOpen(true)} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6 }}><IconPlus size={14} style={{ strokeWidth: 2.6 }} /> Add user</RptBtn>
       </div>
       <div style={{ background: "#fff", border: "1px solid #e4e4e7", borderRadius: 10, overflow: "hidden" }}>
         <div style={{ display: "grid", gridTemplateColumns: grid, gap: 12, padding: "10px 18px", borderBottom: "1px solid #ececf0", background: "#fafafb", alignItems: "center" }}><RptTh>User</RptTh><RptTh>Role</RptTh><RptTh right>Stores</RptTh><RptTh>Commission split · Organization / Rep</RptTh></div>
         {users.map((u, i) => { const rep = rptRepShare(u.name); return (
-          <div key={u.name} style={{ display: "grid", gridTemplateColumns: grid, gap: 12, padding: "12px 18px", borderBottom: i < users.length - 1 ? "1px solid #f4f4f5" : "none", alignItems: "center", fontSize: 13 }}>
-            <span style={{ minWidth: 0 }}><span style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontWeight: 700, color: RPT.ink }}>{u.name}</span>{u.name === viewer && <RptPill text="You" tone="dark" />}</span><span style={{ display: "block", fontSize: 12, color: RPT.muted, marginTop: 2 }}>{u.email}</span></span>
+          <div key={u.email} style={{ display: "grid", gridTemplateColumns: grid, gap: 12, padding: "12px 18px", borderBottom: i < users.length - 1 ? "1px solid #f4f4f5" : "none", alignItems: "center", fontSize: 13 }}>
+            <span style={{ minWidth: 0 }}><span style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontWeight: 700, color: u.invited ? RPT.muted : RPT.ink }}>{u.invited ? u.email : u.name}</span>{u.name === viewer && <RptPill text="You" tone="dark" />}{u.invited && <RptPill text="Invited" tone="amber" />}</span><span style={{ display: "block", fontSize: 12, color: RPT.muted, marginTop: 2 }}>{u.invited ? (u.role === "rep" ? (u.teams.length ? "Access to " + u.teams.map((id) => { const s = (stores || []).find((x) => x.id === id); return s ? (s.storeTitle || s.teamName) : id; }).join(", ") : "No teams assigned yet") : "Awaiting sign-in") : u.email}</span></span>
             <span><RptPill text={u.role === "admin" ? "Admin" : "Rep"} tone={u.role === "admin" ? "green" : "grey"} /><span style={{ display: "block", fontSize: 11, color: RPT.faint, marginTop: 4 }}>{RPT_ROLE_DESC[u.role]}</span></span>
             <span style={{ textAlign: "right", ...RPT_NUM }}>{u.stores}</span>
+            {u.role === "admin" && u.invited ? <span style={{ fontSize: 12, color: RPT.faint }}>Admins don't take a rep split.</span> : (
             <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ flex: 1, height: 8, borderRadius: 4, background: RPT.soft, overflow: "hidden", display: "flex" }}><span style={{ width: (100 - rep) + "%", background: "#a1a1aa" }} /><span style={{ width: rep + "%", background: "#0e0e10" }} /></span>
               <span style={{ fontSize: 12.5, color: RPT.muted, whiteSpace: "nowrap", ...RPT_NUM }}>{100 - rep} /</span>
               <span style={{ display: "inline-flex", alignItems: "center", border: "1px solid #d4d4d8", borderRadius: 6, height: 32, padding: "0 8px", width: 70, boxSizing: "border-box", background: "#fff" }}><input type="number" min={0} max={100} value={rep} onChange={(e) => setShare(u.name, e.target.value)} onBlur={() => setToast(u.name + " keeps " + rptRepShare(u.name) + "% — applies to new orders")} style={{ width: "100%", border: 0, outline: 0, fontSize: 13, fontFamily: "inherit", ...RPT_NUM }} /><span style={{ fontSize: 12, color: RPT.muted }}>%</span></span>
-            </span>
+            </span>)}
           </div>); })}
       </div>
       <div style={{ fontSize: 11.5, color: RPT.faint, marginTop: 10, lineHeight: 1.5 }}>Changing a split applies to new orders only. Reports read these rates for the month they're viewing.</div>
+      {addOpen && <AddWorkspaceUserModal stores={stores} existing={users.map((u) => u.email)} onClose={() => setAddOpen(false)} onAdd={addUser} />}
       <RptToastHost text={toast} />
     </div>
+  );
+}
+
+// Add user — email + role; reps also pick which teams (stores) they can access.
+function AddWorkspaceUserModal({ stores, existing, onClose, onAdd }) {
+  const [email, setEmail] = React.useState("");
+  const [role, setRole] = React.useState("rep");
+  const [teams, setTeams] = React.useState([]);
+  const [teamsOpen, setTeamsOpen] = React.useState(false);
+  const [tried, setTried] = React.useState(false);
+  const list = (stores || []).filter((s) => !s.archived && s.status !== "archived");
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const dup = existing.some((e) => e.toLowerCase() === email.trim().toLowerCase());
+  const teamsOk = role === "admin" || teams.length > 0;
+  const toggle = (id) => setTeams((t) => t.includes(id) ? t.filter((x) => x !== id) : [...t, id]);
+  const submit = () => { setTried(true); if (!emailOk || dup || !teamsOk) return; onAdd({ email: email.trim(), role, teams: role === "admin" ? [] : teams }); };
+  const err = (m) => <span style={{ display: "block", fontSize: 11.5, color: RPT.red, marginTop: 5 }}>{m}</span>;
+  const label = { fontSize: 11, fontWeight: 800, letterSpacing: ".06em", color: RPT.muted, textTransform: "uppercase", display: "block", marginBottom: 6 };
+  const inputStyle = { width: "100%", height: 40, boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 6, padding: "0 12px", fontSize: 13.5, fontFamily: "inherit", color: RPT.ink, outline: "none", background: "#fff" };
+  const names = teams.map((id) => { const s = list.find((x) => x.id === id); return s ? (s.storeTitle || s.teamName || "Store") : id; });
+  return (
+    <Modal open onClose={onClose} width={480}>
+      <div style={{ padding: "22px 24px 20px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+          <div>
+            <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, fontFamily: "Archivo, sans-serif", color: "#09090b" }}>Add user</h3>
+            <p style={{ margin: "4px 0 0", fontSize: 12.5, color: RPT.muted, lineHeight: 1.5 }}>They'll get an email invite and set a password on first sign-in.</p>
+          </div>
+          <button type="button" onClick={onClose} aria-label="Close" style={{ background: "transparent", border: 0, cursor: "pointer", padding: 4, color: RPT.muted }}><IconX size={18} /></button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 20 }}>
+          <div>
+            <span style={label}>Email</span>
+            <input autoFocus type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@prolook.com" style={{ ...inputStyle, borderColor: tried && (!emailOk || dup) ? RPT.red : "#d4d4d8" }} />
+            {tried && !emailOk && err("Enter a valid email address.")}
+            {tried && emailOk && dup && err("That person is already on the workspace.")}
+          </div>
+          <div>
+            <span style={label}>Role</span>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {[["admin", "Admin", RPT_ROLE_DESC.admin + " — every store, settings and users."], ["rep", "Rep", RPT_ROLE_DESC.rep + " — only the teams you assign."]].map(([id, t, d]) => { const on = role === id; return (
+                <button key={id} type="button" onClick={() => setRole(id)} style={{ textAlign: "left", background: on ? "#0e0e10" : "#fff", color: on ? "#fff" : RPT.ink, border: "1px solid " + (on ? "#0e0e10" : "#d4d4d8"), borderRadius: 8, padding: "12px 14px", cursor: "pointer", fontFamily: "inherit" }}>
+                  <span style={{ display: "block", fontSize: 13.5, fontWeight: 800 }}>{t}</span>
+                  <span style={{ display: "block", fontSize: 11.5, marginTop: 3, lineHeight: 1.4, color: on ? "rgba(255,255,255,.72)" : RPT.muted }}>{d}</span>
+                </button>); })}
+            </div>
+          </div>
+          {role === "rep" && (
+            <div style={{ position: "relative" }}>
+              <span style={label}>Team access</span>
+              <button type="button" onClick={() => setTeamsOpen((v) => !v)} style={{ ...inputStyle, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, cursor: "pointer", textAlign: "left", borderColor: teamsOpen ? "#0e0e10" : tried && !teamsOk ? RPT.red : "#d4d4d8" }}>
+                <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: names.length ? RPT.ink : RPT.faint }}>{names.length === 0 ? "Select teams" : names.length <= 2 ? names.join(", ") : names.length + " teams selected"}</span>
+                <IconChevron size={16} style={{ color: RPT.muted, flexShrink: 0, transform: teamsOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
+              </button>
+              {tried && !teamsOk && err("Pick at least one team.")}
+              {teamsOpen && (
+                <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, background: "#fff", border: "1px solid #e4e4e7", borderRadius: 8, boxShadow: "0 8px 24px rgba(20,20,30,.12)", zIndex: 30, maxHeight: 240, overflowY: "auto" }}>
+                  {list.length === 0 && <div style={{ padding: "14px 12px", fontSize: 12.5, color: RPT.faint }}>No teams yet — create a store first.</div>}
+                  {list.map((s) => { const on = teams.includes(s.id); return (
+                    <button key={s.id} type="button" onClick={() => toggle(s.id)} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: on ? "#f4f4f5" : "#fff", border: 0, borderBottom: "1px solid #f4f4f5", cursor: "pointer", textAlign: "left", fontFamily: "inherit" }}>
+                      <span style={{ width: 16, height: 16, borderRadius: 4, border: "1.5px solid " + (on ? "#0e0e10" : "#a1a1aa"), background: on ? "#0e0e10" : "#fff", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{on && <IconCheck size={11} style={{ strokeWidth: 3 }} />}</span>
+                      <span style={{ flex: 1, minWidth: 0 }}><span style={{ display: "block", fontSize: 13, fontWeight: 700, color: RPT.ink, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.storeTitle || s.teamName || "Store"}</span>{s.teamName && s.storeTitle && s.teamName !== s.storeTitle && <span style={{ display: "block", fontSize: 11.5, color: RPT.muted }}>{s.teamName}</span>}</span>
+                    </button>); })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24 }}>
+          <RptBtn onClick={onClose}>Cancel</RptBtn>
+          <RptBtn primary onClick={submit}>Send invite</RptBtn>
+        </div>
+      </div>
+    </Modal>
   );
 }
 
