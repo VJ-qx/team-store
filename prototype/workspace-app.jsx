@@ -13657,13 +13657,7 @@ function CpCatalogDrawer({ products, store, target, draggingId, onClose, onAssig
 
 function CanvasHandle({ side, active, title, onPointerDown }) {
   return (
-    <span title={title} onPointerDown={onPointerDown} style={{
-      position: "absolute",
-      ...(side === "bottom" ? { bottom: -7, left: "50%", transform: "translateX(-50%)" } : { left: -7, top: "50%", transform: "translateY(-50%)" }),
-      width: 14, height: 14, borderRadius: "50%", boxSizing: "border-box",
-      background: active ? "#0e0e10" : "#fff", border: "2px solid #0e0e10",
-      cursor: "crosshair", zIndex: 5, touchAction: "none",
-    }} />);
+    <span title={title} onPointerDown={onPointerDown} className="wx-canvas-handle" style={{ ...(side === "bottom" ? { bottom: -7, left: "50%", transform: "translateX(-50%)" } : { left: -7, top: "50%", transform: "translateY(-50%)" }), width: 14, height: 14, borderRadius: "50%", boxSizing: "border-box", background: active ? "#0e0e10" : "#fff", border: "2px solid #0e0e10", cursor: "crosshair", zIndex: 5, touchAction: "none" }} />);
 }
 
 function CanvasParentNode({ g, sel, drag, onSelect, onAddTeam, onHandleDown, nodeRefs, prodCount }) {
@@ -13672,19 +13666,13 @@ function CanvasParentNode({ g, sel, drag, onSelect, onAddTeam, onHandleDown, nod
   const canTarget = drag && (drag.from.kind === "team" || drag.from.kind === "prod");
   return (
     <div ref={(el) => { nodeRefs.current["p:" + g.id] = el; }} onClick={(e) => { e.stopPropagation(); onSelect(); }}
-      style={{
-        position: "relative", background: g.color, borderRadius: 10, padding: "14px 14px", cursor: "pointer",
-        display: "flex", alignItems: "center", gap: 12, color: "#fff",
-        boxShadow: isSel ? "0 0 0 2px #fff, 0 0 0 4px #0e0e10" : isTarget ? "0 0 0 2px #fff, 0 0 0 4px #1f9d55" : "0 1px 2px rgba(20,20,30,.08)",
-        outline: canTarget && !isTarget ? "2px dashed rgba(14,14,16,.3)" : "none", outlineOffset: 4,
-        transition: "box-shadow .12s",
-      }}>
-      <span style={{ width: 38, height: 38, borderRadius: 9, flexShrink: 0, background: "rgba(255,255,255,.16)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13 }}>{rInitials(g.name)}</span>
-      <div style={{ minWidth: 0, flex: 1 }}>
-        <div style={{ fontSize: 14, fontWeight: 800, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.name}</div>
-        <div style={{ marginTop: 3, fontSize: 10.5, fontWeight: 700, letterSpacing: ".06em", color: "rgba(255,255,255,.75)", textTransform: "uppercase", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{drag && drag.from.kind === "prod" ? "Drop = all " + g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams") : prodCount != null ? g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams") + " · " + prodCount + " prod" : "Division · " + g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams")}</div>
+      className={`wx-canvas-division${isTarget ? " wx-canvas-division--target" : ""}${isSel ? " wx-canvas-division--selected" : ""}${(canTarget && !isTarget) ? " wx-canvas-division--can-target" : ""}`} style={{ background: g.color }}>
+      <span className="wx-canvas-division__initials">{rInitials(g.name)}</span>
+      <div className="wx-canvas-division__text">
+        <div className="wx-canvas-division__name">{g.name}</div>
+        <div className="wx-canvas-division__meta">{drag && drag.from.kind === "prod" ? "Drop = all " + g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams") : prodCount != null ? g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams") + " · " + prodCount + " prod" : "Division · " + g.rosters.length + " " + (g.rosters.length === 1 ? "team" : "teams")}</div>
       </div>
-      <button title="Add team" onClick={(e) => { e.stopPropagation(); onAddTeam(); }} style={{ width: 28, height: 28, borderRadius: 7, border: 0, flexShrink: 0, background: "rgba(255,255,255,.18)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}><IconPlus size={14} style={{ strokeWidth: 2.6 }} /></button>
+      <button title="Add team" onClick={(e) => { e.stopPropagation(); onAddTeam(); }} className="wx-canvas-division__add"><IconPlus size={14} style={{ strokeWidth: 2.6 }} /></button>
       <CanvasHandle side="bottom" active={drag && drag.from.kind === "parent" && drag.from.id === g.id} title="Drag to a team to connect it" onPointerDown={(e) => onHandleDown(e)} />
     </div>);
 }
@@ -13694,39 +13682,34 @@ function CanvasTeamNode({ t, parent, rail, sel, drag, onSelect, onHandleDown, no
   const isTarget = drag && drag.over === "t:" + t.id;
   const color = t.colorOverride || (parent && parent.color) || "#3f3f46";
   return (
-    <div style={{ display: "flex", alignItems: "stretch" }}>
+    <div className="wx-canvas-team">
       {rail &&
-        <div style={{ width: 18, position: "relative", flexShrink: 0 }}>
-          <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 2, background: "#d8d8de" }} />
-          <span style={{ position: "absolute", left: 0, top: "50%", width: 18, height: 2, background: "#d8d8de", transform: "translateY(-1px)" }} />
+        <div className="wx-canvas-team__rail">
+          <span className="wx-canvas-team__rail-line" />
+          <span className="wx-canvas-team__rail-branch" />
         </div>}
       <div ref={(el) => { nodeRefs.current["t:" + t.id] = el; }} onClick={(e) => { e.stopPropagation(); onSelect(); }}
-        style={{
-          position: "relative", flex: 1, minWidth: 0, background: "#fff", border: "1px solid #ececf0", borderRadius: 10,
-          padding: "10px 10px", margin: "5px 0", cursor: "pointer", display: "flex", flexDirection: "column",
-          boxShadow: isSel ? "0 0 0 2px #0e0e10" : isTarget ? "0 0 0 2px #1f9d55" : "0 1px 2px rgba(20,20,30,.05)",
-          transition: "box-shadow .12s",
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-        <span style={{ width: 32, height: 32, borderRadius: 8, flexShrink: 0, background: rTint(color, 0.12), color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 10.5 }}>{t.division || rInitials(t.name)}</span>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0e0e10", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.name}</div>
-          <div style={{ marginTop: 1, fontSize: 10.5, fontWeight: 600, color: "#9a9aa1", letterSpacing: ".04em" }}>{rTeamCode(t.id)} · {t.players || 0} players</div>
+        className={`wx-canvas-team__card${isTarget ? " wx-canvas-team__card--target" : ""}${isSel ? " wx-canvas-team__card--selected" : ""}`}>
+        <div className="wx-canvas-team__row">
+        <span className="wx-canvas-team__badge" style={{ background: rTint(color, 0.12), color }}>{t.division || rInitials(t.name)}</span>
+        <div className="wx-canvas-team__text">
+          <div className="wx-canvas-team__name">{t.name}</div>
+          <div className="wx-canvas-team__meta">{rTeamCode(t.id)} · {t.players || 0} players</div>
         </div>
         {bankCount > 0 &&
-          <span title={bankCount + " proposed players waiting in the Roster Bank"} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 4, fontSize: 10, fontWeight: 800, color: "#8a5f10", background: "#fdf6e7", border: "1px solid #efdcae", borderRadius: 999, padding: "2px 7px" }}><IconBankInbox size={11} /> {bankCount}</span>}
+          <span title={bankCount + " proposed players waiting in the Roster Bank"} className="wx-canvas-team__bank"><IconBankInbox size={11} /> {bankCount}</span>}
         </div>
         {prods &&
-          <div style={{ display: "flex", alignItems: "center", gap: 5, paddingTop: 7, marginTop: 8, borderTop: "1px solid #f3f3f4" }}>
+          <div className="wx-canvas-team__prods">
             {prods.length === 0
-              ? <span style={{ fontSize: 10, fontWeight: 700, color: "#6b6b72", background: "#f1f1f3", border: "1px solid #e4e4e7", borderRadius: 5, padding: "2px 7px", whiteSpace: "nowrap" }}>No products yet</span>
+              ? <span className="wx-canvas-team__prods-empty">No products yet</span>
               : <React.Fragment>
                   {prods.slice(0, 4).map((p) => <CpChip key={p.id} product={p} store={store} title={p.title} onClick={() => onProdClick(p)} />)}
                   {prods.length > 4 &&
-                    <span title={prods.slice(4).map((p) => p.title).join(", ")} style={{ height: 24, padding: "0 7px", borderRadius: 5, background: "#f7f7f9", border: "1px solid #ececf0", display: "inline-flex", alignItems: "center", fontSize: 10, fontWeight: 800, color: "#6b6b72", boxSizing: "border-box" }}>+{prods.length - 4}</span>}
+                    <span title={prods.slice(4).map((p) => p.title).join(", ")} className="wx-canvas-team__prods-more">+{prods.length - 4}</span>}
                 </React.Fragment>}
-            <span style={{ flex: 1 }}></span>
-            <button type="button" title={"Add product to " + t.name} onClick={(e) => { e.stopPropagation(); onProdAdd(); }} style={{ width: 24, height: 24, borderRadius: 5, border: "1px dashed #c9c9cf", background: "transparent", color: "#6b6b72", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0 }}><IconPlus size={12} style={{ strokeWidth: 2.4 }} /></button>
+            <span className="wx-canvas-team__prods-spacer"></span>
+            <button type="button" title={"Add product to " + t.name} onClick={(e) => { e.stopPropagation(); onProdAdd(); }} className="wx-canvas-team__prods-add"><IconPlus size={12} style={{ strokeWidth: 2.4 }} /></button>
           </div>}
         <CanvasHandle side="left" active={drag && drag.from.kind === "team" && drag.from.id === t.id} title={parent ? "Drag to another division to move this team" : "Drag to a division to connect"} onPointerDown={(e) => onHandleDown(e)} />
       </div>
@@ -13735,24 +13718,20 @@ function CanvasTeamNode({ t, parent, rail, sel, drag, onSelect, onHandleDown, no
 
 function CanvasAddTeamTile({ onAdd, rail }) {
   return (
-    <div style={{ display: "flex", alignItems: "stretch" }}>
+    <div className="wx-canvas-add-team">
       {rail &&
-        <div style={{ width: 18, position: "relative", flexShrink: 0 }}>
-          <span style={{ position: "absolute", left: 0, top: 0, bottom: "50%", width: 2, background: "#d8d8de" }} />
-          <span style={{ position: "absolute", left: 0, top: "50%", width: 18, height: 2, background: "#d8d8de", transform: "translateY(-1px)" }} />
+        <div className="wx-canvas-add-team__rail">
+          <span className="wx-canvas-add-team__rail-line" />
+          <span className="wx-canvas-add-team__rail-branch" />
         </div>}
-      <button onClick={onAdd} style={{
-        flex: 1, margin: "5px 0", background: "transparent", border: "1px dashed #c9c9cf", borderRadius: 10,
-        padding: "10px 12px", fontSize: 12, fontWeight: 700, color: "#6b6b72", cursor: "pointer", fontFamily: "inherit",
-        display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-      }}><IconPlus size={13} style={{ strokeWidth: 2.4 }} /> Add Team</button>
+      <button onClick={onAdd} className="wx-canvas-add-team__btn"><IconPlus size={13} style={{ strokeWidth: 2.4 }} /> Add Team</button>
     </div>);
 }
 
 function CanvasPanelField({ label, children }) {
   return (
-    <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".06em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 8 }}>{label}</div>
+    <div className="wx-canvas-field">
+      <div className="wx-canvas-field__label">{label}</div>
       {children}
     </div>);
 }
@@ -13852,28 +13831,20 @@ function CanvasConfirmModal({ confirm, onClose, onConfirm }) {
     : `"${confirm.name}" still has ${confirm.count} ${confirm.count === 1 ? "team" : "teams"} connected. Delete or move its teams to another division first.`;
   return (
     <Modal open onClose={onClose} width={460}>
-      <div style={{ padding: "28px 28px 24px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
-            background: danger ? "#fdecec" : "#f1f1f3", color: danger ? "#b81d14" : "#0e0e10",
-            display: "inline-flex", alignItems: "center", justifyContent: "center"
-          }}>
+      <div className="wx-canvas-confirm">
+        <div className="wx-canvas-confirm__row">
+          <div className={`wx-canvas-confirm__icon${danger ? " wx-canvas-confirm__icon--danger" : ""}`}>
             {danger ? <IconTrash size={20} style={{ strokeWidth: 2 }} /> : <IconUsers size={20} />}
           </div>
           <div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{title}</h2>
-            <p style={{ margin: "8px 0 0", fontSize: 13, color: "#6b6b72", lineHeight: 1.55 }}>{body}</p>
+            <h2 className="wx-canvas-confirm__title">{title}</h2>
+            <p className="wx-canvas-confirm__body">{body}</p>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 28 }}>
+        <div className="wx-canvas-confirm__actions">
           {!blocked &&
-            <button onClick={onClose} style={{ background: "#fff", border: "1px solid #d4d4d8", borderRadius: 6, padding: "12px 24px", fontSize: 13, fontWeight: 700, letterSpacing: ".04em", color: "#0e0e10", cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>}
-          <button onClick={blocked ? onClose : onConfirm} style={{
-            background: danger ? "#b81d14" : "#0e0e10", border: "1px solid transparent", borderRadius: 6,
-            padding: "12px 24px", fontSize: 13, fontWeight: 700, letterSpacing: ".04em",
-            color: "#fff", cursor: "pointer", fontFamily: "inherit"
-          }}>{blocked ? "Got it" : confirm.type === "reparent" ? "Move Team" : "Delete"}</button>
+            <button onClick={onClose} className="wx-canvas-confirm__cancel">Cancel</button>}
+          <button onClick={blocked ? onClose : onConfirm} className={`wx-canvas-confirm__ok${danger ? " wx-canvas-confirm__ok--danger" : ""}`}>{blocked ? "Got it" : confirm.type === "reparent" ? "Move Team" : "Delete"}</button>
         </div>
       </div>
     </Modal>);
@@ -14059,9 +14030,6 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
     return () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
   }, [!!drag]);
 
-  const inputStyle = { width: "100%", boxSizing: "border-box", border: "1px solid #d4d4d8", borderRadius: 6, padding: "10px 12px", fontSize: 13.5, color: "#0e0e10", outline: "none", fontFamily: "inherit", background: "#fff" };
-  const dangerBtn = { display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #f0c9c5", color: "#b81d14", borderRadius: 6, padding: "8px 14px", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" };
-
   // ── side panel content ──
   let panel;
   if (selParent) {
@@ -14070,15 +14038,15 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
     const mgrsSet = g.rosters.filter((r) => managerComplete(((org && org.managers) || {})[r.id])).length;
     panel = (
       <React.Fragment>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-          <span style={{ width: 38, height: 38, borderRadius: 9, flexShrink: 0, background: g.color, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13 }}>{rInitials(g.name)}</span>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".07em", color: "#9a9aa1", textTransform: "uppercase" }}>Division</div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.name}</div>
+        <div className="wx-team-canvas__panel-head">
+          <span className="wx-team-canvas__panel-avatar" style={{ background: g.color }}>{rInitials(g.name)}</span>
+          <div className="wx-team-canvas__panel-title">
+            <div className="wx-team-canvas__panel-kind">Division</div>
+            <div className="wx-team-canvas__panel-name">{g.name}</div>
           </div>
         </div>
         <CanvasPanelField label="Division / Region Name">
-          <input value={g.name} onChange={(e) => patchParent(g.id, { name: e.target.value })} style={inputStyle} />
+          <input value={g.name} onChange={(e) => patchParent(g.id, { name: e.target.value })} className="wx-team-canvas__input" />
         </CanvasPanelField>
         <CanvasPanelField label="Sport">
           <SelectField value={g.sport || ""} placeholder="Select a sport"
@@ -14090,7 +14058,7 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
         {!wizard && <React.Fragment>
         <CanvasPanelField label="Brand Color">
           <CanvasSwatches value={g.color} onPick={(c) => patchParent(g.id, { color: c })} />
-          <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Teams inherit this branding — override per team if needed.</div>
+          <div className="wx-team-canvas__note">Teams inherit this branding — override per team if needed.</div>
         </CanvasPanelField>
         <CanvasPanelField label="Division Code · optional">
           <CanvasCopyCode code={rTeamCode(g.id)} store={store} />
@@ -14098,21 +14066,21 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
         </React.Fragment>}
         {managerGated &&
           <CanvasPanelField label="Order Fulfillment">
-            <div style={{ fontSize: 12.5, color: "#4b4b52", lineHeight: 1.55, marginBottom: 10 }}>
+            <div className="wx-team-canvas__fulfillment">
               {mode === "teams"
-                ? <React.Fragment><strong style={{ color: "#0e0e10" }}>Individual teams</strong> — {mgrsSet}/{g.rosters.length} team managers set.</React.Fragment>
-                : <React.Fragment><strong style={{ color: "#0e0e10" }}>League-level</strong> — orders route to {leagueManagerName(store)}.</React.Fragment>}
+                ? <React.Fragment><strong className="wx-team-canvas__strong">Individual teams</strong> — {mgrsSet}/{g.rosters.length} team managers set.</React.Fragment>
+                : <React.Fragment><strong className="wx-team-canvas__strong">League-level</strong> — orders route to {leagueManagerName(store)}.</React.Fragment>}
             </div>
             {onManageManagers &&
-              <button type="button" onClick={() => onManageManagers(g.id, null)} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", color: "#0e0e10", borderRadius: 6, padding: "8px 14px", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+              <button type="button" onClick={() => onManageManagers(g.id, null)} className="wx-team-canvas__settings-btn">
                 <IconEdit size={13} style={{ strokeWidth: 2 }} /> Manage in Settings
               </button>}
           </CanvasPanelField>}
         <CanvasPanelField label={`Teams · ${g.rosters.length}`}>
           <Button variant="secondary" onClick={() => addTeam(g.id)}><IconPlus size={13} style={{ strokeWidth: 2.4 }} /> Add Team</Button>
         </CanvasPanelField>
-        <div style={{ borderTop: "1px solid #ececf0", paddingTop: 16, marginTop: 4 }}>
-          <button type="button" style={dangerBtn}
+        <div className="wx-team-canvas__danger-zone">
+          <button type="button" className="wx-team-canvas__danger-btn"
             onClick={() => g.rosters.length > 0
               ? (wizard
                 ? setConfirm({ type: "delete-parent-rehome", gid: g.id, name: g.name, count: g.rosters.length })
@@ -14121,9 +14089,9 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
             <IconTrash size={13} style={{ strokeWidth: 2 }} /> Delete Division
           </button>
           {g.rosters.length > 0 && !wizard &&
-            <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Blocked while teams are connected — delete or move them first.</div>}
+            <div className="wx-team-canvas__note">Blocked while teams are connected — delete or move them first.</div>}
           {g.rosters.length > 0 && wizard &&
-            <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Its teams aren't deleted — they're kept as standalone teams.</div>}
+            <div className="wx-team-canvas__note">Its teams aren't deleted — they're kept as standalone teams.</div>}
         </div>
       </React.Fragment>);
   } else if (selTeam) {
@@ -14133,51 +14101,51 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
     const eff = managerGated ? effectiveManagerFor(org, store, p && p.id, t.id) : null;
     panel = (
       <React.Fragment>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-          <span style={{ width: 38, height: 38, borderRadius: 9, flexShrink: 0, background: rTint(color, 0.14), color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11 }}>{t.division || rInitials(t.name)}</span>
-          <div style={{ minWidth: 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".07em", color: "#9a9aa1", textTransform: "uppercase" }}>Team</div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.name}</div>
+        <div className="wx-team-canvas__panel-head">
+          <span className="wx-team-canvas__panel-badge" style={{ background: rTint(color, 0.14), color }}>{t.division || rInitials(t.name)}</span>
+          <div className="wx-team-canvas__panel-title">
+            <div className="wx-team-canvas__panel-kind">Team</div>
+            <div className="wx-team-canvas__panel-name">{t.name}</div>
           </div>
         </div>
         <CanvasPanelField label="Team Name">
-          <input value={t.name} onChange={(e) => patchTeam(t.id, { name: e.target.value })} style={inputStyle} />
+          <input value={t.name} onChange={(e) => patchTeam(t.id, { name: e.target.value })} className="wx-team-canvas__input" />
         </CanvasPanelField>
         <CanvasPanelField label="Division">
-          <div style={{ fontSize: 13, fontWeight: 700, color: p ? "#0e0e10" : "#c2410c" }}>{p ? p.name : "Unassigned"}</div>
-          <div style={{ marginTop: 4, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>{p ? "Drag this team's handle to another division to move it." : "Drag this team's handle to a division node to connect it."}</div>
+          <div className={`wx-team-canvas__division${p ? " wx-team-canvas__division--assigned" : ""}`}>{p ? p.name : "Unassigned"}</div>
+          <div className="wx-team-canvas__division-note">{p ? "Drag this team's handle to another division to move it." : "Drag this team's handle to a division node to connect it."}</div>
         </CanvasPanelField>
         {!wizard && <React.Fragment>
         <CanvasPanelField label="Branding">
           <CanvasSwatches value={t.colorOverride || null} onPick={(c) => patchTeam(t.id, { colorOverride: c })}
             allowInherit={!!p} inheritOn={!t.colorOverride} onInherit={() => patchTeam(t.id, { colorOverride: null })} />
-          {p && <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>{t.colorOverride ? "Overriding " + p.name + "'s branding." : "Inheriting " + p.name + "'s branding."}</div>}
+          {p && <div className="wx-team-canvas__note">{t.colorOverride ? "Overriding " + p.name + "'s branding." : "Inheriting " + p.name + "'s branding."}</div>}
         </CanvasPanelField>
         <CanvasPanelField label="Team Code">
           <CanvasCopyCode code={rTeamCode(t.id)} store={store} />
-          <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Buyers enter this code on the storefront — or open the link, which scopes the store to this team with no typing.</div>
+          <div className="wx-team-canvas__note">Buyers enter this code on the storefront — or open the link, which scopes the store to this team with no typing.</div>
         </CanvasPanelField>
         </React.Fragment>}
         {managerGated && mode === "teams" &&
           <CanvasPanelField label="Team Manager">
-            <div style={{ fontSize: 12.5, color: eff && eff.src === "team" ? "#0e0e10" : "#c2410c", fontWeight: 700 }}>
+            <div className={`wx-team-canvas__manager${(eff && eff.src === "team") ? " wx-team-canvas__manager--set" : ""}`}>
               {eff && eff.src === "team" ? eff.name : "Not assigned"}
             </div>
             {onManageManagers &&
-              <button type="button" onClick={() => onManageManagers(p && p.id, t.id)} style={{ marginTop: 8, display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", color: "#0e0e10", borderRadius: 6, padding: "8px 14px", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+              <button type="button" onClick={() => onManageManagers(p && p.id, t.id)} className="wx-team-canvas__manager-btn">
                 <IconEdit size={13} style={{ strokeWidth: 2 }} /> Manage in Settings
               </button>}
           </CanvasPanelField>}
         {wizard
           ? <CanvasPanelField label="Roster">
-              <div style={{ fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Rosters aren't entered during setup — they're optional and fill in later from the My Team(s) tab or from orders.</div>
+              <div className="wx-team-canvas__roster-note">Rosters aren't entered during setup — they're optional and fill in later from the My Team(s) tab or from orders.</div>
             </CanvasPanelField>
           : <CanvasPanelField label={`Roster · ${t.players || 0} players`}>
               <Button variant="primary" onClick={() => onOpenRoster(p, t)}>Open Roster</Button>
-              <div style={{ marginTop: 8, fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.5 }}>Empty is normal — the roster can back-fill from team-gear orders.</div>
+              <div className="wx-team-canvas__note">Empty is normal — the roster can back-fill from team-gear orders.</div>
             </CanvasPanelField>}
-        <div style={{ borderTop: "1px solid #ececf0", paddingTop: 16, marginTop: 4 }}>
-          <button type="button" style={dangerBtn} onClick={() => setConfirm({ type: "delete-team", tid: t.id, name: t.name })}>
+        <div className="wx-team-canvas__danger-zone">
+          <button type="button" className="wx-team-canvas__danger-btn" onClick={() => setConfirm({ type: "delete-team", tid: t.id, name: t.name })}>
             <IconTrash size={13} style={{ strokeWidth: 2 }} /> Delete Team
           </button>
         </div>
@@ -14185,16 +14153,16 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
   } else {
     panel = (
       <React.Fragment>
-        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".07em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 16 }}>League Structure</div>
+        <div className="wx-team-canvas__summary-title">League Structure</div>
         {[["Divisions", stats.totalGroups], ["Teams", stats.totalRosters], ["Players", stats.totalPlayers]].map(([l, v]) =>
-          <div key={l} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #f3f3f4" }}>
-            <span style={{ fontSize: 13, color: "#6b6b72", fontWeight: 600 }}>{l}</span>
-            <span style={{ fontSize: 14, color: "#0e0e10", fontWeight: 800 }}>{v}</span>
+          <div key={l} className="wx-team-canvas__summary-row">
+            <span className="wx-team-canvas__summary-label">{l}</span>
+            <span className="wx-team-canvas__summary-value">{v}</span>
           </div>)}
-        <div style={{ margin: "16px 0 20px", fontSize: 12.5, color: "#6b6b72", lineHeight: 1.6 }}>
+        <div className="wx-team-canvas__summary-help">
           Select a node to edit its settings. Drag a connection handle — the dot on a node's edge — to connect a team to a division.
         </div>
-        <div style={{ marginTop: 20, border: "1px dashed #d8d8de", borderRadius: 8, padding: "12px 14px", fontSize: 11.5, color: "#9a9aa1", lineHeight: 1.55, background: "#fafafb" }}>
+        <div className="wx-team-canvas__summary-tip">
           {wizard
             ? "This step is optional — Next is never blocked. Rosters aren't entered here; they fill in later from the My Team(s) tab or from orders."
             : "Rosters are optional. Launch with empty teams and let them fill in from team-gear orders — the Roster Bank collects checkout captures for review."}
@@ -14225,42 +14193,38 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
   const svgH = wrapRef.current ? wrapRef.current.scrollHeight : 0;
 
   return (
-    <div style={{ paddingBottom: 100 }}>
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 20 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", color: "#9a9aa1", textTransform: "uppercase" }}>{wizard ? "League Structure" : "My Teams"}</div>
-          <div style={{ marginTop: 6, fontSize: 13.5, color: "#6b6b72" }}>
+    <div className="wx-team-canvas">
+      <div className="wx-team-canvas__head">
+        <div className="wx-team-canvas__head-text">
+          <div className="wx-team-canvas__eyebrow">{wizard ? "League Structure" : "My Teams"}</div>
+          <div className="wx-team-canvas__stats">
             {stats.totalGroups} {stats.totalGroups === 1 ? "division" : "divisions"} · {stats.totalRosters} {stats.totalRosters === 1 ? "team" : "teams"}{wizard ? null : <React.Fragment> · {stats.totalPlayers} players</React.Fragment>}
           </div>
         </div>
         <Button variant="secondary" onClick={() => addTeam(null)}><IconPlus size={14} style={{ strokeWidth: 2.4 }} /> New Team</Button>
         <Button variant="primary" onClick={addParent}><IconPlus size={14} style={{ strokeWidth: 2.4 }} /> New Division</Button>
       </div>
-      <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-        <div ref={wrapRef} onClick={() => setSel(null)} style={{
-          position: "relative", border: "1px solid #ececf0", borderRadius: 12,
-          background: "#fbfbfc", backgroundImage: "radial-gradient(#e6e6ea 1px, transparent 1px)", backgroundSize: "20px 20px",
-          padding: 24, overflowX: "auto", minHeight: 480, boxSizing: "border-box",
-        }}>
+      <div className="wx-team-canvas__layout">
+        <div className="wx-team-canvas__main">
+        <div ref={wrapRef} onClick={() => setSel(null)} className="wx-team-canvas__board">
           {empty ?
-            <div style={{ padding: "110px 20px", textAlign: "center" }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10" }}>Lay out your league</div>
-              <div style={{ margin: "8px auto 20px", fontSize: 13, color: "#6b6b72", maxWidth: 400, lineHeight: 1.6 }}>
+            <div className="wx-team-canvas__empty">
+              <div className="wx-team-canvas__empty-title">Lay out your league</div>
+              <div className="wx-team-canvas__empty-text">
                 {wizard
                   ? "Divisions group teams into age brackets, regions, or clubs; teams are what rosters and orders attach to. Setting them up now is optional — add divisions and teams anytime from the My Team(s) tab."
                   : "Add a division, hang teams beneath it, and connect them by dragging. Rosters are optional — teams can fill in from orders after launch. Team Required and Team Supplied products stay locked until at least one team or division exists."}
               </div>
               <Button variant="primary" onClick={addParent}><IconPlus size={14} style={{ strokeWidth: 2.4 }} /> New Division</Button>
             </div> :
-            <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
+            <div className="wx-team-canvas__columns">
               {groups.map((g) =>
-                <div key={g.id} style={{ width: 230, flexShrink: 0 }}>
+                <div key={g.id} className="wx-team-canvas__column">
                   <CanvasParentNode g={g} sel={sel} drag={drag} nodeRefs={nodeRefs} prodCount={showProds ? divProdCount(g) : null}
                     onSelect={() => selectNode({ kind: "parent", id: g.id })}
                     onAddTeam={() => addTeam(g.id)}
                     onHandleDown={(e) => startDrag({ kind: "parent", id: g.id }, e)} />
-                  <div style={{ paddingLeft: 14 }}>
+                  <div className="wx-team-canvas__column-teams">
                     {g.rosters.map((t) =>
                       <CanvasTeamNode key={t.id} t={t} parent={g} rail sel={sel} drag={drag} nodeRefs={nodeRefs} bankCount={bankCount(t.id)}
                         prods={showProds ? prodsFor(t.id, g.id) : null} store={store}
@@ -14272,9 +14236,9 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
                   </div>
                 </div>)}
               {loose.length > 0 &&
-                <div style={{ width: 230, flexShrink: 0 }}>
-                  <div style={{ border: "1px dashed #c9c9cf", borderRadius: 12, padding: "12px 12px 8px", background: "rgba(255,255,255,.6)" }}>
-                    <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".07em", color: "#9a9aa1", textTransform: "uppercase", padding: "0 4px 4px" }}>Unassigned Teams</div>
+                <div className="wx-team-canvas__column">
+                  <div className="wx-team-canvas__unassigned">
+                    <div className="wx-team-canvas__unassigned-title">Unassigned Teams</div>
                     {loose.map((t) =>
                       <CanvasTeamNode key={t.id} t={t} parent={null} rail={false} sel={sel} drag={drag} nodeRefs={nodeRefs} bankCount={bankCount(t.id)}
                         prods={showProds ? prodsFor(t.id, null) : null} store={store}
@@ -14282,41 +14246,41 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
                         onProdAdd={() => openCatalog({ kind: "team", id: t.id, name: t.name })}
                         onSelect={() => selectNode({ kind: "team", id: t.id })}
                         onHandleDown={(e) => startDrag({ kind: "team", id: t.id }, e)} />)}
-                    <div style={{ fontSize: 11, color: "#b0b0b6", padding: "4px 4px 6px", lineHeight: 1.45 }}>Drag a team's handle onto a division to connect it.</div>
+                    <div className="wx-team-canvas__unassigned-hint">Drag a team's handle onto a division to connect it.</div>
                   </div>
                 </div>}
             </div>}
           {drag &&
-            <svg style={{ position: "absolute", left: 0, top: 0, width: svgW, height: svgH, pointerEvents: "none", zIndex: 30 }}>
+            <svg className="wx-team-canvas__drag-line" style={{ width: svgW, height: svgH }}>
               <line x1={drag.x1} y1={drag.y1} x2={drag.x2} y2={drag.y2} stroke="#0e0e10" strokeWidth="2" strokeDasharray="7 5" strokeLinecap="round" />
               <circle cx={drag.x2} cy={drag.y2} r="5" fill={drag.over ? "#1f9d55" : "#0e0e10"} />
             </svg>}
         </div>
         {!wizard && (scopedBankRows.length > 0 || bankScopeLabel) &&
-          <div style={{ marginTop: 16, background: "#fff", border: "1px solid #ececf0", borderRadius: 12, overflow: "hidden", boxShadow: "0 1px 2px rgba(20,20,30,.04)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 20px", borderBottom: "1px solid #f3f3f4" }}>
-              <span style={{ width: 30, height: 30, borderRadius: 7, flexShrink: 0, background: "#fdf6e7", color: "#8a5f10", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><IconBankInbox size={15} /></span>
-              <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: ".06em", textTransform: "uppercase", color: "#3f3f46" }}>Roster Bank · {bankScopeLabel || "Store-wide"}</span>
-              <span style={{ fontSize: 12, color: "#9a9aa1" }}>{bankScopeLabel ? "Team-gear checkout captures for " + bankScopeLabel : "Team-gear checkout captures awaiting roster review"}</span>
+          <div className="wx-team-canvas__bank">
+            <div className="wx-team-canvas__bank-head">
+              <span className="wx-team-canvas__bank-icon"><IconBankInbox size={15} /></span>
+              <span className="wx-team-canvas__bank-title">Roster Bank · {bankScopeLabel || "Store-wide"}</span>
+              <span className="wx-team-canvas__bank-desc">{bankScopeLabel ? "Team-gear checkout captures for " + bankScopeLabel : "Team-gear checkout captures awaiting roster review"}</span>
             </div>
             {scopedBankRows.map(({ team, parent, n }, i) => (
-              <div key={team.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 20px", borderTop: i === 0 ? "none" : "1px solid #f3f3f4" }}>
-                <span style={{ width: 32, height: 32, borderRadius: 8, flexShrink: 0, background: rTint(team.colorOverride || (parent && parent.color) || "#3f3f46", 0.12), color: team.colorOverride || (parent && parent.color) || "#3f3f46", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 10.5 }}>{team.division || rInitials(team.name)}</span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10" }}>{team.name}</div>
-                  <div style={{ fontSize: 11.5, color: "#9a9aa1", marginTop: 1 }}>{parent ? parent.name : "Unassigned"} · {rTeamCode(team.id)}</div>
+              <div key={team.id} className={`wx-team-canvas__bank-row${(i === 0) ? " wx-team-canvas__bank-row--first" : ""}`}>
+                <span className="wx-team-canvas__bank-badge" style={{ background: rTint(team.colorOverride || (parent && parent.color) || "#3f3f46", 0.12), color: team.colorOverride || (parent && parent.color) || "#3f3f46" }}>{team.division || rInitials(team.name)}</span>
+                <div className="wx-team-canvas__bank-text">
+                  <div className="wx-team-canvas__bank-name">{team.name}</div>
+                  <div className="wx-team-canvas__bank-meta">{parent ? parent.name : "Unassigned"} · {rTeamCode(team.id)}</div>
                 </div>
-                <span style={{ fontSize: 11.5, fontWeight: 800, color: "#8a5f10", background: "#fdf6e7", border: "1px solid #efdcae", borderRadius: 999, padding: "4px 10px" }}>{n} proposed {n === 1 ? "player" : "players"}</span>
-                <button type="button" onClick={() => onOpenRoster(parent, team)} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #d4d4d8", color: "#0e0e10", borderRadius: 6, padding: "8px 14px", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Review</button>
+                <span className="wx-team-canvas__bank-count">{n} proposed {n === 1 ? "player" : "players"}</span>
+                <button type="button" onClick={() => onOpenRoster(parent, team)} className="wx-team-canvas__bank-review">Review</button>
               </div>))}
             {scopedBankRows.length === 0 &&
-              <div style={{ padding: "24px 20px", textAlign: "center", fontSize: 12.5, color: "#9a9aa1" }}>The Roster Bank for {bankScopeLabel} is empty — team-gear checkout captures for this {selTeam ? "team" : "division"} will land here as orders come in.</div>}
+              <div className="wx-team-canvas__bank-empty">The Roster Bank for {bankScopeLabel} is empty — team-gear checkout captures for this {selTeam ? "team" : "division"} will land here as orders come in.</div>}
           </div>}
         {!wizard && !bankScopeLabel && (bank["__store"] || []).some((c) => !c.committed) &&
-          <div style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 18px", marginBottom: 12, background: "#fdf6e7", border: "1px solid #efdcae", borderRadius: 10 }}>
-              <span style={{ color: "#8a5f10", flexShrink: 0, marginTop: 1 }}><IconBankInbox size={16} /></span>
-              <div style={{ fontSize: 12.5, color: "#6b5514", lineHeight: 1.55 }}><strong style={{ color: "#54430e" }}>These captures have no team on file.</strong> Buyers checked out without a team code, so their orders wait store-wide. Fulfillment keeps working — add teams above whenever you want to start assigning them.</div>
+          <div className="wx-team-canvas__store-bank">
+            <div className="wx-team-canvas__store-bank-note">
+              <span className="wx-team-canvas__store-bank-icon"><IconBankInbox size={16} /></span>
+              <div className="wx-team-canvas__store-bank-text"><strong className="wx-team-canvas__store-bank-strong">These captures have no team on file.</strong> Buyers checked out without a team code, so their orders wait store-wide. Fulfillment keeps working — add teams above whenever you want to start assigning them.</div>
             </div>
             <BankZone teamId="__store" teamName="this store — store-wide, no team on file" org={org} setOrg={setOrg} rosterNumbers={[]}
               commitDisabledReason="Add a team on the canvas first — captures commit onto a team roster" />
@@ -14329,7 +14293,7 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
               onAssign={(p) => catalog.target && assignProduct(p.id, (catalog.target.kind === "team" ? "t:" : "p:") + catalog.target.id)}
               onDragStart={(p, e) => startDrag({ kind: "prod", id: p.id }, e)}
               onCustomize={() => { setCatalog(null); onCustomize && onCustomize(); }} />
-          : <div style={{ width: 320, flexShrink: 0, alignSelf: "flex-start", position: "sticky", top: 16, background: "#fff", border: "1px solid #ececf0", borderRadius: 12, padding: "20px 20px", boxShadow: "0 1px 2px rgba(20,20,30,.04)", boxSizing: "border-box" }}>
+          : <div className="wx-team-canvas__panel">
               {panelProducts && <CpPanelTabs tab={panelTab} onChange={setPanelTab} count={prodTabCount} />}
               {panelTab === "products" && panelProducts ? panelProducts : panel}
             </div>}
@@ -14340,7 +14304,7 @@ function TeamCanvasView({ groups, loose, org, setOrg, store, managerGated, onMan
         if (!dp) return null;
         return (
           <Modal open onClose={() => setDetailPid(null)} width={Math.min(1140, (typeof window !== "undefined" ? window.innerWidth : 1200) - 64)}>
-            <div style={{ maxHeight: "82vh", overflowY: "auto", padding: "12px 28px 28px", boxSizing: "border-box" }}>
+            <div className="wx-team-canvas__detail">
               <ProductDetailPage mode="edit" product={dp} store={store}
                 onBack={() => setDetailPid(null)}
                 onSave={(u) => { onProductsChange({ products: (store.products || []).map((x) => x.id === u.id ? u : x) }); setDetailPid(null); setToast("Product updated"); }}
