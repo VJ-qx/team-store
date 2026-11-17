@@ -97,6 +97,20 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected (p
 
 **Not converted yet, so empty in Vue** (outside Module 2, to come back to): the screens these open: the Orders card (the cross-store Orders page), both **All stores →** links and **Create a Store →** on the empty Overview (the Stores list), **Review** (a store's Roster tab), and **Add Store** (the new store flow). The Vue comparison (`workspace-overview.mjs`) reports those 6 clicks as differences until the screens are converted.
 
+### On a phone: below 744px
+
+Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected in a window narrower than 744px, or in the browser's device toolbar (iPhone 16 is 393 × 852). The Overview shows the mobile design (prototype: http://localhost:5173/Workspace%20Mobile.dc.html, the app inside the iPhone frame). Widening the window past 744px switches back to the desktop Overview.
+
+| On the mobile Overview | How to see it |
+|---|---|
+| Revenue & Dealer Profit | Hover or drag on the chart for the tooltip; **Day / Month / Year**; **More / Less** under the description |
+| Search | The magnifier; **Cancel** closes it (typing filters nothing, in the prototype either) |
+| All Stores | The store list; picking a store shows "Scoping stays on desktop in this prototype" |
+| Top Performing Stores | **Sort by …**: Revenue, Orders, AOV, % of total, Completion, Trend, Created |
+| Frequently Visited | ⋯ on a card shows "Store menu is desktop-only here" |
+
+The numbers are the mobile prototype's sample data, not the workspace's stores. **Not converted yet** (the taps do nothing in Vue): Stores, Earnings, the HM account sheet, Add Store, a store card, the attention cards, the Orders card and the Roster Bank rows, which open the mobile app's other screens. The Marucci workspace has no mobile design yet, so it shows the desktop Overview at every width.
+
 ## Other references
 
 - **Compare with `main` side by side:** `npm run preview -- tools/parity/scenarios/<scenario>.mjs` opens the original on port 8001 and your version on port 8000. See [commands.md](commands.md#npm-run-preview).
