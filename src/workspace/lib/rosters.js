@@ -69,3 +69,7 @@ export function assignRosterLabel(id) {
   if (l) return { name: l.name, group: "Standalone", color: "#6b6b72" };
   return null;
 }
+
+// A hex color as [r, g, b], and as rgba() at the given alpha (team badges on the canvas).
+export function rHexToRgb(h) { h = String(h || "").replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+export function rTint(h, a) { const [r, g, b] = rHexToRgb(h); return `rgba(${r},${g},${b},${a})`; }

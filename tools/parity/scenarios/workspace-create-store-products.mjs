@@ -13,11 +13,10 @@
 // are captured at rest.
 // The same states run on the integrated page in marucci-workspace-create-store-products.mjs.
 //
-// Known difference in the Vue step (behavior mode), left for part 2d (2026-11-17). Every other checkpoint
-// matches: 197 of 199 on both workspaces.
-// - "products league teams" goes through Step 2, Divisions & Teams, which isn't converted yet: Vue shows an
-//   empty card there, so "New Team" can't be clicked and the state stops (FR-3.1 part 2d). Assign to Teams
-//   in the Configure pop-up can be compared once Divisions & Teams is converted.
+// Vue step (behavior mode): every checkpoint matches on both workspaces (211/211). "products league teams",
+// which goes through Divisions & Teams to reach Assign to Teams, matches since part 2d was converted
+// (2026-11-17). The integrated workspace's product thumbnail in the Configure pop-up sometimes differs by
+// 25-44 pixels (image resampling, a different step on each run).
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const button = (name, exact = true) => (exact ? `role=button[name="${name}" s]` : `role=button[name=/${escapeRegex(name)}/i]`);

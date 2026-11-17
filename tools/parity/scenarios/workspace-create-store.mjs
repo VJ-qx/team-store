@@ -17,14 +17,11 @@
 // so both sides are captured at rest.
 // The same states run on the integrated page in marucci-workspace-create-store.mjs.
 //
-// Known differences in the Vue step (behavior mode), left for the later parts (2026-11-16, updated
-// 2026-11-17). Every checkpoint on Basics and the frame matches; 6 of 168 checkpoints differ on both
-// workspaces (and 2 more on the integrated one), all in screens the Vue app doesn't have yet:
-// - CONTINUE to Step 2 for a League store (Divisions & Teams), and the stepper's jump to it: Vue shows an
-//   empty card until that part is converted (FR-3.1 part 2d). (CONTINUE for an Individual store opens Add
-//   Products, converted in part 2b on 2026-11-17; it matches since.)
-// - "wizard league to individual" stops at "New Team" (Step 2), so the League → Individual warning can't
-//   be compared yet; it can once Divisions & Teams is converted.
+// Known differences in the Vue step (behavior mode), left for later (2026-11-16, updated 2026-11-17). Every
+// checkpoint on Basics and the frame matches; 2 of 175 checkpoints differ on both workspaces (and 2 more on
+// the integrated one), in screens the Vue app doesn't have yet. (CONTINUE to Step 2, the stepper's jump to
+// it, and the League → Individual warning match since the wizard's later parts were converted on
+// 2026-11-17.)
 // - "Use as Template" opens a Stores page pop-up that isn't converted yet.
 // - Integrated workspace: the Stock Vault isn't converted, so the wizard's start from it (and the
 //   stepper's PRE-LOADED pill) can't be compared yet.

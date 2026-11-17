@@ -76,3 +76,6 @@ export const TEAM_MANAGER_SEED = {
   "sf-14": { firstName: "Rico", lastName: "DiBiase", name: "Rico DiBiase", email: "rico.d@jazzbantum.org", phone: "(480) 555-0166", address: "77 W Vine St, Murray, UT 84107" },
   "pg-8": { firstName: "Renee", lastName: "Park", name: "Renee Park", email: "renee.p@jazzbantum.org", phone: "(480) 555-0210", address: "512 S 900 E, Farmington, UT 84025" },
 };
+
+// Division colors, handed out in order to new divisions on the team canvas.
+export const ROSTER_BRAND_COLORS = ["#7c1d2b", "#1e3a6e", "#1f5c3a", "#4a2367", "#b4531a", "#0f6e6e", "#8a3a12", "#2f3a8f"];

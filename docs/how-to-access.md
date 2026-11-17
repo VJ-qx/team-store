@@ -121,7 +121,7 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected an
 
 ## Module 3: Add Store wizard
 
-Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame, **Step 1, Basics** (part 2a), **Add Products** (part 2b: Step 2 of an Individual store, Step 3 of a League store) and **Review & Deploy** with **SAVE AND CONTINUE** (part 2c).
+Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. The whole wizard is converted: the frame and **Step 1, Basics** (part 2a), **Divisions & Teams** (part 2d: Step 2 of a League store), **Add Products** (part 2b: Step 2 of an Individual store, Step 3 of a League store) and **Review & Deploy** with **SAVE AND CONTINUE** (part 2c).
 
 | On Basics | How to see it |
 |---|---|
@@ -153,9 +153,16 @@ Click **Add Store** on the Overview or the Stores page (prototype: the same on `
 | Managers | The Team Manager (Primary Contact) and any added managers; a League store says "League Managers" and lists its divisions and teams |
 | SAVE AND CONTINUE | "Creating your store…" for 1.8 s, then the new store opens (on Products when it has products, otherwise General) with a message |
 
+| On Divisions & Teams (a **League Store**, then **CONTINUE**) | How to see it |
+|---|---|
+| Empty canvas | "Lay out your league", with **New Division** |
+| Divisions and teams | **New Division** and **New Team** at the top right; **Add Team** under a division or **+** on it. Click a node to edit it in the side panel; click an empty spot for the summary |
+| Connect and move | Drag a team's handle (the dot on its left edge) onto a division: "Connected to …". Dragging it onto another division asks "Move …?" first |
+| Delete | **Delete Division** (its teams are kept as standalone) and **Delete Team**, each with a confirmation |
+
 **Navy accent:** `__paritySetProps({ wizardAccent: 'navy' })`. Prototype: settings panel, under Accent, **Navy**.
 
-**Not converted yet, so empty in Vue** (the next parts of Module 3): Divisions & Teams (Step 2 of a League store), and the new store's Products and General tabs that SAVE AND CONTINUE opens. So the League → Individual warning ("Switching removes your divisions & teams") and Add Products' **Assign to Teams**, which both need a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault page, which starts the wizard with Add Products pre-loaded.
+**Not converted yet, so empty in Vue:** the new store's Products and General tabs that SAVE AND CONTINUE opens, and the Marucci workspace's Stock Vault page, which starts the wizard with Add Products pre-loaded. Divisions & Teams uses the My Team(s) editor in its wizard mode; the editor's other features (branding, team codes, managers, rosters, the Roster Bank, products) belong to a store's My Team(s) tab, not converted yet.
 
 **Prototype bugs kept, for the frontend dev:**
 - In Store Point of Contact, the Custom email or phone field loses focus after each keystroke, so typing keeps only one character at a time (the prototype remounts those rows on every render).
