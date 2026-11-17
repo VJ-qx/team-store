@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { cpSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -35,6 +35,17 @@ const prototypeAtRoot = {
       }
       next();
     });
+  },
+};
+
+// Build: the pages load images by path at run time (assets/brands/*.png, assets/products/*.png, …), which
+// Vite doesn't bundle. Copy assets/ into dist/assets/ so a static host (Netlify) serves them at the same
+// URLs as the dev server. Vite's own bundled files there have hashed names, so nothing collides.
+const copyRuntimeAssets = {
+  name: 'copy-runtime-assets',
+  apply: 'build',
+  closeBundle() {
+    cpSync(resolve(__dirname, 'assets'), resolve(__dirname, 'dist', 'assets'), { recursive: true });
   },
 };
 
@@ -83,6 +94,7 @@ export default defineConfig({
   plugins: [
     prototypeAtRoot,
     staticNotFound,
+    copyRuntimeAssets,
     vue({
       compiler,
       template: {
