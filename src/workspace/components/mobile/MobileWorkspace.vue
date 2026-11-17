@@ -5,7 +5,7 @@
      Earnings, the account sheet, the create-store wizard, a store's screens) do nothing until those screens
      are converted with their modules; the toasts work as in the prototype.
      Prototype-only, left out: the iPhone frame (ios-frame.jsx), "Restart prototype", and the startScreen
-     setting. The frame's look for the app area comes from .wm-root (styles/layouts/workspace-mobile/_root). -->
+     setting. The frame's look for the app area comes from .wm-root (styles/responsive/workspace/layouts/_root). -->
 <template>
   <div class="wm-root">
     <div @click="onTap" class="wm-app">
