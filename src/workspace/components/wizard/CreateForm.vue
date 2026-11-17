@@ -1,8 +1,9 @@
 <!-- Converted from workspace-app.jsx and workspace-app-integrated.jsx: CreateForm — the Add Store wizard's
      frame: header with the "Step N of M" badge, the stepper, the step card, and the footer (CANCEL, BACK,
      CONTINUE, or SAVE AND CONTINUE on the last step). League stores have 4 steps, Individual stores 3.
-     Converted so far: Step 1, Basics. Divisions & Teams, Add Products and Review & Deploy are the later parts
-     of Module 3 (FR-3.1); until then their step shows an empty card, and SAVE AND CONTINUE has no onSubmit.
+     Converted so far: Step 1, Basics, and Add Products. Divisions & Teams and Review & Deploy are the later
+     parts of Module 3 (FR-3.1); until then their step shows an empty card, and SAVE AND CONTINUE has no
+     onSubmit.
      The integrated workspace's Stock Vault start (_fromVault) makes Add Products reachable and pre-loaded. -->
 <template>
   <div id="wizard-scroll" class="wx-wizard">
@@ -25,6 +26,7 @@
     <div class="wx-wizard__body">
       <div class="wx-wizard__card">
         <Step1Basics v-if="STEPS[step].key === 'basics'" :data="data" :set="set" :errors="errors" :accent="accent" :liveStores="liveStores" :stepNum="step + 1" />
+        <Step3Products v-if="STEPS[step].key === 'products'" :data="data" :set="set" :errors="errors" :accent="accent" :liveStores="liveStores" :stepNum="step + 1" />
       </div>
     </div>
 
@@ -47,11 +49,12 @@ import { buildWizardData, wizardStepsFor } from '../../lib/wizard.js';
 import Button from '../common/Button.vue';
 import { IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers } from '../icons.js';
 import Step1Basics from './Step1Basics.vue';
+import Step3Products from './Step3Products.vue';
 import WizardStepper from './WizardStepper.vue';
 
 export default {
   name: 'CreateForm',
-  components: { Button, IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers, Step1Basics, WizardStepper },
+  components: { Button, IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers, Step1Basics, Step3Products, WizardStepper },
   props: {
     onCancel: { type: Function, default: undefined },
     onSubmit: { type: Function, default: undefined },

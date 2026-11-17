@@ -121,7 +121,7 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected an
 
 ## Module 3: Add Store wizard
 
-Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame and **Step 1, Basics** (part 2a).
+Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame, **Step 1, Basics** (part 2a) and **Add Products** (part 2b: Step 2 of an Individual store, Step 3 of a League store).
 
 | On Basics | How to see it |
 |---|---|
@@ -135,13 +135,28 @@ Click **Add Store** on the Overview or the Stores page (prototype: the same on `
 | Tax | Collect Sales Tax: pick a state (the rate fills in) and tick the agreement's box |
 | Cancel | **CANCEL** opens "Discard this store?": **Keep Editing** or **Discard** |
 
+| On Add Products (fill Basics for an Individual store, then **CONTINUE**) | How to see it |
+|---|---|
+| Sources and search | The chips (All sources, Customizer, Stock Vault, Catalog Templates, Other stores) and their sub-filters; type in the search box |
+| Source pill | **Source** under the step title: pick a brand (Marucci: Victus only) |
+| Configure & Add to Store | **Add to Store** on a saved design: category (or **+ Add new category…**), the Storefront switches, Price settings ($ / %, fundraising), application sizes and notes; **Add to Store** without a category shows its error |
+| Edit Product | After adding a product, **Edit Product** on its card reopens the pop-up with **Save Changes** |
+| Saved cart | **Saved Carts** → **Add to Store**: ITEM 1 OF N, **Confirm & Next Product**, **Back** |
+| Stock Vault | Prolook: **Add to Store** on a Pro Stock item opens the sizes and color ways pop-up, then Configure without application sizes. Marucci: every vault item is already in the store; **Remove** / **Add back** on a card, **Remove all** / **Add all back** in the green banner |
+| Catalog Templates | ⋯ on a template: **Rename template** (type, Enter) and **Delete template** |
+| Customize New Product | The button at the top right: Men / Women, pick a sport, a design, **Add to Store** in the builder, then review and **Add to Store** |
+
 **Navy accent:** `__paritySetProps({ wizardAccent: 'navy' })`. Prototype: settings panel, under Accent, **Navy**.
 
-**Not converted yet, so empty in Vue** (the next parts of Module 3): the steps after Basics (Divisions & Teams, Add Products, Review & Deploy) and **SAVE AND CONTINUE**'s store creation. So the League → Individual warning ("Switching removes your divisions & teams"), which needs a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault, which starts the wizard with Add Products pre-loaded.
+**Not converted yet, so empty in Vue** (the next parts of Module 3): Divisions & Teams (Step 2 of a League store), Review & Deploy, and **SAVE AND CONTINUE**'s store creation. So the League → Individual warning ("Switching removes your divisions & teams") and Add Products' **Assign to Teams**, which both need a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault page, which starts the wizard with Add Products pre-loaded.
 
 **Prototype bugs kept, for the frontend dev:**
 - In Store Point of Contact, the Custom email or phone field loses focus after each keystroke, so typing keeps only one character at a time (the prototype remounts those rows on every render).
 - "Use as Template" → "Duplicate the whole store" opens on Basics instead of Review & Deploy, and the "Duplicated from …" line under the title never shows (the wizard drops the preset's _startAt and _dupSource).
+- Customize New Product's review shows `Basketball \u00b7 Uniform Jersey` under the product name: the escape for the middle dot is written as page text, so it shows as typed.
+- In Customize New Product, the Men / Women tab you click loses focus (the prototype remounts both tabs on every render).
+- The "Remove from store?" confirmation can't be opened: the product card takes a remove action but shows no remove button.
+- Customize New Product offers the same eight basketball designs for every sport.
 
 ## Other references
 
