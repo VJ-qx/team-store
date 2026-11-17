@@ -1,0 +1,51 @@
+@use "../../../variables" as *;
+
+// The mobile app inside the Vue workspace (below 744px the workspace shows the mobile screens). The
+// prototype ("Workspace Mobile.dc.html") gives its app this context from the page (_global.scss's
+// workspace-mobile section) and from its iPhone frame: here it comes from this wrapper instead, so the
+// workspace's own page styles stay as they are. The app fills the screen, as on a phone.
+
+.wm-root {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  // From the iPhone frame (ios-frame.jsx): what text outside a screen (such as the toast) inherits.
+  background: #f2f2f7;
+  font-family: -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  // From the page (_global.scss, workspace-mobile section).
+  color: $ink;
+  font-size: 14px;
+  line-height: 1.45;
+
+  a {
+    color: $ink;
+  }
+
+  a:hover {
+    color: #e1251b;
+  }
+
+  // Every tappable element carries data-go (a screen id, "back" or "toast:<message>").
+  [data-go] {
+    cursor: pointer;
+  }
+}
+
+// The toast's fade in and out (responsive/workspace/components/_toast.scss).
+@keyframes wmToast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

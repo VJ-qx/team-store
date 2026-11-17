@@ -89,7 +89,7 @@ Keep decisions conservative: stack columns, reduce padding, scale headings, let 
 ## Step 3: Implement
 
 - Use the shared breakpoint mixins. Never write raw `@media` queries.
-- Put the rules where the project keeps responsive styles: `styles/responsive/<page>/` in the team's SCSS structure (grouped by type, then by page, like `styles/components/<page>/`), unless the Vue project already does it another way.
+- Put the rules where the project keeps responsive styles: `styles/responsive/<page>/` in the team's SCSS structure, with the same type folders inside (`styles/responsive/<page>/components/`, `layouts/`, `pages/`), unless the Vue project already does it another way.
 - Use Flexbox and Grid. Do not create separate mobile versions of markup or components.
 - Change markup only where CSS alone can't do it (for example a menu toggle). Keep those changes minimal, and keep new state limited to layout (open or closed).
 - On mobile:

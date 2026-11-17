@@ -1,0 +1,68 @@
+@use "../../../variables" as *;
+
+// Moved from the inline styles of "Workspace Mobile.dc.html". Screen scaffolding: every screen is a full-height column with a scrolling content area and a safe area at the bottom.
+
+.wm-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-sans;
+  color: $ink;
+  background: $bg-app;
+}
+
+.wm-screen--sheet {
+  position: relative;
+}
+
+.wm-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wm-content--pt-12 {
+  padding: 12px 16px 24px;
+}
+
+.wm-content--pt-14 {
+  padding: 14px 16px 24px;
+}
+
+.wm-content--gap-12 {
+  gap: 12px;
+}
+
+.wm-content--gap-16 {
+  gap: 16px;
+}
+
+.wm-content--gap-18 {
+  gap: 18px;
+}
+
+.wm-safe-area {
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.wm-safe-area--surface {
+  background: $white;
+}
+
+// The faded copy of the screen behind a sheet.
+.wm-ghost__bar {
+  height: 40px;
+  background: $line-2;
+  border-radius: 10px;
+}
+
+.wm-ghost__card {
+  height: 220px;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+}

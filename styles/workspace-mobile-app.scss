@@ -1,35 +1,35 @@
 // Vue workspace only (imported by src/workspace/main.js, after workspace.scss): the mobile screens from
 // "Workspace Mobile.dc.html", which the workspace shows below 744px. The same partials as
 // styles/workspace-mobile.scss (the mobile prototype's entry), without its page globals and prototype-only
-// styles: the partials are class-only (wm-), and layouts/workspace-mobile/_root.scss gives the app the
+// styles: the partials are class-only (wm-), and responsive/workspace/layouts/_root.scss gives the app the
 // context the prototype's page and iPhone frame give it. The prototype pages never link this file.
-@use "layouts/workspace-mobile/root";
-@use "layouts/workspace-mobile/app";
-@use "layouts/workspace-mobile/screen";
-@use "layouts/workspace-mobile/helpers";
-@use "components/workspace-mobile/topbar";
-@use "components/workspace-mobile/segmented";
-@use "components/workspace-mobile/tabbar";
-@use "components/workspace-mobile/card";
-@use "components/workspace-mobile/row";
-@use "components/workspace-mobile/text";
-@use "components/workspace-mobile/button";
-@use "components/workspace-mobile/action-bar";
-@use "components/workspace-mobile/chip";
-@use "components/workspace-mobile/control";
-@use "components/workspace-mobile/form";
-@use "components/workspace-mobile/sheet";
-@use "components/workspace-mobile/wizard";
-@use "components/workspace-mobile/badge";
-@use "components/workspace-mobile/details";
-@use "components/workspace-mobile/product";
-@use "components/workspace-mobile/toast";
-@use "pages/workspace-mobile/overview";
-@use "pages/workspace-mobile/workspace";
-@use "pages/workspace-mobile/create-store";
-@use "pages/workspace-mobile/store-home";
-@use "pages/workspace-mobile/teams";
-@use "pages/workspace-mobile/products";
-@use "pages/workspace-mobile/orders";
-@use "pages/workspace-mobile/reports";
-@use "pages/workspace-mobile/store-settings";
+@use "responsive/workspace/layouts/root";
+@use "responsive/workspace/layouts/app";
+@use "responsive/workspace/layouts/screen";
+@use "responsive/workspace/layouts/helpers";
+@use "responsive/workspace/components/topbar";
+@use "responsive/workspace/components/segmented";
+@use "responsive/workspace/components/tabbar";
+@use "responsive/workspace/components/card";
+@use "responsive/workspace/components/row";
+@use "responsive/workspace/components/text";
+@use "responsive/workspace/components/button";
+@use "responsive/workspace/components/action-bar";
+@use "responsive/workspace/components/chip";
+@use "responsive/workspace/components/control";
+@use "responsive/workspace/components/form";
+@use "responsive/workspace/components/sheet";
+@use "responsive/workspace/components/wizard";
+@use "responsive/workspace/components/badge";
+@use "responsive/workspace/components/details";
+@use "responsive/workspace/components/product";
+@use "responsive/workspace/components/toast";
+@use "responsive/workspace/pages/overview";
+@use "responsive/workspace/pages/workspace";
+@use "responsive/workspace/pages/create-store";
+@use "responsive/workspace/pages/store-home";
+@use "responsive/workspace/pages/teams";
+@use "responsive/workspace/pages/products";
+@use "responsive/workspace/pages/orders";
+@use "responsive/workspace/pages/reports";
+@use "responsive/workspace/pages/store-settings";

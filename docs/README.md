@@ -46,7 +46,9 @@ reference/                 handover files nothing uses, kept for reference
 styles/                    SCSS: one entry per page, compiled to styles/css/<entry>.css:
                            app.scss (landing page), workspace.scss, workspace-mobile.scss
                            partials by type, then page: components/<page>/, layouts/<page>/,
-                           pages/<page>/ (landing, workspace, workspace-mobile);
+                           pages/<page>/ (landing, workspace);
+                           responsive/<page>/ (landing, workspace, storefront) for responsive
+                           styles, with the same type folders inside (the workspace's mobile design);
                            components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
 landing.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)
