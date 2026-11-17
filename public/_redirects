@@ -1,0 +1,3 @@
+# Netlify: the site root opens the landing page (there is no index.html; npm run dev opens /landing.html
+# the same way). 200 = show it at "/" without changing the address.
+/    /landing.html    200
