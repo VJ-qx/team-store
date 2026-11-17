@@ -17,7 +17,7 @@ Use these for normal work. Each one runs the building-block skills below in orde
 | `/extract-styles <page>` | you | Styles step. Checks the comparison is reliable on the untouched page, extracts the inline styles to SCSS, compiles, then compares and fixes until identical. Commits, then writes the manual check list. |
 | `/migrate-to-vue <page>` | you | Vue step. Runs the safety check and a read-only prototype-shell check, converts the page to Vue, starts it, then compares behaviour and fixes until identical. Commits, then writes the manual check list. |
 | `/add-approved-design <design image> "<what changed>"` | you | Approved changes. Adds a design the US team approved, which isn't in the prototype yet, to a converted Vue page and its SCSS. The prototype isn't touched. Checks that every existing state still matches the prototype, and checks the new states against the design (`npm run parity -- … --approved`). Commits, then lists the decisions it made and what the frontend dev must replace. |
-| `/make-responsive <vue page>` | you | **Not used yet:** the responsive step isn't needed for now. Responsive step, on converted Vue pages only. Plans and builds tablet and mobile layouts below 1024 px, keeps desktop identical, and reports every layout decision for the team to review. |
+| `/make-responsive <vue page>` | you | **Not used:** the responsive step converts the other team's mobile design (`Workspace Mobile.dc.html`) with `/migrate-to-vue` instead of designing its own layout. Responsive step, on converted Vue pages only. Plans and builds tablet and mobile layouts below 1024 px, keeps desktop identical, and reports every layout decision for the team to review. |
 
 ## Checks
 
