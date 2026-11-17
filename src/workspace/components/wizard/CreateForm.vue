@@ -1,9 +1,9 @@
 <!-- Converted from workspace-app.jsx and workspace-app-integrated.jsx: CreateForm — the Add Store wizard's
      frame: header with the "Step N of M" badge, the stepper, the step card, and the footer (CANCEL, BACK,
      CONTINUE, or SAVE AND CONTINUE on the last step). League stores have 4 steps, Individual stores 3.
-     Converted so far: Step 1, Basics, and Add Products. Divisions & Teams and Review & Deploy are the later
-     parts of Module 3 (FR-3.1); until then their step shows an empty card, and SAVE AND CONTINUE has no
-     onSubmit.
+     Converted so far: Step 1, Basics, Add Products, and Review & Deploy (SAVE AND CONTINUE calls onSubmit,
+     which creates the store). Divisions & Teams is the last part of Module 3 (FR-3.1); until then its step
+     shows an empty card.
      The integrated workspace's Stock Vault start (_fromVault) makes Add Products reachable and pre-loaded. -->
 <template>
   <div id="wizard-scroll" class="wx-wizard">
@@ -27,6 +27,7 @@
       <div class="wx-wizard__card">
         <Step1Basics v-if="STEPS[step].key === 'basics'" :data="data" :set="set" :errors="errors" :accent="accent" :liveStores="liveStores" :stepNum="step + 1" />
         <Step3Products v-if="STEPS[step].key === 'products'" :data="data" :set="set" :errors="errors" :accent="accent" :liveStores="liveStores" :stepNum="step + 1" />
+        <Step6Review v-if="STEPS[step].key === 'review'" :data="data" :accent="accent" :athletes="athletes" :stepNum="step + 1" :onEditBasics="() => goTo(0)" :onEditProducts="STEPS.some((x) => x.key === 'products') ? () => goTo(STEPS.findIndex((x) => x.key === 'products')) : null" :onRemoveProduct="(i) => set({ curatedProducts: (data.curatedProducts || []).filter((_, j) => j !== i) })" />
       </div>
     </div>
 
@@ -50,11 +51,12 @@ import Button from '../common/Button.vue';
 import { IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers } from '../icons.js';
 import Step1Basics from './Step1Basics.vue';
 import Step3Products from './Step3Products.vue';
+import Step6Review from './Step6Review.vue';
 import WizardStepper from './WizardStepper.vue';
 
 export default {
   name: 'CreateForm',
-  components: { Button, IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers, Step1Basics, Step3Products, WizardStepper },
+  components: { Button, IconAlert, IconCheck, IconChevronLeft, IconChevronRight, IconLayers, Step1Basics, Step3Products, Step6Review, WizardStepper },
   props: {
     onCancel: { type: Function, default: undefined },
     onSubmit: { type: Function, default: undefined },

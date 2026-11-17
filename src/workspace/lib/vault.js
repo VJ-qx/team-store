@@ -23,3 +23,11 @@ export function vaultPriceLine(it) {
 export function hcmDefaultCw(item) {
   return item.colorways.find((c) => c.slug === "black") || item.colorways[0];
 }
+
+// Pricing for a Stock Vault item added to a store: dealer profit is retail minus base.
+export function vaultPricing(baseV, retailV) {
+  const b = parseFloat(baseV) || 0, r = parseFloat(retailV) || 0;
+  const dealer = Math.max(0, r - b);
+  const tier = { base: b.toFixed(2), dealerUnit: "$", dealer: dealer.toFixed(2), fundUnit: "$", fund: "0.00", retail: (b + dealer).toFixed(2) };
+  return { youth: { ...tier }, adult: { ...tier } };
+}

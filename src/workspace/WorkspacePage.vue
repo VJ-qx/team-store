@@ -1,8 +1,8 @@
 <!-- Converted from workspace-app.jsx / workspace-app-integrated.jsx: App, for the Module 1 screens — the
      access gate and business verification (FR-1.10.2), the welcome pop-up after sign-in, the Overview,
      and My Account — a store's page (its Home tab and the setup guides), the Overview (Module 2) and the
-     Stores page (Module 3). The routing logic is the prototype's; screens that are not converted yet
-     (the Add Store wizard, Earnings, Orders, …) render nothing.
+     Stores page and the Add Store wizard with its store creation (Module 3). The routing logic is the
+     prototype's; screens that are not converted yet (Earnings, Orders, …) render nothing.
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
      data/settings.js), the #frame= deep links and the frame overview grid. -->
 <template>
@@ -21,16 +21,20 @@
     <Toast :message="toast" :onDone="() => setToast(null)" />
   </template>
   <div v-else :style="{ minHeight: '100vh', background: '#fbfbfc', minWidth: '1280px' }">
+    <UtilityBar v-if="!inEditor && !showSubTabs" />
+    <GlobalHeader v-if="!inEditor && !showSubTabs" :active="headerActive" :onNavigate="(id) => guardNav(() => onNavigate(id))" :hideAccountCart="showSubTabs" />
     <TeamStoresHeader v-if="showSubTabs" :active="activeSubTab" :onChange="(id) => guardNav(() => onTabChange(id))" :accountName="accountName" :onMenuSelect="(id) => guardNav(() => onAccountMenu(id))" :onGoLanding="() => guardNav(goOverviewHome)" />
     <div :key="screen" :style="{ display: 'flex', minHeight: inEditor ? '100vh' : 'calc(100vh - 114px)', animation: 'pageIn .22s ease-out both' }">
       <OverviewDashboard v-if="screen === 'overview'" :key="overviewKey" :isEmpty="tweaks.overviewEmpty || tweaks.zeroState" :stores="activeStores" :leagues="leagues" :onManageStore="(id, tab) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab(tab || 'home'); setScreen('dashboard'); }" :onGoStores="goStores" :onViewOrders="() => { setOrdersOrigin('overview'); setNavTab('overview'); setScreen('orders'); }" :onAdd="goCreate" />
       <AccountProfile v-if="screen === 'account'" :authMode="INT ? 'native' : tweaks.authMode" :onEditProfile="onEditProfile" :onToast="setToast" :archivedStores="archivedStores" :onManageStore="(id) => { setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onUnarchive="(id) => setRestoreTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
       <StoreList v-if="screen === 'list'" :stores="activeStores" :zeroState="tweaks.zeroState" :onAdd="goCreate" :onAddLeague="() => setShowLeagueModal(true)" :onAddGroup="() => setShowGroupModal(true)" :onManage="(id) => { recordStoreVisit(id); setActiveStoreId(id); setDashboardTab('home'); setScreen('dashboard'); }" :onArchive="(id) => setArchiveTargetId(id)" :onCreateTemplate="(s) => setCreateTplStore(s)" :leagues="leagues" :activeLeagueId="activeLeagueId" :onSelectLeague="(id) => { setActiveLeagueId(id); setActiveGroupId(null); }" :activeGroupId="activeGroupId" :onOpenGroup="(gid) => setActiveGroupId(gid)" :onCloseGroup="() => setActiveGroupId(null)" :onOpenSettings="() => setScreen('league-settings')" :onBackToLeagues="goLeagues" />
-      <!-- Add Store wizard (Module 3, FR-3.1). Step 1 Basics is converted; SAVE AND CONTINUE's store creation (handleFormSubmit) comes with Review & Deploy. -->
-      <CreateForm v-if="screen === 'form'" :onCancel="handleCancel" :presetData="presetData" :accent="tweaks.wizardAccent === 'navy' ? '#1d3a8a' : '#e1251b'" :athletes="tweaks.wizardAthletes || 30" :templateMode="templateMode" :liveStores="activeStores" />
+      <!-- Add Store wizard (Module 3, FR-3.1); SAVE AND CONTINUE creates the store (handleFormSubmit). -->
+      <CreateForm v-if="screen === 'form'" :onCancel="handleCancel" :onSubmit="handleFormSubmit" :presetData="presetData" :accent="tweaks.wizardAccent === 'navy' ? '#1d3a8a' : '#e1251b'" :athletes="tweaks.wizardAthletes || 30" :templateMode="templateMode" :liveStores="activeStores" />
+      <div v-if="screen === 'loading'" :style="{ flex: 1, background: '#fff' }" />
       <ManageStoreWorkspace v-if="screen === 'dashboard' && activeStore" :store="activeStore" :readOnly="!!activeStore.archived" :onBack="goStores" :onCustomize="() => setScreen('customizer')" :initialTab="dashboardTab" :liveStores="stores.filter((s) => s.live)" :onLaunch="handleLaunch" :onSetStatus="handleSetStatus" :onViewStore="handleViewStore" :onSwitchStore="(id) => { setActiveStoreId(id); setScreen('dashboard'); }" :onProductsChange="(changes) => updateStore(activeStore.id, changes)" :onUpdateStore="(patch) => updateStore(activeStore.id, patch)" :onCreateTemplate="(s) => setCreateTplStore(s)" />
     </div>
     <CancelConfirmModal :open="showCancelModal" :onClose="() => { showCancelModal = false; pendingNav = null; }" :onConfirm="confirmCancel" />
+    <LoadingOverlay :visible="screen === 'loading'" />
     <ArchiveStoreModal :open="!!archiveTargetStore" :store="archiveTargetStore" :onClose="() => setArchiveTargetId(null)" :onConfirm="confirmArchive" />
     <RestoreStoreModal :open="!!restoreTargetStore" :store="restoreTargetStore" :onClose="() => setRestoreTargetId(null)" :onConfirm="confirmRestore" />
     <!-- Logout confirmation — confirm lands on the Team Stores landing page -->
@@ -60,6 +64,11 @@ import { recordStoreVisit } from './storage/store-visits.js';
 import { SETTINGS_DEFAULTS } from './data/settings.js';
 import { makePrefill, makeSampleLeagues, makeSeededStores } from './seed/stores.js';
 import { loadCreatedStores, saveCreatedStores } from './storage/created-stores.js';
+import { PROSTOCK_ITEMS } from './data/vault.js';
+import { defaultPricing } from './lib/products.js';
+import { rptViewer } from './lib/reports.js';
+import { hcmDefaultCw, vaultPricing, vaultStoreCategory } from './lib/vault.js';
+import { vaultDefaultProducts } from './seed/vault.js';
 import AccessApplyForm from './components/access/AccessApplyForm.vue';
 import AccessPending from './components/access/AccessPending.vue';
 import FeatureGate from './components/access/FeatureGate.vue';
@@ -67,7 +76,9 @@ import StripeVerifying from './components/access/StripeVerifying.vue';
 import AccountProfile from './components/account/AccountProfile.vue';
 import Modal from './components/common/Modal.vue';
 import Toast from './components/common/Toast.vue';
+import GlobalHeader from './components/header/GlobalHeader.vue';
 import TeamStoresHeader from './components/header/TeamStoresHeader.vue';
+import UtilityBar from './components/header/UtilityBar.vue';
 import OverviewDashboard from './components/overview/OverviewDashboard.vue';
 import ManageStoreWorkspace from './components/store/ManageStoreWorkspace.vue';
 import ArchiveStoreModal from './components/stores/ArchiveStoreModal.vue';
@@ -76,6 +87,7 @@ import StoreList from './components/stores/StoreList.vue';
 import StoreGuideModal from './components/guide/StoreGuideModal.vue';
 import CancelConfirmModal from './components/wizard/CancelConfirmModal.vue';
 import CreateForm from './components/wizard/CreateForm.vue';
+import LoadingOverlay from './components/wizard/LoadingOverlay.vue';
 import WelcomeSSOModal from './components/welcome/WelcomeSSOModal.vue';
 
 // The page the access screens, the account menu and logout send the rep to. It doesn't exist in the
@@ -84,7 +96,7 @@ const LANDING_FILE = "Team Stores Landing.dc.html";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, CancelConfirmModal, CreateForm, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, CancelConfirmModal, CreateForm, FeatureGate, GlobalHeader, LoadingOverlay, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, UtilityBar, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -110,6 +122,10 @@ export default {
       isFirstStore: (() => {
         try { return localStorage.getItem("prolook_is_first_store") !== "false"; } catch (e) { return true; }
       })(),
+      // The onboarding tour's run flag: a first store sets it. Nothing in the prototype's page shows it.
+      tourRun: false,
+      // The wizard's data while the store is being created.
+      pendingData: null,
       ordersOrigin: "overview", // which tab the All-Stores Orders page was opened from
       primaryBrand: null,
       // Session grant: a no-access user who passes the splash unlocks Team Stores for the rest of the session.
@@ -154,6 +170,7 @@ export default {
     archivedStores() { return this.stores.filter((s) => s.archived); },
     // Store-editor screens drop the storefront chrome entirely.
     inEditor() { return this.screen === "dashboard" || this.screen === "customizer"; },
+    headerActive() { return this.inEditor ? "none" : (this.screen === "home" ? "none" : "team-stores"); },
     showSubTabs() {
       const { screen } = this;
       return !this.inEditor && (screen === "wsettings" || screen === "vault" || screen === "overview" || screen === "orders" || screen === "reports" || screen === "leagues" || screen === "empty" || screen === "account" || screen === "form" || screen === "template" || screen === "template-repo" || (screen === "list" && !this.activeLeagueId));
@@ -274,6 +291,59 @@ export default {
       this.templateMode = false;
       this.screen = "form";
     },
+    // SAVE AND CONTINUE: "Creating your store…" for 1.8 s, then the store is created and opened.
+    handleFormSubmit(data) {
+      this.pendingData = data;
+      this.screen = "loading";
+      setTimeout(() => this.finalizeStore(data), 1800);
+    },
+    finalizeStore(data) {
+      const id = "store-" + Date.now();
+      // Step 2 products land in the store catalog as live records (Epic A).
+      const carried = (data.curatedProducts || []).map((c, i) => ({
+        ...c,
+        id: "prod-" + id + "-" + i,
+        status: "live",
+        ready: true,
+        teamSetting: c.teamSetting || "fan-gear",
+        optRequired: c.optRequired ?? c.teamSetting === "team-required",
+        optSupplied: c.optSupplied ?? c.teamSetting === "team-supplied",
+        pricing: c.pricing || defaultPricing(),
+      }));
+      let stock;
+      if (INTEGRATION.on) {
+        // Integrated workspace: the Stock Vault items the wizard didn't remove.
+        const removed = new Set(data.vaultRemoved || []);
+        stock = vaultDefaultProducts(id).filter((p) => !removed.has(p.id.replace(id + "-vault-", "")));
+      } else {
+        // Every new store starts with the full Stock Vault (Pro Stock + Sideline Stock),
+        // hidden until the rep turns each item's Visibility on.
+        const carriedSrc = new Set(carried.map((c) => c.srcId));
+        stock = PROSTOCK_ITEMS.filter((v) => !carriedSrc.has(v.id)).map((v, i) => {
+          const cw = hcmDefaultCw(v);
+          return { id: "stock-" + id + "-" + i, srcId: v.id, title: v.title, sku: v.sku, brand: "Prolook", source: v.source, category: vaultStoreCategory(v), storeCategory: vaultStoreCategory(v), stock: "in", deco: "none", decoratable: true,
+            photo: cw && cw.front, colorway: cw && cw.name, colorways: v.colorways, status: "live", hidden: true, ready: true, srcKind: "vault", teamSetting: "fan-gear", rosters: [],
+            subtitle: v.sku + " · Prolook " + v.source + " · added automatically", retail: v.retail, base: v.base, priceAdult: v.priceAdult, priceYouth: v.priceYouth, pricing: vaultPricing(v.base, v.retail), __autoStock: true };
+        });
+      }
+      const newStore = {
+        id, ...data,
+        products: INTEGRATION.on ? carried.concat(stock) : [...carried, ...stock],
+        pendingProducts: [],
+        __fresh: true,
+        __userCreated: true, // persisted to localStorage so the store survives reloads
+        ownership: "mine", // created by the active session user
+        createdBy: data.createdBy || rptViewer(this.stores),
+        revenue: 0,
+      };
+      this.stores = [...this.stores, newStore];
+      this.activeStoreId = id;
+      this.dashboardTab = carried.length ? "products" : "general";
+      this.screen = "dashboard";
+      this.toast = INTEGRATION.on ? "Store created successfully" : (stock.length ? "Store created — " + stock.length + " stock items added, hidden until you turn them on" : "Store created successfully");
+      // First-ever store → launch the contextual onboarding tour.
+      if (this.isFirstStore) this.tourRun = true;
+    },
     // CANCEL in the wizard asks first (CancelConfirmModal).
     handleCancel() { this.showCancelModal = true; },
     confirmCancel() {
@@ -281,6 +351,15 @@ export default {
       this.templateMode = false;
       if (this.pendingNav) { const fn = this.pendingNav; this.pendingNav = null; fn(); return; }
       this.screen = this.stores.length > 0 ? "list" : "empty";
+    },
+    goTeamStores() {
+      // Reps land straight on the Team Stores Overview (the standalone landing page replaced the portal).
+      this.navTab = "overview"; this.activeLeagueId = null; this.activeGroupId = null; this.screen = "overview";
+    },
+    // The prolook.com header's nav (GlobalHeader).
+    onNavigate(id) {
+      if (id === "team-stores") this.goTeamStores();
+      else this.screen = "overview";
     },
     // ─── Team Stores section sub-tabs (Overview / Stores / Leagues) ───
     goOverviewHome() {

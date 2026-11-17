@@ -121,7 +121,7 @@ Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected an
 
 ## Module 3: Add Store wizard
 
-Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame, **Step 1, Basics** (part 2a) and **Add Products** (part 2b: Step 2 of an Individual store, Step 3 of a League store).
+Click **Add Store** on the Overview or the Stores page (prototype: the same on `Workspace.dc.html`). [BRD M-3.0](https://docs.google.com/document/d/1DUE7F9qPHIC-QJt0qszqAVCHlxboWAwP/edit) FR-3.1. Converted so far: the wizard's frame, **Step 1, Basics** (part 2a), **Add Products** (part 2b: Step 2 of an Individual store, Step 3 of a League store) and **Review & Deploy** with **SAVE AND CONTINUE** (part 2c).
 
 | On Basics | How to see it |
 |---|---|
@@ -146,9 +146,16 @@ Click **Add Store** on the Overview or the Stores page (prototype: the same on `
 | Catalog Templates | ⋯ on a template: **Rename template** (type, Enter) and **Delete template** |
 | Customize New Product | The button at the top right: Men / Women, pick a sport, a design, **Add to Store** in the builder, then review and **Add to Store** |
 
+| On Review & Deploy (**CONTINUE** on Add Products) | How to see it |
+|---|---|
+| Setup summary | Every Basics choice: web address, connected team, sports, schedule, point of contact, sales tax (green "Tax Exempt" when off), numbers, products, shipping. **Ship to Team Manager** without an address shows "Not set" in amber |
+| Products | The products added, with **Edit products** back to Add Products; "No products were added" when there are none |
+| Managers | The Team Manager (Primary Contact) and any added managers; a League store says "League Managers" and lists its divisions and teams |
+| SAVE AND CONTINUE | "Creating your store…" for 1.8 s, then the new store opens (on Products when it has products, otherwise General) with a message |
+
 **Navy accent:** `__paritySetProps({ wizardAccent: 'navy' })`. Prototype: settings panel, under Accent, **Navy**.
 
-**Not converted yet, so empty in Vue** (the next parts of Module 3): Divisions & Teams (Step 2 of a League store), Review & Deploy, and **SAVE AND CONTINUE**'s store creation. So the League → Individual warning ("Switching removes your divisions & teams") and Add Products' **Assign to Teams**, which both need a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault page, which starts the wizard with Add Products pre-loaded.
+**Not converted yet, so empty in Vue** (the next parts of Module 3): Divisions & Teams (Step 2 of a League store), and the new store's Products and General tabs that SAVE AND CONTINUE opens. So the League → Individual warning ("Switching removes your divisions & teams") and Add Products' **Assign to Teams**, which both need a team added in Divisions & Teams, can't be reached in Vue yet. Also not converted: the Marucci workspace's Stock Vault page, which starts the wizard with Add Products pre-loaded.
 
 **Prototype bugs kept, for the frontend dev:**
 - In Store Point of Contact, the Custom email or phone field loses focus after each keystroke, so typing keeps only one character at a time (the prototype remounts those rows on every render).

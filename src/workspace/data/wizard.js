@@ -191,3 +191,18 @@ export const STATE_TAX_RATES = {
   "South Dakota": 4.20, Tennessee: 7.00, Texas: 6.25, Utah: 6.10, Vermont: 6.00, Virginia: 5.30,
   Washington: 6.50, "West Virginia": 6.00, Wisconsin: 5.00, Wyoming: 4.00,
 };
+
+// Teams the review step names as the store's Connected Team (Review & Deploy).
+export const WIZARD_TEAMS = [
+  { value: "carlsbad-padres", label: "Carlsbad Padres" },
+  { value: "valley-hoyas", label: "Valley Hoyas" },
+  { value: "north-rams", label: "North Rams" },
+  { value: "honey-badgers", label: "Honey Badgers" },
+  { value: "general-fc", label: "General FC" },
+  { value: "stokes-athletics", label: "Stokes Athletics" },
+  { value: "create-new", label: "+ Connect a new team…" },
+];
+
+export const FORMAT_LABELS = { popup: "Temporary Pop-Up", locker: "Always-On Locker", redemption: "Redemption Store" };
+
+export const SHIP_LABELS = { coach: "Ship to Team Manager", home: "Direct-To-Home Delivery" };
