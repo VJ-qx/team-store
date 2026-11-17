@@ -21,6 +21,14 @@
 //            --pixel-tolerance <n>     per-channel colour difference ignored as noise (default 10)
 //            --keep                    keep the temporary git worktree for inspection
 //
+// Scenario options (besides page, ready, states, …):
+//   scope: '<css selector>'   compare only that element: its accessibility tree, the form fields inside it,
+//                             and a screenshot of its box (for example a mobile app drawn inside a device frame)
+//   viewports: [{ width, height, b: { width, height } }]   side B opens at its own size (for example the
+//                             Vue version at a phone's size while the prototype shows its frame on a desktop)
+//   setup: [steps]            run on each side after it loads, before the first checkpoint (steps can be
+//                             `on: 'prototype'` / `on: 'vue'`, for example hiding a prototype-only frame)
+//
 // A side (--a / --b) is a git ref (served from a temporary worktree), "." (the working tree),
 // or an http(s) URL used as-is (for example a Vite dev server).
 // Exit code: 0 = identical, 1 = differences found, 2 = the run itself failed.
@@ -115,7 +123,9 @@ const SEEDED_RANDOM = `(() => {
 
 // Console messages from the prototype host's in-browser JSX compiler (Babel), not from the page itself.
 // A Vue build never prints them, so they are left out of the comparison.
-const RUNTIME_NOISE = [/^\[BABEL\] Note: The code generator has deoptimised the styling of /];
+// Console messages from the prototype runtime, not the page: Babel's notes, and the browser rejecting a
+// Claude Design template's raw {{ }} binding in an SVG attribute before the runtime fills it in.
+const RUNTIME_NOISE = [/^\[BABEL\] Note: The code generator has deoptimised the styling of /, /^Error: <\w+> attribute [\w-]+: .*"\{\{/];
 
 async function openPage(browser, viewport, { seedRandom = false } = {}) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
@@ -280,14 +290,14 @@ async function compareStyles(pa, pb) {
 }
 
 // ── capture: behavior mode ──
-async function captureBehavior(page) {
-  const aria = await page.locator('body').ariaSnapshot().catch((e) => `(accessibility snapshot failed: ${e.message})`);
-  const fields = await page.evaluate(() => Array.from(document.querySelectorAll('input, select, textarea'))
+async function captureBehavior(page, scope) {
+  const aria = await page.locator(scope || 'body').first().ariaSnapshot().catch((e) => `(accessibility snapshot failed: ${e.message})`);
+  const fields = await page.evaluate((sc) => Array.from((sc ? document.querySelector(sc) || document : document).querySelectorAll('input, select, textarea'))
     .filter((el) => el.type !== 'hidden' && (el.offsetWidth || el.offsetHeight || el.getClientRects().length))
     .map((el) => ({
       field: el.getAttribute('aria-label') || el.getAttribute('placeholder') || el.getAttribute('name') || el.id || el.tagName.toLowerCase(),
       type: el.type, value: el.value, checked: el.type === 'checkbox' || el.type === 'radio' ? el.checked : undefined, disabled: el.disabled,
-    }))).catch(() => []);
+    })), scope || null).catch(() => []);
   const storage = await page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } })).catch(() => '{}');
   const title = await page.title().catch(() => '');
   return { aria, fields, storage, title };
@@ -417,11 +427,14 @@ try {
   browser = await launch();
   console.log(`Parity (${opts.mode}): ${scenarioName}\n  A: ${sides[0].desc}\n  B: ${sides[1].desc}`);
 
+  const scope = scenario.scope || null;
   for (const viewport of viewports) {
-    const vp = `${viewport.width}×${viewport.height}`;
+    const sizeB = viewport.b || viewport;
+    const vp = `${viewport.width}×${viewport.height}` + (viewport.b ? ` / ${sizeB.width}×${sizeB.height}` : '');
     for (const state of states) {
       const pageOpts = { seedRandom: !!scenario.seedRandom };
-      const pages = await Promise.all([openPage(browser, viewport, pageOpts), openPage(browser, viewport, pageOpts)]);
+      const sideKinds = opts.approved ? ['vue', 'vue'] : ['prototype', opts.mode === 'behavior' ? 'vue' : 'prototype'];
+      const pages = await Promise.all([openPage(browser, { width: viewport.width, height: viewport.height }, pageOpts), openPage(browser, { width: sizeB.width, height: sizeB.height }, pageOpts)]);
       const where = `${vp} · ${state.name}`;
       const dir = join(outDir, slug(vp), slug(state.name));
       try {
@@ -431,6 +444,7 @@ try {
           await p.page.goto(sides[i].url(scenario.page || '') + (state.query || ''), { waitUntil: 'load', timeout: 60000 });
           if (scenario.ready) await p.page.locator(scenario.ready).first().waitFor({ state: 'visible', timeout: 60000 });
           if (Object.keys(props).length && !(await applyProps(p.page, props))) return `${sides[i].label} has no way to set props (no window.__dcSetProps or window.__paritySetProps)`;
+          for (const s of scenario.setup || []) if (!s.on || s.on === sideKinds[i]) await runStep(p.page, s);
           await p.page.clock.install();
           return null;
         }));
@@ -486,10 +500,12 @@ try {
           if (!navigated) {
             if (opts.mode === 'styles') diffs.push(...await compareStyles(pages[0].page, pages[1].page));
             else {
-              const caps = await Promise.all(pages.map((p) => captureBehavior(p.page)));
+              const caps = await Promise.all(pages.map((p) => captureBehavior(p.page, scope)));
               diffs.push(...compareBehavior(caps[0], caps[1]));
             }
-            const shots = await Promise.all(pages.map((p) => p.page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' })));
+            const shots = await Promise.all(pages.map((p) => (scope
+              ? p.page.locator(scope).first().screenshot({ animations: 'disabled', caret: 'hide' })
+              : p.page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' }))));
             if (opts.approved) {
               mkdirSync(dir, { recursive: true });
               const file = join(dir, `${String(n).padStart(2, '0')}.png`);

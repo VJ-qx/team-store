@@ -4,11 +4,16 @@
      Stores page and the Add Store wizard with its store creation (Module 3). The routing logic is the
      prototype's; screens that are not converted yet (Earnings, Orders, …) render nothing.
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
-     data/settings.js), the #frame= deep links and the frame overview grid. -->
+     data/settings.js), the #frame= deep links and the frame overview grid.
+     Below 744px the Overview shows the mobile design instead ("Workspace Mobile.dc.html", MobileWorkspace);
+     744px and up is unchanged. The mobile prototype exists for this workspace only, so the integrated
+     workspace keeps its desktop screens at every width. -->
 <template>
+  <!-- ─── Below 744px: the mobile Overview ─── -->
+  <MobileWorkspace v-if="mobileView" />
   <!-- ─── No-access flow: the gate, the application form, and the review states are full-viewport
        standalone pages (no prolook.com shell) ─── -->
-  <template v-if="screen === 'gate' || screen === 'access-form' || screen === 'access-pending' || screen === 'stripe-verify'">
+  <template v-else-if="screen === 'gate' || screen === 'access-form' || screen === 'access-pending' || screen === 'stripe-verify'">
     <div v-if="screen === 'gate'" :style="{ minHeight: '100vh', background: '#fbfbfc', minWidth: '1280px', display: 'flex', flexDirection: 'column' }">
       <TeamStoresHeader active="" :onChange="() => {}" :accountName="accountName" :onMenuSelect="goLandingFile" :onGoLanding="goLandingFile" />
       <div :style="{ display: 'flex', minHeight: 'calc(100vh - 92px)' }">
@@ -80,6 +85,7 @@ import GlobalHeader from './components/header/GlobalHeader.vue';
 import TeamStoresHeader from './components/header/TeamStoresHeader.vue';
 import UtilityBar from './components/header/UtilityBar.vue';
 import OverviewDashboard from './components/overview/OverviewDashboard.vue';
+import MobileWorkspace from './components/mobile/MobileWorkspace.vue';
 import ManageStoreWorkspace from './components/store/ManageStoreWorkspace.vue';
 import ArchiveStoreModal from './components/stores/ArchiveStoreModal.vue';
 import RestoreStoreModal from './components/stores/RestoreStoreModal.vue';
@@ -93,10 +99,12 @@ import WelcomeSSOModal from './components/welcome/WelcomeSSOModal.vue';
 // The page the access screens, the account menu and logout send the rep to. It doesn't exist in the
 // handover (the landing page is now "Landing Page.dc.html"); kept as in the prototype.
 const LANDING_FILE = "Team Stores Landing.dc.html";
+// The mobile design's breakpoint: below 744px the workspace shows the mobile screens.
+const MOBILE_QUERY = "(max-width: 743px)";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, CancelConfirmModal, CreateForm, FeatureGate, GlobalHeader, LoadingOverlay, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, UtilityBar, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, ArchiveStoreModal, CancelConfirmModal, CreateForm, FeatureGate, GlobalHeader, LoadingOverlay, ManageStoreWorkspace, MobileWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StoreList, StripeVerifying, TeamStoresHeader, Toast, UtilityBar, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -151,6 +159,8 @@ export default {
       restoreTargetId: null,
       // Header logo → Overview. Bumping the key remounts the dashboard when already there (acts as a refresh).
       overviewKey: 0,
+      // Below 744px the Overview shows the mobile design.
+      narrow: (() => { try { return window.matchMedia(MOBILE_QUERY).matches; } catch (e) { return false; } })(),
     };
   },
   computed: {
@@ -171,6 +181,8 @@ export default {
     // Store-editor screens drop the storefront chrome entirely.
     inEditor() { return this.screen === "dashboard" || this.screen === "customizer"; },
     headerActive() { return this.inEditor ? "none" : (this.screen === "home" ? "none" : "team-stores"); },
+    // The mobile Overview (this workspace only; see the header).
+    mobileView() { return !INTEGRATION.on && this.narrow && this.screen === "overview"; },
     showSubTabs() {
       const { screen } = this;
       return !this.inEditor && (screen === "wsettings" || screen === "vault" || screen === "overview" || screen === "orders" || screen === "reports" || screen === "leagues" || screen === "empty" || screen === "account" || screen === "form" || screen === "template" || screen === "template-repo" || (screen === "list" && !this.activeLeagueId));
@@ -200,6 +212,14 @@ export default {
     }
   },
   mounted() {
+    // The window crossing 744px switches between the mobile and desktop Overview. It reads the size 150 ms after
+    // the last change, so a momentary size (while a window is being resized, or a screenshot tool briefly
+    // resizing the page) doesn't switch the screen and back.
+    try {
+      this.narrowQuery = window.matchMedia(MOBILE_QUERY);
+      this.onNarrow = () => { clearTimeout(this.narrowTimer); this.narrowTimer = setTimeout(() => { this.narrow = this.narrowQuery.matches; }, 150); };
+      this.narrowQuery.addEventListener("change", this.onNarrow);
+    } catch (e) {}
     // The prototype's effects, in their order.
     this.autoOpenGuide();
     this.persistCreatedStores();
@@ -218,6 +238,10 @@ export default {
         if (!seen) this.showWelcome = true;
       }
     }
+  },
+  beforeUnmount() {
+    if (this.narrowQuery) this.narrowQuery.removeEventListener("change", this.onNarrow);
+    clearTimeout(this.narrowTimer);
   },
   methods: {
     recordStoreVisit,

@@ -73,14 +73,17 @@ function settings(props, vueOnly = false) {
 const states = scenario.states || [];
 // Approved changes the prototype doesn't have yet: checked on the Vue version only, so listed in behavior mode.
 const approved = behavior ? scenario.approved || [] : [];
-const viewports = (scenario.viewports || [{ width: 1440, height: 900 }]).map((v) => `${v.width}×${v.height}`).join(', ');
+// A viewport with its own size for side B (for example the Vue workspace at a phone's size) names both.
+const viewports = (scenario.viewports || [{ width: 1440, height: 900 }])
+  .map((v) => (v.b ? `${v.width}×${v.height} window for the original and a ${v.b.width}×${v.b.height} one for the new version (the browser's device toolbar)` : `${v.width}×${v.height} window`))
+  .join(', ');
 const md = [
   `# Manual check: ${name}`,
   '',
   behavior
     ? 'Vue step: the Vue version must look and behave exactly like the prototype.'
     : 'SCSS step: the new version must look and behave exactly like the original.',
-  `Do every item in both versions and compare them. The automated check uses a ${viewports} window; use the same size.`,
+  `Do every item in both versions and compare them. The automated check uses a ${viewports}; use the same size.`,
   ...(scenario.seedRandom
     ? ['', 'This page shows random sample data, so numbers can differ between the two tabs. Compare layout and styling, not the figures. (The automated check gives both sides the same random numbers.)']
     : []),
