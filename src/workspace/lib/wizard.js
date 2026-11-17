@@ -5,7 +5,7 @@
 // Saved pick-up locations are WS_PICKUP (data/pickup.js), the prototype's window.__wsPickup.
 import { INTEGRATION } from '../integration.js';
 import { WS_PICKUP } from '../data/pickup.js';
-import { WIZARD_STEPS, WIZARD_STEPS_LEAGUE } from '../data/wizard.js';
+import { SALESPEOPLE, WIZARD_STEPS, WIZARD_STEPS_LEAGUE } from '../data/wizard.js';
 
 export function wsPickupLocations() { return WS_PICKUP.filter((l) => l.enabled); }
 
@@ -133,3 +133,19 @@ export function annSanitize(html) {
 // Labels for the "Started from a template" banner.
 export const tplTypeLabel = (k) => k === "single" ? "Individual Team Store" : "League Store";
 export const tplDistLabel = (k) => k === "home" ? "Direct-To-Home" : "Ship to Team Manager";
+
+// Review & Deploy: the projected yield (team-required items' team profit per athlete).
+export function estimateYield(data, athletes) {
+  const perAthlete = (data.curatedProducts || [])
+    .filter((p) => p.teamSetting === "team-required")
+    .reduce((sum, p) => sum + (p.teamProfit || 0), 0);
+  return perAthlete * athletes;
+}
+
+// Compact "point of contact" summary for the review step.
+export function contactSummary(data) {
+  const emailVal = data.contactEmailMode === "salesperson" ? ((SALESPEOPLE.find((s) => s.value === data.contactEmailSalesperson) || {}).email || "Salesperson")
+    : data.contactEmailMode === "custom" ? (data.contactEmailCustom || "Custom email")
+    : (data.email || "Team Manager email");
+  return emailVal;
+}

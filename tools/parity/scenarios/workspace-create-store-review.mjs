@@ -12,6 +12,15 @@
 // The wizard scrolls up smoothly after a step change; states make scrolling instant first, so both sides
 // are captured at rest.
 // The same states run on the integrated page in marucci-workspace-create-store-review.mjs.
+//
+// Known differences in the Vue step (behavior mode), left for later (2026-11-17). Every checkpoint on Review
+// & Deploy and "Creating your store…" matches; 4 of 112 differ on both workspaces, in screens the Vue app
+// doesn't have yet:
+// - "review league" goes through Step 2, Divisions & Teams (part 2d): Vue shows an empty card there, so
+//   "New Team" can't be clicked and the state stops.
+// - "review save": after SAVE AND CONTINUE the new store opens on its Products tab, which isn't converted
+//   yet (Vue shows the store page without the tab's contents). The store itself, the message and the Store
+//   Setup Guide match.
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 const button = (name, exact = true) => (exact ? `role=button[name="${name}" s]` : `role=button[name=/${escapeRegex(name)}/i]`);
