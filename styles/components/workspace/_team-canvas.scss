@@ -1,0 +1,894 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the team editor (TeamCanvasView) that the wizard's Step 2, Divisions & Teams,
+// shows in its wizard mode, and a store's My Team(s) tab in full: the canvas, division and team nodes
+// (CanvasParentNode, CanvasTeamNode, CanvasAddTeamTile), connection handles (CanvasHandle), the side panel
+// (CanvasPanelField) and the confirmations (CanvasConfirmModal) (Module 3, FR-3.1).
+// Values from data stay inline: division and team colors, the dragged line's size, and the handle's
+// position and fill (its side comes first, as a spread).
+// Not reachable from the wizard, so not checked yet: the My Team(s)-only parts (branding note, team code
+// note, managers, Open Roster, the Roster Bank, product chips and the product detail pop-up).
+
+.wx-canvas-handle {
+  position: absolute;
+}
+
+.wx-canvas-division {
+  position: relative;
+  border-radius: 10px;
+  padding: 14px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: $white;
+  box-shadow: 0 1px 2px rgba(20,20,30,.08);
+  outline: none;
+  outline-offset: 4px;
+  transition: box-shadow .12s;
+}
+
+.wx-canvas-division--target {
+  box-shadow: 0 0 0 2px $white, 0 0 0 4px $ok;
+}
+
+.wx-canvas-division--selected {
+  box-shadow: 0 0 0 2px $white, 0 0 0 4px $ink;
+}
+
+.wx-canvas-division--can-target {
+  outline: 2px dashed rgba(14,14,16,.3);
+}
+
+.wx-canvas-division__initials {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.wx-canvas-division__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-canvas-division__name {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-canvas-division__meta {
+  margin-top: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.75);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-canvas-division__add {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 0;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.18);
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.wx-canvas-team {
+  display: flex;
+  align-items: stretch;
+}
+
+.wx-canvas-team__rail {
+  width: 18px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wx-canvas-team__rail-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #d8d8de;
+}
+
+.wx-canvas-team__rail-branch {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 2px;
+  background: #d8d8de;
+  transform: translateY(-1px);
+}
+
+.wx-canvas-team__card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  padding: 10px 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 2px rgba(20,20,30,.05);
+  transition: box-shadow .12s;
+}
+
+.wx-canvas-team__card--target {
+  box-shadow: 0 0 0 2px $ok;
+}
+
+.wx-canvas-team__card--selected {
+  box-shadow: 0 0 0 2px $ink;
+}
+
+.wx-canvas-team__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wx-canvas-team__badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10.5px;
+}
+
+.wx-canvas-team__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.wx-canvas-team__name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-canvas-team__meta {
+  margin-top: 1px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: $muted-2;
+  letter-spacing: .04em;
+}
+
+.wx-canvas-team__bank {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #8a5f10;
+  background: #fdf6e7;
+  border: 1px solid #efdcae;
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+.wx-canvas-team__prods {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 7px;
+  margin-top: 8px;
+  border-top: 1px solid #f3f3f4;
+}
+
+.wx-canvas-team__prods-empty {
+  font-size: 10px;
+  font-weight: 700;
+  color: $muted;
+  background: $divider;
+  border: 1px solid $zinc-200;
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.wx-canvas-team__prods-more {
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 5px;
+  background: #f7f7f9;
+  border: 1px solid $line-2;
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: $muted;
+  box-sizing: border-box;
+}
+
+.wx-canvas-team__prods-spacer {
+  flex: 1;
+}
+
+.wx-canvas-team__prods-add {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  border: 1px dashed #c9c9cf;
+  background: transparent;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.wx-canvas-add-team {
+  display: flex;
+  align-items: stretch;
+}
+
+.wx-canvas-add-team__rail {
+  width: 18px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wx-canvas-add-team__rail-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 50%;
+  width: 2px;
+  background: #d8d8de;
+}
+
+.wx-canvas-add-team__rail-branch {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 2px;
+  background: #d8d8de;
+  transform: translateY(-1px);
+}
+
+.wx-canvas-add-team__btn {
+  flex: 1;
+  margin: 5px 0;
+  background: transparent;
+  border: 1px dashed #c9c9cf;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: $muted;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wx-canvas-field {
+  margin-bottom: 18px;
+}
+
+.wx-canvas-field__label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.wx-canvas-confirm {
+  padding: 28px 28px 24px;
+}
+
+.wx-canvas-confirm__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.wx-canvas-confirm__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: $divider;
+  color: $ink;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-canvas-confirm__icon--danger {
+  background: #fdecec;
+  color: $red-ink;
+}
+
+.wx-canvas-confirm__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.wx-canvas-confirm__body {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: $muted;
+  line-height: 1.55;
+}
+
+.wx-canvas-confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.wx-canvas-confirm__cancel {
+  background: $white;
+  border: 1px solid $zinc-300;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: $ink;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-canvas-confirm__ok {
+  background: $ink;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: $white;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-canvas-confirm__ok--danger {
+  background: $red-ink;
+}
+
+.wx-team-canvas__panel-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.wx-team-canvas__panel-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.wx-team-canvas__panel-title {
+  min-width: 0;
+}
+
+.wx-team-canvas__panel-kind {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  color: $muted-2;
+  text-transform: uppercase;
+}
+
+.wx-team-canvas__panel-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: $ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-team-canvas__input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid $zinc-300;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  color: $ink;
+  outline: none;
+  font-family: inherit;
+  background: $white;
+}
+
+.wx-team-canvas__note {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: $muted-2;
+  line-height: 1.5;
+}
+
+.wx-team-canvas__fulfillment {
+  font-size: 12.5px;
+  color: #4b4b52;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.wx-team-canvas__strong {
+  color: $ink;
+}
+
+.wx-team-canvas__settings-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  color: $ink;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-team-canvas__danger-zone {
+  border-top: 1px solid $line-2;
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
+.wx-team-canvas__danger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid #f0c9c5;
+  color: $red-ink;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-team-canvas__panel-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.wx-team-canvas__division {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c2410c;
+}
+
+.wx-team-canvas__division--assigned {
+  color: $ink;
+}
+
+.wx-team-canvas__division-note {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: $muted-2;
+  line-height: 1.5;
+}
+
+.wx-team-canvas__manager {
+  font-size: 12.5px;
+  color: #c2410c;
+  font-weight: 700;
+}
+
+.wx-team-canvas__manager--set {
+  color: $ink;
+}
+
+.wx-team-canvas__manager-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  color: $ink;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-team-canvas__roster-note {
+  font-size: 11.5px;
+  color: $muted-2;
+  line-height: 1.5;
+}
+
+.wx-team-canvas__summary-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.wx-team-canvas__summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f3f4;
+}
+
+.wx-team-canvas__summary-label {
+  font-size: 13px;
+  color: $muted;
+  font-weight: 600;
+}
+
+.wx-team-canvas__summary-value {
+  font-size: 14px;
+  color: $ink;
+  font-weight: 800;
+}
+
+.wx-team-canvas__summary-help {
+  margin: 16px 0 20px;
+  font-size: 12.5px;
+  color: $muted;
+  line-height: 1.6;
+}
+
+.wx-team-canvas__summary-tip {
+  margin-top: 20px;
+  border: 1px dashed #d8d8de;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  color: $muted-2;
+  line-height: 1.55;
+  background: #fafafb;
+}
+
+.wx-team-canvas {
+  padding-bottom: 100px;
+}
+
+.wx-team-canvas__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.wx-team-canvas__head-text {
+  flex: 1;
+}
+
+.wx-team-canvas__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: $muted-2;
+  text-transform: uppercase;
+}
+
+.wx-team-canvas__stats {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: $muted;
+}
+
+.wx-team-canvas__layout {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.wx-team-canvas__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-team-canvas__board {
+  position: relative;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  background: $bg-app;
+  background-image: radial-gradient(#e6e6ea 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 24px;
+  overflow-x: auto;
+  min-height: 480px;
+  box-sizing: border-box;
+}
+
+.wx-team-canvas__empty {
+  padding: 110px 20px;
+  text-align: center;
+}
+
+.wx-team-canvas__empty-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-team-canvas__empty-text {
+  margin: 8px auto 20px;
+  font-size: 13px;
+  color: $muted;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.wx-team-canvas__columns {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.wx-team-canvas__column {
+  width: 230px;
+  flex-shrink: 0;
+}
+
+.wx-team-canvas__column-teams {
+  padding-left: 14px;
+}
+
+.wx-team-canvas__unassigned {
+  border: 1px dashed #c9c9cf;
+  border-radius: 12px;
+  padding: 12px 12px 8px;
+  background: rgba(255,255,255,.6);
+}
+
+.wx-team-canvas__unassigned-title {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  color: $muted-2;
+  text-transform: uppercase;
+  padding: 0 4px 4px;
+}
+
+.wx-team-canvas__unassigned-hint {
+  font-size: 11px;
+  color: #b0b0b6;
+  padding: 4px 4px 6px;
+  line-height: 1.45;
+}
+
+.wx-team-canvas__drag-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.wx-team-canvas__bank {
+  margin-top: 16px;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(20,20,30,.04);
+}
+
+.wx-team-canvas__bank-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f3f3f4;
+}
+
+.wx-team-canvas__bank-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  background: #fdf6e7;
+  color: #8a5f10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wx-team-canvas__bank-title {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #3f3f46;
+}
+
+.wx-team-canvas__bank-desc {
+  font-size: 12px;
+  color: $muted-2;
+}
+
+.wx-team-canvas__bank-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-top: 1px solid #f3f3f4;
+}
+
+.wx-team-canvas__bank-row--first {
+  border-top: none;
+}
+
+.wx-team-canvas__bank-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 10.5px;
+}
+
+.wx-team-canvas__bank-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-team-canvas__bank-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wx-team-canvas__bank-meta {
+  font-size: 11.5px;
+  color: $muted-2;
+  margin-top: 1px;
+}
+
+.wx-team-canvas__bank-count {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #8a5f10;
+  background: #fdf6e7;
+  border: 1px solid #efdcae;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.wx-team-canvas__bank-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $white;
+  border: 1px solid $zinc-300;
+  color: $ink;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wx-team-canvas__bank-empty {
+  padding: 24px 20px;
+  text-align: center;
+  font-size: 12.5px;
+  color: $muted-2;
+}
+
+.wx-team-canvas__store-bank {
+  margin-top: 16px;
+}
+
+.wx-team-canvas__store-bank-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  background: #fdf6e7;
+  border: 1px solid #efdcae;
+  border-radius: 10px;
+}
+
+.wx-team-canvas__store-bank-icon {
+  color: #8a5f10;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.wx-team-canvas__store-bank-text {
+  font-size: 12.5px;
+  color: #6b5514;
+  line-height: 1.55;
+}
+
+.wx-team-canvas__store-bank-strong {
+  color: #54430e;
+}
+
+.wx-team-canvas__panel {
+  width: 320px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 16px;
+  background: $white;
+  border: 1px solid $line-2;
+  border-radius: 12px;
+  padding: 20px 20px;
+  box-shadow: 0 1px 2px rgba(20,20,30,.04);
+  box-sizing: border-box;
+}
+
+.wx-team-canvas__detail {
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 12px 28px 28px;
+  box-sizing: border-box;
+}
