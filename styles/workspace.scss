@@ -43,6 +43,8 @@
 @use "components/workspace/price-settings";
 @use "components/workspace/team-assign";
 @use "components/workspace/customize-product";
+@use "components/workspace/wizard-review";
+@use "components/workspace/loading-overlay";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";
