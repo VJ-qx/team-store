@@ -1,0 +1,423 @@
+@use "../../variables" as *;
+
+// Moved from the inline styles in prototype/workspace-app.jsx and workspace-app-integrated.jsx of the wizard's last step, Review & Deploy (Step6Review): the summary rows (SummaryRowWiz), the
+// products added (ReviewProducts), the managers, a League store's Divisions & Teams, and the requirements and
+// Connected Team panels of a store started from another store (UatReviewExtras) (Module 3, FR-3.1).
+// Values from data stay inline: the logo and division colors, and the accent on the summary and prices.
+// Not reachable, so not checked: UatReviewExtras, and ReviewProducts' "Products from …" note and remove
+// button (they need a store started from another store, which the wizard drops).
+
+.wx-review-extras__team {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wx-review-extras__team-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.wx-review-extras__team-mono {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: $white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  font-family: $font-display;
+}
+
+.wx-review-extras__team-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-review-extras__team-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-review-extras__team-note {
+  font-size: 12.5px;
+  color: $muted;
+  margin-top: 2px;
+}
+
+.wx-review-extras__reqs {
+  display: flex;
+  flex-direction: column;
+}
+
+.wx-review-extras__req {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: none;
+}
+
+.wx-review-extras__req--divided {
+  border-top: 1px solid $divider;
+}
+
+.wx-review-extras__req-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #b06f1e;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.wx-review-extras__req-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-review-extras__req-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wx-review-extras__req-desc {
+  font-size: 12.5px;
+  color: $muted;
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+.wx-review-extras__req-fix {
+  border: 0;
+  background: none;
+  color: $ink;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  flex-shrink: 0;
+}
+
+.wx-review-extras__rosters {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid $divider;
+}
+
+.wx-review-extras__rosters-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: $zinc-300;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.wx-summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid $line-2;
+}
+
+.wx-summary-row--last {
+  border-bottom: none;
+}
+
+.wx-summary-row__label {
+  font-size: 13.5px;
+  color: $muted;
+  flex-shrink: 0;
+}
+
+.wx-summary-row__value {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+  word-break: break-word;
+  font-family: inherit;
+}
+
+.wx-summary-row__value--mono {
+  font-family: $font-mono;
+}
+
+.wx-review-products__empty {
+  font-size: 13px;
+  color: $muted-2;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.wx-review-products__hint {
+  display: inline-flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.wx-review-products__edit {
+  border: 0;
+  background: none;
+  color: $ink;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.wx-review-products__source-note {
+  font-size: 12.5px;
+  color: $muted;
+  line-height: 1.55;
+  margin: -6px 0 16px;
+}
+
+.wx-review-products__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.wx-review-products__card {
+  border: 1px solid $line-2;
+  border-radius: 10px;
+  overflow: hidden;
+  background: $white;
+  position: relative;
+}
+
+.wx-review-products__remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid $zinc-200;
+  background: $white;
+  color: $zinc-600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.wx-review-products__media {
+  aspect-ratio: 1 / 1;
+  background: $bg-soft-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.wx-review-products__photo {
+  width: 78%;
+  height: 78%;
+}
+
+.wx-review-products__info {
+  padding: 12px 12px 12px;
+}
+
+.wx-review-products__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: $ink;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-review-products__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wx-review-products__category {
+  font-size: 11.5px;
+  color: $muted-2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-review-products__price {
+  font-size: 12.5px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.wx-review__body {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.wx-review__manager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid $line-2;
+}
+
+.wx-review__manager--last {
+  border-bottom: none;
+}
+
+.wx-review__manager-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background: $divider;
+  color: $muted;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.wx-review__manager-avatar--primary {
+  background: $ink;
+  color: $white;
+}
+
+.wx-review__manager-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.wx-review__manager-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.wx-review__manager-contact {
+  font-size: 12px;
+  color: $muted-2;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wx-review__primary-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: $ok-ink;
+  background: $ok-soft;
+  border-radius: 999px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.wx-review__empty {
+  font-size: 13px;
+  color: $muted-2;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.wx-review__divisions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wx-review__division-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.wx-review__division-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.wx-review__division-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: $ink;
+}
+
+.wx-review__division-count {
+  font-size: 11.5px;
+  color: $muted-2;
+}
+
+.wx-review__division-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 18px;
+}
+
+.wx-review__division-none {
+  font-size: 12px;
+  color: #c0c0c6;
+  font-style: italic;
+}
+
+.wx-review__team-chip {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #4b4b52;
+  background: #f4f4f6;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.wx-review__standalone-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: $muted-2;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.wx-review__standalone-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wx-review__note {
+  font-size: 12.5px;
+  color: $muted-2;
+  text-align: center;
+  margin: 24px auto 0;
+  max-width: 620px;
+  line-height: 1.55;
+  font-style: italic;
+}

@@ -6068,36 +6068,36 @@ function UatReviewExtras({ data, onEditBasics }) {
     <React.Fragment>
       {prov.mode === "full" && (
         <WizardPanel label="Connected Team" hint="Copied from the source — change it if this store is for a different team" style={{ marginBottom: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <div className="wx-review-extras__team">
             {data.teamLogo && data.teamLogo.url
-              ? <img src={data.teamLogo.url} alt="" style={{ width: 44, height: 44, objectFit: "contain" }} />
-              : <span style={{ width: 44, height: 44, borderRadius: "50%", background: logoColor, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, fontFamily: "Archivo, sans-serif" }}>{(data.teamLogo && data.teamLogo.mono) || String(team).slice(0, 2).toUpperCase()}</span>}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: "#0e0e10" }}>{team}</div>
-              <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 2 }}>Same team as {prov.sourceName}{prov.mine ? "" : " (" + prov.owner + "’s store)"} · owned by you{prov.viewer ? " — " + prov.viewer : ""}</div>
+              ? <img src={data.teamLogo.url} alt="" className="wx-review-extras__team-logo" />
+              : <span className="wx-review-extras__team-mono" style={{ background: logoColor }}>{(data.teamLogo && data.teamLogo.mono) || String(team).slice(0, 2).toUpperCase()}</span>}
+            <div className="wx-review-extras__team-text">
+              <div className="wx-review-extras__team-name">{team}</div>
+              <div className="wx-review-extras__team-note">Same team as {prov.sourceName}{prov.mine ? "" : " (" + prov.owner + "’s store)"} · owned by you{prov.viewer ? " — " + prov.viewer : ""}</div>
             </div>
             <Button variant="secondary" onClick={onEditBasics}>Change team</Button>
           </div>
         </WizardPanel>
       )}
       <WizardPanel label="Before this store can deploy" hint={reqs.length + (reqs.length === 1 ? " requirement" : " requirements")} style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className="wx-review-extras__reqs">
           {reqs.map((r, i) => (
-            <div key={r.k} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "10px 0", borderTop: i ? "1px solid #f1f1f3" : "none" }}>
-              <span style={{ width: 8, height: 8, borderRadius: 999, background: "#b06f1e", flexShrink: 0, marginTop: 6 }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0e0e10" }}>{r.k}</div>
-                <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 2, lineHeight: 1.5 }}>{r.d}</div>
+            <div key={r.k} className={`wx-review-extras__req${i ? " wx-review-extras__req--divided" : ""}`}>
+              <span className="wx-review-extras__req-dot" />
+              <div className="wx-review-extras__req-text">
+                <div className="wx-review-extras__req-title">{r.k}</div>
+                <div className="wx-review-extras__req-desc">{r.d}</div>
               </div>
-              {r.fix && <button type="button" onClick={onEditBasics} style={{ border: 0, background: "none", color: "#0e0e10", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", textUnderlineOffset: 3, flexShrink: 0 }}>Edit in Basics</button>}
+              {r.fix && <button type="button" onClick={onEditBasics} className="wx-review-extras__req-fix">Edit in Basics</button>}
             </div>
           ))}
           {prov.mode === "full" && (
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "10px 0", borderTop: "1px solid #f1f1f3" }}>
-              <span style={{ width: 8, height: 8, borderRadius: 999, background: "#d4d4d8", flexShrink: 0, marginTop: 6 }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0e0e10" }}>Rosters are empty</div>
-                <div style={{ fontSize: 12.5, color: "#6b6b72", marginTop: 2, lineHeight: 1.5 }}>Players never copy. Rosters are optional — the store can deploy without them, and you can add players from My Team(s) anytime.</div>
+            <div className="wx-review-extras__rosters">
+              <span className="wx-review-extras__rosters-dot" />
+              <div className="wx-review-extras__req-text">
+                <div className="wx-review-extras__req-title">Rosters are empty</div>
+                <div className="wx-review-extras__req-desc">Players never copy. Rosters are optional — the store can deploy without them, and you can add players from My Team(s) anytime.</div>
               </div>
             </div>
           )}
@@ -9323,15 +9323,9 @@ function Step5Design({ data, set, accent }) {
 
 function SummaryRowWiz({ label, value, mono, accent, last }) {
   return (
-    <div style={{
-      display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 24,
-      padding: "16px 0", borderBottom: last ? "none" : "1px solid #ececf0",
-    }}>
-      <span style={{ fontSize: 13.5, color: "#6b6b72", flexShrink: 0 }}>{label}</span>
-      <span style={{
-        fontSize: 14, fontWeight: 700, textAlign: "right", wordBreak: "break-word",
-        color: accent || "#0e0e10", fontFamily: mono ? "JetBrains Mono, monospace" : "inherit",
-      }}>{value}</span>
+    <div className={`wx-summary-row${last ? " wx-summary-row--last" : ""}`}>
+      <span className="wx-summary-row__label">{label}</span>
+      <span className={`wx-summary-row__value${mono ? " wx-summary-row__value--mono" : ""}`} style={{ color: accent || "#0e0e10" }}>{value}</span>
     </div>
   );
 }
@@ -9346,7 +9340,7 @@ function ReviewProducts({ products, accent, source, onEdit, onRemove }) {
   if (!products || products.length === 0) {
     return (
       <WizardPanel label={label} style={{ marginTop: 16, marginBottom: 0 }}>
-        <div style={{ fontSize: 13, color: "#9a9aa1", textAlign: "center", padding: "12px 0" }}>
+        <div className="wx-review-products__empty">
           No products were added to this store.
         </div>
       </WizardPanel>
@@ -9355,36 +9349,30 @@ function ReviewProducts({ products, accent, source, onEdit, onRemove }) {
   return (
     <WizardPanel
       label={label}
-      hint={<span style={{ display: "inline-flex", gap: 14, alignItems: "center" }}>{`${products.length} product${products.length === 1 ? "" : "s"}`}{onEdit && <button type="button" onClick={onEdit} style={{ border: 0, background: "none", color: "#0e0e10", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", textUnderlineOffset: 3 }}>Edit products</button>}</span>}
+      hint={<span className="wx-review-products__hint">{`${products.length} product${products.length === 1 ? "" : "s"}`}{onEdit && <button type="button" onClick={onEdit} className="wx-review-products__edit">Edit products</button>}</span>}
       style={{ marginTop: 16, marginBottom: 0 }}>
-      {source && !onEdit && <div style={{ fontSize: 12.5, color: "#6b6b72", lineHeight: 1.55, margin: "-6px 0 16px" }}>You didn’t go through an Add Products step — this is the place to check what came across. Remove anything this store shouldn’t sell; you can add more from the Products tab after it’s created.</div>}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 16 }}>
+      {source && !onEdit && <div className="wx-review-products__source-note">You didn’t go through an Add Products step — this is the place to check what came across. Remove anything this store shouldn’t sell; you can add more from the Products tab after it’s created.</div>}
+      <div className="wx-review-products__grid">
         {products.map((p, i) => {
           const price = p.adult != null ? p.adult : (p.retail != null ? p.retail : null);
           return (
-            <div key={p.id || i} style={{
-              border: "1px solid #ececf0", borderRadius: 10, overflow: "hidden", background: "#fff", position: "relative",
-            }}>
-              {onRemove && <button type="button" onClick={() => onRemove(i)} title="Remove from this store" aria-label="Remove product" style={{ position: "absolute", top: 6, right: 6, zIndex: 1, width: 26, height: 26, borderRadius: 999, border: "1px solid #e4e4e7", background: "#fff", color: "#52525b", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, lineHeight: 1 }}>✕</button>}
-              <div style={{
-                aspectRatio: "1 / 1", background: "#f6f6f8", display: "flex",
-                alignItems: "center", justifyContent: "center", overflow: "hidden",
-              }}>
+            <div key={p.id || i} className="wx-review-products__card">
+              {onRemove && <button type="button" onClick={() => onRemove(i)} title="Remove from this store" aria-label="Remove product" className="wx-review-products__remove">✕</button>}
+              <div className="wx-review-products__media">
                 {p.photo
-                  ? <div style={{ width: "78%", height: "78%" }}><CatalogPhoto photo={p.photo} alt={p.title || "Product"} /></div>
+                  ? <div className="wx-review-products__photo"><CatalogPhoto photo={p.photo} alt={p.title || "Product"} /></div>
                   : <IconShirt size={34} style={{ color: "#c7c7cd" }} />}
               </div>
-              <div style={{ padding: "12px 12px 12px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0e0e10", lineHeight: 1.3, marginBottom: 4,
-                  overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <div className="wx-review-products__info">
+                <div className="wx-review-products__title">
                   {p.title || "Untitled product"}
                 </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                  <span style={{ fontSize: 11.5, color: "#9a9aa1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div className="wx-review-products__meta">
+                  <span className="wx-review-products__category">
                     {[p.sport, p.category || p.style].filter(Boolean).join(" · ") || "Product"}
                   </span>
                   {price != null && (
-                    <span style={{ fontSize: 12.5, fontWeight: 800, color: accent, flexShrink: 0 }}>
+                    <span className="wx-review-products__price" style={{ color: accent }}>
                       ${Number(price).toFixed(2)}
                     </span>
                   )}
@@ -9415,7 +9403,7 @@ function Step6Review({ data, accent, athletes = 30, stepNum, onEditBasics, onEdi
       <StepHeader num={String(stepNum || 3)} accent={accent} title="Review &amp; Deploy"
         desc="Confirm every setting — campaign URL, taxes, logistics, and projected yield — before deploying the store." />
 
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+      <div className="wx-review__body">
         <UatReviewExtras data={data} onEditBasics={onEditBasics} />
         <WizardPanel label="Review Your Setup" style={{ marginBottom: 0 }}>
           <SummaryRowWiz label="Domain Web Slug" mono accent={accent}
@@ -9444,15 +9432,15 @@ function Step6Review({ data, accent, athletes = 30, stepNum, onEditBasics, onEdi
           {[{ id: "primary", primary: true, firstName: data.firstName, lastName: data.lastName, email: data.email, phone: data.phone }, ...(data.additionalManagers || [])].map((m, i, arr) => {
             const name = [m.firstName, m.lastName].filter(Boolean).join(" ");
             return (
-              <div key={m.id || i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", borderBottom: i === arr.length - 1 ? "none" : "1px solid #ececf0" }}>
-                <span style={{ width: 36, height: 36, borderRadius: 9, flexShrink: 0, background: m.primary ? "#0e0e10" : "#f1f1f3", color: m.primary ? "#fff" : "#6b6b72", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12 }}>
+              <div key={m.id || i} className={`wx-review__manager${(i === arr.length - 1) ? " wx-review__manager--last" : ""}`}>
+                <span className={`wx-review__manager-avatar${m.primary ? " wx-review__manager-avatar--primary" : ""}`}>
                   {(name || "—").split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase()}
                 </span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0e0e10" }}>{name || "Unnamed manager"}</div>
-                  <div style={{ fontSize: 12, color: "#9a9aa1", marginTop: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{[m.email, m.phone].filter(Boolean).join(" · ") || "No contact details"}</div>
+                <div className="wx-review__manager-text">
+                  <div className="wx-review__manager-name">{name || "Unnamed manager"}</div>
+                  <div className="wx-review__manager-contact">{[m.email, m.phone].filter(Boolean).join(" · ") || "No contact details"}</div>
                 </div>
-                {m.primary && <span title="The Store Point of Contact inherits from this record" style={{ flexShrink: 0, fontSize: 10, fontWeight: 800, letterSpacing: ".05em", color: "#1f7a44", background: "#e7f5ed", borderRadius: 999, padding: "4px 10px", textTransform: "uppercase" }}>Primary Contact</span>}
+                {m.primary && <span title="The Store Point of Contact inherits from this record" className="wx-review__primary-tag">Primary Contact</span>}
               </div>
             );
           })}
@@ -9465,27 +9453,27 @@ function Step6Review({ data, accent, athletes = 30, stepNum, onEditBasics, onEdi
           return (
             <WizardPanel label="Divisions &amp; Teams" hint={nDiv + (nDiv === 1 ? " division · " : " divisions · ") + nTeam + (nTeam === 1 ? " team" : " teams")} style={{ marginTop: 16, marginBottom: 0 }}>
               {nDiv === 0 && nTeam === 0
-                ? <div style={{ fontSize: 13, color: "#9a9aa1", textAlign: "center", padding: "12px 0" }}>No divisions or teams yet — add them anytime from the My Team(s) tab.</div>
-                : <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                ? <div className="wx-review__empty">No divisions or teams yet — add them anytime from the My Team(s) tab.</div>
+                : <div className="wx-review__divisions">
                     {(s.groups || []).map((g) => (
                       <div key={g.id}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                          <span style={{ width: 10, height: 10, borderRadius: 3, background: g.color || "#3f3f46", flexShrink: 0 }} />
-                          <span style={{ fontSize: 13, fontWeight: 800, color: "#0e0e10" }}>{g.name}</span>
-                          <span style={{ fontSize: 11.5, color: "#9a9aa1" }}>{(g.rosters || []).length} {(g.rosters || []).length === 1 ? "team" : "teams"}</span>
+                        <div className="wx-review__division-head">
+                          <span className="wx-review__division-dot" style={{ background: g.color || "#3f3f46" }} />
+                          <span className="wx-review__division-name">{g.name}</span>
+                          <span className="wx-review__division-count">{(g.rosters || []).length} {(g.rosters || []).length === 1 ? "team" : "teams"}</span>
                         </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, paddingLeft: 18 }}>
+                        <div className="wx-review__division-teams">
                           {(g.rosters || []).length === 0
-                            ? <span style={{ fontSize: 12, color: "#c0c0c6", fontStyle: "italic" }}>No teams yet</span>
-                            : (g.rosters || []).map((t) => <span key={t.id} style={{ fontSize: 11.5, fontWeight: 700, color: "#4b4b52", background: "#f4f4f6", borderRadius: 999, padding: "4px 10px" }}>{t.name}</span>)}
+                            ? <span className="wx-review__division-none">No teams yet</span>
+                            : (g.rosters || []).map((t) => <span key={t.id} className="wx-review__team-chip">{t.name}</span>)}
                         </div>
                       </div>
                     ))}
                     {(s.loose || []).length > 0 && (
                       <div>
-                        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".06em", color: "#9a9aa1", textTransform: "uppercase", marginBottom: 8 }}>Standalone Teams</div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                          {(s.loose || []).map((t) => <span key={t.id} style={{ fontSize: 11.5, fontWeight: 700, color: "#4b4b52", background: "#f4f4f6", borderRadius: 999, padding: "4px 10px" }}>{t.name}</span>)}
+                        <div className="wx-review__standalone-label">Standalone Teams</div>
+                        <div className="wx-review__standalone-teams">
+                          {(s.loose || []).map((t) => <span key={t.id} className="wx-review__team-chip">{t.name}</span>)}
                         </div>
                       </div>
                     )}
@@ -9495,7 +9483,7 @@ function Step6Review({ data, accent, athletes = 30, stepNum, onEditBasics, onEdi
         })()}
       </div>
 
-      <p style={{ fontSize: 12.5, color: "#9a9aa1", textAlign: "center", margin: "24px auto 0", maxWidth: 620, lineHeight: 1.55, fontStyle: "italic" }}>
+      <p className="wx-review__note">
         On initialization, products index into centralized factory inventory and launch configurations propagate online immediately.
       </p>
     </div>
@@ -9607,23 +9595,14 @@ function CancelConfirmModal({ open, onClose, onConfirm }) {
 function LoadingOverlay({ visible }) {
   if (!visible) return null;
   return (
-    <div style={{
-      position: "fixed", inset: 0, zIndex: 200,
-      background: "rgba(255,255,255,.94)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      animation: "fadeIn .2s ease",
-    }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-        <div style={{ display: "flex", gap: 8 }}>
+    <div className="wx-loading">
+      <div className="wx-loading__inner">
+        <div className="wx-loading__bars">
           {[0, 1, 2].map((i) => (
-            <span key={i} style={{
-              display: "inline-block", width: 8, height: 44, borderRadius: 1,
-              background: "#0e0e10",
-              animation: `bounce 1.1s ease-in-out ${i * 0.15}s infinite`,
-            }} />
+            <span key={i} className="wx-loading__bar" style={{ animation: `bounce 1.1s ease-in-out ${i * 0.15}s infinite` }} />
           ))}
         </div>
-        <div style={{ fontSize: 13, color: "#6b6b72", letterSpacing: ".04em" }}>Creating your store…</div>
+        <div className="wx-loading__label">Creating your store…</div>
         <style>{`
           @keyframes bounce {
             0%, 100% { transform: scaleY(.4); opacity: .5 }
