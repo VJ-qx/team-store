@@ -7,6 +7,7 @@ Run these from the project root. **Keep the `--` after `npm run <name>`**: witho
 | `npm install` | Installs the tools (`sass`, `playwright-core`). Run once, and again after `package.json` changes. |
 | [`npm run styles`](#npm-run-styles) | Compiles each page's SCSS entry (`styles/app.scss`, `styles/workspace.scss`, `styles/workspace-mobile.scss`) to its `.css`. |
 | [`npm run dev`](#npm-run-dev) | Starts the Vue version (Vite dev server) and opens the landing page, http://localhost:5173/landing.html, in the browser. |
+| `npm run build` | Builds the Vue version into `dist/` for a static host: the three pages, the bundled code, `assets/` and `_redirects` (the site root opens the landing page). Netlify runs it itself when the site is connected to the repo (`netlify.toml`); to upload by hand, upload `dist/`, not the project folder. |
 | [`npm run preview`](#npm-run-preview) | Serves the original and your version side by side for checking by hand. |
 | [`npm run checklist`](#npm-run-checklist) | Writes a manual check list: every state, its settings, and how to reach it. |
 | [`npm run parity`](#npm-run-parity) | Runs the page's user flows on two versions in Chrome and reports every difference. |
