@@ -217,6 +217,8 @@ A scenario's `approved` list holds the states of approved changes the prototype 
 | `marucci-workspace-stores.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace (two league stores, no joined store) |
 | `workspace-create-store.mjs` | `Workspace.dc.html` | Module 3: the Add Store wizard's frame and Step 1 Basics (FR-3.1, part 2a): required fields, store type, schedule, branding pop-ups (Team Database, My Logos, team colors), managers, point of contact, fulfillment, tax, continuing to Step 2, and the Navy accent setting |
 | `marucci-workspace-create-store.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace, plus starting the wizard from its Stock Vault |
+| `workspace-create-store-products.mjs` | `Workspace.dc.html` | Module 3: the Add Store wizard's Step 3, Add Products (FR-3.1, part 2b): the sources and search, the Source pill, Configure & Add to Store (category, price settings, sizes), Edit Product, a saved cart, Stock Vault, Catalog Templates, Customize New Product, and Assign to Teams on a League store |
+| `marucci-workspace-create-store-products.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace (one Source option, Stock Vault items added automatically, Baseball and Softball) |
 | `workspace-mobile.mjs` | `Workspace Mobile.dc.html` | The mobile prototype (styles step; no Vue version yet) |
 
 ---
