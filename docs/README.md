@@ -4,7 +4,7 @@ This repo holds the Team Store prototype that another team built in Claude Desig
 
 1. **Styles:** move every inline style into SCSS.
 2. **Vue:** convert the page to Vue, our stack.
-3. **Responsive (later):** add tablet and mobile layouts. Not needed yet: for now each module goes through steps 1 and 2 only.
+3. **Responsive:** below 744px the workspace shows the other team's mobile design (`Workspace Mobile.dc.html`) instead of the desktop screens, in the same Vue app; desktop stays as it is. Started with Module 2's Overview.
 
 After each step, an automated check proves that nothing changed that shouldn't have.
 
@@ -31,7 +31,7 @@ Each step gets its own branch and pull request into `main`. Start the next branc
 |---|---|---|---|
 | 1. Styles | `landing/css` | `/extract-styles "Landing Page.dc.html"` | `/compare-styles` reports **IDENTICAL** |
 | 2. Vue | `landing/vue` | `/migrate-to-vue "Landing Page.dc.html"` | `/compare-behavior` reports **IDENTICAL**, nothing skipped |
-| 3. Responsive (later) | `landing/responsive` | `/make-responsive <vue page>` | Not needed yet. When it is: desktop still identical, and the team approves the mobile layout |
+| 3. Responsive | `overview-mobile/vue` | `/migrate-to-vue` on the module's screens of `Workspace Mobile.dc.html` (its styles step is done) | The mobile screen matches the mobile prototype (for example `workspace-mobile-overview.mjs`: **IDENTICAL**), and the desktop scenarios are unchanged |
 
 Each step ends with a manual check list. Use it to review the result by hand before approving the pull request (see [commands.md](commands.md#npm-run-checklist)).
 
@@ -46,7 +46,9 @@ reference/                 handover files nothing uses, kept for reference
 styles/                    SCSS: one entry per page, compiled to styles/css/<entry>.css:
                            app.scss (landing page), workspace.scss, workspace-mobile.scss
                            partials by type, then page: components/<page>/, layouts/<page>/,
-                           pages/<page>/ (landing, workspace, workspace-mobile);
+                           pages/<page>/ (landing, workspace);
+                           responsive/<page>/ (landing, workspace, storefront) for responsive
+                           styles, with the same type folders inside (the workspace's mobile design);
                            components/shared/ for components several pages share
                            _variables.scss and _global.scss are shared by every page
 landing.html, workspace.html, workspace-integrated.html   Vue pages (npm run dev)

@@ -68,7 +68,7 @@ Create only the folders that are required.
 - Place reusable styles in `/styles/components/<page>/`.
 - Place shared layout styles in `/styles/layouts/<page>/`.
 - Place page-specific styles in `/styles/pages/<page>/`.
-- Place responsive styles in `/styles/responsive/<page>/`.
+- Place responsive styles in `/styles/responsive/<page>/`, with the same type folders inside: `/styles/responsive/<page>/components/`, `/layouts/` and `/pages/` (partials there load the variables with `@use "../../../variables" as *;`).
 - Group by type first, then by page: `<page>` is the page's folder name (for example `landing`), so every page's components sit side by side under `/styles/components/`. Partials there load the shared variables with `@use "../../variables" as *;`.
 - A component that several pages use with exactly the same values goes in `/styles/components/shared/`, with a prefix that belongs to no page (`ts-` in Team Store, where the folder's README has the rules). Keep a component in its page's folder if any value differs.
 - Import all partials through `app.scss`.
@@ -99,7 +99,7 @@ The team ran this refactor on the Team Store MVP. Follow what it learned:
 - Import partials in `app.scss` in the order their rules appeared in the original, so the cascade stays the same.
 - An inline `style=""` beats every stylesheet rule. After moving one into a class, check whether another rule for the same element and property now wins. Fix it with import order or a more specific selector rather than `!important`, and list each case in the summary.
 - Put the `@use` lines first in every partial, before any comment. dart-sass copies a `/* */` comment placed above `@use` into the compiled CSS ahead of other modules.
-- Partials with the same file name in different folders (`pages/_landing.scss`, `responsive/_landing.scss`) collide on the default `@use` namespace. Alias one: `@use "responsive/landing" as responsive-landing;`.
+- Partials with the same file name in different folders (`pages/landing/_landing.scss`, `responsive/landing/pages/_landing.scss`) collide on the default `@use` namespace. Alias one: `@use "responsive/landing/pages/landing" as responsive-landing;`.
 - Don't invent breakpoints. If the original has no media queries, `responsive/` isn't needed.
 - Put `@keyframes` in `_global.scss`; they are global.
 - One `_variables.scss` and one `_global.scss` serve every page in the project. Don't create a second pair for a new page (`styles/<page>/_variables.scss`). Add the page's values to the shared `_variables.scss`: a name means one value everywhere, so when the page needs a different value, add a new name instead of changing an existing one. Add the page's base rules as its own `$page` section of `_global.scss`, which the page's entry selects with `@use "global" with ($page: "<page>");`.

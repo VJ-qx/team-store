@@ -1,0 +1,35 @@
+// Vue workspace only (imported by src/workspace/main.js, after workspace.scss): the mobile screens from
+// "Workspace Mobile.dc.html", which the workspace shows below 744px. The same partials as
+// styles/workspace-mobile.scss (the mobile prototype's entry), without its page globals and prototype-only
+// styles: the partials are class-only (wm-), and responsive/workspace/layouts/_root.scss gives the app the
+// context the prototype's page and iPhone frame give it. The prototype pages never link this file.
+@use "responsive/workspace/layouts/root";
+@use "responsive/workspace/layouts/app";
+@use "responsive/workspace/layouts/screen";
+@use "responsive/workspace/layouts/helpers";
+@use "responsive/workspace/components/topbar";
+@use "responsive/workspace/components/segmented";
+@use "responsive/workspace/components/tabbar";
+@use "responsive/workspace/components/card";
+@use "responsive/workspace/components/row";
+@use "responsive/workspace/components/text";
+@use "responsive/workspace/components/button";
+@use "responsive/workspace/components/action-bar";
+@use "responsive/workspace/components/chip";
+@use "responsive/workspace/components/control";
+@use "responsive/workspace/components/form";
+@use "responsive/workspace/components/sheet";
+@use "responsive/workspace/components/wizard";
+@use "responsive/workspace/components/badge";
+@use "responsive/workspace/components/details";
+@use "responsive/workspace/components/product";
+@use "responsive/workspace/components/toast";
+@use "responsive/workspace/pages/overview";
+@use "responsive/workspace/pages/workspace";
+@use "responsive/workspace/pages/create-store";
+@use "responsive/workspace/pages/store-home";
+@use "responsive/workspace/pages/teams";
+@use "responsive/workspace/pages/products";
+@use "responsive/workspace/pages/orders";
+@use "responsive/workspace/pages/reports";
+@use "responsive/workspace/pages/store-settings";

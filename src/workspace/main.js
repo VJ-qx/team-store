@@ -1,6 +1,8 @@
 // Entry point for the Vue workspace (workspace.html), converted from "Workspace.dc.html".
 import { createApp } from 'vue';
 import '../../styles/workspace.scss';
+// Below 744px the workspace shows the mobile screens (from "Workspace Mobile.dc.html").
+import '../../styles/workspace-mobile-app.scss';
 import WorkspacePage from './WorkspacePage.vue';
 import { autofocus, controlled, patchStyle } from './directives.js';
 

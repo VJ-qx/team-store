@@ -28,9 +28,11 @@ Compiles every page's stylesheet. Run it after every SCSS change.
 | `styles/workspace.scss` | `styles/css/workspace.css` | `Workspace.dc.html`, `Marucci Workspace.dc.html` |
 | `styles/workspace-mobile.scss` | `styles/css/workspace-mobile.css` | `Workspace Mobile.dc.html` |
 
+The Vue workspace also imports `styles/workspace-mobile-app.scss` (not compiled by `npm run styles`; Vite compiles it): the mobile screens' partials, without the mobile prototype's page globals, for the screens it shows below 744px.
+
 The compiled CSS in `styles/css/` is committed, because the prototype pages link it directly. The Vue pages don't use it: Vite compiles the SCSS entries itself. Never edit it by hand; `npm run styles` regenerates it.
 
-Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. Partials are grouped by type, then by page: `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/`, with `landing`, `workspace` and `workspace-mobile` as the page folders. A component several pages use with exactly the same values goes in `styles/components/shared/` (`ts-` classes), imported by each of those pages' entries. `styles/pages/_prototype.scss` holds the prototype-only rules the landing page and the workspace share.
+Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. Partials are grouped by type, then by page: `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/`, with `landing` and `workspace` as the page folders. Responsive styles go in `styles/responsive/<page>/` (`landing`, `workspace`, `storefront`), with the same type folders inside: the workspace's mobile design (`Workspace Mobile.dc.html`, `wm-` classes) is in `styles/responsive/workspace/components/`, `layouts/` and `pages/`, whose partials load the variables one level deeper (`@use "../../../variables" as *;`). `responsive/landing/` and `responsive/storefront/` hold only a README until they get responsive styles. A component several pages use with exactly the same values goes in `styles/components/shared/` (`ts-` classes), imported by each of those pages' entries. `styles/pages/_prototype.scss` holds the prototype-only rules the landing page and the workspace share.
 
 **Never edit the `.css` files by hand.** They're overwritten on every compile.
 
@@ -203,6 +205,12 @@ Timers on the page are frozen after it loads, so redirects and delays only happe
 
 Each page or module has a scenario in `tools/parity/scenarios/`, listing every state to check and how to reach it. Use `landing-page.mjs` as the template. See the "Find or Write the Scenario" section of `.claude/skills/compare-styles/SKILL.md` for the format.
 
+A scenario can also set:
+
+- `scope: '<css selector>'`: compare only that element (its accessibility tree, the fields inside it, and a screenshot of its box). The mobile scenario compares only the app area, `.wm-app`, because the prototype draws it inside an iPhone frame.
+- `viewports: [{ width, height, b: { width, height } }]`: side B opens at its own size, for example the Vue workspace at a phone's size while the prototype shows its frame on a desktop page.
+- `setup: [steps]`: steps run on each side right after it loads, before the first checkpoint; `on: 'prototype'` / `on: 'vue'` limits a step to one side (for example hiding what the iPhone frame draws over the app).
+
 A scenario's `approved` list holds the states of approved changes the prototype doesn't have yet, each with the path of its design image. Normal runs skip them (the report's notes say how many); `--approved` runs them on the Vue version. When the prototype gets the change, its states move into `states`.
 
 | Scenario | Page | Covers |
@@ -224,7 +232,8 @@ A scenario's `approved` list holds the states of approved changes the prototype 
 | `marucci-workspace-create-store-review.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace |
 | `workspace-create-store-structure.mjs` | `Workspace.dc.html` | Module 3: the Add Store wizard's Divisions & Teams step for a League store (FR-3.1, part 2d): the empty canvas, adding divisions and teams, the side panel, dragging a team's handle onto a division (connect, and move with its confirmation), deleting, and CONTINUE through to Review & Deploy |
 | `marucci-workspace-create-store-structure.mjs` | `Marucci Workspace.dc.html` | The same, on the integrated workspace |
-| `workspace-mobile.mjs` | `Workspace Mobile.dc.html` | The mobile prototype (styles step; no Vue version yet) |
+| `workspace-mobile.mjs` | `Workspace Mobile.dc.html` | The mobile prototype (styles step) |
+| `workspace-mobile-overview.mjs` | `Workspace Mobile.dc.html` | Module 2, responsive: the Overview below 744px. The mobile prototype's Overview (in its frame) against the Vue workspace at 393 × 852, comparing only the app area: the chart, search, the store-scope menu, the sort menu and the card menu |
 
 ---
 
