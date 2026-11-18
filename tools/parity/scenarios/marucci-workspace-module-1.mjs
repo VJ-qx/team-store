@@ -12,4 +12,7 @@ export default {
   page: 'Marucci Workspace.dc.html',
   related: workspace.related.map((r) => ({ ...r, how: r.how.replace(/Workspace\.dc\.html\?/g, 'Marucci Workspace.dc.html?').replace(/workspace\.html\?/g, 'workspace-integrated.html?') })),
   states: buildStates({ account: 'Jack White', welcome: false, customizerOnly: false, archivedStores: 2 }),
+  // The approved Customizer loading screen is for the Prolook workspace only: the integrated workspace has no
+  // Customizer hand-off (as for the welcome pop-up), so it ignores ?from=customizer.
+  approved: [],
 };

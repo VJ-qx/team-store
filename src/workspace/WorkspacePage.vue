@@ -5,9 +5,16 @@
      Prototype-only parts are not carried over: the Tweaks panel (its settings are pinned in
      data/settings.js), the #frame= deep links and the frame overview grid. -->
 <template>
+  <!-- ─── Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+       Opened from a Customizer's "Team Store" link: a short full-page loading screen under the Team Stores top bar
+       (the top bar as on the access gate), then the screen below, with the welcome pop-up on a first visit. ─── -->
+  <div v-if="customizerLoading" class="wx-customizer-loading">
+    <TeamStoresHeader active="" :onChange="() => {}" :accountName="accountName" :onMenuSelect="goLandingFile" :onGoLanding="goLandingFile" />
+    <CustomizerLoading />
+  </div>
   <!-- ─── No-access flow: the gate, the application form, and the review states are full-viewport
        standalone pages (no prolook.com shell) ─── -->
-  <template v-if="screen === 'gate' || screen === 'access-form' || screen === 'access-pending' || screen === 'stripe-verify'">
+  <template v-else-if="screen === 'gate' || screen === 'access-form' || screen === 'access-pending' || screen === 'stripe-verify'">
     <div v-if="screen === 'gate'" :style="{ minHeight: '100vh', background: '#fbfbfc', minWidth: '1280px', display: 'flex', flexDirection: 'column' }">
       <TeamStoresHeader active="" :onChange="() => {}" :accountName="accountName" :onMenuSelect="goLandingFile" :onGoLanding="goLandingFile" />
       <div :style="{ display: 'flex', minHeight: 'calc(100vh - 92px)' }">
@@ -67,6 +74,9 @@ import ManageStoreWorkspace from './components/store/ManageStoreWorkspace.vue';
 import RestoreStoreModal from './components/stores/RestoreStoreModal.vue';
 import StoreGuideModal from './components/guide/StoreGuideModal.vue';
 import WelcomeSSOModal from './components/welcome/WelcomeSSOModal.vue';
+// Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+import CustomizerLoading from './components/welcome/CustomizerLoading.vue';
+import { CUSTOMIZER_LOADING_MS, openedFromCustomizer } from './lib/customizer-entry.js';
 
 // The page the access screens, the account menu and logout send the rep to. It doesn't exist in the
 // handover (the landing page is now "Landing Page.dc.html"); kept as in the prototype.
@@ -74,7 +84,7 @@ const LANDING_FILE = "Team Stores Landing.dc.html";
 
 export default {
   name: 'WorkspacePage',
-  components: { AccessApplyForm, AccessPending, AccountProfile, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
+  components: { AccessApplyForm, AccessPending, AccountProfile, CustomizerLoading, FeatureGate, ManageStoreWorkspace, Modal, OverviewDashboard, RestoreStoreModal, StoreGuideModal, StripeVerifying, TeamStoresHeader, Toast, WelcomeSSOModal },
   data() {
     const tweaks = { ...SETTINGS_DEFAULTS };
     return {
@@ -93,6 +103,10 @@ export default {
       })(),
       navTab: "overview",
       showWelcome: false,
+      // Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+      // Shows first when the workspace opens from a Customizer (Prolook only: the integrated workspace has no
+      // Customizer hand-off, as for the welcome pop-up).
+      customizerLoading: !INTEGRATION.on && openedFromCustomizer(),
       showLogoutModal: false,
       // Store Setup Guide — informational modal; dismissal is per rep, not per store.
       guideOpen: false,
@@ -167,6 +181,8 @@ export default {
     }
   },
   mounted() {
+    // Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+    if (this.customizerLoading) this.customizerTimer = setTimeout(() => { this.customizerLoading = false; }, CUSTOMIZER_LOADING_MS);
     // The prototype's effects, in their order.
     this.autoOpenGuide();
     this.persistCreatedStores();
@@ -185,6 +201,10 @@ export default {
         if (!seen) this.showWelcome = true;
       }
     }
+  },
+  beforeUnmount() {
+    // Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+    clearTimeout(this.customizerTimer);
   },
   methods: {
     recordStoreVisit,
