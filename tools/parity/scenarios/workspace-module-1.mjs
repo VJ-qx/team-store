@@ -21,6 +21,10 @@ const CUSTOMIZER_LOADING_DESIGN = 'docs/approved-changes/customizer-loading-scre
 const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
 // Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (G-7).
 const WELCOME_LOCKED_DESIGN = 'docs/approved-changes/welcome-locked-brands.png';
+// Approved change, not in the prototype yet: Show toggle on Current password (G-11).
+const CURRENT_PASSWORD_DESIGN = 'docs/approved-changes/current-password-show.png';
+// The Show / Hide button next to a password field's label.
+const showToggle = (label) => `xpath=//label[normalize-space(.)="${label}"]/following-sibling::button[1]`;
 // A brand tile in the welcome pop-up's grid, by its name (locked tiles have no title).
 const welcomeTile = (name) => `xpath=//button[contains(concat(" ", normalize-space(@class), " "), " wx-welcome__tile ")][.//*[normalize-space(text())="${name}"]]`;
 
@@ -120,27 +124,6 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
   },
   { name: 'my account edit', query: SIGNED_IN, steps: [...openMyAccount(account), { click: button('Edit', false) }, { hover: button('Save changes') }, { click: button('Cancel') }] },
   { name: 'my account save', query: SIGNED_IN, steps: [...openMyAccount(account), { click: button('Edit', false) }, { click: button('Save changes') }] },
-  {
-    name: 'my account change password', query: SIGNED_IN, steps: [
-      ...openMyAccount(account),
-      { click: button('Change password', false) },
-      { fill: ['input[placeholder="••••••••••••"]', 'old-password-123'] },
-      { fill: ['input[placeholder="At least 12 characters"]', 'short'] },
-      { click: button('Show') },
-      { fill: ['input[placeholder="At least 12 characters"]', 'a new long passphrase'] },
-      { hover: button('Update password') },
-      { click: button('Update password') },
-      { wait: 800 },
-    ],
-  },
-  {
-    name: 'my account password must differ', query: SIGNED_IN, steps: [
-      ...openMyAccount(account),
-      { click: button('Change password', false) },
-      { fill: ['input[placeholder="••••••••••••"]', 'same-passphrase-123'] },
-      { fill: ['input[placeholder="At least 12 characters"]', 'same-passphrase-123'] },
-    ],
-  },
   ...(!customizerOnly ? [] : [{
     name: 'my account customizer only', query: SIGNED_IN, steps: [
       openSettings,
@@ -195,6 +178,34 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
       { click: button('Back') },
       { wait: 400 },
       { click: button('Request access to this brand', false) },
+    ],
+  },
+];
+
+// Approved change, not in the prototype yet: Show toggle on Current password (G-11). The change-password pop-up's
+// Current password field has the same Show / Hide control as New password, so these states differ from the prototype
+// on purpose and are approved states (both workspaces: My Account is the same).
+export const buildPasswordStates = ({ account = 'Hingle McCringleberry' } = {}) => [
+  {
+    name: 'my account change password', query: SIGNED_IN, design: CURRENT_PASSWORD_DESIGN, steps: [
+      ...openMyAccount(account),
+      { click: button('Change password', false) },
+      { fill: ['input[placeholder="••••••••••••"]', 'old-password-123'] },
+      { click: showToggle('Current password'), label: 'Click Show next to Current password' },
+      { fill: ['input[placeholder="At least 12 characters"]', 'short'] },
+      { click: showToggle('New password'), label: 'Click Show next to New password' },
+      { fill: ['input[placeholder="At least 12 characters"]', 'a new long passphrase'] },
+      { hover: button('Update password') },
+      { click: button('Update password') },
+      { wait: 800 },
+    ],
+  },
+  {
+    name: 'my account password must differ', query: SIGNED_IN, design: CURRENT_PASSWORD_DESIGN, steps: [
+      ...openMyAccount(account),
+      { click: button('Change password', false) },
+      { fill: ['input[placeholder="••••••••••••"]', 'same-passphrase-123'] },
+      { fill: ['input[placeholder="At least 12 characters"]', 'same-passphrase-123'] },
     ],
   },
 ];
@@ -261,5 +272,6 @@ export default {
       ],
     },
     ...buildWelcomeCustomizerStates(),
+    ...buildPasswordStates(),
   ],
 };

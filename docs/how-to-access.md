@@ -71,6 +71,7 @@ Open http://localhost:5173/workspace.html?brand=riddell&from=customizer. `from=c
 
 - Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected, hover the **HM** button at the top right, and click **My Account**.
 - Brand Access & Authentication is the second card. The prototype and Vue now title it **Connected Customizers**, with an **Add Customizer** button.
+- **Change password (approved change G-11, Vue only):** on My Account, click **Change password**: Current password has a **Show** / **Hide** control, like New password. The prototype has it on New password only.
 - **Customizer-only version:** `__paritySetProps({ authMode: 'customizer' })`. Prototype: settings panel, **Sign-in method: Customizer only**.
 
 ## Store page and Store Setup Guide
