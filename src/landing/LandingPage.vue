@@ -786,6 +786,8 @@
               Primary
             </span>
           </div>
+          <!-- Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (docs/README.md#approved-changes). -->
+          <p class="tsl-welcome__note">You can change your primary brand anytime from My Account.</p>
         </div>
       </template>
 

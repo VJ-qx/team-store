@@ -17,6 +17,8 @@ const ACCESS_NONE = '?brand=prolook&auth=native&access=none'; // a rep without a
 const SIGNED_IN = '?brand=prolook&auth=native-connected'; // signed in, welcome pop-up already seen
 // Approved change, not in the prototype yet: the loading screen when the workspace opens from a Customizer.
 const CUSTOMIZER_LOADING_DESIGN = 'docs/approved-changes/customizer-loading-screen.png';
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (G-6).
+const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
 
 const openSettings = {
   eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`, on: 'prototype',
@@ -100,27 +102,7 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
         { click: button('Continue to Workspace', false) },
       ],
     },
-    { name: 'welcome customizer', query: '?brand=prolook', steps: [{ hover: button('Continue to Workspace', false) }, { click: button('Continue to Workspace', false) }] },
-    {
-      name: 'welcome multi-brand', query: '?brand=prolook', steps: [
-        openSettings,
-        { click: multiBrandSwitch, on: 'prototype', label: 'In the settings panel, turn on "Multi-brand account"' },
-        closeSettings,
-        vueSettings({ ssoMultiBrand: true }),
-        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
-        { click: button('Continue to Workspace', false) },
-      ],
-    },
-    // Closing the pop-up without its button: the ✕, Escape, or a click outside it.
-    {
-      name: 'welcome close', query: '?brand=prolook', steps: [
-        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
-        { click: welcomeClose, label: 'Click the ✕: the pop-up closes, as "Continue to Workspace" does' },
-      ],
-    },
     { name: 'welcome native close', query: '?brand=prolook&auth=native', steps: [{ click: welcomeClose, label: 'Click the ✕ without connecting a Customizer' }] },
-    { name: 'welcome escape', query: '?brand=prolook', steps: [{ press: 'Escape', label: 'Press Escape: the pop-up closes' }] },
-    { name: 'welcome click outside', query: '?brand=prolook', steps: [clickOutsideWelcome] },
   ]),
 
   // ── My Account ──
@@ -213,6 +195,28 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
   },
 ];
 
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep. A Customizer rep's
+// welcome pop-up (Prolook; the integrated workspace never shows it) now has the helper line under the brand and
+// "Confirm & Enter", so these states differ from the prototype on purpose and are approved states.
+export const buildWelcomeCustomizerStates = () => [
+  { name: 'welcome customizer', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
+  {
+    name: 'welcome multi-brand', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [
+      vueSettings({ ssoMultiBrand: true }),
+      { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
+      { click: button('Confirm & Enter', false) },
+    ],
+  },
+  {
+    name: 'welcome close', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [
+      { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
+      { click: welcomeClose, label: 'Click the ✕: the pop-up closes, as "Confirm & Enter" does' },
+    ],
+  },
+  { name: 'welcome escape', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ press: 'Escape', label: 'Press Escape: the pop-up closes' }] },
+  { name: 'welcome click outside', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [clickOutsideWelcome] },
+];
+
 export default {
   name: 'Workspace (Module 1)',
   page: 'Workspace.dc.html',
@@ -247,5 +251,6 @@ export default {
         { wait: 1700, label: 'Wait 1.7 seconds: the Overview opens, without the welcome pop-up (already seen)' },
       ],
     },
+    ...buildWelcomeCustomizerStates(),
   ],
 };

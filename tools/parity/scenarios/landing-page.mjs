@@ -45,6 +45,9 @@ const registerSteps = [
 
 // Approved change, not in the prototype yet: sign-in lockout. Five wrong passwords in a row.
 const LOCKOUT_DESIGN = 'docs/approved-changes/sign-in-lockout.png';
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (G-6). The Customizer
+// welcome pop-up's one-brand state differs from the prototype on purpose, so it's an approved state.
+const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
 const pauseSignIn = [openSignIn, { fill: [EMAIL, 'rep@dealership.com'] }, { fill: [PASSWORD, 'wrong'] }, signIn, signIn, signIn, signIn, signIn];
 
 export default {
@@ -92,12 +95,12 @@ export default {
     { name: 'register dealership found skip', props: { signupDealershipFound: true }, steps: [...registerSteps, { click: button('Skip for now', false) }, { wait: 1500 }] },
 
     { name: 'welcome modal native', props: { signedIn: true, showWelcomeModal: true }, steps: [{ click: button('Connect') }, close] },
-    { name: 'welcome modal federated', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false }, steps: [{ click: button('Continue to Workspace', false) }] },
     { name: 'welcome modal multi-brand', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false, welcomeMultiBrand: true }, steps: [{ click: button('Confirm & Enter', false) }] },
   ],
   // Approved changes the prototype doesn't have yet (docs/README.md#approved-changes), checked on the
   // Vue version only: npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/landing.html
   approved: [
+    { name: 'welcome modal federated', design: WELCOME_ONE_BRAND_DESIGN, props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false }, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
     // Sign-in lockout (BRD FR-1.11): the fifth wrong password in a row pauses sign-in for 15 minutes.
     { name: 'sign-in paused', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 9000, label: 'Wait 9 seconds: the countdown shows 14:51, as in the design' }] },
     { name: 'sign-in paused reset password', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { click: button('Reset password') }] },

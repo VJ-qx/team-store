@@ -64,9 +64,13 @@
           <span class="wx-welcome__primary-tag">
             <IconCircleCheck :size="15" /> Primary</span>
         </div>
+        <!-- Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (docs/README.md#approved-changes). -->
+        <p class="wx-welcome__single-note">You can change your primary brand anytime from My Account.</p>
       </div>
+      <!-- Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (docs/README.md#approved-changes).
+           A Customizer rep sees "Confirm & Enter" with one brand too; a Team Stores account keeps "Continue to Workspace". -->
       <div class="wx-welcome__footer">
-        <button @click="() => onConfirm(native ? (anyConnected ? originId : null) : primary)" class="wx-welcome__confirm" @mouseenter="(e) => e.currentTarget.style.background = '#dc2626'" @mouseleave="(e) => e.currentTarget.style.background = '#09090b'">{{ isMulti ? "Confirm & Enter" : "Continue to Workspace" }} <IconArrowRight :size="17" />
+        <button @click="() => onConfirm(native ? (anyConnected ? originId : null) : primary)" class="wx-welcome__confirm" @mouseenter="(e) => e.currentTarget.style.background = '#dc2626'" @mouseleave="(e) => e.currentTarget.style.background = '#09090b'">{{ isMulti || !native ? "Confirm & Enter" : "Continue to Workspace" }} <IconArrowRight :size="17" />
         </button>
       </div>
     </div>

@@ -336,7 +336,9 @@ class Component extends DCLogic {
       welcomeEmail: "hinglemycringle@prolook.com",
       welcomeNativeHint: anyConnected ? "Set your primary brand anytime from My Account." : "No primary brand is set until you connect one. You can connect brands later from My Account.",
       welcomeOriginName: origin.name, welcomeOriginWord: origin.word, welcomeOriginIsImg: !!origin.img, welcomeOriginIsWord: !origin.img,
-      welcomeCta: welcomeMulti ? "Confirm & Enter" : "Continue to Workspace",
+      // Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (docs/README.md#approved-changes).
+      // A Customizer rep sees "Confirm & Enter" with one brand too; a Team Stores account keeps "Continue to Workspace".
+      welcomeCta: welcomeMulti || !welcomeNative ? "Confirm & Enter" : "Continue to Workspace",
       welcomeConfirm: () => this.gotoWorkspace(welcomeNative ? "prolook" : welcomePrimary, !hasAccess, welcomeNative ? "native" : "customizer"),
       welcomeClose: () => this.setState({ welcomeDismissed: true }),
 

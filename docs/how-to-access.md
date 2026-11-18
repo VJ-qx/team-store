@@ -59,6 +59,8 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
 
+**Approved change (G-6, Vue only):** the Customizer sign-in pop-up with one brand shows "You can change your primary brand anytime from My Account." under the brand, and its button reads **Confirm & Enter**. The landing page's copy of the pop-up (`{ signedIn: true, showWelcomeModal: true, welcomeNativePath: false }`) has the same change.
+
 The ✕ at its top right, Escape, and a click outside the pop-up close it the same way as its button (**Continue to Workspace** / **Confirm & Enter**): the primary brand shown is kept.
 
 #### Loading screen from a Customizer (Vue only, [approved change](README.md#approved-changes))
