@@ -63,7 +63,7 @@ The ✕ at its top right, Escape, and a click outside the pop-up close it the sa
 
 #### Loading screen from a Customizer (Vue only, [approved change](README.md#approved-changes))
 
-Open http://localhost:5173/workspace.html?brand=riddell&from=customizer. `from=customizer` stands in for a Customizer's **Team Store** link (any brand works). The loading screen shows for 1.7 seconds under the Team Stores top bar, then the Overview opens, with the welcome pop-up on the first visit in the browser session (run `sessionStorage.clear()` and reload to see it again). Without `from=customizer` the workspace opens as before. The Marucci workspace has no Customizer hand-off, so it ignores it. The prototype doesn't have this yet.
+Open http://localhost:5173/workspace.html?brand=riddell&from=customizer. `from=customizer` stands in for a Customizer's **Team Store** link (any brand works). The loading screen shows for 1.7 seconds under the Team Stores top bar, then the Overview opens, with the welcome pop-up on the first visit in the browser session (run `sessionStorage.clear()` and reload to see it again). On a narrower window it fits the screen: below 1024px the spinner and text stay centred, and below 744px (a phone) the top bar shows only the logo, TEAM STORES and the avatar. Without `from=customizer` the workspace opens as before. The Marucci workspace has no Customizer hand-off, so it ignores it. The prototype doesn't have this yet.
 
 #### My Account (FR-1.7.3, FR-1.12)
 

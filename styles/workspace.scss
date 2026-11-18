@@ -10,6 +10,8 @@
 @use "components/workspace/welcome-sso-modal";
 // Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
 @use "components/workspace/customizer-loading";
+// …and on smaller screens (below 1024px; desktop unchanged).
+@use "responsive/workspace/components/customizer-loading" as customizer-loading-responsive;
 @use "components/workspace/account-profile";
 @use "components/workspace/store-workspace-bar";
 @use "components/workspace/store-side-nav";
