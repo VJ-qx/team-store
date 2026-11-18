@@ -32,6 +32,8 @@ The compiled CSS in `styles/css/` is committed, because the prototype pages link
 
 Every page shares one `styles/_variables.scss` and one `styles/_global.scss`. Each entry picks its page's section of the global rules with `@use "global" with ($page: "workspace")`, so one page's fonts, resets and tokens don't reach another page. Partials are grouped by type, then by page: `styles/components/<page>/`, `styles/layouts/<page>/` and `styles/pages/<page>/`, with `landing`, `workspace` and `workspace-mobile` as the page folders. A component several pages use with exactly the same values goes in `styles/components/shared/` (`ts-` classes), imported by each of those pages' entries. `styles/pages/_prototype.scss` holds the prototype-only rules the landing page and the workspace share.
 
+Responsive styles go in `styles/responsive/<page>/`, with the same type folders inside (`components/`, `layouts/`, `pages/`). They use the breakpoints in `_variables.scss` (`$bp-tablet: 744px`, `$bp-desktop: 1024px`) through the mixins in `styles/_mixins.scss` (`tablet-down`, `mobile-down`), never raw `@media` queries, so desktop (1024px and up) is never changed. The landing page's are loaded by `styles/vue.scss` only: they're not in `styles/css/app.css`, so the prototype is unchanged.
+
 **Never edit the `.css` files by hand.** They're overwritten on every compile.
 
 ---

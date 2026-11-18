@@ -1,0 +1,102 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// Landing page sections below 744px. Nothing is added or removed: columns stack, side padding goes from 56px to
+// 20px, and the large headings get smaller so they fit. At 744px and up the page is unchanged.
+
+@include mobile-down {
+  // ── Hero: the heading fits the screen (at 74px "dashboard" was cut off); the two buttons stack, full width.
+  .tsl-hero {
+    padding: 56px 20px 0;
+  }
+  .tsl-hero__title {
+    margin-top: 24px;
+    font-size: 42px;
+  }
+  .tsl-hero__lead {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .tsl-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .tsl-hero__enter,
+  .tsl-hero__how {
+    justify-content: center;
+  }
+
+  // ── Dashboard preview: the four KPI cards go two by two; the revenue chart and the ordering windows stack.
+  .tsl-dash {
+    margin-top: 48px;
+  }
+  .tsl-dash__main {
+    padding: 20px 16px 24px;
+  }
+  .tsl-dash__head {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .tsl-dash__kpis {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .tsl-dash__kpi-value,
+  .tsl-dash__kpi-value--dark {
+    font-size: 20px;
+  }
+  .tsl-dash__panels {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  // ── Features: one card per row (in three columns the third was cut off).
+  .tsl-features {
+    padding: 64px 20px 32px;
+  }
+  .tsl-features__title {
+    font-size: 30px;
+  }
+  .tsl-features__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .tsl-features__card,
+  .tsl-features__card--dark {
+    padding: 24px 20px;
+  }
+
+  // ── FAQ
+  .tsl-faq {
+    padding: 56px 20px 64px;
+  }
+  .tsl-faq__head {
+    margin-bottom: 32px;
+  }
+  .tsl-faq__title {
+    font-size: 30px;
+  }
+  .tsl-faq__question {
+    padding: 20px 4px;
+    font-size: 16px;
+  }
+
+  // ── Call to action: the text and the button stack; the button is full width.
+  .tsl-cta {
+    padding: 56px 20px;
+  }
+  .tsl-cta__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+  }
+  .tsl-cta__title {
+    font-size: 30px;
+  }
+  .tsl-cta__button {
+    justify-content: center;
+  }
+}

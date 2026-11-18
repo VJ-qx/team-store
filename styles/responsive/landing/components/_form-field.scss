@@ -1,0 +1,30 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// Form fields in the pop-ups below 744px.
+
+@include mobile-down {
+  // 16px text, so iOS Safari doesn't zoom in when a field is focused (it does below 16px).
+  .tsl-field__input,
+  .tsl-field__input--password,
+  .tsl-combo__input {
+    font-size: 16px;
+  }
+  // The show / hide and list toggles get a 44px tap area around the same centre (12 + 14 = 4 + 22, 10 + 14 = 2 + 22).
+  .tsl-field__toggle {
+    right: 4px;
+    width: 44px;
+    height: 44px;
+  }
+  .tsl-combo__toggle {
+    right: 2px;
+    width: 44px;
+    height: 44px;
+  }
+  // Room for the larger list toggle.
+  .tsl-combo__input {
+    padding-right: 48px;
+  }
+  .tsl-combo__option {
+    min-height: 44px;
+  }
+}

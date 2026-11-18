@@ -1,0 +1,43 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// Landing page header below 744px: a shorter bar and a smaller brand, so the logo, the title and SIGN IN (or the
+// account name) fit on one line. A long account name ends in an ellipsis instead of running into the title.
+
+@include mobile-down {
+  .tsl-header {
+    height: 64px;
+    padding: 0 16px;
+    gap: 12px;
+  }
+  .tsl-header__brand {
+    gap: 10px;
+    min-height: 44px;
+    flex-shrink: 0;
+  }
+  .tsl-header__logo {
+    height: 28px;
+  }
+  .tsl-header__divider {
+    height: 22px;
+  }
+  .tsl-header__title {
+    font-size: 13px;
+    letter-spacing: .12em;
+  }
+  .tsl-header__sign-in,
+  .tsl-header__account {
+    gap: 8px;
+    min-height: 44px;
+    min-width: 0;
+    svg { flex-shrink: 0; }
+  }
+  .tsl-header__account-label {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .tsl-header__account .tsl-header__account-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

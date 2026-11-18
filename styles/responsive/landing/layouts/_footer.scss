@@ -1,0 +1,20 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// Landing page footer below 744px: the brand, the "See a live team store" link and the copyright stack instead
+// of sharing one row.
+
+@include mobile-down {
+  .tsl-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 28px 20px;
+  }
+  .tsl-footer__links {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+  .tsl-footer__link {
+    min-height: 44px;
+  }
+}

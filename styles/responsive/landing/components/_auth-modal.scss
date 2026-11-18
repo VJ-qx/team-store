@@ -1,0 +1,73 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// The sign-in, sign-up and reset pop-up below 1024px and below 744px.
+
+@include tablet-down {
+  // A pop-up taller than the screen (the sign-up details on a short phone) scrolls inside the overlay instead of
+  // being cut off at the top. When it fits, the auto margins keep it centred as before.
+  .tsl-modal {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .tsl-modal__dialog {
+    margin: auto 0;
+  }
+}
+
+@include mobile-down {
+  .tsl-modal {
+    padding: 16px;
+  }
+
+  // Side padding from 40px to 20px, so the forms have room. Top and bottom stay as they are.
+  .tsl-auth__panel,
+  .tsl-auth__panel--center,
+  .tsl-auth__panel--choose,
+  .tsl-auth__panel--sent,
+  .tsl-auth__panel--success,
+  .tsl-auth__status {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  // ── Tap targets of at least 44 × 44px.
+  // The ✕ grows around its centre (16 + 16 = 10 + 22).
+  .tsl-modal__close {
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+  }
+  // Back grows around its centre too.
+  .tsl-auth__back {
+    top: 8px;
+    min-height: 44px;
+  }
+  // Text buttons get a 44px-tall tap area; the negative margins keep the layout where it was.
+  .tsl-auth__forgot,
+  .tsl-auth__switch-link,
+  .tsl-auth__notice-link,
+  .tsl-auth__skip {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: -15px;
+    margin-bottom: -15px;
+  }
+  .tsl-auth__text-btn {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    margin-top: 10px;
+    margin-bottom: -14px;
+  }
+  // Buttons that fit on one line once the panel is wider.
+  .tsl-auth__paused-btn,
+  .tsl-auth__request,
+  .tsl-auth__different,
+  .tsl-auth__outline-btn {
+    min-height: 44px;
+  }
+  // The "Sign in" button (43px; its other styles are set in the page's code).
+  .tsl-auth__forgot-row + button {
+    min-height: 44px;
+  }
+}

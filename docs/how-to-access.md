@@ -35,6 +35,8 @@ A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't i
 
 **Sign-in paused (Vue only, [approved change](README.md#approved-changes)):** click **SIGN IN**, type any email, type the password `wrong`, and click **Sign in** 5 times. Sign-in for that email is paused for 15 minutes, with a countdown and a **Reset password** button. Another email isn't paused. Reload the page to clear the pause. The prototype doesn't have this yet: there, every wrong password shows "Email or password is incorrect".
 
+**On a phone or tablet (Vue only):** open the same address in a window narrower than 1024px, or in the browser's device toolbar (for example iPhone SE, 375px). Below 744px the page stacks: smaller headings, the hero buttons and the call to action full width, the dashboard preview's cards two by two, one feature card per row, and pop-ups with less side padding, 44px tap targets and 16px fields. From 744px to 1023px only the pop-ups change: one taller than the screen scrolls. The prototype stays desktop only.
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).

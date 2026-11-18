@@ -1,0 +1,35 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// The Welcome to Team Stores pop-up below 1024px and below 744px.
+
+@include tablet-down {
+  // Taller than the screen: it scrolls inside the overlay instead of being cut off at the top.
+  .tsl-welcome {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  .tsl-welcome__dialog {
+    margin: auto 0;
+  }
+}
+
+@include mobile-down {
+  .tsl-welcome {
+    padding: 16px;
+  }
+  // Side padding from 40px to 20px, so the brand rows and the button have room. Top and bottom stay as they are.
+  .tsl-welcome__dialog {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  // Tap targets of at least 44 × 44px; the ✕ grows around its centre.
+  .tsl-welcome__close {
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+  }
+  .tsl-welcome__connect {
+    min-height: 44px;
+  }
+}

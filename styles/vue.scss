@@ -2,3 +2,12 @@
 // focus states the prototype gets from the Claude Design runtime.
 @use "app";
 @use "states";
+
+// Responsive: the landing page below 1024px (styles/responsive/landing/). Vue only, after the page's own styles
+// so they override them; the prototype's css/app.css doesn't include them. Desktop (1024px and up) is unchanged.
+@use "responsive/landing/layouts/header";
+@use "responsive/landing/layouts/footer";
+@use "responsive/landing/pages/landing";
+@use "responsive/landing/components/auth-modal";
+@use "responsive/landing/components/form-field";
+@use "responsive/landing/components/welcome-modal";
