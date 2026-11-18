@@ -242,6 +242,87 @@
   line-height: 1.2;
 }
 
+// Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (docs/README.md#approved-changes).
+// A brand that can't be primary. Background and border are inline (they follow the selection), the rest is here.
+// Colours from the design: greyed text and logo, a lock, and the tag; "Access pending" reuses My Account's pending pill.
+.wx-welcome__tile--locked {
+  cursor: not-allowed;
+
+  .wx-welcome__logo-box {
+    filter: grayscale(1);
+    opacity: .45;
+  }
+
+  .wx-welcome__wordmark,
+  .wx-welcome__tile-name {
+    color: $zinc-400;
+  }
+}
+
+.wx-welcome__tile-lock {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  color: $zinc-400;
+}
+
+.wx-welcome__tile-tag {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.wx-welcome__tile-tag--pending {
+  color: #92670b;
+  background: $amber-soft;
+  border: 1px solid #f0d98a;
+}
+
+.wx-welcome__tile-tag--request {
+  color: $zinc-600;
+  background: $divider;
+  border: 1px solid $divider;
+}
+
+// The tip on hover, in My Account's tooltip look (.wx-account__tooltip).
+.wx-welcome__tile-tip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: 212px;
+  background: $ink;
+  color: $white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  text-align: center;
+  z-index: 20;
+}
+
+.wx-welcome__tile--locked:hover .wx-welcome__tile-tip {
+  display: block;
+}
+
+.wx-welcome__tile-tip-arrow {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid $ink;
+}
+
 .wx-welcome__multi-note {
   margin: 16px 0 0;
   font-size: 12.5px;

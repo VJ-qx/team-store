@@ -19,6 +19,10 @@ const SIGNED_IN = '?brand=prolook&auth=native-connected'; // signed in, welcome 
 const CUSTOMIZER_LOADING_DESIGN = 'docs/approved-changes/customizer-loading-screen.png';
 // Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (G-6).
 const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
+// Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (G-7).
+const WELCOME_LOCKED_DESIGN = 'docs/approved-changes/welcome-locked-brands.png';
+// A brand tile in the welcome pop-up's grid, by its name (locked tiles have no title).
+const welcomeTile = (name) => `xpath=//button[contains(concat(" ", normalize-space(@class), " "), " wx-welcome__tile ")][.//*[normalize-space(text())="${name}"]]`;
 
 const openSettings = {
   eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`, on: 'prototype',
@@ -200,9 +204,14 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
 // "Confirm & Enter", so these states differ from the prototype on purpose and are approved states.
 export const buildWelcomeCustomizerStates = () => [
   { name: 'welcome customizer', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
+  // Approved change, not in the prototype yet: locked cards in the grid (G-7). The several-brand rep has the design's
+  // sample brands; Legends (Access pending) and Axe (Request access) are locked.
   {
-    name: 'welcome multi-brand', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [
+    name: 'welcome multi-brand', query: '?brand=riddell', design: WELCOME_LOCKED_DESIGN, steps: [
       vueSettings({ ssoMultiBrand: true }),
+      { hover: welcomeTile('Legends'), label: 'Hover Legends (locked, Access pending): the tip "Connect this brand to set it as your primary."' },
+      { hover: welcomeTile('Axe'), label: 'Hover Axe (locked, Request access): the same tip' },
+      { click: welcomeTile('ALLI'), label: 'Pick ALLI as the primary brand' },
       { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
       { click: button('Confirm & Enter', false) },
     ],

@@ -55,7 +55,7 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 
 - **Native sign-in:** http://localhost:5173/workspace.html?brand=prolook&auth=native
 - **Customizer sign-in:** http://localhost:5173/workspace.html?brand=prolook (or `brand=riddell`)
-- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**.
+- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**. **Approved change (G-7, Vue only):** with `brand=riddell`, the grid shows the design's eight sample brands; Legends ("Access pending") and Axe ("Request access") are locked: greyed, with a lock, not clickable, and hovering shows "Connect this brand to set it as your primary." The prototype shows one brand.
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
 
