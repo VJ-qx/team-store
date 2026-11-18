@@ -23,6 +23,8 @@
 //
 // A side (--a / --b) is a git ref (served from a temporary worktree), "." (the working tree),
 // or an http(s) URL used as-is (for example a Vite dev server).
+// A state can set clockFromLoad: true to freeze the page's clock before it loads, for timers the page starts
+// while loading (by default the clock is installed after the page has loaded, so those run in real time).
 // Exit code: 0 = identical, 1 = differences found, 2 = the run itself failed.
 
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -428,10 +430,13 @@ try {
         // Load both, apply props, freeze timers so only `wait` steps advance them.
         const props = { ...(scenario.props || {}), ...(state.props || {}) };
         const startErrors = await Promise.all(pages.map(async (p, i) => {
+          // clockFromLoad: the page's clock is frozen before it loads, so timers it starts while loading (a loading
+          // screen, for example) only advance with `wait` steps. Other states install the clock after loading.
+          if (state.clockFromLoad) { await p.page.clock.install(); await p.page.clock.pauseAt(Date.now() + 1000); }
           await p.page.goto(sides[i].url(scenario.page || '') + (state.query || ''), { waitUntil: 'load', timeout: 60000 });
           if (scenario.ready) await p.page.locator(scenario.ready).first().waitFor({ state: 'visible', timeout: 60000 });
           if (Object.keys(props).length && !(await applyProps(p.page, props))) return `${sides[i].label} has no way to set props (no window.__dcSetProps or window.__paritySetProps)`;
-          await p.page.clock.install();
+          if (!state.clockFromLoad) await p.page.clock.install();
           return null;
         }));
         if (startErrors.some(Boolean)) {

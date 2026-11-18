@@ -61,6 +61,10 @@ The pop-up shows once per browser session. To see it again, run `sessionStorage.
 
 The ✕ at its top right, Escape, and a click outside the pop-up close it the same way as its button (**Continue to Workspace** / **Confirm & Enter**): the primary brand shown is kept.
 
+#### Loading screen from a Customizer (Vue only, [approved change](README.md#approved-changes))
+
+Open http://localhost:5173/workspace.html?brand=riddell&from=customizer. `from=customizer` stands in for a Customizer's **Team Store** link (any brand works). The loading screen shows for 1.7 seconds under the Team Stores top bar, then the Overview opens, with the welcome pop-up on the first visit in the browser session (run `sessionStorage.clear()` and reload to see it again). Without `from=customizer` the workspace opens as before. The Marucci workspace has no Customizer hand-off, so it ignores it. The prototype doesn't have this yet.
+
 #### My Account (FR-1.7.3, FR-1.12)
 
 - Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected, hover the **HM** button at the top right, and click **My Account**.
