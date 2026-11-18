@@ -35,6 +35,8 @@ A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't i
 
 **Sign-in paused (Vue only, [approved change](README.md#approved-changes)):** click **SIGN IN**, type any email, type the password `wrong`, and click **Sign in** 5 times. Sign-in for that email is paused for 15 minutes, with a countdown and a **Reset password** button. Another email isn't paused. Reload the page to clear the pause. The prototype doesn't have this yet: there, every wrong password shows "Email or password is incorrect".
 
+**Confirm your email (Vue only, approved change G-9):** click **SIGN IN**, then **Create an account**, and fill in both steps. **Create account** now shows "Confirm your email" instead of the dealership check. To continue as if the rep opened the link in that email, open http://localhost:5173/landing.html?confirm=new%40dealership.com: it shows "Account created / Checking …", then the organization registration, or, with `__paritySetProps({ signupDealershipFound: true })` run right after it opens, the brands to connect.
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).

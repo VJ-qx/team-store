@@ -3,6 +3,7 @@
 // DCLogic is a stand-in for the prototype runtime's base class.
 import { DCLogic } from '../utils/dc-logic.js';
 import { anyPaused, formatRemaining, pausedUntil, recordFailure } from './sign-in-lockout.js';
+import { confirmLinkEmail } from './confirm-email.js';
 
 class Component extends DCLogic {
   state = {
@@ -141,13 +142,23 @@ class Component extends DCLogic {
     clearInterval(this.pauseTimer);
   }
 
+  // Approved change, not in the prototype yet: Confirm your email (docs/README.md#approved-changes).
+  // Opened from the confirmation link (demo: ?confirm=<email>): sign-up continues with the dealership check.
+  componentDidMount() {
+    const email = confirmLinkEmail();
+    if (email) { this.setState({ email, signupDone: true }); this.doSignup(); }
+  }
+
   // Native sign-up complete → dealership check against qx7.
   // Found → entitled brands surface for connection (workspace welcome, native variant).
   // Not found → business registration (Stripe form) and no access until Prolook approves.
   doSignup() {
-    const found = this.props.signupDealershipFound ?? false;
     this.setState({ step: "checking" });
     setTimeout(() => {
+      // Approved change, not in the prototype yet: Confirm your email (docs/README.md#approved-changes).
+      // The result is read when the check ends (the prototype read it when it started): from the confirmation link,
+      // the check starts as the page loads, before its settings can be changed.
+      const found = this.props.signupDealershipFound ?? false;
       if (found) this.setState({ step: "connect", connectSel: { prolook: true } });
       else { // no dealership → Stripe organization registration, no access until approved
         this.setState({ step: "notfound" });
@@ -236,6 +247,7 @@ class Component extends DCLogic {
       stepSignup1: step === "signup1",
       stepSignup2: step === "signup2",
       stepChecking: step === "checking",
+      stepConfirmEmail: step === "confirm-email", // Approved change, not in the prototype yet: Confirm your email (docs/README.md#approved-changes).
       stepNotFound: step === "notfound",
       stepConnect: step === "connect",
       stepForgot: step === "forgot",
@@ -301,7 +313,9 @@ class Component extends DCLogic {
       stateOptions, stateEmpty: stateOptions.length === 0,
       signup2Disabled: !profileOk,
       signup2Style: btn(profileOk, 24),
-      doSignup: () => { if (profileOk) { this.setState({ signupDone: true }); this.doSignup(); } },
+      // Approved change, not in the prototype yet: Confirm your email (docs/README.md#approved-changes).
+      // "Create account" asks the rep to confirm their email first; the dealership check runs from the link (componentDidMount).
+      doSignup: () => { if (profileOk) this.setState({ signupDone: true, step: "confirm-email" }); },
 
       // forgot password
       doForgot: () => { if (emailValid) this.setState({ step: "forgot-sent" }); },
