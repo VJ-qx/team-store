@@ -37,6 +37,8 @@ A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't i
 
 **Confirm your email (Vue only, approved change G-9):** click **SIGN IN**, then **Create an account**, and fill in both steps. **Create account** now shows "Confirm your email" instead of the dealership check. To continue as if the rep opened the link in that email, open http://localhost:5173/landing.html?confirm=new%40dealership.com: it shows "Account created / Checking …", then the organization registration, or, with `__paritySetProps({ signupDealershipFound: true })` run right after it opens, the brands to connect.
 
+**Choose a Customizer with several brands (Vue only, demo data):** click **SIGN IN**, then **Sign in with Customizer**, type an email starting with `multi@` (for example `multi@dealership.com`) and click **Continue**. The step lists PROLOOK and Riddell with a Customizer account (click one to sign in), and Legends and Axe without one (**Request access to this brand** or **Sign in with a different email**). Every other email shows PROLOOK only, as in the prototype, where one setting gives every brand an account or none. The brands are in `src/landing/multi-brand-demo.js`, for the frontend dev to replace with the rep's real brands from qx7.
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).
