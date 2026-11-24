@@ -1479,6 +1479,31 @@ html {
   font-family: inherit;
 }
 
+.tsl-brand-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.tsl-brand-card__connect {
+  flex-shrink: 0;
+  background: #fff;
+  color: #09090b;
+  border: 1px solid #09090b;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .tsl-brand__body {
   flex: 1;
   min-width: 0;

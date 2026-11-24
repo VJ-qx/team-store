@@ -585,6 +585,34 @@
   font-family: inherit;
 }
 
+// Team request, not in the prototype yet (not approved yet): a brand with a Customizer account is a card with a
+// Connect button instead of a clickable row with ">". The card keeps the row's look, without its pointer and hover.
+.tsl-brand-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  background: $white;
+  border: 1px solid $zinc-200;
+  border-radius: 12px;
+  text-align: left;
+}
+
+// The welcome pop-up's Connect button (.tsl-welcome__connect), on the right of the card.
+.tsl-brand-card__connect {
+  flex-shrink: 0;
+  background: $white;
+  color: $zinc-950;
+  border: 1px solid $zinc-950;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .tsl-brand__body {
   flex: 1;
   min-width: 0;

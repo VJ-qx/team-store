@@ -588,21 +588,27 @@
           <template v-if="vals.hasEntitlements">
             <div class="tsl-auth__brand-list">
               <template v-for="(c, $index) in list(vals.customizers)" :key="$index">
-                <!-- account exists: selectable row -->
+                <!-- account exists: the brand and a Connect button.
+                     Team request, not in the prototype yet (not approved yet): Connect replaces the row's ">" and is the
+                     row's action (it opens that brand's password step, as clicking the row did); the row itself is no
+                     longer a button. The line under the name drops " · Sign in", which named the row's click: next to
+                     Connect it wrapped onto a second line. -->
                 <template v-if="c?.hasAccount">
-                  <button class="tsl-brand-row" @click="c.onSelect">
+                  <div class="tsl-brand-card">
                     <span class="tsl-brand__logo">
                       <template v-if="c?.isImg"><img class="tsl-brand__img" src="assets/prolook-mark-black.png" alt="PROLOOK"></template>
                       <template v-if="c?.isWord"><span class="tsl-brand__initial">{{ str(c?.initial) }}</span></template>
                     </span>
                     <span class="tsl-brand__body">
                       <span class="tsl-brand__name">{{ str(c?.name) }}</span>
-                      <span class="tsl-brand__sub">Customizer account found · Sign in</span>
+                      <span class="tsl-brand__sub">Customizer account found</span>
                     </span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
-                  </button>
+                    <button type="button" class="tsl-brand-card__connect" @click="c.onSelect">Connect</button>
+                  </div>
                 </template>
-                <!-- no account: request access / different email -->
+                <!-- no account: the brand, its message and "Sign in with a different email".
+                     Team request, not in the prototype yet (not approved yet): no "Request access to this brand", so no
+                     "Access pending" either (the request logic in LandingPage.logic.js is unused). -->
                 <template v-if="c?.noAccount">
                   <div class="tsl-auth__noaccount">
                     <div class="tsl-auth__noaccount-row">
@@ -615,18 +621,9 @@
                         <span class="tsl-brand__sub--wrap">You don't have an account for this Customizer yet. Accounts are added by Prolook.</span>
                       </span>
                     </div>
-                    <template v-if="c?.pending">
-                      <span class="tsl-auth__pending">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-                        Access pending · request sent to Prolook
-                      </span>
-                    </template>
-                    <template v-if="c?.notPending">
-                      <div class="tsl-auth__noaccount-actions">
-                        <button class="tsl-auth__request" @click="c.onRequest">Request access to this brand</button>
-                        <button class="tsl-auth__different" @click="vals.backToEmail">Sign in with a different email</button>
-                      </div>
-                    </template>
+                    <div class="tsl-auth__noaccount-actions">
+                      <button class="tsl-auth__different" @click="vals.backToEmail">Sign in with a different email</button>
+                    </div>
                   </div>
                 </template>
               </template>
