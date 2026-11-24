@@ -1,0 +1,67 @@
+@use "../../variables" as *;
+// Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes).
+// Design: docs/approved-changes/customizer-loading-screen.png. Sizes are measured from the design, scaled by its
+// Team Stores top bar (about 0.85 of the real one); the spinner is the landing page's (64px, a 3px ring).
+
+// The page: the top bar, then the loading screen filling the rest of the window.
+.wx-customizer-loading {
+  min-height: 100vh;
+  min-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  background: $white;
+}
+
+.wx-customizer-loading__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.wx-customizer-loading__spinner {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 0 0 24px;
+}
+
+.wx-customizer-loading__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid $divider;
+}
+
+.wx-customizer-loading__arc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: $ink;
+  animation: wxCustomizerSpin .9s linear infinite;
+}
+
+.wx-customizer-loading__title {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: $ink;
+}
+
+.wx-customizer-loading__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: $muted;
+}
+
+@keyframes wxCustomizerSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

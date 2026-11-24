@@ -53,3 +53,10 @@ $font-sans: "Inter", system-ui, sans-serif;
 $font-display: "Archivo", sans-serif;
 $font-mono: "JetBrains Mono", monospace;
 $font-system-mono: ui-monospace, monospace;
+
+// ── Breakpoints ──
+// For the responsive rules in styles/responsive/<page>/, through the mixins in _mixins.scss. Desktop is 1024px
+// and up and is never changed: the rules only apply below it. 744px is where the workspace switches to its
+// mobile design ("Workspace Mobile Mapping": phones and small tablets below 744pt), so the pages agree.
+$bp-tablet: 744px;   // tablet: 744–1023px
+$bp-desktop: 1024px; // desktop: 1024px and up

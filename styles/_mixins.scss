@@ -1,0 +1,5 @@
+@use "variables" as *;
+// Breakpoint mixins for the responsive rules (styles/responsive/<page>/). Both apply only below the desktop
+// breakpoint, so desktop styles are never wrapped or rewritten. Use these instead of raw @media queries.
+@mixin tablet-down { @media (max-width: #{$bp-desktop - 1px}) { @content; } }
+@mixin mobile-down { @media (max-width: #{$bp-tablet - 1px}) { @content; } }
