@@ -213,6 +213,8 @@ A scenario can also set:
 
 A scenario's `approved` list holds the states of approved changes the prototype doesn't have yet, each with the path of its design image. Normal runs skip them (the report's notes say how many); `--approved` runs them on the Vue version. When the prototype gets the change, its states move into `states`.
 
+A state can set `clockFromLoad: true` to freeze the page's clock before it loads. By default the clock is installed once the page has loaded, so a timer the page starts while loading (such as the Customizer loading screen) would run in real time; with the option, it only advances with `wait` steps.
+
 | Scenario | Page | Covers |
 |---|---|---|
 | `landing-page.mjs` | `Landing Page.dc.html` | The landing page, sign-in, registration, and the welcome pop-up |

@@ -15,6 +15,18 @@ const field = (name) => `role=textbox[name="${name}" s]`;
 
 const ACCESS_NONE = '?brand=prolook&auth=native&access=none'; // a rep without access, as the landing page hands off
 const SIGNED_IN = '?brand=prolook&auth=native-connected'; // signed in, welcome pop-up already seen
+// Approved change, not in the prototype yet: the loading screen when the workspace opens from a Customizer.
+const CUSTOMIZER_LOADING_DESIGN = 'docs/approved-changes/customizer-loading-screen.png';
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (G-6).
+const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
+// Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (G-7).
+const WELCOME_LOCKED_DESIGN = 'docs/approved-changes/welcome-locked-brands.png';
+// Approved change, not in the prototype yet: Show toggle on Current password (G-11).
+const CURRENT_PASSWORD_DESIGN = 'docs/approved-changes/current-password-show.png';
+// The Show / Hide button next to a password field's label.
+const showToggle = (label) => `xpath=//label[normalize-space(.)="${label}"]/following-sibling::button[1]`;
+// A brand tile in the welcome pop-up's grid, by its name (locked tiles have no title).
+const welcomeTile = (name) => `xpath=//button[contains(concat(" ", normalize-space(@class), " "), " wx-welcome__tile ")][.//*[normalize-space(text())="${name}"]]`;
 
 const openSettings = {
   eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`, on: 'prototype',
@@ -98,27 +110,7 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
         { click: button('Continue to Workspace', false) },
       ],
     },
-    { name: 'welcome customizer', query: '?brand=prolook', steps: [{ hover: button('Continue to Workspace', false) }, { click: button('Continue to Workspace', false) }] },
-    {
-      name: 'welcome multi-brand', query: '?brand=prolook', steps: [
-        openSettings,
-        { click: multiBrandSwitch, on: 'prototype', label: 'In the settings panel, turn on "Multi-brand account"' },
-        closeSettings,
-        vueSettings({ ssoMultiBrand: true }),
-        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
-        { click: button('Continue to Workspace', false) },
-      ],
-    },
-    // Closing the pop-up without its button: the ✕, Escape, or a click outside it.
-    {
-      name: 'welcome close', query: '?brand=prolook', steps: [
-        { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
-        { click: welcomeClose, label: 'Click the ✕: the pop-up closes, as "Continue to Workspace" does' },
-      ],
-    },
     { name: 'welcome native close', query: '?brand=prolook&auth=native', steps: [{ click: welcomeClose, label: 'Click the ✕ without connecting a Customizer' }] },
-    { name: 'welcome escape', query: '?brand=prolook', steps: [{ press: 'Escape', label: 'Press Escape: the pop-up closes' }] },
-    { name: 'welcome click outside', query: '?brand=prolook', steps: [clickOutsideWelcome] },
   ]),
 
   // ── My Account ──
@@ -132,27 +124,6 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
   },
   { name: 'my account edit', query: SIGNED_IN, steps: [...openMyAccount(account), { click: button('Edit', false) }, { hover: button('Save changes') }, { click: button('Cancel') }] },
   { name: 'my account save', query: SIGNED_IN, steps: [...openMyAccount(account), { click: button('Edit', false) }, { click: button('Save changes') }] },
-  {
-    name: 'my account change password', query: SIGNED_IN, steps: [
-      ...openMyAccount(account),
-      { click: button('Change password', false) },
-      { fill: ['input[placeholder="••••••••••••"]', 'old-password-123'] },
-      { fill: ['input[placeholder="At least 12 characters"]', 'short'] },
-      { click: button('Show') },
-      { fill: ['input[placeholder="At least 12 characters"]', 'a new long passphrase'] },
-      { hover: button('Update password') },
-      { click: button('Update password') },
-      { wait: 800 },
-    ],
-  },
-  {
-    name: 'my account password must differ', query: SIGNED_IN, steps: [
-      ...openMyAccount(account),
-      { click: button('Change password', false) },
-      { fill: ['input[placeholder="••••••••••••"]', 'same-passphrase-123'] },
-      { fill: ['input[placeholder="At least 12 characters"]', 'same-passphrase-123'] },
-    ],
-  },
   ...(!customizerOnly ? [] : [{
     name: 'my account customizer only', query: SIGNED_IN, steps: [
       openSettings,
@@ -211,6 +182,61 @@ export const buildStates = ({ account = 'Hingle McCringleberry', welcome = true,
   },
 ];
 
+// Approved change, not in the prototype yet: Show toggle on Current password (G-11). The change-password pop-up's
+// Current password field has the same Show / Hide control as New password, so these states differ from the prototype
+// on purpose and are approved states (both workspaces: My Account is the same).
+export const buildPasswordStates = ({ account = 'Hingle McCringleberry' } = {}) => [
+  {
+    name: 'my account change password', query: SIGNED_IN, design: CURRENT_PASSWORD_DESIGN, steps: [
+      ...openMyAccount(account),
+      { click: button('Change password', false) },
+      { fill: ['input[placeholder="••••••••••••"]', 'old-password-123'] },
+      { click: showToggle('Current password'), label: 'Click Show next to Current password' },
+      { fill: ['input[placeholder="At least 12 characters"]', 'short'] },
+      { click: showToggle('New password'), label: 'Click Show next to New password' },
+      { fill: ['input[placeholder="At least 12 characters"]', 'a new long passphrase'] },
+      { hover: button('Update password') },
+      { click: button('Update password') },
+      { wait: 800 },
+    ],
+  },
+  {
+    name: 'my account password must differ', query: SIGNED_IN, design: CURRENT_PASSWORD_DESIGN, steps: [
+      ...openMyAccount(account),
+      { click: button('Change password', false) },
+      { fill: ['input[placeholder="••••••••••••"]', 'same-passphrase-123'] },
+      { fill: ['input[placeholder="At least 12 characters"]', 'same-passphrase-123'] },
+    ],
+  },
+];
+
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep. A Customizer rep's
+// welcome pop-up (Prolook; the integrated workspace never shows it) now has the helper line under the brand and
+// "Confirm & Enter", so these states differ from the prototype on purpose and are approved states.
+export const buildWelcomeCustomizerStates = () => [
+  { name: 'welcome customizer', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
+  // Approved change, not in the prototype yet: locked cards in the grid (G-7). The several-brand rep has the design's
+  // sample brands; Legends (Access pending) and Axe (Request access) are locked.
+  {
+    name: 'welcome multi-brand', query: '?brand=riddell', design: WELCOME_LOCKED_DESIGN, steps: [
+      vueSettings({ ssoMultiBrand: true }),
+      { hover: welcomeTile('Legends'), label: 'Hover Legends (locked, Access pending): the tip "Connect this brand to set it as your primary."' },
+      { hover: welcomeTile('Axe'), label: 'Hover Axe (locked, Request access): the same tip' },
+      { click: welcomeTile('ALLI'), label: 'Pick ALLI as the primary brand' },
+      { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
+      { click: button('Confirm & Enter', false) },
+    ],
+  },
+  {
+    name: 'welcome close', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [
+      { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
+      { click: welcomeClose, label: 'Click the ✕: the pop-up closes, as "Confirm & Enter" does' },
+    ],
+  },
+  { name: 'welcome escape', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ press: 'Escape', label: 'Press Escape: the pop-up closes' }] },
+  { name: 'welcome click outside', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [clickOutsideWelcome] },
+];
+
 export default {
   name: 'Workspace (Module 1)',
   page: 'Workspace.dc.html',
@@ -231,4 +257,21 @@ export default {
     },
   ],
   states: buildStates(),
+  // Approved changes the prototype doesn't have yet: checked on the Vue version only (npm run parity -- … --approved).
+  // The loading screen starts while the page loads, so its states freeze the clock from the start (clockFromLoad).
+  approved: [
+    {
+      name: 'customizer loading', query: '?brand=riddell&from=customizer', design: CUSTOMIZER_LOADING_DESIGN, clockFromLoad: true, steps: [
+        { wait: 1000, label: 'Wait 1 second: still loading' },
+        { wait: 700, label: 'Wait until 1.7 seconds: the Overview opens, with the welcome pop-up (first visit)' },
+      ],
+    },
+    {
+      name: 'customizer loading welcome seen', query: '?brand=prolook&auth=native-connected&from=customizer', design: CUSTOMIZER_LOADING_DESIGN, clockFromLoad: true, steps: [
+        { wait: 1700, label: 'Wait 1.7 seconds: the Overview opens, without the welcome pop-up (already seen)' },
+      ],
+    },
+    ...buildWelcomeCustomizerStates(),
+    ...buildPasswordStates(),
+  ],
 };
