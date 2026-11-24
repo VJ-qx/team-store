@@ -1,0 +1,31 @@
+@use "../../../variables" as *;
+@use "../../../mixins" as *;
+// Approved change, not in the prototype yet: Customizer loading screen (docs/README.md#approved-changes), on smaller
+// screens. At 1024px and up it is unchanged.
+// Below 1024px it fits the window instead of keeping the desktop workspace's 1280px minimum width, so the spinner
+// and the text stay centred on screen. Below 744px the top bar is the one the design's narrow "new tab" shows: logo,
+// TEAM STORES and the avatar. The section tabs (not clickable while loading) are hidden and the bar is shorter.
+// The top bar's own styles are inline (TeamStoresHeader), hence !important.
+
+@include tablet-down {
+  .wx-customizer-loading {
+    min-width: 0;
+  }
+}
+
+@include mobile-down {
+  .wx-customizer-loading > header {
+    height: 64px !important;
+    padding: 0 16px !important;
+  }
+  .wx-customizer-loading > header > nav {
+    display: none !important;
+  }
+  // A 44px tap target for the account button (the 36px avatar).
+  .wx-customizer-loading > header button[aria-haspopup] {
+    min-height: 44px;
+  }
+  .wx-customizer-loading__body {
+    padding: 32px 24px;
+  }
+}

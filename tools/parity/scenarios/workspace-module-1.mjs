@@ -15,6 +15,8 @@ const field = (name) => `role=textbox[name="${name}" s]`;
 
 const ACCESS_NONE = '?brand=prolook&auth=native&access=none'; // a rep without access, as the landing page hands off
 const SIGNED_IN = '?brand=prolook&auth=native-connected'; // signed in, welcome pop-up already seen
+// Approved change, not in the prototype yet: the loading screen when the workspace opens from a Customizer.
+const CUSTOMIZER_LOADING_DESIGN = 'docs/approved-changes/customizer-loading-screen.png';
 
 const openSettings = {
   eval: `window.postMessage({ type: '__activate_edit_mode' }, '*')`, on: 'prototype',
@@ -231,4 +233,19 @@ export default {
     },
   ],
   states: buildStates(),
+  // Approved changes the prototype doesn't have yet: checked on the Vue version only (npm run parity -- … --approved).
+  // The loading screen starts while the page loads, so its states freeze the clock from the start (clockFromLoad).
+  approved: [
+    {
+      name: 'customizer loading', query: '?brand=riddell&from=customizer', design: CUSTOMIZER_LOADING_DESIGN, clockFromLoad: true, steps: [
+        { wait: 1000, label: 'Wait 1 second: still loading' },
+        { wait: 700, label: 'Wait until 1.7 seconds: the Overview opens, with the welcome pop-up (first visit)' },
+      ],
+    },
+    {
+      name: 'customizer loading welcome seen', query: '?brand=prolook&auth=native-connected&from=customizer', design: CUSTOMIZER_LOADING_DESIGN, clockFromLoad: true, steps: [
+        { wait: 1700, label: 'Wait 1.7 seconds: the Overview opens, without the welcome pop-up (already seen)' },
+      ],
+    },
+  ],
 };
