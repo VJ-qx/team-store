@@ -26,3 +26,10 @@ export const CUSTOMIZER_BRANDS = INTEGRATION.on
   };
 
 export const ACCESSIBLE_CUSTOMIZERS = INTEGRATION.on ? ["victus"] : ["prolook"];
+
+// Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (docs/README.md#approved-changes).
+// The several-brand rep's sample brands, from the approved design (G-7). The brands a rep can't set as primary are
+// locked, with the reason on their card: an access request waiting on Prolook, or no account yet. The frontend dev
+// replaces both with the rep's brands from qx7.
+export const MULTI_BRAND_SAMPLE = ["prolook", "game-one", "riddell", "legends", "axe", "alli", "baden", "perfect-game"];
+export const LOCKED_BRANDS = { legends: "Access pending", axe: "Request access" };
