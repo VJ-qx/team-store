@@ -113,12 +113,14 @@ export default {
     { name: 'sign-in paused reset password', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { click: button('Reset password') }] },
     { name: 'sign-in paused other email', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { fill: [EMAIL, 'other@dealership.com'] }, { fill: [EMAIL, 'rep@dealership.com'] }] },
     { name: 'sign-in pause ends', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 15 * 60 * 1000, label: 'Wait 15 minutes: the pause ends' }, { fill: [PASSWORD, 'correct-horse'] }] },
-    // Choose a Customizer cards: a brand with an account has a Connect button instead of ">", and a brand without one
-    // has no "Request access to this brand". Team request, not approved yet, so there is no design image.
+    // Choose a Customizer cards: every brand has a Connect button on the right (instead of ">" on a brand with an
+    // account), and a brand without one has no "Request access to this brand". Team request, not approved yet, so
+    // there is no design image.
     { name: 'customizer sign-in', props: { customizerAccountExists: true }, steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'rep@dealership.com'] }, continueBtn, { hover: button('Connect') }, { click: button('Connect') }, { fill: ['input[placeholder="Enter your Customizer password"]', 'secret'] }, { click: button('Authenticate & Enter', false) }, { wait: 1700 }] },
-    { name: 'customizer no account', props: { customizerAccountExists: false }, steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'rep@dealership.com'] }, continueBtn, { hover: button('Sign in with a different email') }, { click: button('Sign in with a different email') }] },
+    // Without an account, Connect does nothing yet; "Sign in with a different email" goes back to the email step.
+    { name: 'customizer no account', props: { customizerAccountExists: false }, steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'rep@dealership.com'] }, continueBtn, { hover: button('Connect') }, { click: button('Connect') }, { hover: button('Sign in with a different email') }, { click: button('Sign in with a different email') }] },
     // Demo data (src/landing/multi-brand-demo.js): the "multi@" email lists PROLOOK and Riddell with an account, and
-    // Legends and Axe without one. Connect on Riddell opens its password step.
-    { name: 'customizer several brands', steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'multi@dealership.com'] }, continueBtn, { hover: `${button('Connect')} >> nth=1` }, { click: `${button('Connect')} >> nth=1` }] },
+    // Legends and Axe without one. Hover Legends' Connect, then Connect on Riddell opens its password step.
+    { name: 'customizer several brands', steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'multi@dealership.com'] }, continueBtn, { hover: `${button('Connect')} >> nth=2` }, { hover: `${button('Connect')} >> nth=1` }, { click: `${button('Connect')} >> nth=1` }] },
   ],
 };

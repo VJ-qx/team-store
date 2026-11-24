@@ -603,12 +603,13 @@
                       <span class="tsl-brand__name">{{ str(c?.name) }}</span>
                       <span class="tsl-brand__sub">Customizer account found</span>
                     </span>
-                    <button type="button" class="tsl-brand-card__connect" @click="c.onSelect">Connect</button>
+                    <button type="button" class="tsl-brand-connect" @click="c.onSelect">Connect</button>
                   </div>
                 </template>
-                <!-- no account: the brand, its message and "Sign in with a different email".
+                <!-- no account: the brand, its message, a Connect button and "Sign in with a different email".
                      Team request, not in the prototype yet (not approved yet): no "Request access to this brand", so no
-                     "Access pending" either (the request logic in LandingPage.logic.js is unused). -->
+                     "Access pending" either (the request logic in LandingPage.logic.js is unused). Connect sits on the
+                     right, as on a brand with an account; here it does nothing yet: the team will decide what it opens. -->
                 <template v-if="c?.noAccount">
                   <div class="tsl-auth__noaccount">
                     <div class="tsl-auth__noaccount-row">
@@ -620,6 +621,7 @@
                         <span class="tsl-brand__name">{{ str(c?.name) }}</span>
                         <span class="tsl-brand__sub--wrap">You don't have an account for this Customizer yet. Accounts are added by Prolook.</span>
                       </span>
+                      <button type="button" class="tsl-brand-connect">Connect</button>
                     </div>
                     <div class="tsl-auth__noaccount-actions">
                       <button class="tsl-auth__different" @click="vals.backToEmail">Sign in with a different email</button>
