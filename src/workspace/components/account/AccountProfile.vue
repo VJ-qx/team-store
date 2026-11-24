@@ -219,8 +219,13 @@
         <div class="wx-account__password-lead">{{ pwMode === "create" ? "Lets you sign in with your email and a password, without a Customizer. " : "Used only for Team Stores sign-in. " }}{{ custLinked ? `It never changes your ${custBrand.name} Customizer password.` : "" }}</div>
         <div class="wx-account__password-fields">
           <div v-if="pwMode === 'change'" class="wx-account__field">
-            <label class="wx-account__label">Current password</label>
-            <input type="password" v-autofocus :value="pw.current" v-controlled="pw.current" :disabled="pwSaving" @input="(e) => setPw((c) => ({ ...c, current: e.target.value }))" placeholder="••••••••••••" class="wx-account__input" @focus="(e) => e.target.style.borderColor = '#0e0e10'" @blur="(e) => e.target.style.borderColor = '#d4d4d8'" />
+            <!-- Approved change, not in the prototype yet: Show toggle on Current password (docs/README.md#approved-changes).
+                 The same Show / Hide control as New password. -->
+            <div class="wx-account__label-row">
+              <label class="wx-account__label">Current password</label>
+              <button type="button" @click="() => setPw((c) => ({ ...c, showCurrent: !c.showCurrent }))" class="wx-account__show-toggle">{{ pw.showCurrent ? "Hide" : "Show" }}</button>
+            </div>
+            <input :type="pw.showCurrent ? 'text' : 'password'" v-autofocus :value="pw.current" v-controlled="pw.current" :disabled="pwSaving" @input="(e) => setPw((c) => ({ ...c, current: e.target.value }))" placeholder="••••••••••••" class="wx-account__input" @focus="(e) => e.target.style.borderColor = '#0e0e10'" @blur="(e) => e.target.style.borderColor = '#d4d4d8'" />
           </div>
           <div class="wx-account__field">
             <div class="wx-account__label-row">
@@ -318,7 +323,7 @@ export default {
       // Team Stores password modal
       pwOpen: false,
       pwMode: "change",
-      pw: { current: "", next: "", show: false },
+      pw: { current: "", next: "", show: false, showCurrent: false }, // showCurrent: Approved change, not in the prototype yet: Show toggle on Current password (docs/README.md#approved-changes).
       pwSaving: false,
       addStates: BRAND_ADD_STATE,
       primaryId: INTEGRATION.on ? "victus" : "prolook", // brand profile info is pulled from
@@ -368,7 +373,7 @@ export default {
     saveInfo() { this.info = this.draft; this.editingInfo = false; this.onToast && this.onToast("Personal info saved to your Team Stores account"); },
     setPwOpen(v) { this.pwOpen = v; },
     setPw(v) { this.pw = typeof v === "function" ? v(this.pw) : v; },
-    openPw(mode) { this.pwMode = mode; this.pw = { current: "", next: "", show: false }; this.pwOpen = true; },
+    openPw(mode) { this.pwMode = mode; this.pw = { current: "", next: "", show: false, showCurrent: false }; this.pwOpen = true; },
     submitPw(e) {
       e && e.preventDefault(); if (!this.pwReady) return;
       this.pwSaving = true;
