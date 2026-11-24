@@ -35,6 +35,8 @@ A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't i
 
 **Sign-in paused (Vue only, [approved change](README.md#approved-changes)):** click **SIGN IN**, type any email, type the password `wrong`, and click **Sign in** 5 times. Sign-in for that email is paused for 15 minutes, with a countdown and a **Reset password** button. Another email isn't paused. Reload the page to clear the pause. The prototype doesn't have this yet: there, every wrong password shows "Email or password is incorrect".
 
+**Confirm your email (Vue only, approved change G-9):** click **SIGN IN**, then **Create an account**, and fill in both steps. **Create account** now shows "Confirm your email" instead of the dealership check. To continue as if the rep opened the link in that email, open http://localhost:5173/landing.html?confirm=new%40dealership.com: it shows "Account created / Checking …", then the organization registration, or, with `__paritySetProps({ signupDealershipFound: true })` run right after it opens, the brands to connect.
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).
@@ -55,9 +57,11 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 
 - **Native sign-in:** http://localhost:5173/workspace.html?brand=prolook&auth=native
 - **Customizer sign-in:** http://localhost:5173/workspace.html?brand=prolook (or `brand=riddell`)
-- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**.
+- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**. **Approved change (G-7, Vue only):** with `brand=riddell`, the grid shows the design's eight sample brands; Legends ("Access pending") and Axe ("Request access") are locked: greyed, with a lock, not clickable, and hovering shows "Connect this brand to set it as your primary." The prototype shows one brand.
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
+
+**Approved change (G-6, Vue only):** the Customizer sign-in pop-up with one brand shows "You can change your primary brand anytime from My Account." under the brand, and its button reads **Confirm & Enter**. The landing page's copy of the pop-up (`{ signedIn: true, showWelcomeModal: true, welcomeNativePath: false }`) has the same change.
 
 The ✕ at its top right, Escape, and a click outside the pop-up close it the same way as its button (**Continue to Workspace** / **Confirm & Enter**): the primary brand shown is kept.
 
@@ -69,6 +73,7 @@ Open http://localhost:5173/workspace.html?brand=riddell&from=customizer. `from=c
 
 - Open http://localhost:5173/workspace.html?brand=prolook&auth=native-connected, hover the **HM** button at the top right, and click **My Account**.
 - Brand Access & Authentication is the second card. The prototype and Vue now title it **Connected Customizers**, with an **Add Customizer** button.
+- **Change password (approved change G-11, Vue only):** on My Account, click **Change password**: Current password has a **Show** / **Hide** control, like New password. The prototype has it on New password only.
 - **Customizer-only version:** `__paritySetProps({ authMode: 'customizer' })`. Prototype: settings panel, **Sign-in method: Customizer only**.
 
 ## Store page and Store Setup Guide

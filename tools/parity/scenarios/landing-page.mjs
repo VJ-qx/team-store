@@ -45,6 +45,15 @@ const registerSteps = [
 
 // Approved change, not in the prototype yet: sign-in lockout. Five wrong passwords in a row.
 const LOCKOUT_DESIGN = 'docs/approved-changes/sign-in-lockout.png';
+// Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (G-6). The Customizer
+// welcome pop-up's one-brand state differs from the prototype on purpose, so it's an approved state.
+const WELCOME_ONE_BRAND_DESIGN = 'docs/approved-changes/welcome-one-brand-confirm.png';
+// Approved change, not in the prototype yet: Confirm your email (G-9). "Create account" stops at "Confirm your email";
+// opening the page with ?confirm=<email> stands in for the email's link and runs the dealership check, as the old
+// "register dealership …" states did after "Create account". Those states are approved states now. The check starts
+// as the page loads, so these states freeze the clock from the start (clockFromLoad).
+const CONFIRM_EMAIL_DESIGN = 'docs/approved-changes/confirm-your-email.png';
+const CONFIRM_LINK = '?confirm=new%40dealership.com';
 const pauseSignIn = [openSignIn, { fill: [EMAIL, 'rep@dealership.com'] }, { fill: [PASSWORD, 'wrong'] }, signIn, signIn, signIn, signIn, signIn];
 
 export default {
@@ -87,17 +96,18 @@ export default {
     { name: 'customizer email not in dealer records', props: { emailInDealerRecords: false }, steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'rep@dealership.com'] }, continueBtn] },
 
     { name: 'register email already taken', steps: [openSignIn, createAnAccount, { fill: [EMAIL, 'demo@dealership.com'] }, { fill: [SIGNUP_PASSWORD, 'a long enough passphrase'] }] },
-    { name: 'register dealership not found', steps: [...registerSteps, { wait: 2200 }] },
-    { name: 'register dealership found', props: { signupDealershipFound: true }, steps: [...registerSteps, { click: button('PROLOOK', false) }, { click: button('PROLOOK', false) }, { click: button('Connect & Enter Team Stores', false) }, { wait: 1500 }] },
-    { name: 'register dealership found skip', props: { signupDealershipFound: true }, steps: [...registerSteps, { click: button('Skip for now', false) }, { wait: 1500 }] },
 
     { name: 'welcome modal native', props: { signedIn: true, showWelcomeModal: true }, steps: [{ click: button('Connect') }, close] },
-    { name: 'welcome modal federated', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false }, steps: [{ click: button('Continue to Workspace', false) }] },
     { name: 'welcome modal multi-brand', props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false, welcomeMultiBrand: true }, steps: [{ click: button('Confirm & Enter', false) }] },
   ],
   // Approved changes the prototype doesn't have yet (docs/README.md#approved-changes), checked on the
   // Vue version only: npm run parity -- tools/parity/scenarios/landing-page.mjs --approved --b http://localhost:5173/landing.html
   approved: [
+    { name: 'register confirm your email', design: CONFIRM_EMAIL_DESIGN, steps: [...registerSteps.slice(0, -1), { hover: button('Back to sign in', false) }, { click: button('Back to sign in', false) }] },
+    { name: 'register confirm link dealership not found', design: CONFIRM_EMAIL_DESIGN, query: CONFIRM_LINK, clockFromLoad: true, steps: [{ wait: 1500, label: 'Wait 1.5 s: the dealership check ends' }, { wait: 2200, label: 'Wait 2.2 s: on to organization registration' }] },
+    { name: 'register confirm link dealership found', design: CONFIRM_EMAIL_DESIGN, query: CONFIRM_LINK, clockFromLoad: true, props: { signupDealershipFound: true }, steps: [{ wait: 1500, label: 'Wait 1.5 s: the dealership check ends' }, { click: button('PROLOOK', false) }, { click: button('PROLOOK', false) }, { click: button('Connect & Enter Team Stores', false) }, { wait: 1500 }] },
+    { name: 'register confirm link dealership found skip', design: CONFIRM_EMAIL_DESIGN, query: CONFIRM_LINK, clockFromLoad: true, props: { signupDealershipFound: true }, steps: [{ wait: 1500, label: 'Wait 1.5 s: the dealership check ends' }, { click: button('Skip for now', false) }, { wait: 1500 }] },
+    { name: 'welcome modal federated', design: WELCOME_ONE_BRAND_DESIGN, props: { signedIn: true, showWelcomeModal: true, welcomeNativePath: false }, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
     // Sign-in lockout (BRD FR-1.11): the fifth wrong password in a row pauses sign-in for 15 minutes.
     { name: 'sign-in paused', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { wait: 9000, label: 'Wait 9 seconds: the countdown shows 14:51, as in the design' }] },
     { name: 'sign-in paused reset password', design: LOCKOUT_DESIGN, steps: [...pauseSignIn, { click: button('Reset password') }] },

@@ -452,6 +452,19 @@
         </div>
       </template>
 
+      <!-- STEP: post sign-up — confirm your email. Approved change, not in the prototype yet: Confirm your email (docs/README.md#approved-changes).
+           The existing "Check your email" card: the dealership check runs once the rep opens the link. -->
+      <template v-if="vals.stepConfirmEmail">
+        <div class="tsl-auth__panel--sent">
+          <span class="tsl-auth__sent-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+          </span>
+          <h3 class="tsl-auth__title--small">Confirm your email</h3>
+          <p class="tsl-auth__text">We've sent a confirmation link to <strong class="tsl-auth__strong">{{ str(vals.emailValue) }}</strong>. Your account works once you confirm your email.</p>
+          <button class="tsl-auth__primary-btn" @click="vals.goHome">Back to sign in</button>
+        </div>
+      </template>
+
       <!-- STEP: post sign-up — checking email against qx7 dealership records -->
       <template v-if="vals.stepChecking">
         <div class="tsl-auth__status">
@@ -786,6 +799,8 @@
               Primary
             </span>
           </div>
+          <!-- Approved change, not in the prototype yet: helper line and Confirm & Enter for a one-brand rep (docs/README.md#approved-changes). -->
+          <p class="tsl-welcome__note">You can change your primary brand anytime from My Account.</p>
         </div>
       </template>
 
