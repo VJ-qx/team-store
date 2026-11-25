@@ -37,6 +37,10 @@ A successful sign-in redirects to `Team Stores Workspace.dc.html`, which isn't i
 
 **Confirm your email (Vue only, approved change G-9):** click **SIGN IN**, then **Create an account**, and fill in both steps. **Create account** now shows "Confirm your email" instead of the dealership check. To continue as if the rep opened the link in that email, open http://localhost:5173/landing.html?confirm=new%40dealership.com: it shows "Account created / Checking …", then the organization registration, or, with `__paritySetProps({ signupDealershipFound: true })` run right after it opens, the brands to connect.
 
+**Choose a Customizer cards (Vue only, team request, not approved yet):** a brand with a Customizer account shows a **Connect** button instead of ">", and the line under its name reads "Customizer account found" (without " · Sign in"); Connect opens that brand's password step. A brand without an account shows its message, a **Connect** button on the right (it does nothing yet: the team will decide what it opens) and **Sign in with a different email**: no **Request access to this brand**, and so no "Access pending". To see both, set `{ customizerAccountExists: true }` or `false`, then click **SIGN IN**, **Sign in with Customizer**, type an email and click **Continue**. The prototype still has ">" and Request access.
+
+**Choose a Customizer with several brands (Vue only, demo data):** click **SIGN IN**, then **Sign in with Customizer**, type an email starting with `multi@` (for example `multi@dealership.com`) and click **Continue**. The step lists PROLOOK and Riddell with a Customizer account (**Connect** to sign in), Riddell with a yellow **PRIMARY** tag as the rep's primary brand (team request, not approved yet), and Legends and Axe without one (**Connect**, which does nothing yet, and **Sign in with a different email**). Every other email shows PROLOOK only, as in the prototype, where one setting gives every brand an account or none. The brands are in `src/landing/multi-brand-demo.js`, for the frontend dev to replace with the rep's real brands from qx7.
+
 ### Workspace screens
 
 These addresses are for the Vue workspace. For the prototype, use `Workspace.dc.html` in place of `workspace.html`. For the Marucci workspace, use `workspace-integrated.html` (prototype: `Marucci%20Workspace.dc.html`).
@@ -57,7 +61,7 @@ The prototype's settings panel opens from the browser console: `window.postMessa
 
 - **Native sign-in:** http://localhost:5173/workspace.html?brand=prolook&auth=native
 - **Customizer sign-in:** http://localhost:5173/workspace.html?brand=prolook (or `brand=riddell`)
-- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**. **Approved change (G-7, Vue only):** with `brand=riddell`, the grid shows the design's eight sample brands; Legends ("Access pending") and Axe ("Request access") are locked: greyed, with a lock, not clickable, and hovering shows "Connect this brand to set it as your primary." The prototype shows one brand.
+- **Multi-brand:** open the Customizer sign-in address, then run `__paritySetProps({ ssoMultiBrand: true })`. Prototype: settings panel, turn on **Multi-brand account**. **Approved change (G-7, Vue only):** with `brand=riddell`, the grid shows the design's eight sample brands; Legends and Axe are locked: greyed, with a lock, not clickable (without the design's "Access pending" / "Request access" tags, removed at a team request), and hovering shows "Connect this brand to set it as your primary." The prototype shows one brand.
 
 The pop-up shows once per browser session. To see it again, run `sessionStorage.clear()` and reload, or use an incognito window.
 

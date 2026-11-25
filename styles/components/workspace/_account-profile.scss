@@ -1,4 +1,5 @@
 @use "../../variables" as *;
+@use "../shared/primary-tag";
 
 // Moved from the inline styles of AccountProfile in workspace-app.jsx and workspace-app-integrated.jsx.
 // My Account page, with the add-a-customizer, password, and brand sign-in modals.
@@ -553,16 +554,11 @@
   gap: 8px;
 }
 
+// The PRIMARY tag is shared with the landing page (components/shared/_primary-tag.scss, .ts-primary-tag), which
+// AccountProfile.vue uses. The prototype (prototype/workspace-app*.jsx) still uses this class, so it gets the
+// shared tag too. The shared weight is 700 (this rule had 800, which drew Inter 700: Inter 800 isn't loaded).
 .wx-account__primary-tag {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: #a67c00;
-  background: $amber-soft;
-  border: 1px solid #f0d98a;
-  border-radius: 999px;
-  padding: 2px 8px;
+  @extend .ts-primary-tag;
 }
 
 .wx-account__brand-desc {

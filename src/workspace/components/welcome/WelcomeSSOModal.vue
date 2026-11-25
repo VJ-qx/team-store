@@ -39,7 +39,7 @@
         <div class="wx-welcome__grid">
           <!-- The tile's background and border stay inline: they depend on the selection, and the hover
                handlers write the same properties (v-patch-style writes only changed values, as React does). -->
-          <button v-for="b in brands" :key="b.id" @click="() => { if (!lockedTag(b.id)) setPrimary(b.id); }" :title="lockedTag(b.id) ? null : b.name" :aria-disabled="lockedTag(b.id) ? 'true' : null" :class="`wx-welcome__tile${lockedTag(b.id) ? ' wx-welcome__tile--locked' : ''}`" v-patch-style="{ background: primary === b.id ? '#fff' : (lockedTag(b.id) ? '#fafafa' : '#f4f4f5'), border: `2px solid ${primary === b.id ? '#09090b' : '#f4f4f5'}` }" @mouseenter="(e) => { if (primary !== b.id && !lockedTag(b.id)) { e.currentTarget.style.borderColor = '#d4d4d8'; e.currentTarget.style.background = '#fff'; } }" @mouseleave="(e) => { if (primary !== b.id && !lockedTag(b.id)) { e.currentTarget.style.borderColor = '#f4f4f5'; e.currentTarget.style.background = '#f4f4f5'; } }">
+          <button v-for="b in brands" :key="b.id" @click="() => { if (!isLocked(b.id)) setPrimary(b.id); }" :title="isLocked(b.id) ? null : b.name" :aria-disabled="isLocked(b.id) ? 'true' : null" :class="`wx-welcome__tile${isLocked(b.id) ? ' wx-welcome__tile--locked' : ''}`" v-patch-style="{ background: primary === b.id ? '#fff' : (isLocked(b.id) ? '#fafafa' : '#f4f4f5'), border: `2px solid ${primary === b.id ? '#09090b' : '#f4f4f5'}` }" @mouseenter="(e) => { if (primary !== b.id && !isLocked(b.id)) { e.currentTarget.style.borderColor = '#d4d4d8'; e.currentTarget.style.background = '#fff'; } }" @mouseleave="(e) => { if (primary !== b.id && !isLocked(b.id)) { e.currentTarget.style.borderColor = '#f4f4f5'; e.currentTarget.style.background = '#f4f4f5'; } }">
             <span v-if="primary === b.id" class="wx-welcome__tile-check">
               <IconCheck :size="13" />
             </span>
@@ -49,10 +49,10 @@
             </span>
             <span class="wx-welcome__tile-name">{{ b.name }}</span>
             <!-- Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (docs/README.md#approved-changes).
-                 A brand that can't be primary: greyed, with a lock and its tag; it can't be picked, and hovering shows why. -->
-            <template v-if="lockedTag(b.id)">
+                 A brand that can't be primary: greyed, with a lock; it can't be picked, and hovering shows why. The design's
+                 "Access pending" / "Request access" tag was removed at a team request, so every locked brand looks the same. -->
+            <template v-if="isLocked(b.id)">
               <span class="wx-welcome__tile-lock"><IconLock :size="12" /></span>
-              <span :class="`wx-welcome__tile-tag wx-welcome__tile-tag--${lockedTag(b.id) === 'Access pending' ? 'pending' : 'request'}`">{{ lockedTag(b.id) }}</span>
               <span class="wx-welcome__tile-tip">Connect this brand to set it as your primary.<span class="wx-welcome__tile-tip-arrow" /></span>
             </template>
           </button>
@@ -133,8 +133,8 @@ export default {
   },
   methods: {
     // Approved change, not in the prototype yet: locked cards in the welcome pop-up's grid (docs/README.md#approved-changes).
-    // The tag on a brand that can't be primary ("Access pending" or "Request access"), or null.
-    lockedTag(id) { return LOCKED_BRANDS[id] || null; },
+    // Whether the brand can't be set as primary.
+    isLocked(id) { return LOCKED_BRANDS.includes(id); },
     px,
     reset() {
       if (this.open) { this.setPrimary(this.originId); this.setConnected({}); }

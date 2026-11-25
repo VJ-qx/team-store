@@ -134,7 +134,9 @@
               </div>
               <BrandTile :id="b.id" :name="b.name" :size="48" />
               <div class="wx-account__brand-text">
-                <div class="wx-account__brand-name">{{ b.name }}<span v-if="primaryId === b.id" class="wx-account__primary-tag">Primary</span>
+                <!-- The PRIMARY tag is the shared .ts-primary-tag (styles/components/shared/), also on the landing page's
+                     Choose a Customizer; it was .wx-account__primary-tag, which the prototype still uses. -->
+                <div class="wx-account__brand-name">{{ b.name }}<span v-if="primaryId === b.id" class="ts-primary-tag">Primary</span>
                 </div>
                 <div class="wx-account__brand-desc">{{ b.desc }}{{ b.connected && b.sso ? " · Single sign-on" : "" }}{{ b.connected && !b.sso && b.authEmail ? ` · Signed in as ${b.authEmail}` : "" }}</div>
               </div>

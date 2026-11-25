@@ -585,6 +585,46 @@
   font-family: inherit;
 }
 
+// Team request, not in the prototype yet (not approved yet): a brand with a Customizer account is a card with a
+// Connect button instead of a clickable row with ">". The card keeps the row's look, without its pointer and hover.
+.tsl-brand-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  background: $white;
+  border: 1px solid $zinc-200;
+  border-radius: 12px;
+  text-align: left;
+}
+
+// The welcome pop-up's Connect button (.tsl-welcome__connect), on the right of every brand card: with an account
+// (.tsl-brand-card) and without one (.tsl-auth__noaccount-row).
+.tsl-brand-connect {
+  flex-shrink: 0;
+  background: $white;
+  color: $zinc-950;
+  border: 1px solid $zinc-950;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+// Team request, not in the prototype yet (not approved yet): where the shared PRIMARY tag
+// (components/shared/_primary-tag.scss, .ts-primary-tag) sits next to the name of the rep's primary brand.
+// The tag is 2px taller than the name's line: the -1px margins keep the line (and the card) as tall as
+// another brand's, and with `top` the tag is centred on the name's capitals (Gotham's letters sit high
+// in the line, so `middle` puts the tag about 1.5px too low).
+.tsl-brand__primary {
+  display: inline-block;
+  margin: -1px 0 -1px 8px;
+  vertical-align: top;
+}
+
 .tsl-brand__body {
   flex: 1;
   min-width: 0;

@@ -1,6 +1,10 @@
 # Shared components
 
-SCSS partials for components that two or more pages use with **exactly the same values**. Nothing is shared yet, so this folder only holds this README.
+SCSS partials for components that two or more pages use with **exactly the same values**.
+
+| Partial | Class | Used by |
+|---|---|---|
+| `_primary-tag.scss` | `.ts-primary-tag` | Workspace: My Account's brand list. Landing page: Choose a Customizer (team request, not in the prototype yet). |
 
 - **Same values only.** If one page needs a different size, colour or spacing, the component stays in that page's own folder (`components/landing/`, `components/workspace/`, `components/workspace-mobile/`).
 - **Class prefix `ts-`** (Team Stores). The pages use `tsl-` (landing), `wx-` (workspace) and `wm-` (Workspace Mobile), so a shared class never looks like it belongs to one page.
