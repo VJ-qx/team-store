@@ -15,6 +15,9 @@ export const MULTI_BRAND_DEMO = {
   axe: false,
 };
 
+// DUMMY DATA: the rep's sample primary brand, shown with a "Primary" badge. It must be a brand with an account.
+export const MULTI_BRAND_DEMO_PRIMARY = 'riddell';
+
 // Whether the email is the multi-brand demo email.
 export function isMultiBrandDemo(email) {
   return /^multi@/i.test((email || '').trim());

@@ -120,7 +120,8 @@ export default {
     // Without an account, Connect does nothing yet; "Sign in with a different email" goes back to the email step.
     { name: 'customizer no account', props: { customizerAccountExists: false }, steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'rep@dealership.com'] }, continueBtn, { hover: button('Connect') }, { click: button('Connect') }, { hover: button('Sign in with a different email') }, { click: button('Sign in with a different email') }] },
     // Demo data (src/landing/multi-brand-demo.js): the "multi@" email lists PROLOOK and Riddell with an account, and
-    // Legends and Axe without one. Hover Legends' Connect, then Connect on Riddell opens its password step.
+    // Legends and Axe without one; Riddell, the sample primary brand, has a "PRIMARY" tag (team request, not
+    // approved yet). Hover Legends' Connect, then Connect on Riddell opens its password step.
     { name: 'customizer several brands', steps: [openSignIn, withCustomizer, { fill: [EMAIL, 'multi@dealership.com'] }, continueBtn, { hover: `${button('Connect')} >> nth=2` }, { hover: `${button('Connect')} >> nth=1` }, { click: `${button('Connect')} >> nth=1` }] },
   ],
 };
