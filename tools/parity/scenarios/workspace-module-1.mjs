@@ -216,12 +216,12 @@ export const buildPasswordStates = ({ account = 'Hingle McCringleberry' } = {}) 
 export const buildWelcomeCustomizerStates = () => [
   { name: 'welcome customizer', query: '?brand=prolook', design: WELCOME_ONE_BRAND_DESIGN, steps: [{ hover: button('Confirm & Enter', false) }, { click: button('Confirm & Enter', false) }] },
   // Approved change, not in the prototype yet: locked cards in the grid (G-7). The several-brand rep has the design's
-  // sample brands; Legends (Access pending) and Axe (Request access) are locked.
+  // sample brands; Legends and Axe are locked (without the design's tags, removed at a team request).
   {
     name: 'welcome multi-brand', query: '?brand=riddell', design: WELCOME_LOCKED_DESIGN, steps: [
       vueSettings({ ssoMultiBrand: true }),
-      { hover: welcomeTile('Legends'), label: 'Hover Legends (locked, Access pending): the tip "Connect this brand to set it as your primary."' },
-      { hover: welcomeTile('Axe'), label: 'Hover Axe (locked, Request access): the same tip' },
+      { hover: welcomeTile('Legends'), label: 'Hover Legends (locked): the tip "Connect this brand to set it as your primary."' },
+      { hover: welcomeTile('Axe'), label: 'Hover Axe (locked): the same tip' },
       { click: welcomeTile('ALLI'), label: 'Pick ALLI as the primary brand' },
       { hover: welcomeClose, label: 'Hover the ✕ at the top right of the pop-up' },
       { click: button('Confirm & Enter', false) },
