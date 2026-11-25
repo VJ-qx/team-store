@@ -1504,19 +1504,10 @@ html {
   cursor: pointer;
 }
 
-.tsl-brand-primary {
+.tsl-brand__primary {
   display: inline-block;
   margin: -1px 0 -1px 8px;
   vertical-align: top;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #a67c00;
-  background: #fdf1cf;
-  border: 1px solid #f0d98a;
-  border-radius: 999px;
-  padding: 2px 8px;
 }
 
 .tsl-brand__body {
@@ -2255,6 +2246,18 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+.ts-primary-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #a67c00;
+  background: #fdf1cf;
+  border: 1px solid #f0d98a;
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 
 #__bundler_thumbnail {

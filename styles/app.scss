@@ -7,6 +7,8 @@
 @use "components/landing/auth-modal";
 @use "components/landing/form-field";
 @use "components/landing/welcome-modal";
+// Shared with the workspace (components/shared/README.md).
+@use "components/shared/primary-tag";
 
 // Prototype-only styles. Remove this line when the page no longer runs in the Claude Design host.
 @use "pages/prototype";

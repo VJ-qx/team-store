@@ -614,25 +614,15 @@
   cursor: pointer;
 }
 
-// Team request, not in the prototype yet (not approved yet): My Account's yellow "PRIMARY" tag
-// (.wx-account__primary-tag), next to the name of the rep's primary brand on a brand card.
+// Team request, not in the prototype yet (not approved yet): where the shared PRIMARY tag
+// (components/shared/_primary-tag.scss, .ts-primary-tag) sits next to the name of the rep's primary brand.
 // The tag is 2px taller than the name's line: the -1px margins keep the line (and the card) as tall as
 // another brand's, and with `top` the tag is centred on the name's capitals (Gotham's letters sit high
-// in the line, so `middle` puts the tag about 1.5px too low). Weight 700 (Gotham Bold), not My Account's
-// 800: in Gotham 800 is the Black cut, much heavier than Inter's 800.
-.tsl-brand-primary {
+// in the line, so `middle` puts the tag about 1.5px too low).
+.tsl-brand__primary {
   display: inline-block;
   margin: -1px 0 -1px 8px;
   vertical-align: top;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: $amber-ink;
-  background: $amber-soft;
-  border: 1px solid $amber-line;
-  border-radius: 999px;
-  padding: 2px 8px;
 }
 
 .tsl-brand__body {

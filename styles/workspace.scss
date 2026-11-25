@@ -12,6 +12,8 @@
 @use "components/workspace/customizer-loading";
 // …and on smaller screens (below 1024px; desktop unchanged).
 @use "responsive/workspace/components/customizer-loading" as customizer-loading-responsive;
+// Shared with the landing page (components/shared/README.md).
+@use "components/shared/primary-tag";
 @use "components/workspace/account-profile";
 @use "components/workspace/store-workspace-bar";
 @use "components/workspace/store-side-nav";

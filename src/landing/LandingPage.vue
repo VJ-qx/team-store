@@ -593,8 +593,8 @@
                      row's action (it opens that brand's password step, as clicking the row did); the row itself is no
                      longer a button. The line under the name drops " · Sign in", which named the row's click: next to
                      Connect it wrapped onto a second line.
-                     Team request, not in the prototype yet (not approved yet): the rep's primary brand has My Account's
-                     yellow "PRIMARY" tag next to its name. -->
+                     Team request, not in the prototype yet (not approved yet): the rep's primary brand has the yellow
+                     "PRIMARY" tag next to its name, the shared .ts-primary-tag that My Account uses too. -->
                 <template v-if="c?.hasAccount">
                   <div class="tsl-brand-card">
                     <span class="tsl-brand__logo">
@@ -602,7 +602,7 @@
                       <template v-if="c?.isWord"><span class="tsl-brand__initial">{{ str(c?.initial) }}</span></template>
                     </span>
                     <span class="tsl-brand__body">
-                      <span class="tsl-brand__name">{{ str(c?.name) }}<template v-if="c?.isPrimary"><span class="tsl-brand-primary">Primary</span></template></span>
+                      <span class="tsl-brand__name">{{ str(c?.name) }}<template v-if="c?.isPrimary"><span class="ts-primary-tag tsl-brand__primary">Primary</span></template></span>
                       <span class="tsl-brand__sub">Customizer account found</span>
                     </span>
                     <button type="button" class="tsl-brand-connect" @click="c.onSelect">Connect</button>

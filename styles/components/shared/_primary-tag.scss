@@ -1,0 +1,19 @@
+@use "../../variables" as *;
+
+// The yellow "PRIMARY" tag next to the rep's primary brand, the same on every page that shows it:
+// - workspace: My Account's brand list (AccountProfile.vue);
+// - landing page: Choose a Customizer (LandingPage.vue; team request, not in the prototype yet).
+// The font is the page's own (Inter in the workspace, Gotham on the landing page). Weight 700: the workspace
+// loads Inter only up to 700, and in Gotham 800 is the much heavier Black cut.
+// Where the tag sits (gap, margins, alignment) belongs to each page.
+.ts-primary-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: $amber-ink;
+  background: $amber-soft;
+  border: 1px solid $amber-line;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
