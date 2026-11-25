@@ -29,7 +29,7 @@ class Component extends DCLogic {
     const e = (email || "").toLowerCase().trim();
     if (!this.isValidEmail(e)) return [];
     if (!(this.props.emailInDealerRecords ?? true)) return [];
-    // Demo data, not in the prototype: the "multi@" email is linked to several brands (multi-brand-demo.js).
+    // DUMMY DATA (demo only): the "multi@" email is linked to several sample brands (multi-brand-demo.js).
     if (isMultiBrandDemo(e)) return Object.keys(MULTI_BRAND_DEMO);
     return ["prolook"];
   }
@@ -202,7 +202,7 @@ class Component extends DCLogic {
     // ── Choose-a-Customizer: entitled brands, validated per brand for an existing account ──
     const entitledIds = this.entitlementsFor(s.email);
     const customizers = this.customizerList().filter((c) => entitledIds.includes(c.id)).map((c) => {
-      // Demo data, not in the prototype: for the "multi@" email, each brand has its own account state.
+      // DUMMY DATA (demo only): for the "multi@" email, each sample brand has its own account state.
       const hasAccount = isMultiBrandDemo(s.email) ? MULTI_BRAND_DEMO[c.id] : accountExists;
       const pending = !!s.requested[c.id];
       return { ...c, isImg: !!c.img, isWord: !c.img, initial: c.name[0], hasAccount, noAccount: !hasAccount, pending, notPending: !pending,

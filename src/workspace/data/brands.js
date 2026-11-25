@@ -31,5 +31,6 @@ export const ACCESSIBLE_CUSTOMIZERS = INTEGRATION.on ? ["victus"] : ["prolook"];
 // The several-brand rep's sample brands, from the approved design (G-7). The brands a rep can't set as primary are
 // locked (in the design: an access request waiting on Prolook, or no account yet; the card no longer shows which, at
 // a team request). The frontend dev replaces both with the rep's brands from qx7.
+// DUMMY DATA (demo only): both lists below are samples, not the rep's real brands.
 export const MULTI_BRAND_SAMPLE = ["prolook", "game-one", "riddell", "legends", "axe", "alli", "baden", "perfect-game"];
 export const LOCKED_BRANDS = ["legends", "axe"];
